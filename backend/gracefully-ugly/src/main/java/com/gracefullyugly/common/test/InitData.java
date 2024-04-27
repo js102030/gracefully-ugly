@@ -1,0 +1,46 @@
+package com.gracefullyugly.common.test;
+
+import com.gracefullyugly.domain.user.dto.AdditionalRegRequest;
+import com.gracefullyugly.domain.user.dto.BasicRegRequest;
+import com.gracefullyugly.domain.user.dto.BasicRegResponse;
+import com.gracefullyugly.domain.user.entity.User;
+import com.gracefullyugly.domain.user.enumtype.Role;
+import com.gracefullyugly.domain.user.service.UserSearchService;
+import com.gracefullyugly.domain.user.service.UserService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Profile;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
+
+@Profile("dev")
+@RequiredArgsConstructor
+@Component
+@Slf4j
+public class InitData {
+
+    private final UserService userService;
+    private final UserSearchService userSearchService;
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void init() {
+        BasicRegRequest basicRegRequest = new BasicRegRequest(
+                "test",
+                "test"
+        );
+
+        BasicRegResponse basicAccount = userService.createBasicAccount(basicRegRequest);
+
+        User findUser = userSearchService.findById(basicAccount.getUserId());
+
+        AdditionalRegRequest additionalRegRequest = AdditionalRegRequest.builder()
+                .role(Role.BUYER)
+                .nickname("testNickname")
+                .email("test@test.com")
+                .address("testAddress")
+                .build();
+
+        userService.completeRegistration(findUser.getId(), additionalRegRequest);
+    }
+}

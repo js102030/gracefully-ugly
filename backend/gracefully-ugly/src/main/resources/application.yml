@@ -1,7 +1,8 @@
 spring:
   application:
     name: gracefully-ugly
-
+  profiles:
+    active: dev
 
   jpa:
     open-in-view: true
