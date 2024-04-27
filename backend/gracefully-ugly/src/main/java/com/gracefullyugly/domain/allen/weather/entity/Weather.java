@@ -1,4 +1,4 @@
-package com.gracefullyugly.domain.allen.news;
+package com.gracefullyugly.domain.allen.weather.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,17 +12,29 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Getter
-public class News {
+public class Weather {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "news_id")
+    @Column(name = "weather_id")
     private Long id;
 
-    private String contents;
+    private int currentTemperature;
 
-    private String source;
+    private int minTemperature;
+
+    private int maxTemperature;
+
+    private int precipitation;
+
+    private String weatherCondition;
+
+    private String airQualityIndex;
+
+    private int humidity;
+
+    private String overallWeather;
 
     private LocalDateTime createdAt;
-    
+
 }

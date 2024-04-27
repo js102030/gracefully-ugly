@@ -1,4 +1,4 @@
-package com.gracefullyugly.domain.cart;
+package com.gracefullyugly.domain.alert.entity;
 
 import com.gracefullyugly.common.base.BaseTimeEntity;
 import jakarta.persistence.Column;
@@ -12,13 +12,18 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Cart extends BaseTimeEntity {
+public class Alert extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cart_id")
+    @Column(name = "alert_id")
     private Long id;
 
     private Long userId;
 
+    private String title;
+
+    private String contents;
+
+    private boolean isRead;
 }
