@@ -21,6 +21,7 @@ public class UserSearchService {
                 .orElseThrow(() -> new IllegalArgumentException(userId + "에 해당하는 사용자가 없습니다."));
     }
 
+    // TODO buyCount, reviewCount 따로 가져와서 넣어주든 join으로 한번에 가져오든 해야함
     public ProfileResponse getProfile(Long userId) {
         User findUser = findById(userId);
 
