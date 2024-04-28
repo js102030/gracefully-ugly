@@ -14,45 +14,21 @@
         <th>이현진</th>
         <th>권광재</th>
     </tr>
-  <tr>
-        <td>
-          
-	      </td>
-        <td>
-          
-	      </td>
-        <td>
-          
-	      </td>
-        <td>
-        
-        </td>
-        <td>
-        
-        </td>
-        <td>
-        
-        </td>
+    <tr>
+	    <td>사진</td>
+	    <td>사진</td>
+	    <td>사진</td>
+	    <td>사진</td>
+	    <td>사진</td>
+	    <td>사진</td>
     </tr>
-  <tr>
-	<td>
-	    - 역할
-        </td>
-        <td>
-	    - 역할
-        </td>
-        <td>
-	    - 역할
-        </td>
-        <td>
-	    - 역할
-        </td>
-        <td>
-	    - 역할
-        </td>
-        <td>
-	    - 역할
-        </td>
+    <tr>
+	    <td>역할</td>
+	    <td>역할</td>
+	    <td>역할</td>
+	    <td>역할</td>
+	    <td>역할</td>
+	    <td>역할</td>
     </tr>
 </table>    
     
