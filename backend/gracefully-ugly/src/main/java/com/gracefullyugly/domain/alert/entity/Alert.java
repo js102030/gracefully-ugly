@@ -26,4 +26,6 @@ public class Alert extends BaseTimeEntity {
     private String contents;
 
     private boolean isRead;
+
+    private boolean isDeleted;
 }
