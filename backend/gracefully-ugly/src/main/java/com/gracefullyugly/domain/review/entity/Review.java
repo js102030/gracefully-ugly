@@ -26,4 +26,6 @@ public class Review extends BaseTimeEntity {
     private String comments;
 
     private int starPoint;
+
+    private boolean isDeleted;
 }

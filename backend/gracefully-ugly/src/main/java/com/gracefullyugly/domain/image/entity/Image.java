@@ -28,4 +28,6 @@ public class Image extends BaseTimeEntity {
     private String storedImageName;
 
     private int size;
+
+    private boolean isDeleted;
 }

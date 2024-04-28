@@ -37,4 +37,8 @@ public class Item extends BaseTimeEntity {
 
     private String productionPlace;
 
+    private boolean isDeleted;
+
+    private boolean isClosed;
+
 }
