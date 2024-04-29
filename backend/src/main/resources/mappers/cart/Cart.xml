@@ -22,12 +22,19 @@
         <result column="item_count" property="itemCount"/>
         <association property="cartListItem" resultMap="Item"/>
     </resultMap>
+
+    <insert id="createNewCart" parameterType="Long" flushCache="true">
+        INSERT INTO cart(`user_id`)
+        SELECT user_id
+        FROM users
+        WHERE user_id = #{userId};
+    </insert>
     
     <select id="selectAllCartItems" parameterType="Long" resultMap="cartListItem">
         SELECT CI.item_count, I.*
-        FROM Cart AS C
-        LEFT OUTER JOIN Cart_Item AS CI ON C.cart_id = CI.cart_id
-        LEFT OUTER JOIN Item AS I ON CI.item_id = I.item_id
-        WHERE C.user_id = #{userId}
+        FROM cart AS C
+        LEFT OUTER JOIN cart_item AS CI ON C.cart_id = CI.cart_id
+        LEFT OUTER JOIN item AS I ON CI.item_id = I.item_id
+        WHERE C.user_id = #{userId};
     </select>
 </mapper>
