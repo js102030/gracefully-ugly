@@ -4,6 +4,7 @@ package com.gracefullyugly.common.security.config;
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
 import com.gracefullyugly.common.security.CustomLogoutSuccessHandler;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -39,8 +41,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.
-                authorizeHttpRequests(authorizeRequests -> authorizeRequests
+        httpSecurity
+                .authorizeHttpRequests(request -> request.anyRequest().permitAll());
+                /*authorizeHttpRequests(authorizeRequests -> authorizeRequests
                                 .requestMatchers("/login", "/join", "users", "/api/**", "/")
                                 .permitAll()
 //                        .requestMatchers("/board").hasRole(L1.name())
@@ -49,9 +52,9 @@ public class SecurityConfig {
 //                        .requestMatchers("/admin/**").hasAnyRole(ADMIN.name())
                                 .anyRequest()
                                 .authenticated()
-                );
+                );*/
 
-        httpSecurity.exceptionHandling(auth -> auth
+        /*httpSecurity.exceptionHandling(auth -> auth
                 .accessDeniedPage("/access-denied")
         );
 
@@ -59,12 +62,15 @@ public class SecurityConfig {
                 .formLogin(auth -> auth
                         .loginPage("/login")
                         .defaultSuccessUrl("/", true)
-                );
+                );*/
 
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable);
 
         httpSecurity
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        /*httpSecurity
                 .sessionManagement(auth -> auth
                         .maximumSessions(1)
                         .maxSessionsPreventsLogin(false)
@@ -81,7 +87,7 @@ public class SecurityConfig {
                         .logoutUrl("/logout")
                         .logoutSuccessHandler(new CustomLogoutSuccessHandler())
                         .invalidateHttpSession(true)
-                );
+                );*/
 
         return httpSecurity.build();
 
@@ -92,4 +98,9 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring()
+                .requestMatchers(PathRequest.toH2Console());
+    }
 }
