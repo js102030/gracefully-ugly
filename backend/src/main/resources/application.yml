@@ -23,12 +23,18 @@ spring:
 
   datasource:
     hikari:
-      # mysql DBMS로 명시적으로 설정
-      # H2 DBMS 사용 시 아래 내용들을 변경해주세요
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: jdbc:mysql://localhost:8085/gracefully_ugly
-      username: root
-      password: root
+      # mysql DBMS 설정 값 (로컬 Docker 환경)
+#      driver-class-name: com.mysql.cj.jdbc.Driver
+#      jdbc-url: jdbc:mysql://localhost:8085/gracefully_ugly
+#      username: root
+#      password: root
+
+      # H2 DBMS 사용 시 설정값
+      driver-class-name: org.h2.Driver
+      jdbc-url: jdbc:h2:mem:testdb
+      username: sa
+      password:
+
       # Connection Pool 설정 (HikariCP Fine-Tuning)
       minimum-idle: 1                     # 최소 1개의 예비 Connection 설정
       maximum-pool-size: 5                # 최대 5개의 예비 Connection 설정
