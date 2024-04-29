@@ -1,7 +1,6 @@
 package com.gracefullyugly.domain.cart.service;
 
 import com.gracefullyugly.domain.cart.dto.CartListResponse;
-import com.gracefullyugly.domain.cart.repository.CartMapper;
 import com.gracefullyugly.domain.cart.repository.CartRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -14,9 +13,8 @@ import org.springframework.stereotype.Service;
 public class CartService {
 
     private final CartRepository cartRepository;
-    private final CartMapper cartMapper;
 
     public List<CartListResponse> getCartList(Long userId) {
-        return cartMapper.selectAllCartItems(userId);
+        return cartRepository.selectAllCartItems(userId);
     }
 }
