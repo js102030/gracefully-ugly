@@ -10,14 +10,15 @@ import com.gracefullyugly.domain.cart_item.repository.CartItemRepository;
 import jakarta.transaction.Transactional;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class CartItemService {
 
-    private final CartMapper cartMapper;
     private final CartItemMapper cartItemMapper;
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
@@ -31,19 +32,15 @@ public class CartItemService {
 
         Long itemCount = request.getItemCount();
 
-        Optional<Cart> userCart = cartRepository.findCartByUserId(userId);
-
-        if (userCart.isEmpty()) {
-            if (cartMapper.createNewCart(userId) != 1) {
-                return CartItemResponse.builder()
-                    .message("회원 정보가 존재하지 않습니다.")
-                    .build();
-            }
+        if (!createCart(userId)) {
+            return CartItemResponse.builder()
+                .message("회원 정보가 존재하지 않습니다.")
+                .build();
         }
 
-        Long cartId = userCart.orElseThrow().getId();
+        Cart userCart = cartRepository.findCartByUserId(userId).orElseThrow();
 
-        String message = cartItemMapper.addCartItem(cartId, itemId, itemCount) >= 1 ? "해당 상품이 찜 목록에 추가되었습니다." : "찜 목록 추가 중 문제가 발생했습니다.";
+        String message = cartItemRepository.addCartItem(userCart.getId(), itemId, itemCount) >= 1 ? "해당 상품이 찜 목록에 추가되었습니다." : "찜 목록 추가 중 문제가 발생했습니다.";
 
         return CartItemResponse.builder()
             .message(message)
@@ -64,5 +61,17 @@ public class CartItemService {
         return CartItemResponse.builder()
             .message(message)
             .build();
+    }
+
+    private boolean createCart(Long userId) {
+        if (!cartRepository.existsCartByUserId(userId)) {
+            Integer result = cartRepository.createNewCart(userId);
+
+            if (result < 1) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
