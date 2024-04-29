@@ -4,7 +4,7 @@
 
 <mapper namespace="com.gracefullyugly.domain.cart.repository.CartMapper">
     <resultMap id="Item" type="com.gracefullyugly.domain.item.entity.Item">
-        <id column="item_id" property="itemId"/>
+        <id column="item_id" property="id"/>
         <result column="user_id" property="userId"/>
         <result column="type_id" property="categoryId"/>
         <result column="name" property="name"/>
