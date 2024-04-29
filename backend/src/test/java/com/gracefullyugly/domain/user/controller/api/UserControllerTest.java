@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.google.gson.Gson;
 import com.gracefullyugly.domain.user.dto.AdditionalRegRequest;
 import com.gracefullyugly.domain.user.dto.BasicRegRequest;
 import com.gracefullyugly.domain.user.dto.BasicRegResponse;
@@ -19,6 +20,7 @@ import com.gracefullyugly.domain.user.dto.FinalRegResponse;
 import com.gracefullyugly.domain.user.dto.ProfileResponse;
 import com.gracefullyugly.domain.user.dto.UpdateAddressDto;
 import com.gracefullyugly.domain.user.dto.UpdateNicknameDto;
+import com.gracefullyugly.domain.user.dto.UpdatePasswordRequest;
 import com.gracefullyugly.domain.user.dto.UserResponse;
 import com.gracefullyugly.domain.user.enumtype.Role;
 import com.gracefullyugly.domain.user.enumtype.SignUpType;
@@ -46,6 +48,7 @@ class UserControllerTest {
     public static final String TEST_ADDRESS = "testAddress";
     public static final Role TEST_ROLE = Role.BUYER;
     public static final String NEW_NICKNAME = "newNickname";
+    public static final String TEST_PASSWORD = "test";
 
     @Autowired
     private MockMvc mockMvc;
@@ -63,10 +66,13 @@ class UserControllerTest {
         given(userService.createBasicAccount(any(BasicRegRequest.class)))
                 .willReturn(new BasicRegResponse(100L, TEST_LOGIN_ID));
 
+        Gson gson = new Gson();
+        String json = gson.toJson(new BasicRegRequest(TEST_LOGIN_ID, TEST_PASSWORD));
+
         // When & Then
         mockMvc.perform(post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"loginId\":\"test\",\"password\":\"test\"}"))
+                        .content(json))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.userId").value(100L))
                 .andExpect(jsonPath("$.loginId").value(TEST_LOGIN_ID))
@@ -97,11 +103,14 @@ class UserControllerTest {
                         .createdDate(LocalDateTime.now())
                         .build()
                 );
+
+        Gson gson = new Gson();
+        String json = gson.toJson(additionalRegRequest);
+
         // When & Then
         mockMvc.perform(patch("/api/users/100/registration")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(
-                                "{\"role\":\"BUYER\",\"nickname\":\"testNickname\",\"email\":\"test@test.com\",\"address\":\"testAddress\"}"))
+                        .content(json))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(100L))
                 .andExpect(jsonPath("$.loginId").value(TEST_LOGIN_ID))
@@ -202,10 +211,13 @@ class UserControllerTest {
                         .build()
                 );
 
+        Gson gson = new Gson();
+        String json = gson.toJson(new UpdateNicknameDto(NEW_NICKNAME));
+
         // When & Then
         mockMvc.perform(patch("/api/users/100/nickname")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"nickname\":\"newNickname\"}"))
+                        .content(json))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nickname").value(NEW_NICKNAME))
                 .andDo(print());
@@ -221,10 +233,13 @@ class UserControllerTest {
         // Given
         String newPassword = "newPassword";
 
+        Gson gson = new Gson();
+        String json = gson.toJson(new UpdatePasswordRequest(newPassword));
+
         // When
         mockMvc.perform(patch("/api/users/100/password")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"password\":\"" + newPassword + "\"}"))
+                        .content(json))
                 .andExpect(status().isOk())
                 .andDo(print());
 
@@ -242,10 +257,13 @@ class UserControllerTest {
                         .build()
                 );
 
+        Gson gson = new Gson();
+        String json = gson.toJson(new UpdateAddressDto(TEST_ADDRESS));
+
         // When & Then
         mockMvc.perform(patch("/api/users/100/address")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"address\":\"testAddress\"}"))
+                        .content(json))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.address").value(TEST_ADDRESS))
                 .andDo(print());
