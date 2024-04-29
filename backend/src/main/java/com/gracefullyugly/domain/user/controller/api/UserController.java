@@ -42,6 +42,12 @@ public class UserController {
                 .body(basicRegResponse);
     }
 
+    //일단 jwt 추후에 사용하려고
+    @GetMapping("/jwt-test")
+    public String jwtTest() {
+        return "jwtTest 요청 성공";
+    }
+
     @PatchMapping("/users/{userId}/registration")
     public ResponseEntity<FinalRegResponse> completeRegistration(@PathVariable Long userId,
                                                                  @RequestBody AdditionalRegRequest request) {
