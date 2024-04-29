@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByLoginId(String userLoginId);
 
-    Optional<Object> findByRefreshToken(String refreshToken);
+    Optional<User> findByRefreshToken(String refreshToken);
 }
