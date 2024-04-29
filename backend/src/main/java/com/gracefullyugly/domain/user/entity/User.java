@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Table(name = "users")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED) //해당 클래스 내부에서만 생성자에 접근하고 외부에서 생성자 접근 막으려고
 @AllArgsConstructor
 @Getter
 @DynamicUpdate
@@ -50,6 +51,8 @@ public class User extends BaseTimeEntity {
     private String email;
 
     private String address;
+
+    private String refreshToken; // 리프레시 토큰, security 때문에 추가
 
     private boolean isBanned;
 
@@ -86,5 +89,9 @@ public class User extends BaseTimeEntity {
 
     public void delete() {
         this.isDeleted = true;
+    }
+
+    public void updateRefreshToken(String updateRefreshToken) {
+        this.refreshToken = updateRefreshToken;
     }
 }
