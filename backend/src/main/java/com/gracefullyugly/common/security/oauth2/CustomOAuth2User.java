@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * DefaultOAuth2User를 상속하고, email과 role 필드를 추가로 가진다.
+ * DefaultOAuth2User를 상속하고, longId, role 필드를 추가로 가진다.
  */
 @Getter
 public class CustomOAuth2User extends DefaultOAuth2User {
