@@ -77,8 +77,7 @@ public class Item extends BaseTimeEntity {
     public ItemResponseDto toResponse() {
         return ItemResponseDto.builder()
                 .id(id)
-                .userName(user.getNickname())
-                .name(name)
+//                .userName(user.getNickname())
                 .productionPlace(productionPlace)
                 .categoryId(category.getId())
                 .closedDate(closedDate)
@@ -92,6 +91,10 @@ public class Item extends BaseTimeEntity {
                 .minUnitWeight(minUnitWeight)
                 .description(description)
                 .build();
+    }
+
+    public void update(String description) {
+        this.description = description;
     }
 
 }

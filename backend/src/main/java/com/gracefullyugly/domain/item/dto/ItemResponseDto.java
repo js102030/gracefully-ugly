@@ -30,7 +30,7 @@ public class ItemResponseDto {
 
     public ItemResponseDto(Item item) {
         id = item.getId();
-        userName = item.getUser().getNickname();
+//        userName = item.getUser().getNickname();
         name = item.getName();
         productionPlace = item.getProductionPlace();
         categoryId = item.getCategory().getId();

@@ -21,19 +21,20 @@ public class ItemRequestDto {
     private LocalDateTime closedDate;
     private int minUnitWeight;
     private int price;
+    private int totalSalesUnit;
     private int minGroupBuyWeight;
     private String description;
     // todo 이미지 추가
 
-    public Item toEntity(User user ,Category category) {
+    public Item toEntity(Category category) {
         return Item.builder()
                 .name(name)
                 .productionPlace(productionPlace)
                 .category(category)
-                .user(user)
                 .closedDate(closedDate)
                 .minUnitWeight(minUnitWeight)
                 .price(price)
+                .totalSalesUnit(totalSalesUnit)
                 .minGroupBuyWeight(minGroupBuyWeight)
                 .description(description)
                 .build();

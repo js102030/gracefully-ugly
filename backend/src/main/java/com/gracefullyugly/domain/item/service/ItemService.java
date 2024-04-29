@@ -10,6 +10,8 @@ import com.gracefullyugly.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class ItemService {
     private final ItemRepository itemRepository;
@@ -21,13 +23,33 @@ public class ItemService {
         this.categoryRepository = categoryRepository;
     }
 
-    @Transactional
-    public Item save(ItemRequestDto request, Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("not found userId"));
+    public Item save(ItemRequestDto request) {
         Category category = categoryRepository.findById(request.getCategoryId())
-                .orElseThrow(() -> new IllegalArgumentException("not found categoryId"));
-        Item item = itemRepository.save(request.toEntity(user, category));
+                .orElseThrow(() -> new IllegalArgumentException("not found categoryId : " + request.getCategoryId()));
+        Item item = itemRepository.save(request.toEntity(category));
         return item;
     }
+
+    public List<Item> findAllItems() {
+        return itemRepository.findAll();
+    }
+
+    public Item findOneItem(Long itemId) {
+        return itemRepository.findById(itemId).orElseThrow(() -> new IllegalArgumentException("not found itemId : " + itemId));
+    }
+
+    @Transactional
+    public Item update(Long itemId, ItemRequestDto request) {
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new IllegalArgumentException("not found itemId : " + itemId));
+
+        item.update(request.getDescription());
+        return item;
+    }
+
+    public void deletedById(Long itemId) {
+        itemRepository.deleteById(itemId);
+    }
+
+
 }
