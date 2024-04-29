@@ -2,11 +2,9 @@ package com.gracefullyugly.domain.report.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Data;
 
-@NoArgsConstructor
-@Getter
+@Data
 @AllArgsConstructor
 @Builder
 public class ReportItemRequestDto {
