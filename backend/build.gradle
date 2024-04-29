@@ -56,6 +56,8 @@ dependencies {
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.17.0'
 
+    //jsonObject
+    implementation 'org.json:json:20240303'
 }
 
 tasks.named('test') {
