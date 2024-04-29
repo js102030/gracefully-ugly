@@ -35,7 +35,7 @@ public class UserDtoUtil {
                 .isDeleted(user.isDeleted())
                 .isVerified(user.isVerified())
                 .createdDate(user.getCreatedDate())
-                .updatedDate(user.getLastModifiedDate())
+                .lastModifiedDate(user.getLastModifiedDate())
                 .build();
     }
 
