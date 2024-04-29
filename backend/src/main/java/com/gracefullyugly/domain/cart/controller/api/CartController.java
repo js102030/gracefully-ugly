@@ -18,7 +18,7 @@ public class CartController {
     private final CartService cartService;
 
     /**
-     *      찜 목록을 조회하는 API입니다.
+     * 찜 목록을 조회하는 API입니다.
      */
     @GetMapping("/cart/{userId}")
     public ResponseEntity<List<CartListResponse>> getCartList(@PathVariable(name = "userId") Long userId) {
