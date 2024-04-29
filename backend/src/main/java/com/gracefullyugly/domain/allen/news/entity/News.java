@@ -24,8 +24,10 @@ public class News {
     @Column(name = "news_id")
     private Long id;
 
+    @Column(length = 1000)
     private String contents;
 
+    @Column(length = 1000)
     private String source;
 
     @CreatedDate
