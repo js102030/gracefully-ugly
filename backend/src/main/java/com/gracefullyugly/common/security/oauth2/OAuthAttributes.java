@@ -68,8 +68,8 @@ public class OAuthAttributes {
         return User.builder()
                 .signUpType(signUpType)
                 .socialId(oauth2UserInfo.getId())
-                .longId(UUID.randomUUID())
-                .role(Role.GUEST)
+                .loginId(String.valueOf(UUID.randomUUID()))
+                .role(Role.valueOf("GUEST"))
                 .build();
     }
 }
