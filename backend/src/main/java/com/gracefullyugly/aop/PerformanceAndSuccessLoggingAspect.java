@@ -45,7 +45,7 @@ public class PerformanceAndSuccessLoggingAspect {
 
     @After("withinTargetPackage()")
     public void logMethodEnd(JoinPoint joinPoint) {
-        log.info("\uD83C\uDFC3 종료 : {}", joinPoint.getSignature().toShortString());
+        log.info("\uD83D\uDD1A 종료 : {}", joinPoint.getSignature().toShortString());
     }
 
 }
