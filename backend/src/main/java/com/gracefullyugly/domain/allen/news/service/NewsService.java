@@ -38,10 +38,10 @@ public class NewsService {
         return new ApiResponse<>(news.size(), news);
     }
 
-    public ApiResponse<List<News>> getNewsList() {
-        List<News> allNews = newsRepository.findAll();
+    public ApiResponse<List<News>> getLastFiveNews() {
+        List<News> lastFiveNews = newsRepository.findTop5ByOrderByCreatedAtAsc();
 
-        return new ApiResponse<>(allNews.size(), allNews);
+        return new ApiResponse<>(lastFiveNews.size(), lastFiveNews);
     }
 
     private String fetchNewsResponse() {
@@ -96,4 +96,8 @@ public class NewsService {
         return "Source not found.";
     }
 
+    public News getNews(Long newsId) {
+        return newsRepository.findById(newsId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 뉴스가 존재하지 않습니다. id: " + newsId));
+    }
 }
