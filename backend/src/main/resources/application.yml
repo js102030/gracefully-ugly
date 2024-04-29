@@ -3,6 +3,10 @@ spring:
     name: gracefully-ugly
   profiles:
     active: dev
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    driver-class-name: org.h2.Driver
 
   jpa:
     open-in-view: true
@@ -14,11 +18,6 @@ spring:
     properties:
       hibernate.format_sql: true
       dialect: org.hibernate.dialect.MySQL8InnoDBDialect
-
-  datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    driver-class-name: org.h2.Driver
 
   h2:
     console:
