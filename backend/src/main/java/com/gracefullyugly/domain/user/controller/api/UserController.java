@@ -134,6 +134,9 @@ public class UserController {
 
     @GetMapping("/email-availability")
     public ResponseEntity<Boolean> checkEmailAvailability(@RequestParam String email) {
+        if (StringUtils.isBlank(email)) {
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok(userSearchService.existsByEmail(email));
     }
 
