@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gracefullyugly.domain.cart_item.repository.CartItemMapper">
+    <insert id="addCartItem" parameterType="Map" flushCache="true">
+        INSERT INTO cart_item(`cart_id`, `item_id`, `item_count`, `created_date`, `last_modified_date`)
+        VALUES (#{cartId}, #{itemId}, #{itemCount}, NOW(), NOW());
+    </insert>
+
+    <delete id="deleteCartItem" parameterType="Map" flushCache="true">
+        DELETE FROM cart_item
+        WHERE cart_id = #{cartId} AND item_id = #{itemId};
+    </delete>
+</mapper>

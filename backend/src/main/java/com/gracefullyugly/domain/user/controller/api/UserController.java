@@ -106,7 +106,7 @@ public class UserController {
                 .build();
     }
 
-    @GetMapping("/login-id-availability")
+    @GetMapping("/loginId-availability")
     public ResponseEntity<?> checkLoginIdAvailability(@RequestParam String loginId) {
         final int MIN_LOGIN_ID_LENGTH = 4;
         final int MAX_LOGIN_ID_LENGTH = 20;
