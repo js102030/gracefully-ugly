@@ -4,11 +4,6 @@ spring:
   profiles:
     active: dev
 
-  datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    driver-class-name: org.h2.Driver
-
   jpa:
     open-in-view: true
     properties:
@@ -25,6 +20,22 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     #        show-sql: true
+
+  datasource:
+    hikari:
+      # mysql DBMS로 명시적으로 설정
+      # H2 DBMS 사용 시 아래 내용들을 변경해주세요
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:8085/gracefully_ugly
+      username: root
+      password: root
+      # Connection Pool 설정 (HikariCP Fine-Tuning)
+      minimum-idle: 1                     # 최소 1개의 예비 Connection 설정
+      maximum-pool-size: 5                # 최대 5개의 예비 Connection 설정
+      pool-name: MySQLPool                # Connection Pool 이름 설정
+      connectionTimeout: 10000            # Connection Timeout 알림 시간 10초 설정
+      validationTimeout: 5000
+      idleTimeout: 600000
 
   h2:
     console:
