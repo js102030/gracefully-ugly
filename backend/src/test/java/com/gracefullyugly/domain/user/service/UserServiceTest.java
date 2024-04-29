@@ -3,27 +3,32 @@ package com.gracefullyugly.domain.user.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 import com.gracefullyugly.domain.user.dto.AdditionalRegRequest;
 import com.gracefullyugly.domain.user.dto.BasicRegRequest;
 import com.gracefullyugly.domain.user.dto.BasicRegResponse;
 import com.gracefullyugly.domain.user.dto.FinalRegResponse;
+import com.gracefullyugly.domain.user.entity.User;
 import com.gracefullyugly.domain.user.enumtype.Role;
+import com.gracefullyugly.domain.user.enumtype.SignUpType;
+import com.gracefullyugly.domain.user.repository.UserRepository;
 import jakarta.validation.ConstraintViolation;
-import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+@Transactional
 @SpringBootTest
+@Slf4j
 class UserServiceTest {
 
     public static final String TEST_LOGIN_ID = "testId";
@@ -39,36 +44,67 @@ class UserServiceTest {
     public static final String ADDRESS_VALID_MESSAGE = "주소 입력은 필수입니다.";
     public static final String PASSWORD_VALID_MESSAGE = "비밀번호 입력은 필수입니다.";
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    UserSearchService userSearchService;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
+
     private LocalValidatorFactoryBean validator;
 
     @BeforeEach
-    void setUp() {
+    void beforeEach() {
+        log.info("before each");
+
         validator = new LocalValidatorFactoryBean();
         validator.afterPropertiesSet();
+
+        User testUser = new User(
+                null,
+                SignUpType.GENERAL,
+                Role.BUYER,
+                TEST_LOGIN_ID,
+                passwordEncoder.encode(PASSWORD),
+                TEST_NICKNAME,
+                TEST_EMAIL,
+                TEST_ADDRESS,
+                false,
+                false,
+                false);
+
+        userRepository.save(testUser);
     }
 
-    @MockBean
-    UserService userService;
+    @AfterEach
+    void afterEach() {
+        log.info("after each");
+        userRepository.deleteAll();
+    }
+
 
     @Test
     @DisplayName("기본 회원가입 테스트")
     void createBasicAccountTest() {
         // given
-        BasicRegRequest request = new BasicRegRequest(TEST_LOGIN_ID, PASSWORD);
-        Mockito.when(userService.createBasicAccount(request)).thenReturn(new BasicRegResponse(1L, TEST_LOGIN_ID));
+        BasicRegRequest request = new BasicRegRequest(TEST_LOGIN_ID + 1, PASSWORD + 1);
 
         // when
         BasicRegResponse response = userService.createBasicAccount(request);
+        User findUser = userSearchService.findById(response.getUserId());
 
         // then
-        assertEquals(TEST_LOGIN_ID, response.getLoginId());
-        assertEquals(1L, response.getUserId());
-
-        verify(userService, times(1)).createBasicAccount(request);
+        assertEquals(TEST_LOGIN_ID + 1, response.getLoginId());
+        assertEquals(findUser.getId(), response.getUserId());
     }
 
     @Test
-    @DisplayName("회원가입 실패 테스트")
+    @DisplayName("(실패) 기본 회원가입 테스트")
     void createBasicAccountFailTest() {
         // given
         BasicRegRequest request = new BasicRegRequest("", "");
@@ -95,41 +131,32 @@ class UserServiceTest {
     @DisplayName("회원가입 완료 테스트")
     void completeRegistrationTest() {
         // given
+        BasicRegRequest request = new BasicRegRequest(TEST_LOGIN_ID + 1, PASSWORD + 1);
+        BasicRegResponse response = userService.createBasicAccount(request);
+
         AdditionalRegRequest additionalRegRequest = AdditionalRegRequest.builder()
                 .role(TEST_ROLE)
-                .nickname(TEST_NICKNAME)
-                .email(TEST_EMAIL)
+                .nickname(TEST_NICKNAME + 1)
+                .email(TEST_EMAIL + 1)
                 .address(TEST_ADDRESS)
                 .build();
 
-        Mockito.when(userService.completeRegistration(1L, additionalRegRequest)).thenReturn(
-                FinalRegResponse.builder()
-                        .userId(1L)
-                        .loginId(TEST_LOGIN_ID)
-                        .nickname(TEST_NICKNAME)
-                        .email(TEST_EMAIL)
-                        .address(TEST_ADDRESS)
-                        .role(TEST_ROLE)
-                        .createdDate(LocalDateTime.MIN)
-                        .build()
-        );
-
         // when
-        FinalRegResponse finalRegResponse = userService.completeRegistration(1L, additionalRegRequest);
+        FinalRegResponse finalRegResponse = userService.completeRegistration(response.getUserId(),
+                additionalRegRequest);
 
         // then
-        assertEquals(1L, finalRegResponse.getUserId());
-        assertEquals(TEST_LOGIN_ID, finalRegResponse.getLoginId());
-        assertEquals(TEST_NICKNAME, finalRegResponse.getNickname());
-        assertEquals(TEST_EMAIL, finalRegResponse.getEmail());
+        assertEquals(response.getUserId(), finalRegResponse.getUserId());
+        assertEquals(TEST_LOGIN_ID + 1, finalRegResponse.getLoginId());
+        assertEquals(TEST_NICKNAME + 1, finalRegResponse.getNickname());
+        assertEquals(TEST_EMAIL + 1, finalRegResponse.getEmail());
         assertEquals(TEST_ADDRESS, finalRegResponse.getAddress());
         assertEquals(TEST_ROLE, finalRegResponse.getRole());
-        assertEquals(LocalDateTime.MIN, finalRegResponse.getCreatedDate());
-        verify(userService, times(1)).completeRegistration(1L, additionalRegRequest);
     }
 
+
     @Test
-    @DisplayName("회원가입 완료 실패 테스트")
+    @DisplayName("(실패) 회원가입 완료 테스트")
     void completeRegistrationFailTest() {
         // given
         AdditionalRegRequest additionalRegRequest = AdditionalRegRequest.builder()
@@ -155,5 +182,65 @@ class UserServiceTest {
         assertTrue(messages.contains(EMAIL_VALID_MESSAGE));
         assertTrue(messages.contains(ADDRESS_VALID_MESSAGE));
     }
+
+    @Test
+    @DisplayName("닉네임 변경 테스트")
+    void updateNicknameTest() {
+        // given
+        User findUser = userSearchService.findByNickname(TEST_NICKNAME);
+        String newNickname = "newNickname";
+
+        // when
+        userService.updateNickname(findUser.getId(), newNickname);
+        User updatedUser = userSearchService.findById(findUser.getId());
+
+        // then
+        assertEquals(newNickname, updatedUser.getNickname());
+    }
+
+    @Test
+    @DisplayName("비밀번호 변경 테스트")
+    void updatePasswordTest() {
+        // given
+        User findUser = userSearchService.findByNickname(TEST_NICKNAME);
+        String newPassword = "newPassword";
+
+        // when
+        userService.updatePassword(findUser.getId(), newPassword);
+        User updatedUser = userSearchService.findById(findUser.getId());
+
+        // then
+        assertTrue(passwordEncoder.matches(newPassword, updatedUser.getPassword()));
+    }
+
+    @Test
+    @DisplayName("주소 변경 테스트")
+    void updateAddressTest() {
+        // given
+        User findUser = userSearchService.findByNickname(TEST_NICKNAME);
+        String newAddress = "newAddress";
+
+        // when
+        userService.updateAddress(findUser.getId(), newAddress);
+        User updatedUser = userSearchService.findById(findUser.getId());
+
+        // then
+        assertEquals(newAddress, updatedUser.getAddress());
+    }
+
+    @Test
+    @DisplayName("유저 삭제 테스트")
+    void deleteUserTest() {
+        // given
+        User findUser = userSearchService.findByNickname(TEST_NICKNAME);
+
+        // when
+        userService.delete(findUser.getId());
+        User deletedUser = userSearchService.findById(findUser.getId());
+
+        // then
+        assertTrue(deletedUser.isDeleted());
+    }
+
 
 }

@@ -141,7 +141,7 @@ class UserControllerTest {
                                 .isDeleted(false)
                                 .isVerified(false)
                                 .createdDate(LocalDateTime.now())
-                                .updatedDate(LocalDateTime.now())
+                                .lastModifiedDate(LocalDateTime.now())
                                 .build()
                 );
 
@@ -159,7 +159,7 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.deleted").value(false))
                 .andExpect(jsonPath("$.verified").value(false))
                 .andExpect(jsonPath("$.createdDate").exists())
-                .andExpect(jsonPath("$.updatedDate").exists())
+                .andExpect(jsonPath("$.lastModifiedDate").exists())
                 .andDo(print());
 
         verify(userSearchService).getUser(any(Long.class));
