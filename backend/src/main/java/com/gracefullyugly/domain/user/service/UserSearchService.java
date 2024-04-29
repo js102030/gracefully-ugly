@@ -38,4 +38,16 @@ public class UserSearchService {
 
         return UserDtoUtil.userToUserResponse(findUser);
     }
+
+    public boolean existsByLoginId(String loginId) {
+        return userRepository.existsByLoginId(loginId);
+    }
+
+    public boolean existsByNickName(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
 }
