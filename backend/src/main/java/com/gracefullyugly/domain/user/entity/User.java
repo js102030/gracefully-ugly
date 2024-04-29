@@ -14,10 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
@@ -26,6 +23,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @AllArgsConstructor
 @Getter
 @DynamicUpdate
+@Builder
 public class User extends BaseTimeEntity {
 
     @Id
@@ -51,6 +49,8 @@ public class User extends BaseTimeEntity {
     private String email;
 
     private String address;
+
+    private String socialId; //api 로그인시 kakaoserver 에서 받아오는데 필요함
 
     private String refreshToken; // 리프레시 토큰, security 때문에 추가
 
