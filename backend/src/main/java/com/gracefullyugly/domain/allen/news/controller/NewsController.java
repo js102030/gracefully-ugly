@@ -9,6 +9,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +29,15 @@ public class NewsController {
     }
 
     @GetMapping("/news")
-    public ResponseEntity<ApiResponse<List<News>>> getAllNews() {
-        return ResponseEntity.ok(newsService.getNewsList());
+    public ResponseEntity<ApiResponse<List<News>>> getLastFiveNews() {
+        return ResponseEntity
+                .ok(newsService.getLastFiveNews());
+    }
+
+    @GetMapping("/news/{newsId}")
+    public ResponseEntity<News> getNews(@PathVariable Long newsId) {
+        final News news = newsService.getNews(newsId);
+        return ResponseEntity
+                .ok(news);
     }
 }
