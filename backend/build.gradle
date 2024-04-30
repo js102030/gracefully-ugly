@@ -58,6 +58,12 @@ dependencies {
 
     //jsonObject
     implementation 'org.json:json:20240303'
+
+    //retry
+    implementation 'org.springframework.retry:spring-retry'
+
+    implementation 'org.springframework:spring-aspects'
+
 }
 
 tasks.named('test') {
