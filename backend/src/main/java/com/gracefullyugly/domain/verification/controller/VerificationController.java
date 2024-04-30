@@ -2,7 +2,6 @@ package com.gracefullyugly.domain.verification.controller;
 
 import com.gracefullyugly.domain.verification.dto.VerifyRequest;
 import com.gracefullyugly.domain.verification.service.VerificationService;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +35,6 @@ public class VerificationController {
     }
 
     @PatchMapping("/verification/{userId}")
-    @Operation(summary = "인증 코드 확인", description = "입력받은 인증 코드가 유효한지 확인하고, 유효하다면 이메일 인증을 활성화합니다")
     public ResponseEntity<Void> validateCodeAndActivateEmail(@PathVariable Long userId,
                                                              @RequestBody VerifyRequest verifyRequest) {
         verificationService.validateAndActivateEmailVerification(userId, verifyRequest);
