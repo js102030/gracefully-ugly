@@ -32,10 +32,10 @@ public class User extends BaseTimeEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private SignUpType signUpType;
+    private SignUpType signUpType; //KAKAO, GENERAL
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role; //BUYER, SELLER, ADMIN, GUEST
 
     @Column(length = 30, unique = true)
     private String loginId;

@@ -21,7 +21,7 @@ import java.io.IOException;
 
 /**
  * Jwt 인증 필터
- * "/login" 이외의 URI 요청이 왔을 때 처리하는 필터
+ * "api/security/general/login" 이외의 URI 요청이 왔을 때 처리하는 필터
  *
  * 기본적으로 사용자는 요청 헤더에 AccessToken만 담아서 요청
  * AccessToken 만료 시에만 RefreshToken을 요청 헤더에 AccessToken과 함께 요청
@@ -36,7 +36,7 @@ import java.io.IOException;
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
-    private static final String NO_CHECK_URL = "/api/security/general/login"; // "/login"으로 들어오는 요청은 Filter 작동 X
+    private static final String NO_CHECK_URL = "/api/security/general/login"; // "/api/security/general/login"으로 들어오는 요청은 Filter 작동 X
 
     private final JwtService jwtService;
     private final UserRepository userRepository;

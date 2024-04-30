@@ -66,7 +66,7 @@ public class JwtService {
 
     /**
      * RefreshToken 생성
-     * RefreshToken은 Claim에 email도 넣지 않으므로 withClaim() X
+     * RefreshToken은 Claim에 longId도 넣지 않으므로 withClaim() X
      */
     public String createRefreshToken() {
         Date now = new Date();
