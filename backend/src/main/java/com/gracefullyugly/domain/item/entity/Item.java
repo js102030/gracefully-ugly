@@ -1,12 +1,10 @@
 package com.gracefullyugly.domain.item.entity;
 
 import com.gracefullyugly.common.base.BaseTimeEntity;
+import com.gracefullyugly.domain.item.enumtype.Category;
 import com.gracefullyugly.domain.user.dto.UpdateAddressDto;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +22,8 @@ public class Item extends BaseTimeEntity {
 
     private Long userId;
 
-    private Long categoryId;
+    @Enumerated(EnumType.STRING)
+    private Category categoryId;
 
     private String name;
 
@@ -47,7 +46,7 @@ public class Item extends BaseTimeEntity {
     // TODO 이미지 추가
 
     @Builder
-    public Item(Long id, Long userId, Long categoryId, String name, String description, int price, int totalSalesUnit,
+    public Item(Long id, Long userId, Category categoryId, String name, String description, int price, int totalSalesUnit,
                 int minUnitWeight, int minGroupBuyWeight, String productionPlace, LocalDateTime closedDate) {
         this.id = id;
         this.userId = userId;
@@ -70,5 +69,6 @@ public class Item extends BaseTimeEntity {
     public void delete() {
         this.isDeleted = true;
     }
+
 
 }

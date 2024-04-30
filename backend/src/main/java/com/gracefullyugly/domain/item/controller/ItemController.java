@@ -9,6 +9,8 @@ import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.item.service.ItemService;
 import com.gracefullyugly.domain.user.dto.UpdateAddressDto;
 import java.util.List;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,7 +73,7 @@ public class ItemController {
     // 판매글 수정
     @PutMapping("/items/{itemId}")
     public ResponseEntity<UpdateAddressDto> updateDescription(@PathVariable Long itemId,
-                                                              @RequestBody UpdateDescriptionDto updateDescriptionDto) {
+                                                              @Valid @RequestBody UpdateDescriptionDto updateDescriptionDto) {
         final UpdateAddressDto updateAddress = itemService.updateDescription(itemId, updateDescriptionDto);
 
         return ResponseEntity
