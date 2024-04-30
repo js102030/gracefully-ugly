@@ -65,11 +65,13 @@ public class OAuthAttributes {
      * role은 GUEST로 설정
      */
     public User toEntity(SignUpType signUpType, OAuth2UserInfo oauth2UserInfo) {
+        //너무 길어서 8자리까지만 랜덤 id 생성
+        String randomUUIDString = UUID.randomUUID().toString().substring(0, 8);
         return User.builder()
                 .signUpType(signUpType)
                 .socialId(oauth2UserInfo.getId())
-                .loginId(String.valueOf(UUID.randomUUID()))
-                .role(Role.valueOf("GUEST"))
+                .loginId(randomUUIDString)
+                .role(Role.GUEST)
                 .build();
     }
 }
