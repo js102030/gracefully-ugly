@@ -1,20 +1,23 @@
 package com.gracefullyugly.domain.user.entity;
 
 import com.gracefullyugly.common.base.BaseTimeEntity;
-import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.user.dto.AdditionalRegRequest;
 import com.gracefullyugly.domain.user.dto.UpdateAddressDto;
 import com.gracefullyugly.domain.user.dto.UpdateNicknameDto;
 import com.gracefullyugly.domain.user.enumtype.Role;
 import com.gracefullyugly.domain.user.enumtype.SignUpType;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -45,9 +48,6 @@ public class User extends BaseTimeEntity {
 
     @Column(unique = true)
     private String email;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Item> ItemList = new ArrayList<Item>();
 
     private String address;
 

@@ -1,9 +1,7 @@
 package com.gracefullyugly.domain.user.dto;
 
 import com.gracefullyugly.domain.user.entity.User;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public class UserDtoUtil {
 
     public static BasicRegResponse userToJoinResponse(User user) {

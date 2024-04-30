@@ -98,7 +98,7 @@ public class UserController {
     }
 
     @DeleteMapping("/users/{userId}")
-    public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
         userService.delete(userId);
 
         return ResponseEntity
@@ -107,7 +107,7 @@ public class UserController {
     }
 
     @GetMapping("/loginId-availability")
-    public ResponseEntity<?> checkLoginIdAvailability(@RequestParam String loginId) {
+    public ResponseEntity<Boolean> checkLoginIdAvailability(@RequestParam String loginId) {
         final int MIN_LOGIN_ID_LENGTH = 4;
         final int MAX_LOGIN_ID_LENGTH = 20;
 
@@ -120,8 +120,7 @@ public class UserController {
             return ResponseEntity.badRequest().build();
         }
 
-        boolean exists = userSearchService.existsByLoginId(loginId);
-        return ResponseEntity.ok(exists);
+        return ResponseEntity.ok(userSearchService.existsByLoginId(loginId));
     }
 
     @GetMapping("/nickname-availability")
@@ -129,6 +128,7 @@ public class UserController {
         if (StringUtils.isBlank(nickname)) {
             return ResponseEntity.badRequest().build();
         }
+
         return ResponseEntity.ok(userSearchService.existsByNickName(nickname));
     }
 
@@ -137,6 +137,7 @@ public class UserController {
         if (StringUtils.isBlank(email)) {
             return ResponseEntity.badRequest().build();
         }
+        
         return ResponseEntity.ok(userSearchService.existsByEmail(email));
     }
 
