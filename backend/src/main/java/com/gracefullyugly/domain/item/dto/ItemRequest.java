@@ -2,6 +2,8 @@ package com.gracefullyugly.domain.item.dto;
 
 import com.gracefullyugly.domain.item.entity.Item;
 import java.time.LocalDateTime;
+
+import com.gracefullyugly.domain.item.enumtype.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +17,7 @@ public class ItemRequest {
 
     private String name;
     private String productionPlace;
-    private Long categoryId;
+    private Category categoryId;
     private LocalDateTime closedDate;
     private int minUnitWeight;
     private int price;

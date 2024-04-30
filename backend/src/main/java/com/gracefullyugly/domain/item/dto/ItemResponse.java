@@ -1,6 +1,8 @@
 package com.gracefullyugly.domain.item.dto;
 
 import java.time.LocalDateTime;
+
+import com.gracefullyugly.domain.item.enumtype.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +17,7 @@ public class ItemResponse {
     private Long id;
     private String name;
     private String productionPlace;
-    private Long categoryId;
+    private Category categoryId;
     private LocalDateTime closedDate;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
