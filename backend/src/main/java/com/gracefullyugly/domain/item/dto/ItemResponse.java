@@ -30,5 +30,17 @@ public class ItemResponse {
     // TODO 이미지 추가
 
     public ItemResponse(Item item) {
+        this.id = item.getId();
+        this.name = item.getName();
+        this.productionPlace = item.getProductionPlace();
+        this.categoryId = item.getCategoryId();
+        this.closedDate = item.getClosedDate();
+        this.createdDate = item.getCreatedDate();
+        this.lastModifiedDate = item.getLastModifiedDate();
+        this.minUnitWeight = item.getMinUnitWeight();
+        this.price = item.getPrice();
+        this.totalSalesUnit = item.getTotalSalesUnit();
+        this.minGroupBuyWeight = item.getMinGroupBuyWeight();
+        this.description = item.getDescription();
     }
 }
