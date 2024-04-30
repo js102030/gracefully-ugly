@@ -37,7 +37,7 @@ spring:
             client-id: 48f99478e44507e05c99dfeee8e1a42a
             client-secret: naeJwIif4LSV4ORAiIlkTng6y01fBwCW
             redirect-uri: http://localhost:8080/login/oauth2/code/kakao
-            client-authentication-method: POST
+            client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
             client-name: Kakao
 
@@ -60,7 +60,7 @@ server:
       timeout: 30m
 
 jwt:
-  secretKey: ThisIsARandomlyGeneratedSecretKeyForHS512AlgorithmAndItIsOver64BytesLong
+  secretKey: ThisIsARandomlyGeneratedSecretKeyForHS512AlgorithmAndItIsOver64BytesLong1234
 
   access:
     expiration: 3600000 # 1시간(60분) (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h))
