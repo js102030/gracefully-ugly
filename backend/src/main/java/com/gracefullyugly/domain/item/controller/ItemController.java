@@ -8,8 +8,13 @@ import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.item.service.ItemService;
 import com.gracefullyugly.domain.user.dto.UpdateAddressDto;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -89,5 +94,22 @@ public class ItemController {
                 noContent()
                 .build();
     }
+
+    // 72시간 이내 마감임박 상품 목록 조회
+    @GetMapping("/items/impending")
+    public ResponseEntity<List<?>> showImpendingItems() {
+        List<ItemResponse> itemResponseList = itemSearchService.getImpendingItems();
+        return ResponseEntity
+                .ok(itemResponseList);
+
+
+
+    }
+//    // 인기 상품 목록 조회
+//    @GetMapping("/items/popularity")
+//
+//
+//    // 상품 종류별 검색 목록 조회
+//    @GetMapping("/items/{categoryId}")
 
 }

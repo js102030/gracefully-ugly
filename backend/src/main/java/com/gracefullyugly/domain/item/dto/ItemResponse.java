@@ -2,6 +2,7 @@ package com.gracefullyugly.domain.item.dto;
 
 import java.time.LocalDateTime;
 
+import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.enumtype.Category;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,4 +29,6 @@ public class ItemResponse {
     private String description;
     // TODO 이미지 추가
 
+    public ItemResponse(Item item) {
+    }
 }
