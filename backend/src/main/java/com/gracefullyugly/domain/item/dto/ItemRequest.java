@@ -1,20 +1,18 @@
 package com.gracefullyugly.domain.item.dto;
 
-import com.gracefullyugly.domain.category.entity.Category;
 import com.gracefullyugly.domain.item.entity.Item;
-import com.gracefullyugly.domain.user.entity.User;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
+@Data
 @NoArgsConstructor
-@Getter
 @AllArgsConstructor
 @Builder
-public class ItemRequestDto {
+public class ItemRequest {
+
     private String name;
     private String productionPlace;
     private Long categoryId;
@@ -24,13 +22,14 @@ public class ItemRequestDto {
     private int totalSalesUnit;
     private int minGroupBuyWeight;
     private String description;
-    // todo 이미지 추가
 
-    public Item toEntity(Category category) {
+    public Item toEntity(Long userId) {
+
         return Item.builder()
+                .userId(userId)
+                .categoryId(categoryId)
                 .name(name)
                 .productionPlace(productionPlace)
-                .category(category)
                 .closedDate(closedDate)
                 .minUnitWeight(minUnitWeight)
                 .price(price)
@@ -38,5 +37,6 @@ public class ItemRequestDto {
                 .minGroupBuyWeight(minGroupBuyWeight)
                 .description(description)
                 .build();
+
     }
 }

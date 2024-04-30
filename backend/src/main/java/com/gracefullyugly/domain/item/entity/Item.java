@@ -1,24 +1,20 @@
 package com.gracefullyugly.domain.item.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gracefullyugly.common.base.BaseTimeEntity;
-import com.gracefullyugly.domain.category.entity.Category;
-import com.gracefullyugly.domain.item.dto.ItemRequestDto;
-import com.gracefullyugly.domain.item.dto.ItemResponseDto;
-import com.gracefullyugly.domain.user.entity.User;
-import jakarta.persistence.*;
+import com.gracefullyugly.domain.user.dto.UpdateAddressDto;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.LastModifiedBy;
-
-import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
 @Getter
-
 public class Item extends BaseTimeEntity {
 
     @Id
@@ -26,13 +22,9 @@ public class Item extends BaseTimeEntity {
     @Column(name = "item_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private Long userId;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
+    private Long categoryId;
 
     private String name;
 
@@ -48,20 +40,18 @@ public class Item extends BaseTimeEntity {
 
     private String productionPlace;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDateTime closedDate;
 
     private boolean isDeleted;
 
-    private boolean isClosed;
-    // todo 이미지 추가
-
+    // TODO 이미지 추가
 
     @Builder
-    public Item(Long id, User user, Category category, String name, String description, int price, int totalSalesUnit, int minUnitWeight, int minGroupBuyWeight, String productionPlace, LocalDateTime closedDate, boolean isDeleted, boolean isClosed) {
+    public Item(Long id, Long userId, Long categoryId, String name, String description, int price, int totalSalesUnit,
+                int minUnitWeight, int minGroupBuyWeight, String productionPlace, LocalDateTime closedDate) {
         this.id = id;
-        this.user = user;
-        this.category = category;
+        this.userId = userId;
+        this.categoryId = categoryId;
         this.name = name;
         this.description = description;
         this.price = price;
@@ -70,31 +60,15 @@ public class Item extends BaseTimeEntity {
         this.minGroupBuyWeight = minGroupBuyWeight;
         this.productionPlace = productionPlace;
         this.closedDate = closedDate;
-        this.isDeleted = false;
-        this.isClosed = false;
     }
 
-    public ItemResponseDto toResponse() {
-        return ItemResponseDto.builder()
-                .id(id)
-//                .userName(user.getNickname())
-                .productionPlace(productionPlace)
-                .categoryId(category.getId())
-                .closedDate(closedDate)
-                .createdDate(getCreatedDate())
-                .lastModifiedDate(getLastModifiedDate())
-                .name(name)
-                .description(description)
-                .price(price)
-                .totalSalesUnit(totalSalesUnit)
-                .minGroupBuyWeight(minGroupBuyWeight)
-                .minUnitWeight(minUnitWeight)
-                .description(description)
-                .build();
-    }
-
-    public void update(String description) {
+    public UpdateAddressDto updateDescription(String description) {
         this.description = description;
+        return new UpdateAddressDto(description);
+    }
+
+    public void delete() {
+        this.isDeleted = true;
     }
 
 }

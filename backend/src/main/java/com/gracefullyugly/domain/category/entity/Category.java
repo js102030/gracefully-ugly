@@ -1,13 +1,13 @@
 package com.gracefullyugly.domain.category.entity;
 
 import com.gracefullyugly.common.base.BaseTimeEntity;
-import com.gracefullyugly.domain.item.entity.Item;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -18,9 +18,6 @@ public class Category extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "category_id")
     private Long id;
-
-    @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
-    private List<Item> ItemList = new ArrayList<Item>();
 
     private String name;
 
