@@ -3,6 +3,7 @@ package com.gracefullyugly.domain.cartitem.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.gracefullyugly.domain.cart.dto.CartListResponse;
+import com.gracefullyugly.domain.cart.repository.CartRepository;
 import com.gracefullyugly.domain.cart.service.CartService;
 import com.gracefullyugly.domain.cart_item.dto.AddCartItemRequest;
 import com.gracefullyugly.domain.cart_item.dto.CartItemResponse;
@@ -68,6 +69,9 @@ public class CartItemServiceTest {
     ItemService itemService;
 
     @Autowired
+    CartRepository cartRepository;
+
+    @Autowired
     CartService cartService;
 
     @Autowired
@@ -122,6 +126,7 @@ public class CartItemServiceTest {
     @AfterEach
     void deleteData() {
         itemRepository.deleteAll();
+        cartRepository.deleteAll();
         userRepository.deleteAll();
     }
 
@@ -130,8 +135,8 @@ public class CartItemServiceTest {
     void addCartItemTest() {
         // GIVEN
         Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
-        Long testItemId1 = 1L;
-        Long testItemId2 = 2L;
+        Long testItemId1 = itemRepository.findAll().get(0).getId();
+        Long testItemId2 = itemRepository.findAll().get(1).getId();
         AddCartItemRequest testItemCount1 = AddCartItemRequest.builder().itemCount(2L).build();
         AddCartItemRequest testItemCount2 = AddCartItemRequest.builder().itemCount(5L).build();
 
@@ -164,7 +169,7 @@ public class CartItemServiceTest {
     void addCartItemFailTest() {
         // GIVEN
         Long testUserId = 100L; // 없는 회원
-        Long testItemId = 1L;
+        Long testItemId = itemRepository.findAll().get(0).getId();
         AddCartItemRequest testItemCount = AddCartItemRequest.builder().itemCount(2L).build();
 
         // WHEN
@@ -179,7 +184,7 @@ public class CartItemServiceTest {
     void deleteCartItemTest() {
         // GIVEN
         Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
-        Long testItemId = 1L;
+        Long testItemId = itemRepository.findAll().get(0).getId();
         AddCartItemRequest testItemCount = AddCartItemRequest.builder().itemCount(2L).build();
         cartItemService.addCartItem(testUserId, testItemId, testItemCount);
 
@@ -195,11 +200,11 @@ public class CartItemServiceTest {
     void deleteCartItemFailTest() {
         // GIVEN
         Long testUserId1 = userRepository.findByNickname(TEST_NICKNAME).get().getId();
-        cartItemService.addCartItem(testUserId1, 1L, new AddCartItemRequest(3L));
+        cartRepository.createNewCart(testUserId1);
         Long testItemId1 = 100L; // 찜 목록에 없는 상품
 
         Long testUserId2 = 100L; // 없는 회원
-        Long testItemId2 = 1L;
+        Long testItemId2 = itemRepository.findAll().get(0).getId();
 
         // WHEN
         CartItemResponse result1 = cartItemService.deleteCartItem(testUserId1, testItemId1);
