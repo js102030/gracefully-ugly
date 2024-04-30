@@ -87,4 +87,9 @@ public class User extends BaseTimeEntity {
     public void delete() {
         this.isDeleted = true;
     }
+
+    public void updateVerify(String email) {
+        this.email = email;
+        this.isVerified = true;
+    }
 }

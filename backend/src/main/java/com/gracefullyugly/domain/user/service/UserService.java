@@ -67,4 +67,10 @@ public class UserService {
                 passwordEncoder.encode(request.getPassword())
         );
     }
+
+    public void updateVerify(Long userId, String email) {
+        User findUser = userSearchService.findById(userId);
+
+        findUser.updateVerify(email);
+    }
 }
