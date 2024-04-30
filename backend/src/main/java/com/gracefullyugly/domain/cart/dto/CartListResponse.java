@@ -1,16 +1,14 @@
 package com.gracefullyugly.domain.cart.dto;
 
-import com.gracefullyugly.domain.item.entity.Item;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class CartListResponse {
-    private Item cartListItem;
-    private Long itemCount;
+import com.gracefullyugly.domain.item.enumtype.Category;
+
+public interface CartListResponse {
+
+    Long getCartItemId();
+    Long getItemCount();
+    Long getItemId();
+    String getName();
+    int getPrice();
+    Category getCategoryId();
 }
