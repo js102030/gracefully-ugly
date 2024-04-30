@@ -1,6 +1,8 @@
 package com.gracefullyugly.domain.cart.dto;
 
 
+import com.gracefullyugly.domain.item.enumtype.Category;
+
 public interface CartListResponse {
 
     Long getCartItemId();
@@ -8,5 +10,5 @@ public interface CartListResponse {
     Long getItemId();
     String getName();
     int getPrice();
-    Long getCategoryId();
+    Category getCategoryId();
 }

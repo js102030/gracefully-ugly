@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.gracefullyugly.domain.cart_item.dto.AddCartItemRequest;
 import com.gracefullyugly.domain.cart_item.service.CartItemService;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
+import com.gracefullyugly.domain.item.enumtype.Category;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
 import com.gracefullyugly.domain.item.service.ItemService;
 import com.gracefullyugly.domain.user.entity.User;
@@ -14,7 +15,6 @@ import com.gracefullyugly.domain.user.enumtype.Role;
 import com.gracefullyugly.domain.user.enumtype.SignUpType;
 import com.gracefullyugly.domain.user.repository.UserRepository;
 import java.time.LocalDateTime;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Slf4j
 public class CartControllerTest {
 
     // 테스트용 유저 데이터 Input
@@ -40,7 +39,7 @@ public class CartControllerTest {
     // 테스트용 상품 데이터 Input
     public final static String NAME = "테스트용 이름";
     public final static String PRODUCTION_PLACE = "테스트용 생산지";
-    public final static Long CATEGORY_ID = 1L;
+    public final static Category CATEGORY_ID = Category.VEGETABLE;
     public final static LocalDateTime CLOSED_DATE = LocalDateTime.now();
     public final static int MIN_UNIT_WEIGHT = 1000;
     public final static int PRICE = 10000;
@@ -132,11 +131,11 @@ public class CartControllerTest {
             .andExpect(jsonPath("$[0].itemCount").value(2L))
             .andExpect(jsonPath("$[0].name").value(NAME))
             .andExpect(jsonPath("$[0].price").value(PRICE))
-            .andExpect(jsonPath("$[0].categoryId").value(CATEGORY_ID))
+            .andExpect(jsonPath("$[0].categoryId").value(CATEGORY_ID.toString()))
             .andExpect(jsonPath("$[1].itemCount").value(5L))
             .andExpect(jsonPath("$[1].name").value(NAME + 2))
             .andExpect(jsonPath("$[1].price").value(PRICE + 10000))
-            .andExpect(jsonPath("$[1].categoryId").value(CATEGORY_ID));
+            .andExpect(jsonPath("$[1].categoryId").value(CATEGORY_ID.toString()));
 
     }
 }

@@ -9,6 +9,7 @@ import com.gracefullyugly.domain.cart_item.dto.AddCartItemRequest;
 import com.gracefullyugly.domain.cart_item.dto.CartItemResponse;
 import com.gracefullyugly.domain.cart_item.service.CartItemService;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
+import com.gracefullyugly.domain.item.enumtype.Category;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
 import com.gracefullyugly.domain.item.service.ItemService;
 import com.gracefullyugly.domain.user.entity.User;
@@ -41,7 +42,7 @@ public class CartItemServiceTest {
     // 테스트용 상품 데이터 Input
     public final static String NAME = "테스트용 이름";
     public final static String PRODUCTION_PLACE = "테스트용 생산지";
-    public final static Long CATEGORY_ID = 1L;
+    public final static Category CATEGORY_ID = Category.VEGETABLE;
     public final static LocalDateTime CLOSED_DATE = LocalDateTime.now();
     public final static int MIN_UNIT_WEIGHT = 1000;
     public final static int PRICE = 10000;
@@ -155,6 +156,7 @@ public class CartItemServiceTest {
         assertThat(cartListResponse1.getItemCount()).isEqualTo(2L);
         assertThat(cartListResponse1.getName()).isEqualTo(NAME);
         assertThat(cartListResponse1.getPrice()).isEqualTo(PRICE);
+
         assertThat(cartListResponse1.getCategoryId()).isEqualTo(CATEGORY_ID);
 
         CartListResponse cartListResponse2 = cartList.get(1);
