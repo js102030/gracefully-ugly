@@ -10,13 +10,17 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 
-    @Query(value = "INSERT INTO cart_item(`cart_id`, `item_id`, `item_count`, `created_date`, `last_modified_date`)"
-        + " VALUES (:cartId, :itemId, :itemCount, NOW(), NOW())", nativeQuery = true)
+    @Query(value =
+        "INSERT INTO cart_item(`cart_id`, `item_id`, `item_count`, `created_date`, `last_modified_date`) "
+      + "VALUES (:cartId, :itemId, :itemCount, NOW(), NOW())",
+        nativeQuery = true)
     @Modifying
     Integer addCartItem(@Param("cartId") Long cartId, @Param("itemId") Long itemId, @Param("itemCount") Long itemCount);
 
-    @Query(value = "DELETE FROM cart_item"
-        + " WHERE cart_id = :cartId AND item_id = :itemId", nativeQuery = true)
+    @Query(value =
+        "DELETE FROM cart_item "
+      + "WHERE cart_id = :cartId AND item_id = :itemId",
+        nativeQuery = true)
     @Modifying
     Integer deleteCartItem(@Param("cartId") Long cartId, @Param("itemId") Long itemId);
 }
