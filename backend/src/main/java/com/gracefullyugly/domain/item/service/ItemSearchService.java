@@ -4,7 +4,12 @@ import com.gracefullyugly.domain.item.dto.ItemDtoUtil;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
 import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,4 +36,18 @@ public class ItemSearchService {
     public List<Item> findAllItems() {
         return itemRepository.findAll();
     }
+
+    // 72시간 이내 마감임박 상품 목록 조회
+    public List<ItemResponse> getImpendingItems() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime endTime = now.plusHours(72);
+
+        List<Item> impendingItems = itemRepository.findRandomImpendingItems(endTime);
+
+        List<ItemResponse> itemResponseList = impendingItems.stream()
+                .map(ItemResponse::new)
+                .collect(Collectors.toList());
+        return itemResponseList;
+    }
+
 }
