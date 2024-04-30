@@ -114,8 +114,10 @@ public class CartControllerTest {
         itemService.save(1L, testData1);
         itemService.save(1L, testData2);
 
-        cartItemService.addCartItem(userRepository.findByNickname(TEST_NICKNAME).get().getId(), itemRepository.findAll().get(0).getId(), AddCartItemRequest.builder().itemCount(2L).build());
-        cartItemService.addCartItem(userRepository.findByNickname(TEST_NICKNAME).get().getId(), itemRepository.findAll().get(1).getId(), AddCartItemRequest.builder().itemCount(5L).build());
+        cartItemService.addCartItem(userRepository.findByNickname(TEST_NICKNAME).get().getId(),
+            itemRepository.findAll().get(0).getId(), AddCartItemRequest.builder().itemCount(2L).build());
+        cartItemService.addCartItem(userRepository.findByNickname(TEST_NICKNAME).get().getId(),
+            itemRepository.findAll().get(1).getId(), AddCartItemRequest.builder().itemCount(5L).build());
     }
 
     @Test
