@@ -5,11 +5,11 @@ import com.gracefullyugly.domain.cart.repository.CartRepository;
 import com.gracefullyugly.domain.cart_item.dto.AddCartItemRequest;
 import com.gracefullyugly.domain.cart_item.dto.CartItemResponse;
 import com.gracefullyugly.domain.cart_item.repository.CartItemRepository;
-import jakarta.transaction.Transactional;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,12 +21,6 @@ public class CartItemService {
     private final CartItemRepository cartItemRepository;
 
     public CartItemResponse addCartItem(Long userId, Long itemId, AddCartItemRequest request) {
-        if (request.getItemCount() == null || request.getItemCount() <= 0) {
-            return CartItemResponse.builder()
-                .message("수량을 선택해주세요.")
-                .build();
-        }
-
         Long itemCount = request.getItemCount();
 
         if (!createCart(userId)) {
@@ -53,7 +47,7 @@ public class CartItemService {
                 .build();
         }
 
-        String message = cartItemRepository.deleteCartItem(userCart.get().getId(), itemId) >= 1 ? "해당 상품이 찜 목록에서 삭제되었습니다." : "삭제 중 문제가 발생했습니다.";
+        String message = cartItemRepository.deleteCartItem(userCart.get().getId(), itemId) >= 1 ? "해당 상품이 찜 목록에서 삭제되었습니다." : "해당 상품이 찜 목록에 존재하지 않습니다.";
 
         return CartItemResponse.builder()
             .message(message)

@@ -3,6 +3,7 @@ package com.gracefullyugly.domain.cart_item.controller.api;
 import com.gracefullyugly.domain.cart_item.dto.AddCartItemRequest;
 import com.gracefullyugly.domain.cart_item.dto.CartItemResponse;
 import com.gracefullyugly.domain.cart_item.service.CartItemService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +21,7 @@ public class CartItemController {
     private final CartItemService cartItemService;
 
     @PostMapping("/cart/{userId}/{itemId}")
-    public ResponseEntity<CartItemResponse> addCartItem(@PathVariable(name = "userId") Long userId, @PathVariable(name = "itemId") Long itemId, @RequestBody AddCartItemRequest request) {
+    public ResponseEntity<CartItemResponse> addCartItem(@PathVariable(name = "userId") Long userId, @PathVariable(name = "itemId") Long itemId, @Valid @RequestBody AddCartItemRequest request) {
         return ResponseEntity.ok(cartItemService.addCartItem(userId, itemId, request));
     }
 

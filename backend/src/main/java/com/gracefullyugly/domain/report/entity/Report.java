@@ -29,4 +29,28 @@ public class Report extends BaseTimeEntity {
 
     private boolean isAccepted;
 
+    private boolean isDeleted;
+
+    private Report(Long userId, Long itemId, Long reviewId, String comments) {
+        this.userId = userId;
+        this.itemId = itemId;
+        this.reviewId = reviewId;
+        this.comments = comments;
+    }
+
+    public static Report forItem(Long userId, Long itemId, String comments) {
+        return new Report(userId, itemId, null, comments);
+    }
+
+    public static Report forReview(Long userId, Long reviewId, String comments) {
+        return new Report(userId, null, reviewId, comments);
+    }
+
+    public void accept() {
+        this.isAccepted = true;
+    }
+
+    public void delete() {
+        this.isDeleted = true;
+    }
 }
