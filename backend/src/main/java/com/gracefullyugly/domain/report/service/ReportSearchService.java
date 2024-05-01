@@ -32,6 +32,10 @@ public class ReportSearchService {
     public ApiResponse<List<ReportResponse>> getItemReports() {
         List<Report> findReports = reportRepository.findByReviewIdIsNull();
 
+        if (findReports.isEmpty()) {
+            throw new IllegalArgumentException("신고된 상품이 없습니다.");
+        }
+
         List<ReportResponse> responses = findReports
                 .stream()
                 .map(ReportDtoUtil::reportToReportResponse)
@@ -43,6 +47,10 @@ public class ReportSearchService {
 
     public ApiResponse<List<ReportResponse>> getReviewReports() {
         List<Report> findReports = reportRepository.findByItemIdIsNull();
+
+        if (findReports.isEmpty()) {
+            throw new IllegalArgumentException("신고된 리뷰가 없습니다.");
+        }
 
         List<ReportResponse> responses = findReports
                 .stream()
