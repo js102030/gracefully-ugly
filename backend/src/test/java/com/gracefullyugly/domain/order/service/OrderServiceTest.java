@@ -1,22 +1,30 @@
 package com.gracefullyugly.domain.order.service;
 
-import static com.gracefullyugly.testutil.SetupDataUtils.CREATE_ORDER_SUCCESS;
+import static com.gracefullyugly.testutil.SetupDataUtils.CREATE_ORDER_NOT_FOUND_USER;
+import static com.gracefullyugly.testutil.SetupDataUtils.CREATE_ORDER_NO_ITEM;
+import static com.gracefullyugly.testutil.SetupDataUtils.ITEM_NAME;
+import static com.gracefullyugly.testutil.SetupDataUtils.QUANTITY;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_ADDRESS;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_PHONE_NUMBER;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.gracefullyugly.common.exception.custom.NotFoundException;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
-import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
 import com.gracefullyugly.domain.item.service.ItemService;
 import com.gracefullyugly.domain.order.dto.CreateOrderRequest;
+import com.gracefullyugly.domain.order.dto.OrderInfoResponse;
 import com.gracefullyugly.domain.order.dto.OrderItemDto;
 import com.gracefullyugly.domain.order.dto.OrderResponse;
+import com.gracefullyugly.domain.order.repository.OrderRepository;
+import com.gracefullyugly.domain.orderitem.repository.OrderItemRepository;
 import com.gracefullyugly.domain.user.repository.UserRepository;
 import com.gracefullyugly.testutil.SetupDataUtils;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,17 +52,30 @@ public class OrderServiceTest {
     @Autowired
     OrderService orderService;
 
-    @BeforeEach
-    void setupUserData() {
-        userRepository.save(SetupDataUtils.makeTestUser(passwordEncoder));
-    }
+    @Autowired
+    OrderRepository orderRepository;
+
+    @Autowired
+    OrderItemRepository orderItemRepository;
 
     @BeforeEach
-    void setupItemData() {
+    void setupTestData() {
+        // 회원 정보 세팅
+        userRepository.save(SetupDataUtils.makeTestUser(passwordEncoder));
+
+        // 상품 정보 세팅
         List<ItemRequest> testItemData = SetupDataUtils.makeTestItemRequest();
 
-        itemService.save(1L, testItemData.get(0));
-        itemService.save(1L, testItemData.get(1));
+        itemService.save(userRepository.findByNickname(TEST_NICKNAME).get().getId(), testItemData.get(0));
+        itemService.save(userRepository.findByNickname(TEST_NICKNAME).get().getId(), testItemData.get(1));
+    }
+
+    @AfterEach
+    void deleteTestData() {
+        userRepository.deleteAll();
+        itemRepository.deleteAll();
+        orderRepository.deleteAll();
+        orderItemRepository.deleteAll();
     }
 
     @Test
@@ -62,21 +83,62 @@ public class OrderServiceTest {
     void createOrderTest() {
         // GIVEN
         Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
-        List<Item> testItemList = itemRepository.findAll();
-        List<OrderItemDto> testOrderItemDtoList = new ArrayList<>();
-        testOrderItemDtoList.add(new OrderItemDto(testItemList.get(0).getId(), 2L));
-        testOrderItemDtoList.add(new OrderItemDto(testItemList.get(1).getId(), 5L));
-
-        CreateOrderRequest testRequest = CreateOrderRequest.builder()
-            .address(TEST_ADDRESS)
-            .phoneNumber(TEST_PHONE_NUMBER)
-            .itemIdList(testOrderItemDtoList)
-            .build();
+        CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemRepository.findAll());
 
         // WHEN
         OrderResponse result = orderService.createOrder(testUserId, testRequest);
 
         // THEN
-        assertThat(result.getMessage()).isEqualTo(CREATE_ORDER_SUCCESS);
+        assertThat(result.getUserId()).isEqualTo(testUserId);
+        assertThat(result.getAddress()).isEqualTo(TEST_ADDRESS);
+        assertThat(result.getPhoneNumber()).isEqualTo(TEST_PHONE_NUMBER);
+    }
+
+    @Test
+    @DisplayName("주문 생성 실패 테스트")
+    void createOrderFailTest() {
+        // GIVEN
+        // 없는 회원 정보
+        Long testFailUserId = 100L;
+        CreateOrderRequest testNoUserRequest = SetupDataUtils.makeCreateOrderRequest(itemRepository.findAll());
+
+        // 존재하지 않는 상품 정보만 있음
+        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+        List<OrderItemDto> testFailOrderItemDtoList = new ArrayList<>();
+        testFailOrderItemDtoList.add(new OrderItemDto(121L, 2L));
+        testFailOrderItemDtoList.add(new OrderItemDto(111L, 5L));
+
+        CreateOrderRequest testNoItemRequest = CreateOrderRequest.builder()
+            .address(TEST_ADDRESS)
+            .phoneNumber(TEST_PHONE_NUMBER)
+            .itemIdList(testFailOrderItemDtoList)
+            .build();
+
+        // WHEN, THEN
+        Assertions.assertThrows(NotFoundException.class, () -> orderService.createOrder(testFailUserId, testNoUserRequest), CREATE_ORDER_NOT_FOUND_USER);
+        Assertions.assertThrows(NotFoundException.class, () -> orderService.createOrder(testUserId, testNoItemRequest), CREATE_ORDER_NO_ITEM);
+    }
+
+    @Test
+    @DisplayName("주문 정보 조회 테스트")
+    void getOrderInfoTest() {
+        // GIVEN
+        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+        CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemRepository.findAll());
+        OrderResponse orderResponse = orderService.createOrder(testUserId, testRequest);
+
+        // WHEN
+        OrderInfoResponse result = orderService.getOrderInfo(testUserId, orderResponse.getOrderId());
+
+        // THEN
+        assertThat(result.getOrder().getId()).isEqualTo(orderResponse.getOrderId());
+        assertThat(result.getOrder().getUserId()).isEqualTo(testUserId);
+        assertThat(result.getOrder().getAddress()).isEqualTo(TEST_ADDRESS);
+        assertThat(result.getOrder().getPhoneNumber()).isEqualTo(TEST_PHONE_NUMBER);
+        assertThat(result.getNickname()).isEqualTo(TEST_NICKNAME);
+        assertThat(result.getOrderItemList().get(0).getName()).isEqualTo(ITEM_NAME);
+        assertThat(result.getOrderItemList().get(0).getQuantity()).isEqualTo(QUANTITY);
+        assertThat(result.getOrderItemList().get(1).getName()).isEqualTo(ITEM_NAME + 2);
+        assertThat(result.getOrderItemList().get(1).getQuantity()).isEqualTo(QUANTITY + 3);
     }
 }
