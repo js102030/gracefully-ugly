@@ -12,6 +12,7 @@ import com.gracefullyugly.domain.order.repository.OrderRepository;
 import com.gracefullyugly.domain.orderitem.entity.OrderItem;
 import com.gracefullyugly.domain.orderitem.repository.OrderItemRepository;
 import com.gracefullyugly.domain.user.repository.UserRepository;
+import jakarta.xml.bind.ValidationException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -31,12 +32,15 @@ public class OrderService {
 
     public OrderResponse createOrder(Long userId, CreateOrderRequest request) {
         if (!userRepository.existsById(userId)) {
-            return OrderResponse.builder()
-                .message("회원 정보가 존재하지 않습니다.")
-                .build();
+            throw new RuntimeException("회원 정보가 없습니다.");
         }
 
         Long orderId = orderRepository.save(new Order(userId, request.getAddress(), request.getPhoneNumber())).getId();
+        List<OrderItem> orderItemList = makeOrderItemList(orderId, request.getItemIdList());
+
+        if (orderItemList.isEmpty()) {
+            throw new RuntimeException("주문 가능한 상품이 없습니다.");
+        }
         orderItemRepository.saveAll(makeOrderItemList(orderId, request.getItemIdList()));
 
         return OrderResponse.builder()
@@ -48,9 +52,7 @@ public class OrderService {
         Optional<Order> orderOptional = orderRepository.findById(orderId);
 
         if (orderOptional.isEmpty()) {
-            return OrderResponse.builder()
-                .message("주문 정보가 없습니다.")
-                .build();
+            throw new RuntimeException("주문 정보가 없습니다.");
         }
 
         orderOptional.get().updateAddress(request.getAddress());
@@ -64,9 +66,7 @@ public class OrderService {
         Optional<Order> orderOptional = orderRepository.findById(orderId);
 
         if (orderOptional.isEmpty()) {
-            return OrderResponse.builder()
-                .message("주문 정보가 없습니다.")
-                .build();
+            throw new RuntimeException("주문 정보가 없습니다.");
         }
 
         orderOptional.get().updatePhoneNumber(request.getPhoneNumber());
