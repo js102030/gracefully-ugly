@@ -1,6 +1,7 @@
 package com.gracefullyugly.common.security.jwt;
 
 import com.gracefullyugly.common.security.CustomUserDetails;
+import com.gracefullyugly.domain.user.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,10 +22,13 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final JWTUtil jwtUtil;
 
-    public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+    private final UserRepository userRepository;
+
+    public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, UserRepository userRepository) {
 
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -70,9 +74,11 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String access = jwtUtil.createJwt("access", userId, loginId, role, 60 * 10 * 1000L); //10분
         String refresh = jwtUtil.createJwt("refresh", userId, loginId, role, 60 * 10 * 1000L); //24시간
+        userRepository.saveRefreshToken(loginId, refresh);
+        String saveRefresh = userRepository.findRefreshTokenByLoginId(loginId);
 
         logger.info("token 로그인 성공하고 토큰 발급 완료 access토큰 = " + access);
-        logger.info("token 로그인 성공하고 토큰 발급 완료 refresh토큰 = " + refresh);
+        logger.info("token 로그인 성공하고 토큰 발급 완료 refresh토큰 = " + refresh + "/ 저장된 refresh = " + saveRefresh);
 
         //응답 설정
         response.setHeader("access", access);
