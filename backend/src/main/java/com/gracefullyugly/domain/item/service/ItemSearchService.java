@@ -3,6 +3,7 @@ package com.gracefullyugly.domain.item.service;
 import com.gracefullyugly.domain.item.dto.ItemDtoUtil;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
 import com.gracefullyugly.domain.item.entity.Item;
+import com.gracefullyugly.domain.item.enumtype.Category;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
 
 import java.time.LocalDateTime;
@@ -49,5 +50,26 @@ public class ItemSearchService {
                 .collect(Collectors.toList());
         return itemResponseList;
     }
+
+    // 인기 상품 목록 조회 / 찜 개수 기준
+    public List<ItemResponse> getPopularityItems() {
+        List<Item> popularityItems = itemRepository.findPopularityItems();
+        List<ItemResponse> itemResponseList = popularityItems.stream()
+                .map(ItemResponse::new)
+                .collect(Collectors.toList());
+        return itemResponseList;
+
+    }
+
+    // 상품 종류별 검색 목록 조회
+    public List<ItemResponse> getCategoryItems(Category categoryId) {
+        List<Item> categoryItems = itemRepository.findCategoryItems(categoryId);
+        List<ItemResponse> itemResponseList = categoryItems.stream()
+                .map(ItemResponse::new)
+                .collect(Collectors.toList());
+        return itemResponseList;
+
+    }
+
 
 }

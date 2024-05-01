@@ -1,20 +1,20 @@
 package com.gracefullyugly.domain.item.controller;
 
+import com.gracefullyugly.domain.cart.dto.CartListResponse;
+import com.gracefullyugly.domain.cart.service.CartService;
+import com.gracefullyugly.domain.cart_item.dto.CartItemResponse;
+import com.gracefullyugly.domain.cart_item.service.CartItemService;
 import com.gracefullyugly.domain.item.dto.ItemDtoUtil;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
 import com.gracefullyugly.domain.item.dto.UpdateDescriptionDto;
 import com.gracefullyugly.domain.item.entity.Item;
+import com.gracefullyugly.domain.item.enumtype.Category;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.item.service.ItemService;
 import com.gracefullyugly.domain.user.dto.UpdateAddressDto;
 
-import java.time.LocalDateTime;
 import java.util.List;
-
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -36,6 +36,7 @@ public class ItemController {
 
     private final ItemService itemService;
     private final ItemSearchService itemSearchService;
+    private final CartService cartService;
 
     // 판매글 생성
     @PostMapping("/items")
@@ -102,14 +103,22 @@ public class ItemController {
         return ResponseEntity
                 .ok(itemResponseList);
 
-
-
     }
-//    // 인기 상품 목록 조회
-//    @GetMapping("/items/popularity")
-//
-//
-//    // 상품 종류별 검색 목록 조회
-//    @GetMapping("/items/{categoryId}")
+    // 인기 상품 목록 조회
+    @GetMapping("/items/popularity")
+    public ResponseEntity<List<?>> showPopularity() {
+        List<ItemResponse> itemResponseList = itemSearchService.getPopularityItems();
+        return ResponseEntity
+                .ok(itemResponseList);
+    }
+
+
+    // 상품 종류별 검색 목록 조회
+    @GetMapping("/items/category/{categoryId}")
+    public ResponseEntity<List<?>> showCategory(@PathVariable Category categoryId) {
+        List<ItemResponse> itemResponseList = itemSearchService.getCategoryItems(categoryId);
+        return ResponseEntity
+                .ok(itemResponseList);
+    }
 
 }
