@@ -1,6 +1,7 @@
 package com.gracefullyugly.domain.item.entity;
 
 import com.gracefullyugly.common.base.BaseTimeEntity;
+import com.gracefullyugly.domain.item.dto.UpdateDescriptionDto;
 import com.gracefullyugly.domain.item.enumtype.Category;
 import com.gracefullyugly.domain.user.dto.UpdateAddressDto;
 import jakarta.persistence.*;
@@ -61,9 +62,9 @@ public class Item extends BaseTimeEntity {
         this.closedDate = closedDate;
     }
 
-    public UpdateAddressDto updateDescription(String description) {
+    public UpdateDescriptionDto updateDescription(String description) {
         this.description = description;
-        return new UpdateAddressDto(description);
+        return new UpdateDescriptionDto(description);
     }
 
     public void delete() {

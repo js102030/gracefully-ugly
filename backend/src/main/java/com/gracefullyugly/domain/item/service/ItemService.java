@@ -28,7 +28,7 @@ public class ItemService {
     }
 
 
-    public UpdateAddressDto updateDescription(Long itemId, UpdateDescriptionDto updateDescriptionDto) {
+    public UpdateDescriptionDto updateDescription(Long itemId, UpdateDescriptionDto updateDescriptionDto) {
         Item findItem = itemSearchService.findById(itemId);
 
         return findItem.updateDescription(updateDescriptionDto.getDescription());

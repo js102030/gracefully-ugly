@@ -35,7 +35,7 @@ public class ItemController {
 
     // 판매글 생성
     @PostMapping("/items")
-    public ResponseEntity<ItemResponse> addItem(@AuthenticationPrincipal(expression = "userId") Long userId,
+    public ResponseEntity<ItemResponse> addItem(@AuthenticationPrincipal Long userId,
                                                 @RequestBody ItemRequest request) {
         final ItemResponse savedResponse = itemService.save(userId, request);
 
@@ -69,9 +69,9 @@ public class ItemController {
 
     // 판매글 수정
     @PutMapping("/items/{itemId}")
-    public ResponseEntity<UpdateAddressDto> updateDescription(@PathVariable Long itemId,
+    public ResponseEntity<UpdateDescriptionDto> updateDescription(@PathVariable Long itemId,
                                                               @Valid @RequestBody UpdateDescriptionDto updateDescriptionDto) {
-        final UpdateAddressDto updateAddress = itemService.updateDescription(itemId, updateDescriptionDto);
+        final UpdateDescriptionDto updateAddress = itemService.updateDescription(itemId, updateDescriptionDto);
 
         return ResponseEntity
                 .ok(updateAddress);
