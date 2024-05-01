@@ -1,6 +1,7 @@
 package com.gracefullyugly.common.security.controller;
 
 import com.gracefullyugly.common.security.jwt.JWTUtil;
+import com.gracefullyugly.domain.user.repository.UserRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory; // Import 추가
 
 @Controller
 @ResponseBody
@@ -17,9 +20,14 @@ public class ReissueController {
 
     private final JWTUtil jwtUtil;
 
-    public ReissueController(JWTUtil jwtUtil) {
+    private final UserRepository userRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(ReissueController.class); // Logger 선언 추가
+
+    public ReissueController(JWTUtil jwtUtil, UserRepository userRepository) {
 
         this.jwtUtil = jwtUtil;
+        this.userRepository = userRepository;
     }
 
     @PostMapping("/reissue")
@@ -39,6 +47,7 @@ public class ReissueController {
         if (refresh == null) {
 
             //response status code
+            logger.info("refresh가 null이야");
             return new ResponseEntity<>("refresh token null", HttpStatus.BAD_REQUEST);
         }
 
@@ -47,6 +56,7 @@ public class ReissueController {
             jwtUtil.isExpired(refresh);
         } catch (ExpiredJwtException e) {
 
+            logger.info("refresh가 유효기간 만료됨");
             //response status code
             return new ResponseEntity<>("refresh token expired", HttpStatus.BAD_REQUEST);
         }
@@ -55,7 +65,7 @@ public class ReissueController {
         String category = jwtUtil.getCategory(refresh);
 
         if (!category.equals("refresh")) {
-
+            logger.info("보낸게 refresh토큰 아닌데?");
             //response status code
             return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
         }
@@ -67,6 +77,10 @@ public class ReissueController {
         //make new JWT
         String newAccess = jwtUtil.createJwt("access",userId, loginId, role, 60 * 10 * 1000L);
         String newRefresh = jwtUtil.createJwt("refresh", userId, loginId    , role, 86400000L);
+
+        userRepository.saveRefreshToken(loginId, newRefresh);
+        String saveRefresh = userRepository.findRefreshTokenByLoginId(loginId);
+        logger.info("기존 refresh" + refresh + "재발급한 refresh =" + newRefresh + "저장한 refresh=" + saveRefresh);
 
         //response
         response.setHeader("access", newAccess);
