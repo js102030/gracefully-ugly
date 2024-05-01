@@ -18,6 +18,7 @@ import com.gracefullyugly.domain.order.dto.CreateOrderRequest;
 import com.gracefullyugly.domain.order.dto.OrderInfoResponse;
 import com.gracefullyugly.domain.order.dto.OrderItemDto;
 import com.gracefullyugly.domain.order.dto.OrderResponse;
+import com.gracefullyugly.domain.order.dto.UpdateOrderAddressRequest;
 import com.gracefullyugly.domain.order.repository.OrderRepository;
 import com.gracefullyugly.domain.orderitem.repository.OrderItemRepository;
 import com.gracefullyugly.domain.user.repository.UserRepository;
@@ -162,5 +163,23 @@ public class OrderServiceTest {
         // WHEN, THEN
         Assertions.assertThrows(NotFoundException.class, () -> orderService.getOrderInfo(testFailUserId, orderResponse.getOrderId()), NOT_FOUND_USER);
         Assertions.assertThrows(NotFoundException.class, () -> orderService.getOrderInfo(testUserId, testFailOrderId), NOT_FOUND_ORDER);
+    }
+
+    @Test
+    @DisplayName("주문 정보 주소 변경 테스트")
+    void updateOrderAddressTest() {
+        // GIVEN
+        // 기본 주문 정보 세팅
+        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+        CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemRepository.findAll());
+        OrderResponse orderResponse = orderService.createOrder(testUserId, testRequest);
+        UpdateOrderAddressRequest request = UpdateOrderAddressRequest.builder().address("NewAddress").build();
+
+        // WHEN
+        OrderResponse result = orderService.updateOrderAddress(orderResponse.getOrderId(), request);
+
+        // THEN
+        assertThat(result.getOrderId()).isEqualTo(orderResponse.getOrderId());
+        assertThat(result.getAddress()).isEqualTo("NewAddress");
     }
 }
