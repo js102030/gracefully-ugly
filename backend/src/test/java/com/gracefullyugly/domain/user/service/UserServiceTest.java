@@ -1,5 +1,17 @@
 package com.gracefullyugly.domain.user.service;
 
+import static com.gracefullyugly.testutil.SetupDataUtils.ADDRESS_VALID_MESSAGE;
+import static com.gracefullyugly.testutil.SetupDataUtils.EMAIL_VALID_MESSAGE;
+import static com.gracefullyugly.testutil.SetupDataUtils.ID_VALID_MESSAGE;
+import static com.gracefullyugly.testutil.SetupDataUtils.NICKNAME_VALID_MESSAGE;
+import static com.gracefullyugly.testutil.SetupDataUtils.PASSWORD;
+import static com.gracefullyugly.testutil.SetupDataUtils.PASSWORD_VALID_MESSAGE;
+import static com.gracefullyugly.testutil.SetupDataUtils.ROLE_VALID_MESSAGE;
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_ADDRESS;
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_EMAIL;
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_LOGIN_ID;
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_ROLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -9,9 +21,8 @@ import com.gracefullyugly.domain.user.dto.BasicRegRequest;
 import com.gracefullyugly.domain.user.dto.BasicRegResponse;
 import com.gracefullyugly.domain.user.dto.FinalRegResponse;
 import com.gracefullyugly.domain.user.entity.User;
-import com.gracefullyugly.domain.user.enumtype.Role;
-import com.gracefullyugly.domain.user.enumtype.SignUpType;
 import com.gracefullyugly.domain.user.repository.UserRepository;
+import com.gracefullyugly.testutil.SetupDataUtils;
 import jakarta.validation.ConstraintViolation;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,19 +41,6 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 @SpringBootTest
 @Slf4j
 class UserServiceTest {
-
-    public static final String TEST_LOGIN_ID = "testId";
-    public static final String PASSWORD = "testPassword";
-    public static final String TEST_NICKNAME = "testNickname";
-    public static final String TEST_EMAIL = "test@test.com";
-    public static final String TEST_ADDRESS = "testAddress";
-    public static final Role TEST_ROLE = Role.BUYER;
-    public static final String ID_VALID_MESSAGE = "아이디 입력은 필수입니다.";
-    public static final String ROLE_VALID_MESSAGE = "역할은 필수입니다.";
-    public static final String NICKNAME_VALID_MESSAGE = "닉네임 입력은 필수입니다.";
-    public static final String EMAIL_VALID_MESSAGE = "이메일 입력은 필수입니다.";
-    public static final String ADDRESS_VALID_MESSAGE = "주소 입력은 필수입니다.";
-    public static final String PASSWORD_VALID_MESSAGE = "비밀번호 입력은 필수입니다.";
 
     @Autowired
     UserService userService;
@@ -65,20 +63,7 @@ class UserServiceTest {
         validator = new LocalValidatorFactoryBean();
         validator.afterPropertiesSet();
 
-        User testUser = new User(
-                null,
-                SignUpType.GENERAL,
-                Role.BUYER,
-                TEST_LOGIN_ID,
-                passwordEncoder.encode(PASSWORD),
-                TEST_NICKNAME,
-                TEST_EMAIL,
-                TEST_ADDRESS,
-                false,
-                false,
-                false);
-
-        userRepository.save(testUser);
+        userRepository.save(SetupDataUtils.makeTestUser(passwordEncoder));
     }
 
     @AfterEach
