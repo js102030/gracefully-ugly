@@ -9,6 +9,7 @@ import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_PHONE_NUMBER;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -21,6 +22,8 @@ import com.gracefullyugly.domain.order.controller.OrderController;
 import com.gracefullyugly.domain.order.dto.CreateOrderRequest;
 import com.gracefullyugly.domain.order.dto.OrderItemDto;
 import com.gracefullyugly.domain.order.dto.OrderResponse;
+import com.gracefullyugly.domain.order.dto.UpdateOrderAddressRequest;
+import com.gracefullyugly.domain.order.dto.UpdateOrderPhoneNumberRequest;
 import com.gracefullyugly.domain.order.repository.OrderRepository;
 import com.gracefullyugly.domain.order.service.OrderService;
 import com.gracefullyugly.domain.orderitem.repository.OrderItemRepository;
@@ -215,5 +218,51 @@ public class OrderControllerTest {
             .andExpect(jsonPath("$").value(NOT_FOUND_USER));
         resultNoOrder.andExpect(status().isNotFound())
             .andExpect(jsonPath("$").value(NOT_FOUND_ORDER));
+    }
+
+    @Test
+    @DisplayName("주문 정보 주소 수정 API 테스트")
+    void updateOrderAddressTest() throws Exception{
+        // GIVEN
+        // 기본 주문 정보 세팅
+        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+        List<Item> itemList = itemRepository.findAll();
+        CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemList);
+        OrderResponse orderResponse = orderService.createOrder(testUserId, testRequest);
+
+        UpdateOrderAddressRequest request = UpdateOrderAddressRequest.builder().address("NewAddress").build();
+
+        // WHEN
+        ResultActions result = mockMvc.perform(put("/api/orders/address/" + orderResponse.getOrderId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)));
+
+        // THEN
+        result.andExpect(status().isOk())
+            .andExpect(jsonPath("orderId").value(orderResponse.getOrderId()))
+            .andExpect(jsonPath("address").value("NewAddress"));
+    }
+
+    @Test
+    @DisplayName("주문 정보 연락처 수정 API 테스트")
+    void updateOrderPhoneNumberTest() throws Exception{
+        // GIVEN
+        // 기본 주문 정보 세팅
+        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+        List<Item> itemList = itemRepository.findAll();
+        CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemList);
+        OrderResponse orderResponse = orderService.createOrder(testUserId, testRequest);
+
+        UpdateOrderPhoneNumberRequest request = UpdateOrderPhoneNumberRequest.builder().phoneNumber("01055559999").build();
+
+        // WHEN
+        ResultActions result = mockMvc.perform(put("/api/orders/phone_number/" + orderResponse.getOrderId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)));
+
+        // THEN
+        result.andExpect(status().isOk())
+            .andExpect(jsonPath("orderId").value(orderResponse.getOrderId()))
+            .andExpect(jsonPath("phoneNumber").value("01055559999"));
     }
 }
