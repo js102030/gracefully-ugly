@@ -4,5 +4,6 @@ public interface OrderItemInfoResponse {
 
     Long getItemId();
     String getName();
+    Long getPrice();
     Long getQuantity();
 }

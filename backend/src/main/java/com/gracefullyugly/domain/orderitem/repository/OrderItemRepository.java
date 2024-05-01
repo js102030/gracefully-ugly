@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 
     @Query(value =
-        "SELECT OI.item_id AS itemId, I.name AS name, OI.quantity AS quantity "
+        "SELECT OI.item_id AS itemId, I.name AS name, I.price AS price, OI.quantity AS quantity "
       + "FROM orders_item AS OI "
       + "LEFT OUTER JOIN item AS I ON OI.item_id = I.item_id "
       + "WHERE OI.order_id = :orderId",
