@@ -1,8 +1,9 @@
 package com.gracefullyugly.domain.order.service;
 
-import static com.gracefullyugly.testutil.SetupDataUtils.CREATE_ORDER_NOT_FOUND_USER;
-import static com.gracefullyugly.testutil.SetupDataUtils.CREATE_ORDER_NO_ITEM;
 import static com.gracefullyugly.testutil.SetupDataUtils.ITEM_NAME;
+import static com.gracefullyugly.testutil.SetupDataUtils.NOT_FOUND_ORDER;
+import static com.gracefullyugly.testutil.SetupDataUtils.NOT_FOUND_USER;
+import static com.gracefullyugly.testutil.SetupDataUtils.ORDER_NO_ITEM;
 import static com.gracefullyugly.testutil.SetupDataUtils.QUANTITY;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_ADDRESS;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
@@ -115,8 +116,8 @@ public class OrderServiceTest {
             .build();
 
         // WHEN, THEN
-        Assertions.assertThrows(NotFoundException.class, () -> orderService.createOrder(testFailUserId, testNoUserRequest), CREATE_ORDER_NOT_FOUND_USER);
-        Assertions.assertThrows(NotFoundException.class, () -> orderService.createOrder(testUserId, testNoItemRequest), CREATE_ORDER_NO_ITEM);
+        Assertions.assertThrows(NotFoundException.class, () -> orderService.createOrder(testFailUserId, testNoUserRequest), NOT_FOUND_USER);
+        Assertions.assertThrows(NotFoundException.class, () -> orderService.createOrder(testUserId, testNoItemRequest), ORDER_NO_ITEM);
     }
 
     @Test
@@ -140,5 +141,26 @@ public class OrderServiceTest {
         assertThat(result.getOrderItemList().get(0).getQuantity()).isEqualTo(QUANTITY);
         assertThat(result.getOrderItemList().get(1).getName()).isEqualTo(ITEM_NAME + 2);
         assertThat(result.getOrderItemList().get(1).getQuantity()).isEqualTo(QUANTITY + 3);
+    }
+
+    @Test
+    @DisplayName("주문 정보 조회 실패 테스트")
+    void getOrderInfoFailTest() {
+        // GIVEN
+        // 기본 주문 정보 세팅
+        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+        CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemRepository.findAll());
+        OrderResponse orderResponse = orderService.createOrder(testUserId, testRequest);
+
+        // 없는 회원 정보
+        Long testFailUserId = 100L;
+
+        // 없는 주문 정보
+        Long testFailOrderId = 100L;
+
+
+        // WHEN, THEN
+        Assertions.assertThrows(NotFoundException.class, () -> orderService.getOrderInfo(testFailUserId, orderResponse.getOrderId()), NOT_FOUND_USER);
+        Assertions.assertThrows(NotFoundException.class, () -> orderService.getOrderInfo(testUserId, testFailOrderId), NOT_FOUND_ORDER);
     }
 }
