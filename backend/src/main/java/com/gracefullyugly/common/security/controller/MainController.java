@@ -1,4 +1,4 @@
-package com.gracefullyugly.common.test.controller;
+package com.gracefullyugly.common.security.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
