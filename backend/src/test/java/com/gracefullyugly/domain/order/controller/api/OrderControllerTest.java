@@ -89,6 +89,27 @@ public class OrderControllerTest {
     }
 
     @Test
+    @DisplayName("주문 생성 API 테스트")
+    void createOrderTest() throws Exception {
+        // GIVEN
+        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+        List<Item> itemList = itemRepository.findAll();
+        CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemList);
+
+        // WHEN
+        ResultActions result = mockMvc.perform(post("/api/orders/" + testUserId)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(testRequest)));
+
+        // THEN
+        result.andExpect(status().isCreated())
+            .andExpect(jsonPath("orderId").exists())
+            .andExpect(jsonPath("userId").value(testUserId))
+            .andExpect(jsonPath("address").value(TEST_ADDRESS))
+            .andExpect(jsonPath("phoneNumber").value(TEST_PHONE_NUMBER));
+    }
+
+    @Test
     @DisplayName("주문 정보 조회 API 테스트")
     void getOrderInfTest() throws Exception {
         // GIVEN
