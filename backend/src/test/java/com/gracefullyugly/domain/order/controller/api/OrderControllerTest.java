@@ -244,6 +244,38 @@ public class OrderControllerTest {
     }
 
     @Test
+    @DisplayName("주문 정보 주소 수정 API 실패 테스트")
+    void updateOrderAddressFailTest() throws Exception{
+        // GIVEN
+        // 기본 주문 정보 세팅
+        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+        List<Item> itemList = itemRepository.findAll();
+        CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemList);
+        OrderResponse orderResponse = orderService.createOrder(testUserId, testRequest);
+
+        UpdateOrderAddressRequest request = UpdateOrderAddressRequest.builder().address("NewAddress").build();
+
+        // 없는 주문 정보
+        Long testFailOrderId = 100L;
+
+        // 주소가 공란
+        UpdateOrderAddressRequest requestFail = UpdateOrderAddressRequest.builder().address("").build();
+
+        // WHEN
+        ResultActions resultNoOrder = mockMvc.perform(put("/api/orders/address/" + testFailOrderId)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)));
+        ResultActions resultNoAddress = mockMvc.perform(put("/api/orders/address/" + orderResponse.getOrderId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(requestFail)));
+
+        // THEN
+        resultNoOrder.andExpect(status().isNotFound())
+            .andExpect(jsonPath("$").value(NOT_FOUND_ORDER));
+        resultNoAddress.andExpect(status().isBadRequest());
+    }
+
+    @Test
     @DisplayName("주문 정보 연락처 수정 API 테스트")
     void updateOrderPhoneNumberTest() throws Exception{
         // GIVEN
@@ -264,5 +296,37 @@ public class OrderControllerTest {
         result.andExpect(status().isOk())
             .andExpect(jsonPath("orderId").value(orderResponse.getOrderId()))
             .andExpect(jsonPath("phoneNumber").value("01055559999"));
+    }
+
+    @Test
+    @DisplayName("주문 정보 연락처 수정 API 실패 테스트")
+    void updateOrderPhoneNumberFailTest() throws Exception{
+        // GIVEN
+        // 기본 주문 정보 세팅
+        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+        List<Item> itemList = itemRepository.findAll();
+        CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemList);
+        OrderResponse orderResponse = orderService.createOrder(testUserId, testRequest);
+
+        UpdateOrderPhoneNumberRequest request = UpdateOrderPhoneNumberRequest.builder().phoneNumber("01055559999").build();
+
+        // 없는 주문 정보
+        Long testFailOrderId = 100L;
+
+        // 유효하지 않은 연락처
+        UpdateOrderPhoneNumberRequest requestFail = UpdateOrderPhoneNumberRequest.builder().phoneNumber("-1").build();
+
+        // WHEN
+        ResultActions resultNoOrder = mockMvc.perform(put("/api/orders/phone_number/" + testFailOrderId)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(request)));
+        ResultActions resultNoAddress = mockMvc.perform(put("/api/orders/phone_number/" + orderResponse.getOrderId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(requestFail)));
+
+        // THEN
+        resultNoOrder.andExpect(status().isNotFound())
+            .andExpect(jsonPath("$").value(NOT_FOUND_ORDER));
+        resultNoAddress.andExpect(status().isBadRequest());
     }
 }
