@@ -5,8 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.gracefullyugly.domain.user.dto.UserResponse;
 import com.gracefullyugly.domain.user.entity.User;
-import com.gracefullyugly.domain.user.enumtype.Role;
-import com.gracefullyugly.domain.user.enumtype.SignUpType;
 import com.gracefullyugly.domain.user.repository.UserRepository;
 import com.gracefullyugly.testutil.SetupDataUtils;
 import org.junit.jupiter.api.AfterEach;
