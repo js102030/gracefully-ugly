@@ -14,7 +14,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
@@ -23,7 +27,6 @@ import org.hibernate.annotations.DynamicUpdate;
 @AllArgsConstructor
 @Getter
 @DynamicUpdate
-@Builder
 public class User extends BaseTimeEntity {
 
     @Id
@@ -66,6 +69,14 @@ public class User extends BaseTimeEntity {
         this.signUpType = SignUpType.GENERAL;
     }
 
+    @Builder
+    public User(Long userId, String loginId, String password, Role role) {
+        this.id = userId;
+        this.loginId = loginId;
+        this.password = password;
+        this.role = role;
+    }
+
     public void completeRegistration(AdditionalRegRequest request) {
         this.role = request.getRole();
         this.nickname = request.getNickname();
@@ -98,6 +109,5 @@ public class User extends BaseTimeEntity {
     public void updateVerify(String email) {
         this.email = email;
         this.isVerified = true;
-
     }
 }
