@@ -1,9 +1,5 @@
-package com.gracefullyugly.domain.item.controller;
+package com.gracefullyugly.domain.item.controller.api;
 
-import com.gracefullyugly.domain.cart.dto.CartListResponse;
-import com.gracefullyugly.domain.cart.service.CartService;
-import com.gracefullyugly.domain.cart_item.dto.CartItemResponse;
-import com.gracefullyugly.domain.cart_item.service.CartItemService;
 import com.gracefullyugly.domain.item.dto.ItemDtoUtil;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
@@ -36,7 +32,6 @@ public class ItemController {
 
     private final ItemService itemService;
     private final ItemSearchService itemSearchService;
-    private final CartService cartService;
 
     // 판매글 생성
     @PostMapping("/items")
@@ -53,12 +48,8 @@ public class ItemController {
     // TODO : 페이징 처리 후 리팩토링 예정
     @GetMapping("/items")
     public ResponseEntity<List<ItemResponse>> showItems() {
-        // TODO : Controller에서 if문으로 response를 분기하는 것은 좋지 않아 보임
         // TODO : List를 반환하지 않고 ApiResponse를 반환하는 것이 좋아 보임
         List<Item> itemList = itemSearchService.findAllItems();
-        if (itemList == null || itemList.isEmpty()) {
-            return ResponseEntity.noContent().build(); // 빈 목록일 경우 noContent 상태 코드
-        }
         List<ItemResponse> responseList = itemList.stream()
                 .map(ItemDtoUtil::itemToItemResponse)
                 .toList();

@@ -1,11 +1,9 @@
 package com.gracefullyugly.domain.cart.service;
 
 import com.gracefullyugly.domain.cart.dto.CartListResponse;
-import com.gracefullyugly.domain.cart.entity.Cart;
 import com.gracefullyugly.domain.cart.repository.CartRepository;
 import java.util.List;
 
-import com.gracefullyugly.domain.item.entity.Item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
