@@ -28,4 +28,10 @@ public class GroupBuyUser extends BaseTimeEntity {
 
     private int quantity;
 
+    public GroupBuyUser(Long groupBuyId, Long userId, LocalDateTime joinDate, int quantity) {
+        this.groupBuyId = groupBuyId;
+        this.userId = userId;
+        this.joinDate = joinDate;
+        this.quantity = quantity;
+    }
 }

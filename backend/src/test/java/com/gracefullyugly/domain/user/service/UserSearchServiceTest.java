@@ -1,12 +1,12 @@
 package com.gracefullyugly.domain.user.service;
 
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.gracefullyugly.domain.user.dto.UserResponse;
 import com.gracefullyugly.domain.user.entity.User;
-import com.gracefullyugly.domain.user.enumtype.Role;
-import com.gracefullyugly.domain.user.enumtype.SignUpType;
 import com.gracefullyugly.domain.user.repository.UserRepository;
+import com.gracefullyugly.testutil.SetupDataUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,12 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @SpringBootTest
 class UserSearchServiceTest {
 
-    public static final String TEST_LOGIN_ID = "testId";
-    public static final String PASSWORD = "testPassword";
-    public static final String TEST_NICKNAME = "testNickname";
-    public static final String TEST_EMAIL = "test@test.com";
-    public static final String TEST_ADDRESS = "testAddress";
-
     @Autowired
     UserSearchService userSearchService;
     @Autowired
@@ -32,20 +26,7 @@ class UserSearchServiceTest {
 
     @BeforeEach
     void beforeEach() {
-        User testUser = new User(
-                null,
-                SignUpType.GENERAL,
-                Role.BUYER,
-                TEST_LOGIN_ID,
-                passwordEncoder.encode(PASSWORD),
-                TEST_NICKNAME,
-                TEST_EMAIL,
-                TEST_ADDRESS,
-                false,
-                false,
-                false);
-
-        userRepository.save(testUser);
+        userRepository.save(SetupDataUtils.makeTestUser(passwordEncoder));
     }
 
     @AfterEach

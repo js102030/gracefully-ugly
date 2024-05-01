@@ -1,5 +1,12 @@
 package com.gracefullyugly.domain.user.controller.api;
 
+import static com.gracefullyugly.testutil.SetupDataUtils.NEW_NICKNAME;
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_ADDRESS;
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_EMAIL;
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_LOGIN_ID;
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_PASSWORD;
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_ROLE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
@@ -22,7 +29,6 @@ import com.gracefullyugly.domain.user.dto.UpdateAddressDto;
 import com.gracefullyugly.domain.user.dto.UpdateNicknameDto;
 import com.gracefullyugly.domain.user.dto.UpdatePasswordRequest;
 import com.gracefullyugly.domain.user.dto.UserResponse;
-import com.gracefullyugly.domain.user.enumtype.Role;
 import com.gracefullyugly.domain.user.enumtype.SignUpType;
 import com.gracefullyugly.domain.user.service.UserSearchService;
 import com.gracefullyugly.domain.user.service.UserService;
@@ -41,14 +47,6 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 @Slf4j
 class UserControllerTest {
-
-    public static final String TEST_LOGIN_ID = "test100";
-    public static final String TEST_NICKNAME = "testNickname";
-    public static final String TEST_EMAIL = "test@test.com";
-    public static final String TEST_ADDRESS = "testAddress";
-    public static final Role TEST_ROLE = Role.BUYER;
-    public static final String NEW_NICKNAME = "newNickname";
-    public static final String TEST_PASSWORD = "test";
 
     @Autowired
     private MockMvc mockMvc;

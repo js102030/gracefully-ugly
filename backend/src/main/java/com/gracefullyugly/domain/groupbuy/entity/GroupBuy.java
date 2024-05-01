@@ -21,10 +21,15 @@ public class GroupBuy extends BaseTimeEntity {
     @Column(name = "group_buy_id")
     private Long id;
 
-    private Long ItemId;
+    private Long itemId;
 
     private GroupBuyStatus groupBuyStatus;
 
     private LocalDateTime endDate;
 
+    public GroupBuy(Long itemId, GroupBuyStatus groupBuyStatus, LocalDateTime endDate) {
+        this.itemId = itemId;
+        this.groupBuyStatus = groupBuyStatus;
+        this.endDate = endDate;
+    }
 }

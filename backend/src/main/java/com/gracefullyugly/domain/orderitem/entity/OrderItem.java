@@ -26,4 +26,10 @@ public class OrderItem extends BaseTimeEntity {
     private Long orderId;
 
     private int quantity;
+
+    public OrderItem(Long itemId, Long orderId, int quantity) {
+        this.itemId = itemId;
+        this.orderId = orderId;
+        this.quantity = quantity;
+    }
 }
