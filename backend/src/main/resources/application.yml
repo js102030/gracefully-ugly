@@ -3,6 +3,8 @@ spring:
     name: gracefully-ugly
   profiles:
     active: dev
+    include:
+      - aws
 
   jpa:
     open-in-view: true
@@ -24,10 +26,10 @@ spring:
   datasource:
     hikari:
       # mysql DBMS 설정 값 (로컬 Docker 환경)
-#      driver-class-name: com.mysql.cj.jdbc.Driver
-#      jdbc-url: jdbc:mysql://localhost:8085/gracefully_ugly
-#      username: root
-#      password: root
+      #      driver-class-name: com.mysql.cj.jdbc.Driver
+      #      jdbc-url: jdbc:mysql://localhost:8085/gracefully_ugly
+      #      username: root
+      #      password: root
 
       # H2 DBMS 사용 시 설정값
       driver-class-name: org.h2.Driver
@@ -49,8 +51,9 @@ spring:
 
   servlet:
     multipart:
-      max-file-size: 10MB
-      max-request-size: 50MB
+      max-file-size: 5MB
+      max-request-size: 10MB
+      resolve-lazily: true
 
 logging.level:
   root: INFO
