@@ -14,17 +14,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Table(name = "users")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED) //해당 클래스 내부에서만 생성자에 접근하고 외부에서 생성자 접근 막으려고
 @AllArgsConstructor
 @Getter
 @DynamicUpdate
+@Builder
 public class User extends BaseTimeEntity {
 
     @Id
@@ -33,10 +32,10 @@ public class User extends BaseTimeEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private SignUpType signUpType;
+    private SignUpType signUpType; //KAKAO, GENERAL
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role; //ROLE_BUYER, ROLE_SELLER, ROLE_ADMIN, ROLE_GUEST
 
     @Column(length = 30, unique = true)
     private String loginId;
@@ -50,6 +49,10 @@ public class User extends BaseTimeEntity {
     private String email;
 
     private String address;
+
+    private String socialId; //api 로그인시 kakaoserver 에서 받아오는데 필요함
+
+    private String refreshToken; // 리프레시 토큰, security 때문에 추가
 
     private boolean isBanned;
 
@@ -88,8 +91,12 @@ public class User extends BaseTimeEntity {
         this.isDeleted = true;
     }
 
+    public void updateRefreshToken(String updateRefreshToken) {
+        this.refreshToken = updateRefreshToken;
+
     public void updateVerify(String email) {
         this.email = email;
         this.isVerified = true;
+
     }
 }
