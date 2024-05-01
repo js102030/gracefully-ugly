@@ -1,5 +1,7 @@
 package com.gracefullyugly.domain.order.controller.api;
 
+import static com.gracefullyugly.testutil.SetupDataUtils.NOT_FOUND_USER;
+import static com.gracefullyugly.testutil.SetupDataUtils.ORDER_NO_ITEM;
 import static com.gracefullyugly.testutil.SetupDataUtils.QUANTITY;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_ADDRESS;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
@@ -16,6 +18,7 @@ import com.gracefullyugly.domain.item.repository.ItemRepository;
 import com.gracefullyugly.domain.item.service.ItemService;
 import com.gracefullyugly.domain.order.controller.OrderController;
 import com.gracefullyugly.domain.order.dto.CreateOrderRequest;
+import com.gracefullyugly.domain.order.dto.OrderItemDto;
 import com.gracefullyugly.domain.order.dto.OrderResponse;
 import com.gracefullyugly.domain.order.repository.OrderRepository;
 import com.gracefullyugly.domain.order.service.OrderService;
@@ -107,6 +110,53 @@ public class OrderControllerTest {
             .andExpect(jsonPath("userId").value(testUserId))
             .andExpect(jsonPath("address").value(TEST_ADDRESS))
             .andExpect(jsonPath("phoneNumber").value(TEST_PHONE_NUMBER));
+    }
+
+    @Test
+    @DisplayName("주문 생성 API 실패 테스트")
+    void createOrderFailTest() throws Exception {
+        // GIVEN
+        // 없는 회원 정보
+        Long testFailUserId = 100L;
+        List<Item> itemList = itemRepository.findAll();
+        CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemList);
+
+        // 없는 상품 정보들만 주문을 시도
+        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+        CreateOrderRequest testNoItemRequest = CreateOrderRequest.builder()
+            .address(TEST_ADDRESS)
+            .phoneNumber(TEST_PHONE_NUMBER)
+            .itemIdList(List.of(OrderItemDto.builder().itemId(111L).quantity(1L).build(), OrderItemDto.builder().itemId(131L).quantity(12L).build())).build();
+
+        // 주소가 공란
+        CreateOrderRequest testInvalidAddressRequest = SetupDataUtils.makeCreateOrderRequest(itemList);
+        testInvalidAddressRequest.setAddress("");
+
+        // 유효하지 않은 연락처
+        CreateOrderRequest testInvalidPhoneNumberRequest = SetupDataUtils.makeCreateOrderRequest(itemList);
+        testInvalidPhoneNumberRequest.setPhoneNumber("11111111111111111");
+
+        // WHEN
+        ResultActions resultNoUser = mockMvc.perform(post("/api/orders/" + testFailUserId)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(testRequest)));
+        ResultActions resultNoItem = mockMvc.perform(post("/api/orders/" + testUserId)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(testNoItemRequest)));
+        ResultActions resultNoAddress = mockMvc.perform(post("/api/orders/" + testUserId)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(testInvalidAddressRequest)));
+        ResultActions resultInvalidPhoneNumber = mockMvc.perform(post("/api/orders/" + testUserId)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(testInvalidPhoneNumberRequest)));
+
+        // THEN
+        resultNoUser.andExpect(status().isNotFound())
+            .andExpect(jsonPath("$").value(NOT_FOUND_USER));
+        resultNoItem.andExpect(status().isNotFound())
+            .andExpect(jsonPath("$").value(ORDER_NO_ITEM));
+        resultNoAddress.andExpect(status().isBadRequest());
+        resultInvalidPhoneNumber.andExpect(status().isBadRequest());
     }
 
     @Test
