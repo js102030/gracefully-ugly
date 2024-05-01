@@ -1,5 +1,6 @@
 package com.gracefullyugly.common.security.config;
 
+import com.gracefullyugly.common.security.jwt.CustomLogoutFilter;
 import com.gracefullyugly.common.security.jwt.JWTFilter;
 import com.gracefullyugly.common.security.jwt.JWTUtil;
 import com.gracefullyugly.common.security.jwt.LoginFilter;
@@ -18,6 +19,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 
@@ -106,6 +108,10 @@ public class SecurityConfig {
         http
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, userRepository),
                         UsernamePasswordAuthenticationFilter.class);
+
+        http
+                .addFilterBefore(new CustomLogoutFilter(jwtUtil, userRepository), LogoutFilter.class);
+
         //세션 설정 jwt 위해서는 STATELESS 로 설정 해줘야함
         http
                 .sessionManagement((session) -> session
