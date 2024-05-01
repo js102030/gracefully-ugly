@@ -51,8 +51,9 @@ public class SetupDataUtils {
     public final static String DELETE_CART_ITEM_NOT_FOUND_CART = "찜 목록이 아직 생성되지 않았습니다.";
     public final static String DELETE_CART_ITEM_NOT_FOUND_ITEM = "해당 상품이 찜 목록에 존재하지 않습니다.";
     public final static String CREATE_ORDER_SUCCESS = "주문이 정상적으로 저장되었습니다.";
-    public final static String CREATE_ORDER_NOT_FOUND_USER = "회원 정보가 존재하지 않습니다.";
-    public final static String CREATE_ORDER_NO_ITEM = "주문 가능한 상품이 없습니다.";
+    public final static String NOT_FOUND_USER = "회원 정보가 존재하지 않습니다.";
+    public final static String ORDER_NO_ITEM = "주문 가능한 상품이 없습니다.";
+    public final static String NOT_FOUND_ORDER = "주문 정보가 없습니다.";
 
     private SetupDataUtils() {}
 
