@@ -25,3 +25,6 @@ spring:
       max-file-size: 5MB
       max-request-size: 10MB
       resolve-lazily: true
+
+  jwt:
+    secretKey: ThisIsARandomlyGeneratedSecretKeyForHS256AlgorithmAndItIsOver64BytesLong1234
