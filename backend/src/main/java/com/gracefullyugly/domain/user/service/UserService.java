@@ -37,13 +37,6 @@ public class UserService {
         return UserDtoUtil.userToFinalRegResponse(findUser);
     }
 
-    private User joinRequestToUser(BasicRegRequest request) {
-        return new User(
-                request.getLoginId(),
-                passwordEncoder.encode(request.getPassword())
-        );
-    }
-
     public UpdateNicknameDto updateNickname(Long userId, String newNickname) {
         User findUser = userSearchService.findById(userId);
 
@@ -66,5 +59,18 @@ public class UserService {
         User findUser = userSearchService.findById(userId);
 
         findUser.delete();
+    }
+
+    private User joinRequestToUser(BasicRegRequest request) {
+        return new User(
+                request.getLoginId(),
+                passwordEncoder.encode(request.getPassword())
+        );
+    }
+
+    public void updateVerify(Long userId, String email) {
+        User findUser = userSearchService.findById(userId);
+
+        findUser.updateVerify(email);
     }
 }

@@ -25,6 +25,6 @@ public class UserResponse {
     private boolean isDeleted;
     private boolean isVerified;
     private LocalDateTime createdDate;
-    private LocalDateTime updatedDate;
+    private LocalDateTime lastModifiedDate;
 
 }

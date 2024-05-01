@@ -1,9 +1,7 @@
 package com.gracefullyugly.domain.user.dto;
 
 import com.gracefullyugly.domain.user.entity.User;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public class UserDtoUtil {
 
     public static BasicRegResponse userToJoinResponse(User user) {
@@ -35,7 +33,7 @@ public class UserDtoUtil {
                 .isDeleted(user.isDeleted())
                 .isVerified(user.isVerified())
                 .createdDate(user.getCreatedDate())
-                .updatedDate(user.getLastModifiedDate())
+                .lastModifiedDate(user.getLastModifiedDate())
                 .build();
     }
 
