@@ -4,6 +4,7 @@ import com.gracefullyugly.common.security.jwt.JWTFilter;
 import com.gracefullyugly.common.security.jwt.JWTUtil;
 import com.gracefullyugly.common.security.jwt.LoginFilter;
 import java.util.Collections;
+import com.gracefullyugly.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,6 +35,8 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     //JWTUtil 주입
     private final JWTUtil jwtUtil;
+
+    private final UserRepository userRepository;
 
     //AuthenticationManager Bean 등록
     @Bean
@@ -101,7 +104,7 @@ public class SecurityConfig {
 
         //필터 추가 LoginFilter()는 인자를 받음 (AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함) 따라서 등록 필요
         http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil),
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, userRepository),
                         UsernamePasswordAuthenticationFilter.class);
         //세션 설정 jwt 위해서는 STATELESS 로 설정 해줘야함
         http
