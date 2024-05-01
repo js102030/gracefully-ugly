@@ -1,5 +1,6 @@
 package com.gracefullyugly.domain.order.service;
 
+import com.gracefullyugly.common.exception.custom.NotFoundException;
 import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
 import com.gracefullyugly.domain.order.dto.CreateOrderRequest;
@@ -37,31 +38,34 @@ public class OrderService {
 
     public OrderResponse createOrder(Long userId, CreateOrderRequest request) {
         if (!userRepository.existsById(userId)) {
-            throw new IllegalArgumentException("회원 정보가 없습니다.");
+            throw new NotFoundException("회원 정보가 존재하지 않습니다.");
         }
 
-        Long orderId = orderRepository.save(new Order(userId, request.getAddress(), request.getPhoneNumber())).getId();
-        List<OrderItem> orderItemList = makeOrderItemList(orderId, request.getItemIdList());
+        Order order = orderRepository.save(new Order(userId, request.getAddress(), request.getPhoneNumber()));
+        List<OrderItem> orderItemList = makeOrderItemList(order.getId(), request.getItemIdList());
 
         if (orderItemList.isEmpty()) {
-            throw new IllegalArgumentException("주문 가능한 상품이 없습니다.");
+            throw new NotFoundException("주문 가능한 상품이 없습니다.");
         }
-        orderItemRepository.saveAll(makeOrderItemList(orderId, request.getItemIdList()));
+        orderItemRepository.saveAll(makeOrderItemList(order.getId(), request.getItemIdList()));
 
         return OrderResponse.builder()
-            .message("주문이 정상적으로 저장되었습니다.")
+            .orderId(order.getId())
+            .userId(order.getUserId())
+            .address(order.getAddress())
+            .phoneNumber(order.getPhoneNumber())
             .build();
     }
 
     public OrderInfoResponse getOrderInfo(Long userId, Long orderId) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
-            throw new IllegalArgumentException("회원 정보가 없습니다.");
+            throw new NotFoundException("회원 정보가 존재하지 않습니다.");
         }
 
         Optional<Order> orderOptional = orderRepository.findById(orderId);
         if (orderOptional.isEmpty()) {
-            throw new IllegalArgumentException("주문 정보가 없습니다.");
+            throw new NotFoundException("주문 정보가 없습니다.");
         }
 
         Order order = orderOptional.get();
@@ -81,13 +85,14 @@ public class OrderService {
         Optional<Order> orderOptional = orderRepository.findById(orderId);
 
         if (orderOptional.isEmpty()) {
-            throw new IllegalArgumentException("주문 정보가 없습니다.");
+            throw new NotFoundException("주문 정보가 없습니다.");
         }
 
         orderOptional.get().updateAddress(request.getAddress());
 
         return OrderResponse.builder()
-            .message("주소가 정상적으로 변경되었습니다.")
+            .orderId(orderId)
+            .address(orderOptional.get().getAddress())
             .build();
     }
 
@@ -95,13 +100,14 @@ public class OrderService {
         Optional<Order> orderOptional = orderRepository.findById(orderId);
 
         if (orderOptional.isEmpty()) {
-            throw new IllegalArgumentException("주문 정보가 없습니다.");
+            throw new NotFoundException("주문 정보가 없습니다.");
         }
 
         orderOptional.get().updatePhoneNumber(request.getPhoneNumber());
 
         return OrderResponse.builder()
-            .message("연락처가 정상적으로 변경되었습니다.")
+            .orderId(orderId)
+            .phoneNumber(orderOptional.get().getPhoneNumber())
             .build();
     }
 
