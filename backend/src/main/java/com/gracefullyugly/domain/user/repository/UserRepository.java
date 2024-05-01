@@ -17,6 +17,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("UPDATE User e SET e.refreshToken = :refreshToken WHERE e.loginId = :loginId")
     void saveRefreshToken(String loginId, String refreshToken);
 
+    @Transactional
+    void deleteRefreshTokenByLoginId(String loginId);
+
     @Query("SELECT e.refreshToken FROM User e WHERE e.loginId = :loginId")
     String findRefreshTokenByLoginId(String loginId);
 
@@ -35,4 +38,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByNickname(String nickname);
 
     boolean existsByEmail(String email);
+
+    boolean existsByRefreshToken(String refreshToken);
 }
