@@ -18,6 +18,7 @@ public class SetupDataUtils {
     public static final String TEST_NICKNAME = "testNickname";
     public static final String TEST_EMAIL = "test@test.com";
     public static final String TEST_ADDRESS = "testAddress";
+    public static final String TEST_PHONE_NUMBER = "01012345678";
     public static final Role TEST_ROLE = Role.BUYER;
     public static final String NEW_NICKNAME = "newNickname";
     public static final String TEST_PASSWORD = "test";
@@ -26,7 +27,7 @@ public class SetupDataUtils {
     public final static String NAME = "테스트용 이름";
     public final static String PRODUCTION_PLACE = "테스트용 생산지";
     public final static Category CATEGORY_ID = Category.VEGETABLE;
-    public final static LocalDateTime CLOSED_DATE = LocalDateTime.now();
+    public final static LocalDateTime CLOSED_DATE = LocalDateTime.now().plusDays(1);
     public final static int MIN_UNIT_WEIGHT = 1000;
     public final static int PRICE = 10000;
     public final static int TOTAL_SALES_UNIT = 10;
@@ -45,6 +46,8 @@ public class SetupDataUtils {
     public final static String DELETE_CART_ITEM_SUCCESS = "해당 상품이 찜 목록에서 삭제되었습니다.";
     public final static String DELETE_CART_ITEM_NOT_FOUND_CART = "찜 목록이 아직 생성되지 않았습니다.";
     public final static String DELETE_CART_ITEM_NOT_FOUND_ITEM = "해당 상품이 찜 목록에 존재하지 않습니다.";
+    public final static String CREATE_ORDER_SUCCESS = "주문이 정상적으로 저장되었습니다.";
+    public final static String CREATE_ORDER_NOT_FOUND_USER = "회원 정보가 존재하지 않습니다.";
 
     private SetupDataUtils() {}
 
