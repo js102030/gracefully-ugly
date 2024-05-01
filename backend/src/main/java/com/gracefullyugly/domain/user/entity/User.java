@@ -93,6 +93,7 @@ public class User extends BaseTimeEntity {
 
     public void updateRefreshToken(String updateRefreshToken) {
         this.refreshToken = updateRefreshToken;
+    }
 
     public void updateVerify(String email) {
         this.email = email;

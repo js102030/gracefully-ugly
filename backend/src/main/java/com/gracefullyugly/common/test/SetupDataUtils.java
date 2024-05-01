@@ -61,6 +61,8 @@ public class SetupDataUtils {
             TEST_NICKNAME,
             TEST_EMAIL,
             TEST_ADDRESS,
+            null,
+            null,
             false,
             false,
             false);
