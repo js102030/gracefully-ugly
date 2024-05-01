@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,13 +44,5 @@ public class OrderController {
     @PutMapping("/orders/phone_number/{orderId}")
     public ResponseEntity<OrderResponse> updateOrderPhoneNumber(@PathVariable("orderId") Long orderId, @Valid @RequestBody UpdateOrderPhoneNumberRequest request) {
         return ResponseEntity.ok(orderService.updateOrderPhoneNumber(orderId, request));
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<OrderResponse> notFoundInfoHandler(IllegalArgumentException err) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-            .body(OrderResponse.builder()
-            .message(err.getLocalizedMessage())
-            .build());
     }
 }
