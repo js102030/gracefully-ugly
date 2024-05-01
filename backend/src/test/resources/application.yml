@@ -1,6 +1,8 @@
 spring:
   profiles:
     active: test
+    include:
+      - aws
 
   application:
     name: gracefully-ugly
@@ -18,3 +20,8 @@ spring:
   h2:
     console:
       enabled: true
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 10MB
+      resolve-lazily: true
