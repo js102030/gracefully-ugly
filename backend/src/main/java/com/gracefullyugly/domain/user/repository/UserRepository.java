@@ -7,7 +7,7 @@ import com.gracefullyugly.domain.user.enumtype.SignUpType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByLoginId(String userLoginId);
+    User findByLoginId(String userLoginId);
 
     Optional<User> findByRefreshToken(String refreshToken);
 
