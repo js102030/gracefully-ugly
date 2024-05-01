@@ -1,5 +1,6 @@
 package com.gracefullyugly.domain.order.controller.api;
 
+import static com.gracefullyugly.testutil.SetupDataUtils.NOT_FOUND_ORDER;
 import static com.gracefullyugly.testutil.SetupDataUtils.NOT_FOUND_USER;
 import static com.gracefullyugly.testutil.SetupDataUtils.ORDER_NO_ITEM;
 import static com.gracefullyugly.testutil.SetupDataUtils.QUANTITY;
@@ -161,7 +162,7 @@ public class OrderControllerTest {
 
     @Test
     @DisplayName("주문 정보 조회 API 테스트")
-    void getOrderInfTest() throws Exception {
+    void getOrderInfoTest() throws Exception {
         // GIVEN
         Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
         List<Item> itemList = itemRepository.findAll();
@@ -187,5 +188,32 @@ public class OrderControllerTest {
             .andExpect(jsonPath("orderItemList[1].name").value(itemList.get(1).getName()))
             .andExpect(jsonPath("orderItemList[1].itemId").value(itemList.get(1).getId()))
             .andExpect(jsonPath("orderItemList[1].quantity").value(QUANTITY + 3L));
+    }
+
+    @Test
+    @DisplayName("주문 정보 조회 API 실패 테스트")
+    void getOrderInfoFailTest() throws Exception {
+        // GIVEN
+        // 기본 주문 정보 세팅
+        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+        List<Item> itemList = itemRepository.findAll();
+        CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemList);
+        OrderResponse orderResponse = orderService.createOrder(testUserId, testRequest);
+
+        // 없는 회원 정보
+        Long testFailUserId = 100L;
+
+        // 없는 주문 정보
+        Long testFailOrderId = 100L;
+
+        // WHEN
+        ResultActions resultNoUser = mockMvc.perform(get("/api/orders/" + testFailUserId + "/" + orderResponse.getOrderId()));
+        ResultActions resultNoOrder = mockMvc.perform(get("/api/orders/" + testUserId + "/" + testFailOrderId));
+
+        // THEN
+        resultNoUser.andExpect(status().isNotFound())
+            .andExpect(jsonPath("$").value(NOT_FOUND_USER));
+        resultNoOrder.andExpect(status().isNotFound())
+            .andExpect(jsonPath("$").value(NOT_FOUND_ORDER));
     }
 }
