@@ -3,16 +3,20 @@ package com.gracefullyugly.domain.order.service;
 import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
 import com.gracefullyugly.domain.order.dto.CreateOrderRequest;
+import com.gracefullyugly.domain.order.dto.OrderInfoResponse;
 import com.gracefullyugly.domain.order.dto.OrderResponse;
 import com.gracefullyugly.domain.order.dto.OrderItemDto;
 import com.gracefullyugly.domain.order.dto.UpdateOrderAddressRequest;
 import com.gracefullyugly.domain.order.dto.UpdateOrderPhoneNumberRequest;
 import com.gracefullyugly.domain.order.entity.Order;
 import com.gracefullyugly.domain.order.repository.OrderRepository;
+import com.gracefullyugly.domain.orderitem.dto.OrderItemInfoResponse;
 import com.gracefullyugly.domain.orderitem.entity.OrderItem;
 import com.gracefullyugly.domain.orderitem.repository.OrderItemRepository;
+import com.gracefullyugly.domain.payment.entity.Payment;
+import com.gracefullyugly.domain.payment.repository.PaymentRepository;
+import com.gracefullyugly.domain.user.entity.User;
 import com.gracefullyugly.domain.user.repository.UserRepository;
-import jakarta.xml.bind.ValidationException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -29,17 +33,18 @@ public class OrderService {
     private ItemRepository itemRepository;
     private OrderRepository orderRepository;
     private OrderItemRepository orderItemRepository;
+    private PaymentRepository paymentRepository;
 
     public OrderResponse createOrder(Long userId, CreateOrderRequest request) {
         if (!userRepository.existsById(userId)) {
-            throw new RuntimeException("회원 정보가 없습니다.");
+            throw new IllegalArgumentException("회원 정보가 없습니다.");
         }
 
         Long orderId = orderRepository.save(new Order(userId, request.getAddress(), request.getPhoneNumber())).getId();
         List<OrderItem> orderItemList = makeOrderItemList(orderId, request.getItemIdList());
 
         if (orderItemList.isEmpty()) {
-            throw new RuntimeException("주문 가능한 상품이 없습니다.");
+            throw new IllegalArgumentException("주문 가능한 상품이 없습니다.");
         }
         orderItemRepository.saveAll(makeOrderItemList(orderId, request.getItemIdList()));
 
@@ -48,11 +53,35 @@ public class OrderService {
             .build();
     }
 
+    public OrderInfoResponse getOrderInfo(Long userId, Long orderId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isEmpty()) {
+            throw new IllegalArgumentException("회원 정보가 없습니다.");
+        }
+
+        Optional<Order> orderOptional = orderRepository.findById(orderId);
+        if (orderOptional.isEmpty()) {
+            throw new IllegalArgumentException("주문 정보가 없습니다.");
+        }
+
+        Order order = orderOptional.get();
+        String nickname = userOptional.get().getNickname();
+        Payment payment = paymentRepository.findByOrderId(orderId).orElse(null);
+        List<OrderItemInfoResponse> orderItemList = orderItemRepository.findAllByOrderId(orderId);
+
+        return OrderInfoResponse.builder()
+            .order(order)
+            .nickname(nickname)
+            .payment(payment)
+            .orderItemList(orderItemList)
+            .build();
+    }
+
     public OrderResponse updateOrderAddress(Long orderId, UpdateOrderAddressRequest request) {
         Optional<Order> orderOptional = orderRepository.findById(orderId);
 
         if (orderOptional.isEmpty()) {
-            throw new RuntimeException("주문 정보가 없습니다.");
+            throw new IllegalArgumentException("주문 정보가 없습니다.");
         }
 
         orderOptional.get().updateAddress(request.getAddress());
@@ -66,7 +95,7 @@ public class OrderService {
         Optional<Order> orderOptional = orderRepository.findById(orderId);
 
         if (orderOptional.isEmpty()) {
-            throw new RuntimeException("주문 정보가 없습니다.");
+            throw new IllegalArgumentException("주문 정보가 없습니다.");
         }
 
         orderOptional.get().updatePhoneNumber(request.getPhoneNumber());
