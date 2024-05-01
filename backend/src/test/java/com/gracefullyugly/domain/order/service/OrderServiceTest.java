@@ -19,6 +19,7 @@ import com.gracefullyugly.domain.order.dto.OrderInfoResponse;
 import com.gracefullyugly.domain.order.dto.OrderItemDto;
 import com.gracefullyugly.domain.order.dto.OrderResponse;
 import com.gracefullyugly.domain.order.dto.UpdateOrderAddressRequest;
+import com.gracefullyugly.domain.order.dto.UpdateOrderPhoneNumberRequest;
 import com.gracefullyugly.domain.order.repository.OrderRepository;
 import com.gracefullyugly.domain.orderitem.repository.OrderItemRepository;
 import com.gracefullyugly.domain.user.repository.UserRepository;
@@ -198,5 +199,40 @@ public class OrderServiceTest {
 
         // WHEN, THEN
         Assertions.assertThrows(NotFoundException.class, () -> orderService.updateOrderAddress(testFailOrderId, request), NOT_FOUND_ORDER);
+    }
+
+    @Test
+    @DisplayName("주문 정보 연락처 변경 테스트")
+    void updateOrderPhoneNumberTest() {
+        // GIVEN
+        // 기본 주문 정보 세팅
+        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+        CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemRepository.findAll());
+        OrderResponse orderResponse = orderService.createOrder(testUserId, testRequest);
+        UpdateOrderPhoneNumberRequest request = UpdateOrderPhoneNumberRequest.builder().phoneNumber("01011111111").build();
+
+        // WHEN
+        OrderResponse result = orderService.updateOrderPhoneNumber(orderResponse.getOrderId(), request);
+
+        // THEN
+        assertThat(result.getOrderId()).isEqualTo(orderResponse.getOrderId());
+        assertThat(result.getPhoneNumber()).isEqualTo("01011111111");
+    }
+
+    @Test
+    @DisplayName("주문 정보 연락처 변경 실패 테스트")
+    void updateOrderPhoneNumberFailTest() {
+        // GIVEN
+        // 기본 주문 정보 세팅
+        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+        CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemRepository.findAll());
+        OrderResponse orderResponse = orderService.createOrder(testUserId, testRequest);
+        UpdateOrderPhoneNumberRequest request = UpdateOrderPhoneNumberRequest.builder().phoneNumber("01011111111").build();
+
+        // 없는 주문 정보
+        Long testFailOrderId = 100L;
+
+        // WHEN, THEN
+        Assertions.assertThrows(NotFoundException.class, () -> orderService.updateOrderPhoneNumber(testFailOrderId, request), NOT_FOUND_ORDER);
     }
 }
