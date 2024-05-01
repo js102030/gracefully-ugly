@@ -80,7 +80,9 @@ public class ReissueController {
 
         userRepository.saveRefreshToken(loginId, newRefresh);
         String saveRefresh = userRepository.findRefreshTokenByLoginId(loginId);
-        logger.info("기존 refresh" + refresh + "재발급한 refresh =" + newRefresh + "저장한 refresh=" + saveRefresh);
+        logger.info("기존 refresh =" + refresh) ;
+        logger.info("재발급한 refresh =" + newRefresh) ;
+        logger.info("저장한 refresh =" + saveRefresh) ;
 
         //response
         response.setHeader("access", newAccess);
