@@ -60,7 +60,7 @@ public class OrderService {
     public OrderInfoResponse getOrderInfo(Long userId, Long orderId) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
-            throw new NotFoundException("회원 정보가 없습니다.");
+            throw new NotFoundException("회원 정보가 존재하지 않습니다.");
         }
 
         Optional<Order> orderOptional = orderRepository.findById(orderId);
