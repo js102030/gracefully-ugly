@@ -182,4 +182,21 @@ public class OrderServiceTest {
         assertThat(result.getOrderId()).isEqualTo(orderResponse.getOrderId());
         assertThat(result.getAddress()).isEqualTo("NewAddress");
     }
+
+    @Test
+    @DisplayName("주문 정보 주소 변경 실패 테스트")
+    void updateOrderAddressFailTest() {
+        // GIVEN
+        // 기본 주문 정보 세팅
+        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+        CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemRepository.findAll());
+        OrderResponse orderResponse = orderService.createOrder(testUserId, testRequest);
+        UpdateOrderAddressRequest request = UpdateOrderAddressRequest.builder().address("NewAddress").build();
+
+        // 없는 주문 정보
+        Long testFailOrderId = 100L;
+
+        // WHEN, THEN
+        Assertions.assertThrows(NotFoundException.class, () -> orderService.updateOrderAddress(testFailOrderId, request), NOT_FOUND_ORDER);
+    }
 }
