@@ -64,6 +64,8 @@ dependencies {
 
     implementation 'org.springframework:spring-aspects'
 
+    //mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail:3.2.4'
 }
 
 tasks.named('test') {

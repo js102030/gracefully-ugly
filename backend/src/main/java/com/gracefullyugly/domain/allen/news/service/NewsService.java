@@ -33,13 +33,17 @@ public class NewsService {
 
         List<News> content = listingNewses(contentBody);
 
-        List<News> news = newsRepository.saveAll(content);
+        List<News> savedNews = newsRepository.saveAll(content);
 
-        return new ApiResponse<>(news.size(), news);
+        return new ApiResponse<>(savedNews.size(), savedNews);
     }
 
     public ApiResponse<List<News>> getLastFiveNews() {
         List<News> lastFiveNews = newsRepository.findTop5ByOrderByCreatedAtAsc();
+
+        if (lastFiveNews.isEmpty()) {
+            throw new IllegalArgumentException("뉴스가 존재하지 않습니다.");
+        }
 
         return new ApiResponse<>(lastFiveNews.size(), lastFiveNews);
     }

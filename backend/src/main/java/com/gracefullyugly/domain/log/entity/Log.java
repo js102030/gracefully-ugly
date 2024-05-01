@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalDateTime;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,5 +32,17 @@ public class Log {
     private String logMessage;
 
     private Long executionTimeMs;
+
+
+    @Builder
+    public Log(Long userId, LocalDateTime logTime, LogLevel logLevel,
+               String methodSignature, String logMessage, Long executionTimeMs) {
+        this.userId = userId;
+        this.logTime = logTime;
+        this.logLevel = logLevel;
+        this.methodSignature = methodSignature;
+        this.logMessage = logMessage;
+        this.executionTimeMs = executionTimeMs;
+    }
 
 }
