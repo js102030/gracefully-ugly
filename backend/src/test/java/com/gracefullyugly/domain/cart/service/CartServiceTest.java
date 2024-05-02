@@ -1,7 +1,7 @@
 package com.gracefullyugly.domain.cart.service;
 
 import static com.gracefullyugly.testutil.SetupDataUtils.CATEGORY_ID;
-import static com.gracefullyugly.testutil.SetupDataUtils.NAME;
+import static com.gracefullyugly.testutil.SetupDataUtils.ITEM_NAME;
 import static com.gracefullyugly.testutil.SetupDataUtils.PRICE;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -90,13 +90,13 @@ public class CartServiceTest {
 
         CartListResponse cartListResponse1 = result.get(0);
         assertThat(cartListResponse1.getItemCount()).isEqualTo(2L);
-        assertThat(cartListResponse1.getName()).isEqualTo(NAME);
+        assertThat(cartListResponse1.getName()).isEqualTo(ITEM_NAME);
         assertThat(cartListResponse1.getPrice()).isEqualTo(PRICE);
         assertThat(cartListResponse1.getCategoryId()).isEqualTo(CATEGORY_ID);
 
         CartListResponse cartListResponse2 = result.get(1);
         assertThat(cartListResponse2.getItemCount()).isEqualTo(5L);
-        assertThat(cartListResponse2.getName()).isEqualTo(NAME + 2);
+        assertThat(cartListResponse2.getName()).isEqualTo(ITEM_NAME + 2);
         assertThat(cartListResponse2.getPrice()).isEqualTo(PRICE + 10000);
         assertThat(cartListResponse2.getCategoryId()).isEqualTo(CATEGORY_ID);
     }

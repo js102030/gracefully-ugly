@@ -23,9 +23,8 @@ public class VerificationController {
     private final VerificationService verificationService;
 
     @PostMapping("/verification")
-    public ResponseEntity<String> sendEmailWithCode(@RequestParam("email") String email,
-                                                    @AuthenticationPrincipal(expression = "userId") Long userId)
-            throws Exception {
+    public ResponseEntity<String> sendEmailWithCode(@AuthenticationPrincipal(expression = "userId") Long userId,
+                                                    @RequestParam("email") String email) throws Exception {
         final String code = verificationService.sendMessageAndSaveCode(userId, email);
 
         log.info("인증코드 : " + code);

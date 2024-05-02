@@ -1,7 +1,10 @@
 package com.gracefullyugly.testutil;
 
 import com.gracefullyugly.domain.item.dto.ItemRequest;
+import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.enumtype.Category;
+import com.gracefullyugly.domain.order.dto.CreateOrderRequest;
+import com.gracefullyugly.domain.order.dto.OrderItemDto;
 import com.gracefullyugly.domain.user.entity.User;
 import com.gracefullyugly.domain.user.enumtype.Role;
 import com.gracefullyugly.domain.user.enumtype.SignUpType;
@@ -24,7 +27,7 @@ public class SetupDataUtils {
     public static final String TEST_PASSWORD = "test";
 
     // 테스트용 상품 데이터 Input
-    public final static String NAME = "테스트용 이름";
+    public final static String ITEM_NAME = "테스트용 이름";
     public final static String PRODUCTION_PLACE = "테스트용 생산지";
     public final static Category CATEGORY_ID = Category.VEGETABLE;
     public final static LocalDateTime CLOSED_DATE = LocalDateTime.now().plusDays(1);
@@ -33,6 +36,7 @@ public class SetupDataUtils {
     public final static int TOTAL_SALES_UNIT = 10;
     public final static int MIN_GROUP_BUY_WEIGHT = 5000;
     public final static String DESCRIPTION = "테스트용 내용";
+    public final static Long QUANTITY = 2L;
 
     // Output 메시지
     public static final String ID_VALID_MESSAGE = "아이디 입력은 필수입니다.";
@@ -47,7 +51,9 @@ public class SetupDataUtils {
     public final static String DELETE_CART_ITEM_NOT_FOUND_CART = "찜 목록이 아직 생성되지 않았습니다.";
     public final static String DELETE_CART_ITEM_NOT_FOUND_ITEM = "해당 상품이 찜 목록에 존재하지 않습니다.";
     public final static String CREATE_ORDER_SUCCESS = "주문이 정상적으로 저장되었습니다.";
-    public final static String CREATE_ORDER_NOT_FOUND_USER = "회원 정보가 존재하지 않습니다.";
+    public final static String NOT_FOUND_USER = "회원 정보가 존재하지 않습니다.";
+    public final static String ORDER_NO_ITEM = "주문 가능한 상품이 없습니다.";
+    public final static String NOT_FOUND_ORDER = "주문 정보가 없습니다.";
 
     private SetupDataUtils() {}
 
@@ -61,6 +67,8 @@ public class SetupDataUtils {
             TEST_NICKNAME,
             TEST_EMAIL,
             TEST_ADDRESS,
+            null,
+            null,
             false,
             false,
             false);
@@ -70,7 +78,7 @@ public class SetupDataUtils {
         List<ItemRequest> retVal = new ArrayList<>();
 
         retVal.add(ItemRequest.builder()
-            .name(NAME)
+            .name(ITEM_NAME)
             .productionPlace(PRODUCTION_PLACE)
             .categoryId(CATEGORY_ID)
             .closedDate(CLOSED_DATE)
@@ -81,7 +89,7 @@ public class SetupDataUtils {
             .description(DESCRIPTION).build());
 
         retVal.add(ItemRequest.builder()
-            .name(NAME + 2)
+            .name(ITEM_NAME + 2)
             .productionPlace(PRODUCTION_PLACE + 2)
             .categoryId(CATEGORY_ID)
             .closedDate(CLOSED_DATE)
@@ -92,5 +100,17 @@ public class SetupDataUtils {
             .description(DESCRIPTION + 2).build());
 
         return retVal;
+    }
+
+    public static CreateOrderRequest makeCreateOrderRequest(List<Item> testItemList) {
+        List<OrderItemDto> testOrderItemDtoList = new ArrayList<>();
+        testOrderItemDtoList.add(new OrderItemDto(testItemList.get(0).getId(), QUANTITY));
+        testOrderItemDtoList.add(new OrderItemDto(testItemList.get(1).getId(), QUANTITY + 3));
+
+        return CreateOrderRequest.builder()
+            .address(TEST_ADDRESS)
+            .phoneNumber(TEST_PHONE_NUMBER)
+            .itemIdList(testOrderItemDtoList)
+            .build();
     }
 }

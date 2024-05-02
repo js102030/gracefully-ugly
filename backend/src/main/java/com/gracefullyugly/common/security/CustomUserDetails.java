@@ -1,7 +1,6 @@
 package com.gracefullyugly.common.security;
 
 import com.gracefullyugly.domain.user.entity.User;
-import com.gracefullyugly.domain.user.enumtype.Role;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,10 +27,6 @@ public class CustomUserDetails implements UserDetails {
         return user.getId();
     }
 
-    public Role getUserRole() {
-        return user.getRole();
-    }
-
     @Override
     public String getPassword() {
         return user.getPassword();
@@ -39,7 +34,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getNickname();
+        return user.getLoginId();
     }
 
     @Override

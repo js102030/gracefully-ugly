@@ -1,8 +1,9 @@
 package com.gracefullyugly.domain.cart.controller.api;
 
 import static com.gracefullyugly.testutil.SetupDataUtils.CATEGORY_ID;
-import static com.gracefullyugly.testutil.SetupDataUtils.NAME;
+import static com.gracefullyugly.testutil.SetupDataUtils.ITEM_NAME;
 import static com.gracefullyugly.testutil.SetupDataUtils.PRICE;
+import static com.gracefullyugly.testutil.SetupDataUtils.QUANTITY;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -51,21 +52,21 @@ public class CartControllerTest {
     CartItemService cartItemService;
 
     @BeforeEach
-    void setupUserData() {
+    void setupTestData() {
+        // 회원 정보 세팅
         userRepository.save(SetupDataUtils.makeTestUser(passwordEncoder));
-    }
 
-    @BeforeEach
-    void setupItemData() {
+        // 상품 정보 세팅
         List<ItemRequest> testItemData = SetupDataUtils.makeTestItemRequest();
 
-        itemService.save(1L, testItemData.get(0));
-        itemService.save(1L, testItemData.get(1));
+        itemService.save(userRepository.findByNickname(TEST_NICKNAME).get().getId(), testItemData.get(0));
+        itemService.save(userRepository.findByNickname(TEST_NICKNAME).get().getId(), testItemData.get(1));
 
+        // 찜 목록 상품 세팅
         cartItemService.addCartItem(userRepository.findByNickname(TEST_NICKNAME).get().getId(),
-            itemRepository.findAll().get(0).getId(), AddCartItemRequest.builder().itemCount(2L).build());
+            itemRepository.findAll().get(0).getId(), AddCartItemRequest.builder().itemCount(QUANTITY).build());
         cartItemService.addCartItem(userRepository.findByNickname(TEST_NICKNAME).get().getId(),
-            itemRepository.findAll().get(1).getId(), AddCartItemRequest.builder().itemCount(5L).build());
+            itemRepository.findAll().get(1).getId(), AddCartItemRequest.builder().itemCount(QUANTITY + 3).build());
     }
 
     @Test
@@ -77,12 +78,12 @@ public class CartControllerTest {
         // WHEN, THEN
         mockMvc.perform(get("/api/cart/" + testUserId))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].itemCount").value(2L))
-            .andExpect(jsonPath("$[0].name").value(NAME))
+            .andExpect(jsonPath("$[0].itemCount").value(QUANTITY))
+            .andExpect(jsonPath("$[0].name").value(ITEM_NAME))
             .andExpect(jsonPath("$[0].price").value(PRICE))
             .andExpect(jsonPath("$[0].categoryId").value(CATEGORY_ID.toString()))
-            .andExpect(jsonPath("$[1].itemCount").value(5L))
-            .andExpect(jsonPath("$[1].name").value(NAME + 2))
+            .andExpect(jsonPath("$[1].itemCount").value(QUANTITY + 3))
+            .andExpect(jsonPath("$[1].name").value(ITEM_NAME + 2))
             .andExpect(jsonPath("$[1].price").value(PRICE + 10000))
             .andExpect(jsonPath("$[1].categoryId").value(CATEGORY_ID.toString()));
 
