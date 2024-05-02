@@ -3,7 +3,6 @@ package com.gracefullyugly.domain.item.service;
 import static com.gracefullyugly.testutil.SetupDataUtils.ADD_CART_ITEM_SUCCESS;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gracefullyugly.domain.cart.dto.CartListResponse;
@@ -12,6 +11,7 @@ import com.gracefullyugly.domain.cart.service.CartService;
 import com.gracefullyugly.domain.cart_item.dto.AddCartItemRequest;
 import com.gracefullyugly.domain.cart_item.dto.CartItemResponse;
 import com.gracefullyugly.domain.cart_item.service.CartItemService;
+import com.gracefullyugly.domain.item.dto.ItemDtoUtil;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
 import com.gracefullyugly.domain.item.entity.Item;
@@ -21,25 +21,17 @@ import com.gracefullyugly.domain.user.repository.UserRepository;
 import com.gracefullyugly.testutil.SetupDataUtils;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.*;
-import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @Transactional
 class ItemSearchServiceTest {
-
-    @Autowired
-    MockMvc mockMvc;
 
     @Autowired
     ItemRepository itemRepository;
@@ -67,13 +59,6 @@ class ItemSearchServiceTest {
 
     @Autowired
     ObjectMapper objectMapper;
-
-    @AfterEach
-    void deleteData() {
-        itemRepository.deleteAll();
-        cartRepository.deleteAll();
-        userRepository.deleteAll();
-    }
 
     @Test
     @DisplayName("72시간 이내 마감임박 상품 목록 조회")
@@ -109,7 +94,6 @@ class ItemSearchServiceTest {
         ItemResponse item2 = itemService.save(itemId2, itemRequest2);
 
         // WHEN
-        itemSearchService = new ItemSearchService(itemRepository);
         List<ItemResponse> impendingItems = itemSearchService.getImpendingItems();
 
         // THEN
@@ -166,8 +150,8 @@ class ItemSearchServiceTest {
                 .description("맛있는 고구마 ~ ")
                 .build();
 
-        ItemResponse item1 = itemService.save(itemId1, itemRequest1);
-        ItemResponse item2 = itemService.save(itemId2, itemRequest2);
+        ItemResponse item1 = itemService.save(testUserId, itemRequest1);
+        ItemResponse item2 = itemService.save(testUserId, itemRequest2);
 
         // 찜 상품에 데이터 추가
         AddCartItemRequest testItemCount1 = AddCartItemRequest.builder().itemCount(2L).build();
@@ -184,11 +168,15 @@ class ItemSearchServiceTest {
 
         // WHEN
         List<Item> result = itemRepository.findPopularityItems();
+        List<ItemResponse> resultList = result.stream()
+                .map(ItemDtoUtil::itemToItemResponse)
+                .collect(Collectors.toList());
 
         // THEN
-        Assertions.assertEquals(2, result.size()); // 결과는 2개여야 함
-        Assertions.assertEquals(item2.getId(), result.get(0).getId()); // 찜 개수가 높은 순으로 정렬되었는지 확인
-        Assertions.assertEquals(item1.getId(), result.get(1).getId());
+        System.out.println("리스트보기 :"+resultList);
+        assertThat(resultList.size()).isEqualTo(2);
+        assertThat(item2.getId()).isEqualTo(resultList.get(0).getId()); // 찜 개수가 높은 순으로 정렬되었는지 확인
+        assertThat(item1.getId()).isEqualTo(resultList.get(1).getId());
     }
 
     @Test

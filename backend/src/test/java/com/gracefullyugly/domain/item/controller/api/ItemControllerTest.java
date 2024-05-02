@@ -1,6 +1,8 @@
 package com.gracefullyugly.domain.item.controller.api;
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -17,6 +19,8 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import com.gracefullyugly.domain.user.repository.UserRepository;
+import com.gracefullyugly.testutil.SetupDataUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +28,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 
@@ -37,50 +42,67 @@ class ItemControllerTest {
     @MockBean
     private ItemSearchService itemSearchService;
 
-//    @Test
-//    @DisplayName("판매글 생성 테스트") //todo customUserDetails" is null
-//    void addItemTest() throws Exception {
-//        // GIVEN
-//        Long userId = 1L;
-//        Long itemId = 1L;
-//        ItemRequest request = ItemRequest.builder()
-//                .name("감자")
-//                .productionPlace("강원도")
-//                .categoryId(Category.VEGETABLE)
-//                .closedDate(LocalDateTime.now().plusDays(3))
-//                .minUnitWeight(3)
-//                .price(7900)
-//                .totalSalesUnit(20)
-//                .minGroupBuyWeight(15)
-//                .description("맛 좋은 감자")
-//                .build();
-//
-//        ItemResponse response = ItemResponse.builder()
-//                .id(itemId)
-//                .name("감자")
-//                .productionPlace("강원도")
-//                .categoryId(Category.VEGETABLE)
-//                .closedDate(LocalDateTime.now().plusDays(3))
-//                .minUnitWeight(3)
-//                .price(7900)
-//                .totalSalesUnit(20)
-//                .minGroupBuyWeight(15)
-//                .description("맛 좋은 감자")
-//                .build();
-//
-//        // WHEN
-//        when(itemService.save(userId, request)).thenReturn(response);
-//
-//        // THEN
-//        mockMvc.perform(post("/api/items")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(request)))
-//                .andExpect(status().isCreated())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(jsonPath("$.id").value(response.getId()))
-//                .andExpect(jsonPath("$.name").value(response.getName()))
-//                .andExpect(jsonPath("$.description").value(response.getDescription()));
-//    }
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ItemService itemService;
+
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    @Test
+    @DisplayName("판매글 생성 테스트")
+    void addItemTest() throws Exception {
+        // GIVEN
+        userRepository.save(SetupDataUtils.makeTestUser(passwordEncoder));
+        userRepository.save(
+                SetupDataUtils.makeCustomTestUser(null, "customUser", "customUser", "customUser", "custom@custom.com",
+                        "customAddress", passwordEncoder));
+        userRepository.save(SetupDataUtils.makeTestAdmin(passwordEncoder));
+        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+        Long itemId = 1L;
+        ItemRequest itemRequest = ItemRequest.builder()
+                .categoryId(Category.VEGETABLE)
+                .name("감자")
+                .productionPlace("강원도")
+                .closedDate(LocalDateTime.now().plusDays(1))
+                .minUnitWeight(3)
+                .price(7900)
+                .totalSalesUnit(20)
+                .minGroupBuyWeight(15)
+                .description("맛 좋은 감자")
+                .build();
+
+        ItemResponse itemResponse = ItemResponse.builder()
+                .id(itemId)
+                .id(testUserId)
+                .name("감자")
+                .productionPlace("강원도")
+                .closedDate(LocalDateTime.now().plusDays(1))
+                .categoryId(Category.VEGETABLE)
+                .minUnitWeight(3)
+                .price(7900)
+                .totalSalesUnit(20)
+                .minGroupBuyWeight(15)
+                .description("맛 좋은 감자")
+                .build();
+
+        // WHEN
+        when(itemService.save(testUserId, itemRequest)).thenReturn(itemResponse);
+
+        // THEN
+        mockMvc.perform(post("/api/items")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(itemRequest)))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(itemResponse.getId()))
+                .andExpect(jsonPath("$.name").value(itemResponse.getName()))
+                .andExpect(jsonPath("$.description").value(itemResponse.getDescription()));
+    }
 
     @Test
     @DisplayName("상품 목록 조회 테스트")
