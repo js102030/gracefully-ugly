@@ -3,7 +3,6 @@ package com.gracefullyugly.domain.groupbuy.controller;
 import com.gracefullyugly.domain.groupbuy.dto.GroupBuyInfoResponse;
 import com.gracefullyugly.domain.groupbuy.dto.GroupBuyListResponse;
 import com.gracefullyugly.domain.groupbuy.service.GroupBuySearchService;
-import com.gracefullyugly.domain.groupbuy.service.GroupBuyService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class GroupBuyController {
 
-    private GroupBuyService groupBuyService;
     private GroupBuySearchService groupBuySearchService;
 
     @GetMapping("/groupbuy/{groupBuyId}")
