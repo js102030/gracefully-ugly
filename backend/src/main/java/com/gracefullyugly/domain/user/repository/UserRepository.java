@@ -18,6 +18,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     void saveRefreshToken(String loginId, String refreshToken);
 
     @Transactional
+    @Modifying
+    @Query("UPDATE User e SET e.refreshToken = NULL WHERE e.loginId = :loginId")
     void deleteRefreshTokenByLoginId(String loginId);
 
     @Query("SELECT e.refreshToken FROM User e WHERE e.loginId = :loginId")
