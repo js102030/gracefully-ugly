@@ -51,6 +51,7 @@ class ItemServiceTest {
     void updateDescriptionTest() {
         // GIVEN
         Long itemId = 1L;
+        Long userId = 1L;
         String newDescription = "업데이트 테스트";
 
         // WHEN
@@ -58,7 +59,7 @@ class ItemServiceTest {
                 .description(newDescription)
                 .build();
 
-        UpdateDescriptionDto updatedDto = itemService.updateDescription(itemId, updateDescriptionDto);
+        UpdateDescriptionDto updatedDto = itemService.updateDescription(itemId, userId,updateDescriptionDto);
 
         // THEN
         Assertions.assertEquals(newDescription, updatedDto.getDescription());
@@ -69,9 +70,10 @@ class ItemServiceTest {
     void deletedById() {
         // GIVEN
         Long itemId = 1L;
+        Long userId = 1L;
 
         // WHEN
-        itemService.deletedById(itemId);
+        itemService.deletedById(itemId, userId);
         Item deletedItem = itemSearchService.findById(itemId);
 
         // THEN
