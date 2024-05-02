@@ -33,7 +33,7 @@ class ItemServiceTest {
     void setUp() {
         existingItem = Item.builder()
                 .id(1L)
-                .name(SetupDataUtils.NAME)
+                .name(SetupDataUtils.ITEM_NAME)
                 .productionPlace(SetupDataUtils.PRODUCTION_PLACE)
                 .categoryId(SetupDataUtils.CATEGORY_ID)
                 .closedDate(SetupDataUtils.CLOSED_DATE)
