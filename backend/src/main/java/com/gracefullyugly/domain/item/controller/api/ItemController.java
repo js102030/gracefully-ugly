@@ -70,7 +70,7 @@ public class ItemController {
     // 판매글 수정
     @PutMapping("/items/{itemId}")
     public ResponseEntity<UpdateDescriptionDto> updateDescription(@PathVariable Long itemId,
-                                                                  @AuthenticationPrincipal Long userId,
+                                                                  @AuthenticationPrincipal(expression = "userId") Long userId,
                                                                   @Valid @RequestBody UpdateDescriptionDto updateDescriptionDto) {
         final UpdateDescriptionDto updateAddress = itemService.updateDescription(itemId, userId, updateDescriptionDto);
 
@@ -81,7 +81,7 @@ public class ItemController {
     // 판매글 삭제
     @DeleteMapping("/items/{itemId}")
     public ResponseEntity<Void> deleteOneItem(@PathVariable Long itemId,
-                                              @AuthenticationPrincipal Long userId) {
+                                              @AuthenticationPrincipal(expression = "userId") Long userId) {
         itemService.deletedById(itemId, userId);
 
         return ResponseEntity.
