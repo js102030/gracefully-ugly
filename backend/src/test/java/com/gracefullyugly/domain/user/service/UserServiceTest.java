@@ -227,5 +227,21 @@ class UserServiceTest {
         assertTrue(deletedUser.isDeleted());
     }
 
+    @Test
+    @DisplayName("이메일 인증 테스트")
+    void updateVerifyTest() {
+        // given
+        User findUser = userSearchService.findByNickname(TEST_NICKNAME);
+        String newEmail = "newEmail";
+
+        // when
+        userService.updateVerify(findUser.getId(), newEmail);
+        User updatedUser = userSearchService.findById(findUser.getId());
+
+        // then
+        assertEquals(newEmail, updatedUser.getEmail());
+        assertTrue(updatedUser.isVerified());
+    }
+
 
 }

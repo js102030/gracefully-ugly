@@ -1,15 +1,18 @@
 package com.gracefullyugly.domain.order.service;
 
+import static com.gracefullyugly.testutil.SetupDataUtils.FORBIDDEN;
 import static com.gracefullyugly.testutil.SetupDataUtils.ITEM_NAME;
 import static com.gracefullyugly.testutil.SetupDataUtils.NOT_FOUND_ORDER;
 import static com.gracefullyugly.testutil.SetupDataUtils.NOT_FOUND_USER;
 import static com.gracefullyugly.testutil.SetupDataUtils.ORDER_NO_ITEM;
 import static com.gracefullyugly.testutil.SetupDataUtils.QUANTITY;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_ADDRESS;
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_ADMIN_NICKNAME;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_PHONE_NUMBER;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.gracefullyugly.common.exception.custom.ForbiddenException;
 import com.gracefullyugly.common.exception.custom.NotFoundException;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
 import com.gracefullyugly.domain.item.entity.Item;
@@ -23,6 +26,7 @@ import com.gracefullyugly.domain.order.dto.UpdateOrderAddressRequest;
 import com.gracefullyugly.domain.order.dto.UpdateOrderPhoneNumberRequest;
 import com.gracefullyugly.domain.order.repository.OrderRepository;
 import com.gracefullyugly.domain.orderitem.repository.OrderItemRepository;
+import com.gracefullyugly.domain.user.entity.User;
 import com.gracefullyugly.domain.user.repository.UserRepository;
 import com.gracefullyugly.testutil.SetupDataUtils;
 import java.util.ArrayList;
@@ -66,6 +70,10 @@ public class OrderServiceTest {
     void setupTestData() {
         // 회원 정보 세팅
         userRepository.save(SetupDataUtils.makeTestUser(passwordEncoder));
+        userRepository.save(
+                SetupDataUtils.makeCustomTestUser(null, "customUser", "customUser", "customUser", "custom@custom.com",
+                        "customAddress", passwordEncoder));
+        userRepository.save(SetupDataUtils.makeTestAdmin(passwordEncoder));
 
         // 상품 정보 세팅
         List<ItemRequest> testItemData = SetupDataUtils.makeTestItemRequest();
@@ -113,14 +121,16 @@ public class OrderServiceTest {
         testFailOrderItemDtoList.add(new OrderItemDto(111L, 5L));
 
         CreateOrderRequest testNoItemRequest = CreateOrderRequest.builder()
-            .address(TEST_ADDRESS)
-            .phoneNumber(TEST_PHONE_NUMBER)
-            .itemIdList(testFailOrderItemDtoList)
-            .build();
+                .address(TEST_ADDRESS)
+                .phoneNumber(TEST_PHONE_NUMBER)
+                .itemIdList(testFailOrderItemDtoList)
+                .build();
 
         // WHEN, THEN
-        Assertions.assertThrows(NotFoundException.class, () -> orderService.createOrder(testFailUserId, testNoUserRequest), NOT_FOUND_USER);
-        Assertions.assertThrows(NotFoundException.class, () -> orderService.createOrder(testUserId, testNoItemRequest), ORDER_NO_ITEM);
+        Assertions.assertThrows(NotFoundException.class,
+                () -> orderService.createOrder(testFailUserId, testNoUserRequest), NOT_FOUND_USER);
+        Assertions.assertThrows(NotFoundException.class, () -> orderService.createOrder(testUserId, testNoItemRequest),
+                ORDER_NO_ITEM);
     }
 
     @Test
@@ -164,10 +174,11 @@ public class OrderServiceTest {
         // 없는 주문 정보
         Long testFailOrderId = 100L;
 
-
         // WHEN, THEN
-        Assertions.assertThrows(NotFoundException.class, () -> orderService.getOrderInfo(testFailUserId, orderResponse.getOrderId()), NOT_FOUND_USER);
-        Assertions.assertThrows(NotFoundException.class, () -> orderService.getOrderInfo(testUserId, testFailOrderId), NOT_FOUND_ORDER);
+        Assertions.assertThrows(NotFoundException.class,
+                () -> orderService.getOrderInfo(testFailUserId, orderResponse.getOrderId()), NOT_FOUND_USER);
+        Assertions.assertThrows(NotFoundException.class, () -> orderService.getOrderInfo(testUserId, testFailOrderId),
+                NOT_FOUND_ORDER);
     }
 
     @Test
@@ -175,17 +186,26 @@ public class OrderServiceTest {
     void updateOrderAddressTest() {
         // GIVEN
         // 기본 주문 정보 세팅
-        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+        User testUser = userRepository.findByNickname(TEST_NICKNAME).get();
         CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemRepository.findAll());
-        OrderResponse orderResponse = orderService.createOrder(testUserId, testRequest);
+        OrderResponse orderResponse = orderService.createOrder(testUser.getId(), testRequest);
         UpdateOrderAddressRequest request = UpdateOrderAddressRequest.builder().address("NewAddress").build();
 
+        // 어드민 세팅
+        User admin = userRepository.findByNickname(TEST_ADMIN_NICKNAME).get();
+        UpdateOrderAddressRequest requestAdmin = UpdateOrderAddressRequest.builder().address("AdminAddress").build();
+
         // WHEN
-        OrderResponse result = orderService.updateOrderAddress(orderResponse.getOrderId(), request);
+        OrderResponse result = orderService.updateOrderAddress(testUser.getId(), testUser.getRole(),
+                orderResponse.getOrderId(), request);
+        OrderResponse resultAdmin = orderService.updateOrderAddress(admin.getId(), admin.getRole(),
+                orderResponse.getOrderId(), requestAdmin);
 
         // THEN
         assertThat(result.getOrderId()).isEqualTo(orderResponse.getOrderId());
         assertThat(result.getAddress()).isEqualTo("NewAddress");
+        assertThat(resultAdmin.getOrderId()).isEqualTo(orderResponse.getOrderId());
+        assertThat(resultAdmin.getAddress()).isEqualTo("AdminAddress");
     }
 
     @Test
@@ -193,16 +213,23 @@ public class OrderServiceTest {
     void updateOrderAddressFailTest() {
         // GIVEN
         // 기본 주문 정보 세팅
-        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+        User testUser = userRepository.findByNickname(TEST_NICKNAME).get();
         CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemRepository.findAll());
-        OrderResponse orderResponse = orderService.createOrder(testUserId, testRequest);
+        OrderResponse orderResponse = orderService.createOrder(testUser.getId(), testRequest);
         UpdateOrderAddressRequest request = UpdateOrderAddressRequest.builder().address("NewAddress").build();
 
         // 없는 주문 정보
         Long testFailOrderId = 100L;
+        // 다른 회원
+        User anotherUser = userRepository.findByNickname("customUser").get();
 
         // WHEN, THEN
-        Assertions.assertThrows(NotFoundException.class, () -> orderService.updateOrderAddress(testFailOrderId, request), NOT_FOUND_ORDER);
+        Assertions.assertThrows(NotFoundException.class,
+                () -> orderService.updateOrderAddress(testUser.getId(), testUser.getRole(), testFailOrderId, request),
+                NOT_FOUND_ORDER);
+        Assertions.assertThrows(ForbiddenException.class,
+                () -> orderService.updateOrderAddress(anotherUser.getId(), anotherUser.getRole(),
+                        orderResponse.getOrderId(), request), FORBIDDEN);
     }
 
     @Test
@@ -210,17 +237,29 @@ public class OrderServiceTest {
     void updateOrderPhoneNumberTest() {
         // GIVEN
         // 기본 주문 정보 세팅
-        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+        User testUser = userRepository.findByNickname(TEST_NICKNAME).get();
         CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemRepository.findAll());
-        OrderResponse orderResponse = orderService.createOrder(testUserId, testRequest);
-        UpdateOrderPhoneNumberRequest request = UpdateOrderPhoneNumberRequest.builder().phoneNumber("01011111111").build();
+        OrderResponse orderResponse = orderService.createOrder(testUser.getId(), testRequest);
+        UpdateOrderPhoneNumberRequest request = UpdateOrderPhoneNumberRequest.builder().phoneNumber("01011111111")
+                .build();
+
+        // 어드민 세팅
+        User admin = userRepository.findByNickname(TEST_ADMIN_NICKNAME).get();
+        UpdateOrderPhoneNumberRequest requestAdmin = UpdateOrderPhoneNumberRequest.builder().phoneNumber("01099999999")
+                .build();
 
         // WHEN
-        OrderResponse result = orderService.updateOrderPhoneNumber(orderResponse.getOrderId(), request);
+        OrderResponse result = orderService.updateOrderPhoneNumber(testUser.getId(), testUser.getRole(),
+                orderResponse.getOrderId(), request);
+        OrderResponse resultAdmin = orderService.updateOrderPhoneNumber(admin.getId(), admin.getRole(),
+                orderResponse.getOrderId(),
+                requestAdmin);
 
         // THEN
         assertThat(result.getOrderId()).isEqualTo(orderResponse.getOrderId());
         assertThat(result.getPhoneNumber()).isEqualTo("01011111111");
+        assertThat(resultAdmin.getOrderId()).isEqualTo(orderResponse.getOrderId());
+        assertThat(resultAdmin.getPhoneNumber()).isEqualTo("01099999999");
     }
 
     @Test
@@ -228,15 +267,23 @@ public class OrderServiceTest {
     void updateOrderPhoneNumberFailTest() {
         // GIVEN
         // 기본 주문 정보 세팅
-        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+        User testUser = userRepository.findByNickname(TEST_NICKNAME).get();
         CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemRepository.findAll());
-        OrderResponse orderResponse = orderService.createOrder(testUserId, testRequest);
-        UpdateOrderPhoneNumberRequest request = UpdateOrderPhoneNumberRequest.builder().phoneNumber("01011111111").build();
+        OrderResponse orderResponse = orderService.createOrder(testUser.getId(), testRequest);
+        UpdateOrderPhoneNumberRequest request = UpdateOrderPhoneNumberRequest.builder().phoneNumber("01011111111")
+                .build();
 
         // 없는 주문 정보
         Long testFailOrderId = 100L;
+        // 다른 회원
+        User anotherUser = userRepository.findByNickname("customUser").get();
 
         // WHEN, THEN
-        Assertions.assertThrows(NotFoundException.class, () -> orderService.updateOrderPhoneNumber(testFailOrderId, request), NOT_FOUND_ORDER);
+        Assertions.assertThrows(NotFoundException.class,
+                () -> orderService.updateOrderPhoneNumber(testUser.getId(), testUser.getRole(), testFailOrderId,
+                        request), NOT_FOUND_ORDER);
+        Assertions.assertThrows(ForbiddenException.class,
+                () -> orderService.updateOrderPhoneNumber(anotherUser.getId(), anotherUser.getRole(),
+                        orderResponse.getOrderId(), request), FORBIDDEN);
     }
 }

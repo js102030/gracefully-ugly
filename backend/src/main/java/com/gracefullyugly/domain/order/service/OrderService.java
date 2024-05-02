@@ -1,5 +1,6 @@
 package com.gracefullyugly.domain.order.service;
 
+import com.gracefullyugly.common.exception.custom.ForbiddenException;
 import com.gracefullyugly.common.exception.custom.NotFoundException;
 import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
@@ -17,6 +18,7 @@ import com.gracefullyugly.domain.orderitem.repository.OrderItemRepository;
 import com.gracefullyugly.domain.payment.entity.Payment;
 import com.gracefullyugly.domain.payment.repository.PaymentRepository;
 import com.gracefullyugly.domain.user.entity.User;
+import com.gracefullyugly.domain.user.enumtype.Role;
 import com.gracefullyugly.domain.user.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -50,11 +52,11 @@ public class OrderService {
         orderItemRepository.saveAll(makeOrderItemList(order.getId(), request.getItemIdList()));
 
         return OrderResponse.builder()
-            .orderId(order.getId())
-            .userId(order.getUserId())
-            .address(order.getAddress())
-            .phoneNumber(order.getPhoneNumber())
-            .build();
+                .orderId(order.getId())
+                .userId(order.getUserId())
+                .address(order.getAddress())
+                .phoneNumber(order.getPhoneNumber())
+                .build();
     }
 
     public OrderInfoResponse getOrderInfo(Long userId, Long orderId) {
@@ -74,41 +76,31 @@ public class OrderService {
         List<OrderItemInfoResponse> orderItemList = orderItemRepository.findAllByOrderId(orderId);
 
         return OrderInfoResponse.builder()
-            .order(order)
-            .nickname(nickname)
-            .payment(payment)
-            .orderItemList(orderItemList)
-            .build();
+                .order(order)
+                .nickname(nickname)
+                .payment(payment)
+                .orderItemList(orderItemList)
+                .build();
     }
 
-    public OrderResponse updateOrderAddress(Long orderId, UpdateOrderAddressRequest request) {
-        Optional<Order> orderOptional = orderRepository.findById(orderId);
-
-        if (orderOptional.isEmpty()) {
-            throw new NotFoundException("주문 정보가 없습니다.");
-        }
-
-        orderOptional.get().updateAddress(request.getAddress());
+    public OrderResponse updateOrderAddress(Long userId, Role role, Long orderId, UpdateOrderAddressRequest request) {
+        Order order = returnOrder(userId, role, orderId);
+        order.updateAddress(request.getAddress());
 
         return OrderResponse.builder()
-            .orderId(orderId)
-            .address(orderOptional.get().getAddress())
-            .build();
+                .orderId(order.getId())
+                .address(order.getAddress())
+                .build();
     }
 
-    public OrderResponse updateOrderPhoneNumber(Long orderId, UpdateOrderPhoneNumberRequest request) {
-        Optional<Order> orderOptional = orderRepository.findById(orderId);
-
-        if (orderOptional.isEmpty()) {
-            throw new NotFoundException("주문 정보가 없습니다.");
-        }
-
-        orderOptional.get().updatePhoneNumber(request.getPhoneNumber());
+    public OrderResponse updateOrderPhoneNumber(Long userId, Role role, Long orderId, UpdateOrderPhoneNumberRequest request) {
+        Order order = returnOrder(userId, role, orderId);
+        order.updatePhoneNumber(request.getPhoneNumber());
 
         return OrderResponse.builder()
-            .orderId(orderId)
-            .phoneNumber(orderOptional.get().getPhoneNumber())
-            .build();
+                .orderId(order.getId())
+                .phoneNumber(order.getPhoneNumber())
+                .build();
     }
 
     /**
@@ -116,17 +108,31 @@ public class OrderService {
      */
     private List<OrderItem> makeOrderItemList(Long orderId, List<OrderItemDto> items) {
         return items.stream()
-            .filter(item -> {
-                Optional<Item> resultOptional = itemRepository.findById(item.getItemId());
-                if (resultOptional.isEmpty()) {
-                    return false;
-                }
+                .filter(item -> {
+                    Optional<Item> resultOptional = itemRepository.findById(item.getItemId());
+                    if (resultOptional.isEmpty()) {
+                        return false;
+                    }
 
-                Item result = resultOptional.get();
+                    Item result = resultOptional.get();
 
-                return !result.isDeleted() && !result.getClosedDate().isBefore(LocalDateTime.now());
-            })
-            .map(item -> new OrderItem(item.getItemId(), orderId, item.getQuantity().intValue()))
-            .toList();
+                    return !result.isDeleted() && !result.getClosedDate().isBefore(LocalDateTime.now());
+                })
+                .map(item -> new OrderItem(item.getItemId(), orderId, item.getQuantity().intValue()))
+                .toList();
+    }
+
+    /**
+     * 유효성 검사 이후 Order 객체를 반환하는 메소드입니다.
+     */
+    private Order returnOrder(Long userId, Role role, Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundException("주문 정보가 없습니다."));
+
+        if (!order.getUserId().equals(userId) && !role.equals(Role.ADMIN)) {
+            throw new ForbiddenException("접근 권한이 없습니다.");
+        }
+
+        return order;
     }
 }

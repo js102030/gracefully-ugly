@@ -11,9 +11,11 @@ import com.gracefullyugly.domain.user.dto.UpdateAddressDto;
 import com.gracefullyugly.domain.user.dto.UpdateNicknameDto;
 import com.gracefullyugly.domain.user.dto.UpdatePasswordRequest;
 import com.gracefullyugly.domain.user.dto.UserResponse;
+import com.gracefullyugly.domain.user.dto.ValidEmail;
+import com.gracefullyugly.domain.user.dto.ValidLoginId;
+import com.gracefullyugly.domain.user.dto.ValidNickname;
 import com.gracefullyugly.domain.user.service.UserSearchService;
 import com.gracefullyugly.domain.user.service.UserService;
-import io.micrometer.common.util.StringUtils;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +26,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -107,38 +108,21 @@ public class UserController {
     }
 
     @GetMapping("/loginId-availability")
-    public ResponseEntity<Boolean> checkLoginIdAvailability(@RequestParam String loginId) {
-        final int MIN_LOGIN_ID_LENGTH = 4;
-        final int MAX_LOGIN_ID_LENGTH = 20;
-
-        if (StringUtils.isBlank(loginId)) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        boolean validSize = loginId.length() < MIN_LOGIN_ID_LENGTH || loginId.length() > MAX_LOGIN_ID_LENGTH;
-        if (validSize) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        return ResponseEntity.ok(userSearchService.existsByLoginId(loginId));
+    public ResponseEntity<Boolean> checkLoginIdAvailability(@Valid @RequestBody ValidLoginId validLoginId) {
+        return ResponseEntity
+                .ok(userSearchService.existsByLoginId(validLoginId.getLoginId()));
     }
 
     @GetMapping("/nickname-availability")
-    public ResponseEntity<Boolean> checkNicknameAvailability(@RequestParam String nickname) {
-        if (StringUtils.isBlank(nickname)) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        return ResponseEntity.ok(userSearchService.existsByNickName(nickname));
+    public ResponseEntity<Boolean> checkNicknameAvailability(@Valid @RequestBody ValidNickname validNickname) {
+        return ResponseEntity
+                .ok(userSearchService.existsByNickName(validNickname.getNickname()));
     }
 
     @GetMapping("/email-availability")
-    public ResponseEntity<Boolean> checkEmailAvailability(@RequestParam String email) {
-        if (StringUtils.isBlank(email)) {
-            return ResponseEntity.badRequest().build();
-        }
-        
-        return ResponseEntity.ok(userSearchService.existsByEmail(email));
+    public ResponseEntity<Boolean> checkEmailAvailability(@Valid @RequestBody ValidEmail validEmail) {
+        return ResponseEntity
+                .ok(userSearchService.existsByEmail(validEmail.getEmail()));
     }
 
 }

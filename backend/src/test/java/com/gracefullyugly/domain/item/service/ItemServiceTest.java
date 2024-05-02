@@ -2,7 +2,8 @@ package com.gracefullyugly.domain.item.service;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.gracefullyugly.domain.item.dto.UpdateDescriptionDto;
+import com.gracefullyugly.domain.item.dto.ItemResponse;
+import com.gracefullyugly.domain.item.dto.UpdateDescriptionRequest;
 import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
 import com.gracefullyugly.testutil.SetupDataUtils;
@@ -38,11 +39,11 @@ class ItemServiceTest {
         String newDescription = "업데이트 테스트";
 
         // WHEN
-        UpdateDescriptionDto updateDescriptionDto = UpdateDescriptionDto.builder()
+        UpdateDescriptionRequest updateDescriptionRequest = UpdateDescriptionRequest.builder()
                 .description(newDescription)
                 .build();
 
-        UpdateDescriptionDto updatedDto = itemService.updateDescription(itemId, userId,updateDescriptionDto);
+        ItemResponse updatedDto = itemService.updateDescription(itemId, userId, updateDescriptionRequest);
 
         // THEN
         Assertions.assertEquals(newDescription, updatedDto.getDescription());
