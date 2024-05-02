@@ -1,5 +1,6 @@
 package com.gracefullyugly.domain.item.controller.api;
 
+import com.gracefullyugly.common.security.CustomUserDetails;
 import com.gracefullyugly.domain.item.dto.ItemDtoUtil;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,8 +37,9 @@ public class ItemController {
 
     // 판매글 생성
     @PostMapping("/items")
-    public ResponseEntity<ItemResponse> addItem(@AuthenticationPrincipal(expression = "userId") Long userId,
+    public ResponseEntity<ItemResponse> addItem(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                 @RequestBody ItemRequest request) {
+        Long userId = customUserDetails.getUserId();
         final ItemResponse savedResponse = itemService.save(userId, request);
 
         return ResponseEntity
@@ -70,8 +73,9 @@ public class ItemController {
     // 판매글 수정
     @PutMapping("/items/{itemId}")
     public ResponseEntity<UpdateDescriptionDto> updateDescription(@PathVariable Long itemId,
-                                                                  @AuthenticationPrincipal(expression = "userId") Long userId,
+                                                                  @AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                                   @Valid @RequestBody UpdateDescriptionDto updateDescriptionDto) {
+        Long userId = customUserDetails.getUserId();
         final UpdateDescriptionDto updateAddress = itemService.updateDescription(itemId, userId, updateDescriptionDto);
 
         return ResponseEntity
@@ -81,7 +85,8 @@ public class ItemController {
     // 판매글 삭제
     @DeleteMapping("/items/{itemId}")
     public ResponseEntity<Void> deleteOneItem(@PathVariable Long itemId,
-                                              @AuthenticationPrincipal(expression = "userId") Long userId) {
+                                              @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        Long userId = customUserDetails.getUserId();
         itemService.deletedById(itemId, userId);
 
         return ResponseEntity.
