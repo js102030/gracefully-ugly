@@ -5,11 +5,23 @@ import java.util.Optional;
 
 import com.gracefullyugly.domain.user.enumtype.SignUpType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByLoginId(String userLoginId);
 
-    Optional<User> findByRefreshToken(String refreshToken);
+    @Transactional
+    @Modifying
+    @Query("UPDATE User e SET e.refreshToken = :refreshToken WHERE e.loginId = :loginId")
+    void saveRefreshToken(String loginId, String refreshToken);
+
+    @Transactional
+    void deleteRefreshTokenByLoginId(String loginId);
+
+    @Query("SELECT e.refreshToken FROM User e WHERE e.loginId = :loginId")
+    String findRefreshTokenByLoginId(String loginId);
 
     /**
      * 소셜 타입과 소셜의 식별값으로 회원 찾는 메소드
@@ -26,4 +38,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByNickname(String nickname);
 
     boolean existsByEmail(String email);
+
+    boolean existsByRefreshToken(String refreshToken);
 }

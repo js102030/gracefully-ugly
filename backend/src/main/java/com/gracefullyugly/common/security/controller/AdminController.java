@@ -1,4 +1,4 @@
-package com.gracefullyugly.common.test.controller;
+package com.gracefullyugly.common.security.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

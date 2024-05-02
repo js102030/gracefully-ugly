@@ -1,9 +1,11 @@
 package com.gracefullyugly.common.security.config;
 
+import com.gracefullyugly.common.security.jwt.CustomLogoutFilter;
 import com.gracefullyugly.common.security.jwt.JWTFilter;
 import com.gracefullyugly.common.security.jwt.JWTUtil;
 import com.gracefullyugly.common.security.jwt.LoginFilter;
 import java.util.Collections;
+import com.gracefullyugly.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +19,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 
@@ -34,6 +37,8 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     //JWTUtil 주입
     private final JWTUtil jwtUtil;
+
+    private final UserRepository userRepository;
 
     //AuthenticationManager Bean 등록
     @Bean
@@ -90,7 +95,7 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/api/users", "/api/users/{userId}/registration", "/**")
+                        .requestMatchers("/login", "/", "/api/users", "/api/users/{userId}/registration", "/**", "/reissue")
                         .permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
@@ -101,8 +106,12 @@ public class SecurityConfig {
 
         //필터 추가 LoginFilter()는 인자를 받음 (AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함) 따라서 등록 필요
         http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil),
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, userRepository),
                         UsernamePasswordAuthenticationFilter.class);
+
+        http
+                .addFilterBefore(new CustomLogoutFilter(jwtUtil, userRepository), LogoutFilter.class);
+
         //세션 설정 jwt 위해서는 STATELESS 로 설정 해줘야함
         http
                 .sessionManagement((session) -> session
