@@ -58,24 +58,24 @@ spring:
   jwt:
     secretKey: ThisIsARandomlyGeneratedSecretKeyForHS256AlgorithmAndItIsOver64BytesLong1234
 
-#  security:
-#    oauth2:
-#      client:
-#        registration:
-#          kakao:
-#            client-id: 48f99478e44507e05c99dfeee8e1a42a
-#            client-secret: naeJwIif4LSV4ORAiIlkTng6y01fBwCW
-#            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
-#            client-authentication-method: client_secret_post
-#            authorization-grant-type: authorization_code
-#            client-name: Kakao
-#
-#        provider:
-#          kakao:
-#            authorization-uri: https://kauth.kakao.com/oauth/authorize
-#            token-uri: https://kauth.kakao.com/oauth/token
-#            user-info-uri: https://kapi.kakao.com/v2/user/me
-#            user-name-attribute: id
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: 48f99478e44507e05c99dfeee8e1a42a
+            client-secret: naeJwIif4LSV4ORAiIlkTng6y01fBwCW
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            client-authentication-method: client_secret_post
+            authorization-grant-type: authorization_code
+            client-name: Kakao
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
 
 
 logging.level:
@@ -87,14 +87,3 @@ server:
   servlet:
     session:
       timeout: 30m
-
-#jwt:
-#  secretKey: ThisIsARandomlyGeneratedSecretKeyForHS256AlgorithmAndItIsOver64BytesLong1234
-#
-#  access:
-#    expiration: 3600000 # 1시간(60분) (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h))
-#    header: Authorization
-#
-#  refresh:
-#    expiration: 1209600000 #  (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h) * 24L(h -> 하루) * 14(2주))
-#    header: Authorization-refresh
