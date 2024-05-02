@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootTest
-class eUserSearchServiceTest {
+class UserSearchServiceTest {
 
     @Autowired
     UserSearchService userSearchService;
