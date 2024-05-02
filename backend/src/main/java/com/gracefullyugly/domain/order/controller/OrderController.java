@@ -6,7 +6,7 @@ import com.gracefullyugly.domain.order.dto.OrderResponse;
 import com.gracefullyugly.domain.order.dto.UpdateOrderAddressRequest;
 import com.gracefullyugly.domain.order.dto.UpdateOrderPhoneNumberRequest;
 import com.gracefullyugly.domain.order.service.OrderService;
-import com.gracefullyugly.domain.user.entity.User;
+import com.gracefullyugly.domain.user.enumtype.Role;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -41,16 +41,18 @@ public class OrderController {
     }
 
     @PutMapping("/orders/address/{orderId}")
-    public ResponseEntity<OrderResponse> updateOrderAddress(@AuthenticationPrincipal User user,
+    public ResponseEntity<OrderResponse> updateOrderAddress(@AuthenticationPrincipal(expression = "userId") Long userId,
+                                                            @AuthenticationPrincipal(expression = "role") Role role,
                                                             @PathVariable("orderId") Long orderId,
                                                             @Valid @RequestBody UpdateOrderAddressRequest request) {
-        return ResponseEntity.ok(orderService.updateOrderAddress(user, orderId, request));
+        return ResponseEntity.ok(orderService.updateOrderAddress(userId, role, orderId, request));
     }
 
     @PutMapping("/orders/phone_number/{orderId}")
     public ResponseEntity<OrderResponse> updateOrderPhoneNumber(
-            @AuthenticationPrincipal(expression = "userId") User user, @PathVariable("orderId") Long orderId,
+            @AuthenticationPrincipal(expression = "userId") Long userId,
+            @AuthenticationPrincipal(expression = "role") Role role, @PathVariable("orderId") Long orderId,
             @Valid @RequestBody UpdateOrderPhoneNumberRequest request) {
-        return ResponseEntity.ok(orderService.updateOrderPhoneNumber(user, orderId, request));
+        return ResponseEntity.ok(orderService.updateOrderPhoneNumber(userId, role, orderId, request));
     }
 }
