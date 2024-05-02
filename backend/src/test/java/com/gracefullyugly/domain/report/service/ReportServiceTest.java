@@ -10,6 +10,7 @@ import com.gracefullyugly.domain.user.entity.User;
 import com.gracefullyugly.domain.user.enumtype.Role;
 import com.gracefullyugly.domain.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,6 +95,25 @@ class ReportServiceTest {
         // THEN
         Report findReport = reportSearchService.findById(response.getReportId());
         assertTrue(findReport.isDeleted());
+    }
+
+    @Test
+    @DisplayName("신고 삭제 권한 없음 테스트")
+    void deleteReportNoPermissionTest() {
+        User build = User.builder()
+                .userId(100L)
+                .role(Role.GUEST)
+                .loginId("user")
+                .password("user")
+                .build();
+        User savedUser = userRepository.save(build);
+
+        ReportResponse response = reportService.reportItem(1L, 1L, new ReportRequest("신고 내용"));
+
+        // WHEN THEN
+        Assertions.assertThatThrownBy(() -> reportService.deleteReport(savedUser.getId(), response.getReportId()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("권한이 없습니다.");
     }
 
 }
