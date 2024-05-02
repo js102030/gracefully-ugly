@@ -29,23 +29,23 @@ public class QnAController {
     private final QnASearchService qnASearchService;
 
     @PostMapping("/questions/{itemId}")
-    public ResponseEntity<QuestionDto> createQnA(@AuthenticationPrincipal(expression = "userId") Long userId,
-                                                 @PathVariable Long itemId, @Valid @RequestBody QuestionDto request) {
-        QuestionDto qnADto = qnAService.createQnA(userId, itemId, request);
+    public ResponseEntity<QnADto> createQnA(@AuthenticationPrincipal(expression = "userId") Long userId,
+                                            @PathVariable Long itemId, @Valid @RequestBody QuestionDto request) {
+        final QnADto response = qnAService.createQnA(userId, itemId, request);
 
         return ResponseEntity
                 .status(CREATED)
-                .body(qnADto);
+                .body(response);
     }
 
-    @PostMapping("answers/{qnaId}")
-    public ResponseEntity<AnswerDto> createAnswer(@AuthenticationPrincipal(expression = "userId") Long userId,
-                                                  @PathVariable Long qnaId, @Valid @RequestBody AnswerDto request) {
-        AnswerDto answerDto = qnAService.createAnswer(userId, qnaId, request);
+    @PostMapping("/answers/{qnaId}")
+    public ResponseEntity<QnADto> createAnswer(@AuthenticationPrincipal(expression = "userId") Long userId,
+                                               @PathVariable Long qnaId, @Valid @RequestBody AnswerDto request) {
+        final QnADto response = qnAService.createAnswer(userId, qnaId, request);
 
         return ResponseEntity
                 .status(CREATED)
-                .body(answerDto);
+                .body(response);
     }
 
     @GetMapping("/questions/{qnaId}")
@@ -56,7 +56,7 @@ public class QnAController {
                 .ok(qnADto);
     }
 
-    @GetMapping("/questions/{itemId}")
+    @GetMapping("/questions/items/{itemId}")
     public ResponseEntity<ApiResponse<List<QnADto>>> readQnAs(@PathVariable Long itemId) {
         ApiResponse<List<QnADto>> response = qnASearchService.readQnAs(itemId);
 

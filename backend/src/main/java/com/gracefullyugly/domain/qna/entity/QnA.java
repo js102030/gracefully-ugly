@@ -1,7 +1,6 @@
 package com.gracefullyugly.domain.qna.entity;
 
 import com.gracefullyugly.common.base.BaseTimeEntity;
-import com.gracefullyugly.domain.qna.dto.AnswerDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,8 +35,7 @@ public class QnA extends BaseTimeEntity {
         this.question = question;
     }
 
-    public AnswerDto addAnswer(String answer) {
+    public void addAnswer(String answer) {
         this.answer = answer;
-        return new AnswerDto(answer);
     }
 }
