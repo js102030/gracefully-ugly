@@ -35,7 +35,7 @@ public class ItemController {
 
     // 판매글 생성
     @PostMapping("/items")
-    public ResponseEntity<ItemResponse> addItem(@AuthenticationPrincipal Long userId,
+    public ResponseEntity<ItemResponse> addItem(@AuthenticationPrincipal(expression = "userId") Long userId,
                                                 @RequestBody ItemRequest request) {
         final ItemResponse savedResponse = itemService.save(userId, request);
 
@@ -70,8 +70,9 @@ public class ItemController {
     // 판매글 수정
     @PutMapping("/items/{itemId}")
     public ResponseEntity<UpdateDescriptionDto> updateDescription(@PathVariable Long itemId,
-                                                              @Valid @RequestBody UpdateDescriptionDto updateDescriptionDto) {
-        final UpdateDescriptionDto updateAddress = itemService.updateDescription(itemId, updateDescriptionDto);
+                                                                  @AuthenticationPrincipal Long userId,
+                                                                  @Valid @RequestBody UpdateDescriptionDto updateDescriptionDto) {
+        final UpdateDescriptionDto updateAddress = itemService.updateDescription(itemId, userId, updateDescriptionDto);
 
         return ResponseEntity
                 .ok(updateAddress);
@@ -79,8 +80,9 @@ public class ItemController {
 
     // 판매글 삭제
     @DeleteMapping("/items/{itemId}")
-    public ResponseEntity<Void> deleteOneItem(@PathVariable Long itemId) {
-        itemService.deletedById(itemId);
+    public ResponseEntity<Void> deleteOneItem(@PathVariable Long itemId,
+                                              @AuthenticationPrincipal Long userId) {
+        itemService.deletedById(itemId, userId);
 
         return ResponseEntity.
                 noContent()

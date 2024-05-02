@@ -59,7 +59,7 @@ class ItemControllerTest {
     @DisplayName("판매글 생성 테스트")
     void addItemTest() throws Exception {
         // GIVEN
-        String name = SetupDataUtils.NAME;
+        String name = SetupDataUtils.ITEM_NAME;
         String productionPlace = SetupDataUtils.PRODUCTION_PLACE;
         Category categoryId = SetupDataUtils.CATEGORY_ID;
         LocalDateTime closedDate = SetupDataUtils.CLOSED_DATE;
