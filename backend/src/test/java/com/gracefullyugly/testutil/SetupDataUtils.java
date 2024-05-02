@@ -85,10 +85,10 @@ public class SetupDataUtils {
                 false);
     }
 
-    public static User makeCustomTestUser(String testLoginId, String password, String testNickname, String testEmail,
+    public static User makeCustomTestUser(Long id, String testLoginId, String password, String testNickname, String testEmail,
                                           String testAddress, BCryptPasswordEncoder passwordEncoder) {
         return new User(
-                null,
+                id,
                 SignUpType.GENERAL,
                 Role.BUYER,
                 testLoginId,
