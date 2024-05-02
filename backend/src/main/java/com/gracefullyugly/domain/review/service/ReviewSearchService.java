@@ -22,13 +22,13 @@ public class ReviewSearchService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 리뷰가 존재하지 않습니다."));
     }
 
-    public ReviewResponse findByReviewId(Long reviewId) {
+    public ReviewResponse getReviewById(Long reviewId) {
         Review findReview = findById(reviewId);
 
         return ReviewDtoUtil.reviewToReviewResponse(findReview);
     }
 
-    public ApiResponse<List<ReviewResponse>> findByItemId(Long itemId) {
+    public ApiResponse<List<ReviewResponse>> getReviewsByItemId(Long itemId) {
         List<Review> reviews = reviewRepository.findByItemId(itemId);
 
         if (reviews.isEmpty()) {

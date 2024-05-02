@@ -10,6 +10,7 @@ import com.gracefullyugly.domain.qna.dto.QnADto;
 import com.gracefullyugly.domain.qna.dto.QuestionDto;
 import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -76,6 +77,38 @@ class QnAServiceTest {
 
         // then
         assertThat(qnaDtoWithAnswer.getAnswer()).isEqualTo("답변 내용");
+    }
+
+    @Test
+    @DisplayName("QnA 답변 생성 실패 테스트")
+    void createAnswerFail() {
+        // given
+        Long userId = 1L;
+        QuestionDto request = new QuestionDto("질문 내용");
+
+        Item savedItem = itemRepository.save(
+                Item.builder()
+                        .userId(userId)
+                        .categoryId(Category.FRUIT)
+                        .name("사과")
+                        .description("맛있는 사과")
+                        .price(1000)
+                        .totalSalesUnit(100)
+                        .minUnitWeight(100)
+                        .minGroupBuyWeight(100)
+                        .productionPlace("한국")
+                        .closedDate(LocalDateTime.now().plusDays(3))
+                        .build()
+        );
+
+        QnADto qnaDto = qnAService.createQnA(userId, savedItem.getId(), request);
+        AnswerDto answerDto = new AnswerDto("답변 내용");
+
+        // when then
+        Assertions.assertThatThrownBy(() -> qnAService.createAnswer(2L, qnaDto.getQnaId(), answerDto))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("해당 상품의 판매자만 답변을 작성할 수 있습니다.");
+
     }
 
 }

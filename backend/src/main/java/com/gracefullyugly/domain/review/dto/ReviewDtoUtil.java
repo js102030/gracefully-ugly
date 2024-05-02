@@ -7,10 +7,10 @@ public class ReviewDtoUtil {
     public static ReviewResponse reviewToReviewResponse(Review review) {
 
         return ReviewResponse.builder()
-                .id(review.getId())
+                .reviewId(review.getId())
                 .userId(review.getUserId())
                 .itemId(review.getItemId())
-                .contents(review.getComments())
+                .comments(review.getComments())
                 .starPoint(review.getStarPoint())
                 .isDeleted(review.isDeleted())
                 .build();

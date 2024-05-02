@@ -22,13 +22,13 @@ public class QnASearchService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 QnA id" + id));
     }
 
-    public QnADto readQnA(Long id) {
+    public QnADto getQnA(Long id) {
         QnA findQnA = findById(id);
 
         return QnADtoUtil.qnAToQnADto(findQnA);
     }
 
-    public ApiResponse<List<QnADto>> readQnAs(Long itemId) {
+    public ApiResponse<List<QnADto>> getQnAList(Long itemId) {
         List<QnA> findQnAs = qnARepository.findByItemId(itemId);
 
         List<QnADto> qnADtos = findQnAs.stream()
