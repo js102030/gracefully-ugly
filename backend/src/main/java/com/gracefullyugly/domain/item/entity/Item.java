@@ -1,7 +1,6 @@
 package com.gracefullyugly.domain.item.entity;
 
 import com.gracefullyugly.common.base.BaseTimeEntity;
-import com.gracefullyugly.domain.item.dto.UpdateDescriptionDto;
 import com.gracefullyugly.domain.item.enumtype.Category;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,7 +13,6 @@ import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
@@ -84,9 +82,8 @@ public class Item extends BaseTimeEntity {
         this.closedDate = closedDate;
     }
 
-    public UpdateDescriptionDto updateDescription(String description) {
+    public void updateDescription(String description) {
         this.description = description;
-        return new UpdateDescriptionDto(description);
     }
 
     public void delete() {
