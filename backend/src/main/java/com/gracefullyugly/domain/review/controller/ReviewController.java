@@ -38,7 +38,7 @@ public class ReviewController {
 
     @GetMapping("/reviews/{reviewId}")
     public ResponseEntity<ReviewResponse> findReview(@PathVariable Long reviewId) {
-        final ReviewResponse response = reviewSearchService.findByReviewId(reviewId);
+        final ReviewResponse response = reviewSearchService.getReviewById(reviewId);
 
         return ResponseEntity
                 .ok(response);
@@ -46,7 +46,7 @@ public class ReviewController {
 
     @GetMapping("/reviews/items/{itemId}")
     public ResponseEntity<ApiResponse<List<ReviewResponse>>> findReviewsByItemId(@PathVariable Long itemId) {
-        ApiResponse<List<ReviewResponse>> response = reviewSearchService.findByItemId(itemId);
+        ApiResponse<List<ReviewResponse>> response = reviewSearchService.getReviewsByItemId(itemId);
 
         return ResponseEntity
                 .ok(response);

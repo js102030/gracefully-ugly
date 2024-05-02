@@ -101,7 +101,7 @@ class QnAControllerTest {
     @DisplayName("QnA 조회 테스트")
     void readQnATest() throws Exception {
         // given
-        given(qnASearchService.readQnA(any()))
+        given(qnASearchService.getQnA(any()))
                 .willReturn(new QnADto(100L, 100L, 100L, "질문", "답변"));
 
         String access = getToken();
@@ -114,7 +114,7 @@ class QnAControllerTest {
                 .andExpect(jsonPath("$.answer").value("답변"))
                 .andDo(print());
 
-        verify(qnASearchService).readQnA(any());
+        verify(qnASearchService).getQnA(any());
     }
 
     @Test
@@ -126,7 +126,7 @@ class QnAControllerTest {
                         new QnADto(100L, 100L, 100L, "질문", "답변"),
                         new QnADto(101L, 101L, 101L, "질문2", "답변2")
                 );
-        given(qnASearchService.readQnAs(any()))
+        given(qnASearchService.getQnAList(any()))
                 .willReturn(new ApiResponse<>(list.size(), list));
 
         String access = getToken();
@@ -141,7 +141,7 @@ class QnAControllerTest {
                 .andExpect(jsonPath("$.data[1].answer").value("답변2"))
                 .andDo(print());
 
-        verify(qnASearchService).readQnAs(any());
+        verify(qnASearchService).getQnAList(any());
     }
 
     private String getToken() {

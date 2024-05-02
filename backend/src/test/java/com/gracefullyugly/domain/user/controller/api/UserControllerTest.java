@@ -29,6 +29,9 @@ import com.gracefullyugly.domain.user.dto.UpdateAddressDto;
 import com.gracefullyugly.domain.user.dto.UpdateNicknameDto;
 import com.gracefullyugly.domain.user.dto.UpdatePasswordRequest;
 import com.gracefullyugly.domain.user.dto.UserResponse;
+import com.gracefullyugly.domain.user.dto.ValidEmail;
+import com.gracefullyugly.domain.user.dto.ValidLoginId;
+import com.gracefullyugly.domain.user.dto.ValidNickname;
 import com.gracefullyugly.domain.user.enumtype.SignUpType;
 import com.gracefullyugly.domain.user.service.UserSearchService;
 import com.gracefullyugly.domain.user.service.UserService;
@@ -282,6 +285,69 @@ class UserControllerTest {
 
         // Then
         verify(userService).delete(100L);
+    }
+
+    @Test
+    @DisplayName("로그인 아이디 중복 확인 테스트")
+    void checkLoginIdAvailabilityTest() throws Exception {
+        // Given
+        given(userSearchService.existsByLoginId(TEST_LOGIN_ID))
+                .willReturn(true);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(new ValidLoginId(TEST_LOGIN_ID));
+
+        // When & Then
+        mockMvc.perform(get("/api/loginId-availability")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(true))
+                .andDo(print());
+
+        verify(userSearchService).existsByLoginId(TEST_LOGIN_ID);
+    }
+
+    @Test
+    @DisplayName("닉네임 중복 확인 테스트")
+    void checkNicknameAvailabilityTest() throws Exception {
+        // Given
+        given(userSearchService.existsByNickName(TEST_NICKNAME))
+                .willReturn(true);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(new ValidNickname(TEST_NICKNAME));
+
+        // When & Then
+        mockMvc.perform(get("/api/nickname-availability")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(true))
+                .andDo(print());
+
+        verify(userSearchService).existsByNickName(TEST_NICKNAME);
+    }
+
+    @Test
+    @DisplayName("이메일 중복 확인 테스트")
+    void checkEmailAvailabilityTest() throws Exception {
+        // Given
+        given(userSearchService.existsByEmail(TEST_EMAIL))
+                .willReturn(true);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(new ValidEmail(TEST_EMAIL));
+
+        // When & Then
+        mockMvc.perform(get("/api/email-availability")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(true))
+                .andDo(print());
+
+        verify(userSearchService).existsByEmail(TEST_EMAIL);
     }
 
 
