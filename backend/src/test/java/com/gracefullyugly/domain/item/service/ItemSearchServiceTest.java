@@ -1,5 +1,9 @@
 package com.gracefullyugly.domain.item.service;
 
+import static com.gracefullyugly.testutil.SetupDataUtils.ADD_CART_ITEM_SUCCESS;
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gracefullyugly.domain.cart.dto.CartListResponse;
 import com.gracefullyugly.domain.cart.repository.CartRepository;
@@ -15,7 +19,8 @@ import com.gracefullyugly.domain.item.repository.ItemRepository;
 import com.gracefullyugly.domain.user.repository.UserRepository;
 import com.gracefullyugly.testutil.SetupDataUtils;
 import jakarta.transaction.Transactional;
-
+import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,12 +30,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static com.gracefullyugly.testutil.SetupDataUtils.ADD_CART_ITEM_SUCCESS;
-import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -75,9 +74,12 @@ class ItemSearchServiceTest {
     private Item existingItem;
 
     // 판매글 여러개 제작할 때 사용
-    private ItemRequest createItemRequest(String name, String productionPlace, Category categoryId, LocalDateTime closedDate,
-                                          int minUnitWeight, int price, int totalSalesUnit, int minGroupBuyWeight, String description) {
-        return new ItemRequest(name, productionPlace, categoryId, closedDate, minUnitWeight, price, totalSalesUnit, minGroupBuyWeight, description);
+    private ItemRequest createItemRequest(String name, String productionPlace, Category categoryId,
+                                          LocalDateTime closedDate,
+                                          int minUnitWeight, int price, int totalSalesUnit, int minGroupBuyWeight,
+                                          String description) {
+        return new ItemRequest(name, productionPlace, categoryId, closedDate, minUnitWeight, price, totalSalesUnit,
+                minGroupBuyWeight, description);
     }
 
 
@@ -98,7 +100,6 @@ class ItemSearchServiceTest {
 
         // WHEN
         List<ItemResponse> impendingItems = itemSearchService.getImpendingItems();
-
 
         // THEN
         // 72시간 이상 남은 건 1개니까 결과는 하나여야됨

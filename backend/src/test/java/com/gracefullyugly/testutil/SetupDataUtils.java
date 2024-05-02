@@ -55,49 +55,50 @@ public class SetupDataUtils {
     public final static String ORDER_NO_ITEM = "주문 가능한 상품이 없습니다.";
     public final static String NOT_FOUND_ORDER = "주문 정보가 없습니다.";
 
-    private SetupDataUtils() {}
+    private SetupDataUtils() {
+    }
 
     public static User makeTestUser(BCryptPasswordEncoder passwordEncoder) {
         return new User(
-            null,
-            SignUpType.GENERAL,
-            Role.BUYER,
-            TEST_LOGIN_ID,
-            passwordEncoder.encode(PASSWORD),
-            TEST_NICKNAME,
-            TEST_EMAIL,
-            TEST_ADDRESS,
-            null,
-            null,
-            false,
-            false,
-            false);
+                null,
+                SignUpType.GENERAL,
+                Role.BUYER,
+                TEST_LOGIN_ID,
+                passwordEncoder.encode(PASSWORD),
+                TEST_NICKNAME,
+                TEST_EMAIL,
+                TEST_ADDRESS,
+                null,
+                null,
+                false,
+                false,
+                false);
     }
 
     public static List<ItemRequest> makeTestItemRequest() {
         List<ItemRequest> retVal = new ArrayList<>();
 
         retVal.add(ItemRequest.builder()
-            .name(ITEM_NAME)
-            .productionPlace(PRODUCTION_PLACE)
-            .categoryId(CATEGORY_ID)
-            .closedDate(CLOSED_DATE)
-            .minUnitWeight(MIN_UNIT_WEIGHT)
-            .price(PRICE)
-            .totalSalesUnit(TOTAL_SALES_UNIT)
-            .minGroupBuyWeight(MIN_GROUP_BUY_WEIGHT)
-            .description(DESCRIPTION).build());
+                .name(ITEM_NAME)
+                .productionPlace(PRODUCTION_PLACE)
+                .categoryId(CATEGORY_ID)
+                .closedDate(CLOSED_DATE)
+                .minUnitWeight(MIN_UNIT_WEIGHT)
+                .price(PRICE)
+                .totalSalesUnit(TOTAL_SALES_UNIT)
+                .minGroupBuyWeight(MIN_GROUP_BUY_WEIGHT)
+                .description(DESCRIPTION).build());
 
         retVal.add(ItemRequest.builder()
-            .name(ITEM_NAME + 2)
-            .productionPlace(PRODUCTION_PLACE + 2)
-            .categoryId(CATEGORY_ID)
-            .closedDate(CLOSED_DATE)
-            .minUnitWeight(MIN_UNIT_WEIGHT + 1000)
-            .price(PRICE + 10000)
-            .totalSalesUnit(TOTAL_SALES_UNIT + 5)
-            .minGroupBuyWeight(MIN_GROUP_BUY_WEIGHT + 5000)
-            .description(DESCRIPTION + 2).build());
+                .name(ITEM_NAME + 2)
+                .productionPlace(PRODUCTION_PLACE + 2)
+                .categoryId(CATEGORY_ID)
+                .closedDate(CLOSED_DATE)
+                .minUnitWeight(MIN_UNIT_WEIGHT + 1000)
+                .price(PRICE + 10000)
+                .totalSalesUnit(TOTAL_SALES_UNIT + 5)
+                .minGroupBuyWeight(MIN_GROUP_BUY_WEIGHT + 5000)
+                .description(DESCRIPTION + 2).build());
 
         return retVal;
     }
@@ -108,9 +109,9 @@ public class SetupDataUtils {
         testOrderItemDtoList.add(new OrderItemDto(testItemList.get(1).getId(), QUANTITY + 3));
 
         return CreateOrderRequest.builder()
-            .address(TEST_ADDRESS)
-            .phoneNumber(TEST_PHONE_NUMBER)
-            .itemIdList(testOrderItemDtoList)
-            .build();
+                .address(TEST_ADDRESS)
+                .phoneNumber(TEST_PHONE_NUMBER)
+                .itemIdList(testOrderItemDtoList)
+                .build();
     }
 }

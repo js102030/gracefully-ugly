@@ -7,6 +7,7 @@ public class ReportDtoUtil {
     public static ReportResponse reportToReportResponse(Report report) {
 
         return ReportResponse.builder()
+                .reportId(report.getId())
                 .userId(report.getUserId())
                 .itemId(report.getItemId())
                 .reviewId(report.getReviewId())
