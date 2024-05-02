@@ -7,6 +7,7 @@ public class ItemDtoUtil {
     public static ItemResponse itemToItemResponse(Item item) {
         return ItemResponse.builder()
                 .id(item.getId())
+                .userId(item.getUserId())
                 .name(item.getName())
                 .productionPlace(item.getProductionPlace())
                 .categoryId(item.getCategoryId())
