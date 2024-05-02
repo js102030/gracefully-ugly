@@ -12,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.gracefullyugly.common.exception.custom.NotFoundException;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
+import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
 import com.gracefullyugly.domain.item.service.ItemService;
 import com.gracefullyugly.domain.order.dto.CreateOrderRequest;
@@ -127,7 +128,8 @@ public class OrderServiceTest {
     void getOrderInfoTest() {
         // GIVEN
         Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
-        CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemRepository.findAll());
+        List<Item> itemList = itemRepository.findAll();
+        CreateOrderRequest testRequest = SetupDataUtils.makeCreateOrderRequest(itemList);
         OrderResponse orderResponse = orderService.createOrder(testUserId, testRequest);
 
         // WHEN
@@ -140,8 +142,10 @@ public class OrderServiceTest {
         assertThat(result.getOrder().getPhoneNumber()).isEqualTo(TEST_PHONE_NUMBER);
         assertThat(result.getNickname()).isEqualTo(TEST_NICKNAME);
         assertThat(result.getOrderItemList().get(0).getName()).isEqualTo(ITEM_NAME);
+        assertThat(result.getOrderItemList().get(0).getPrice()).isEqualTo(itemList.get(0).getPrice());
         assertThat(result.getOrderItemList().get(0).getQuantity()).isEqualTo(QUANTITY);
         assertThat(result.getOrderItemList().get(1).getName()).isEqualTo(ITEM_NAME + 2);
+        assertThat(result.getOrderItemList().get(1).getPrice()).isEqualTo(itemList.get(1).getPrice());
         assertThat(result.getOrderItemList().get(1).getQuantity()).isEqualTo(QUANTITY + 3);
     }
 
