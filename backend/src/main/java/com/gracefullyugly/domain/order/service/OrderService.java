@@ -83,8 +83,8 @@ public class OrderService {
                 .build();
     }
 
-    public OrderResponse updateOrderAddress(User user, Long orderId, UpdateOrderAddressRequest request) {
-        Order order = returnOrder(user, orderId);
+    public OrderResponse updateOrderAddress(Long userId, Role role, Long orderId, UpdateOrderAddressRequest request) {
+        Order order = returnOrder(userId, role, orderId);
         order.updateAddress(request.getAddress());
 
         return OrderResponse.builder()
@@ -93,8 +93,8 @@ public class OrderService {
                 .build();
     }
 
-    public OrderResponse updateOrderPhoneNumber(User user, Long orderId, UpdateOrderPhoneNumberRequest request) {
-        Order order = returnOrder(user, orderId);
+    public OrderResponse updateOrderPhoneNumber(Long userId, Role role, Long orderId, UpdateOrderPhoneNumberRequest request) {
+        Order order = returnOrder(userId, role, orderId);
         order.updatePhoneNumber(request.getPhoneNumber());
 
         return OrderResponse.builder()
@@ -125,11 +125,11 @@ public class OrderService {
     /**
      * 유효성 검사 이후 Order 객체를 반환하는 메소드입니다.
      */
-    private Order returnOrder(User user, Long orderId) {
+    private Order returnOrder(Long userId, Role role, Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new NotFoundException("주문 정보가 없습니다."));
 
-        if (!order.getUserId().equals(user.getId()) && !user.getRole().equals(Role.ADMIN)) {
+        if (!order.getUserId().equals(userId) && !role.equals(Role.ADMIN)) {
             throw new ForbiddenException("접근 권한이 없습니다.");
         }
 
