@@ -1,30 +1,36 @@
 package com.gracefullyugly.domain.item.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gracefullyugly.domain.cart.entity.Cart;
+import com.gracefullyugly.domain.cart.dto.CartListResponse;
 import com.gracefullyugly.domain.cart.repository.CartRepository;
+import com.gracefullyugly.domain.cart.service.CartService;
+import com.gracefullyugly.domain.cart_item.dto.AddCartItemRequest;
+import com.gracefullyugly.domain.cart_item.dto.CartItemResponse;
+import com.gracefullyugly.domain.cart_item.service.CartItemService;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
 import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.enumtype.Category;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
+import com.gracefullyugly.domain.user.repository.UserRepository;
+import com.gracefullyugly.testutil.SetupDataUtils;
 import jakarta.transaction.Transactional;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.gracefullyugly.testutil.SetupDataUtils.ADD_CART_ITEM_SUCCESS;
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -41,13 +47,30 @@ class ItemSearchServiceTest {
     CartRepository cartRepository;
 
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    CartItemService cartItemService;
+
+    @Autowired
     ItemSearchService itemSearchService;
 
     @Autowired
     ItemService itemService;
 
     @Autowired
+    CartService cartService;
+
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
     ObjectMapper objectMapper;
+
+    @BeforeEach
+    void setupUserData() {
+        userRepository.save(SetupDataUtils.makeTestUser(passwordEncoder));
+    }
 
     private Item existingItem;
 
@@ -57,12 +80,6 @@ class ItemSearchServiceTest {
         return new ItemRequest(name, productionPlace, categoryId, closedDate, minUnitWeight, price, totalSalesUnit, minGroupBuyWeight, description);
     }
 
-    private ResultActions performPostRequest(ItemRequest itemRequest) throws Exception {
-        String content = objectMapper.writeValueAsString(itemRequest);
-        return mockMvc.perform(MockMvcRequestBuilders.post("/api/items")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(content));
-    }
 
     @Test
     @DisplayName("72시간 이내 마감임박 상품 목록 조회")
@@ -110,33 +127,70 @@ class ItemSearchServiceTest {
     void GetPopularityItemsTest() {
         // GIVEN
         Long itemId1 = 1L;
-        Long userId1 = 1L;
-
         Long itemId2 = 2L;
-        Long userId2 = 2L;
+        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
 
         ItemRequest itemRequest1 = createItemRequest("테스트용 이름1", "테스트용 생산지1", Category.FRUIT,
                 LocalDateTime.now().plusDays(5), 3, 7900, 20, 15, "테스트용 내용");
-        ItemResponse itemResponse1 = itemService.save(itemId1, itemRequest1);
-
-        // (더 인기 있는 상품)
         ItemRequest itemRequest2 = createItemRequest("테스트용 이름2", "테스트용 생산지2", Category.VEGETABLE,
                 LocalDateTime.now().plusDays(7), 5, 150000, 50, 30, "테스트용 내용2");
-        ItemResponse itemResponse2 = itemService.save(itemId2, itemRequest2);
 
-        // Item 찜하기
-        // todo 찜하기부터 구현
+        ItemResponse item1 = itemService.save(itemId1, itemRequest1);
+        ItemResponse item2 = itemService.save(itemId2, itemRequest2);
+
+        // 찜 상품에 데이터 추가
+        AddCartItemRequest testItemCount1 = AddCartItemRequest.builder().itemCount(2L).build();
+        AddCartItemRequest testItemCount2 = AddCartItemRequest.builder().itemCount(5L).build();
+
+        CartItemResponse result1 = cartItemService.addCartItem(testUserId, itemId1, testItemCount1);
+        CartItemResponse result2 = cartItemService.addCartItem(testUserId, itemId2, testItemCount2);
+
+        assertThat(result1.getMessage()).isEqualTo(ADD_CART_ITEM_SUCCESS);
+        assertThat(result2.getMessage()).isEqualTo(ADD_CART_ITEM_SUCCESS);
+
+        List<CartListResponse> cartList = cartService.getCartList(testUserId);
+        assertThat(cartList.size()).isEqualTo(2);
 
         // WHEN
-        List<ItemResponse> popularityItems = itemSearchService.getPopularityItems();
+        List<Item> result = itemRepository.findPopularityItems();
 
         // THEN
-        ItemResponse firstItem = popularityItems.get(0);
-        Assertions.assertEquals(itemResponse2.getId(), firstItem.getId()); // 찜 개수가 높은 상품이 먼저 나와야 함
-
-        ItemResponse secondItem = popularityItems.get(1);
-        Assertions.assertEquals(itemResponse1.getId(), secondItem.getId());
-
+        Assertions.assertEquals(2, result.size()); // 결과는 2개여야 함
+        Assertions.assertEquals(item2.getId(), result.get(0).getId()); // 찜 개수가 높은 순으로 정렬되었는지 확인
+        Assertions.assertEquals(item1.getId(), result.get(1).getId());
 
     }
+
+    @Test
+    @DisplayName("상품 종류별 검색 목록 조회")
+    void getCategoryItemsTest() {
+        // GIVEN
+        Long itemId1 = 1L;
+        Long itemId2 = 2L;
+
+        ItemRequest itemRequest1 = createItemRequest("테스트용 이름1", "테스트용 생산지1", Category.FRUIT,
+                LocalDateTime.now().plusDays(5), 3, 7900, 20, 15, "테스트용 내용");
+        ItemRequest itemRequest2 = createItemRequest("테스트용 이름2", "테스트용 생산지2", Category.VEGETABLE,
+                LocalDateTime.now().plusDays(7), 5, 150000, 50, 30, "테스트용 내용2");
+
+        ItemResponse itemResponse1 = itemService.save(itemId1, itemRequest1);
+        ItemResponse itemResponse2 = itemService.save(itemId2, itemRequest2);
+
+        // WHEN
+        List<ItemResponse> fruitItems = itemSearchService.getCategoryItems(Category.FRUIT);
+        List<ItemResponse> vegetableItems = itemSearchService.getCategoryItems(Category.VEGETABLE);
+        List<ItemResponse> otherItems = itemSearchService.getCategoryItems(Category.OTHER);
+
+        // THEN
+        Assertions.assertEquals(1, fruitItems.size());
+        Assertions.assertEquals(1, vegetableItems.size());
+        Assertions.assertEquals(0, otherItems.size());
+
+        // 카테고리별로 올바른 상품이 조회되었는지 확인
+        Assertions.assertEquals(itemResponse1.getId(), fruitItems.get(0).getId());
+        Assertions.assertEquals(itemResponse2.getId(), vegetableItems.get(0).getId());
+
+    }
+
 }
+
