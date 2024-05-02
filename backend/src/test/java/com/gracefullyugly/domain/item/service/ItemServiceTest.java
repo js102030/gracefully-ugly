@@ -1,7 +1,9 @@
 package com.gracefullyugly.domain.item.service;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.gracefullyugly.domain.item.dto.UpdateDescriptionDto;
 import com.gracefullyugly.domain.item.entity.Item;
-
 import com.gracefullyugly.domain.item.repository.ItemRepository;
 import com.gracefullyugly.testutil.SetupDataUtils;
 import jakarta.transaction.Transactional;
@@ -9,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Transactional
@@ -51,6 +51,7 @@ class ItemServiceTest {
     void updateDescriptionTest() {
         // GIVEN
         Long itemId = 1L;
+        Long userId = 1L;
         String newDescription = "업데이트 테스트";
 
         // WHEN
@@ -58,7 +59,7 @@ class ItemServiceTest {
                 .description(newDescription)
                 .build();
 
-        UpdateDescriptionDto updatedDto = itemService.updateDescription(itemId, updateDescriptionDto);
+        UpdateDescriptionDto updatedDto = itemService.updateDescription(itemId, userId,updateDescriptionDto);
 
         // THEN
         Assertions.assertEquals(newDescription, updatedDto.getDescription());
@@ -69,9 +70,10 @@ class ItemServiceTest {
     void deletedById() {
         // GIVEN
         Long itemId = 1L;
+        Long userId = 1L;
 
         // WHEN
-        itemService.deletedById(itemId);
+        itemService.deletedById(itemId, userId);
         Item deletedItem = itemSearchService.findById(itemId);
 
         // THEN
