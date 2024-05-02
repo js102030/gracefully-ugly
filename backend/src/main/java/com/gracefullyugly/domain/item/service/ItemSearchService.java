@@ -7,7 +7,6 @@ import com.gracefullyugly.domain.item.enumtype.Category;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,7 +57,6 @@ public class ItemSearchService {
                 .map(ItemResponse::new)
                 .collect(Collectors.toList());
         return itemResponseList;
-
     }
 
     // 상품 종류별 검색 목록 조회
@@ -68,7 +66,6 @@ public class ItemSearchService {
                 .map(ItemResponse::new)
                 .collect(Collectors.toList());
         return itemResponseList;
-
     }
 
 

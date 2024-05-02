@@ -9,7 +9,4 @@ import lombok.Data;
 @Builder
 public class CartItemResponse {
     private String message;
-    private Long itemCount;
-
-
 }
