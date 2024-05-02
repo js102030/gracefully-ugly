@@ -71,7 +71,7 @@ public class OrderServiceTest {
         // 회원 정보 세팅
         userRepository.save(SetupDataUtils.makeTestUser(passwordEncoder));
         userRepository.save(
-                SetupDataUtils.makeCustomTestUser("customUser", "customUser", "customUser", "custom@custom.com",
+                SetupDataUtils.makeCustomTestUser(null, "customUser", "customUser", "customUser", "custom@custom.com",
                         "customAddress", passwordEncoder));
         userRepository.save(SetupDataUtils.makeTestAdmin(passwordEncoder));
 
@@ -196,8 +196,10 @@ public class OrderServiceTest {
         UpdateOrderAddressRequest requestAdmin = UpdateOrderAddressRequest.builder().address("AdminAddress").build();
 
         // WHEN
-        OrderResponse result = orderService.updateOrderAddress(testUser, orderResponse.getOrderId(), request);
-        OrderResponse resultAdmin = orderService.updateOrderAddress(admin, orderResponse.getOrderId(), requestAdmin);
+        OrderResponse result = orderService.updateOrderAddress(testUser.getId(), testUser.getRole(),
+                orderResponse.getOrderId(), request);
+        OrderResponse resultAdmin = orderService.updateOrderAddress(admin.getId(), admin.getRole(),
+                orderResponse.getOrderId(), requestAdmin);
 
         // THEN
         assertThat(result.getOrderId()).isEqualTo(orderResponse.getOrderId());
@@ -223,9 +225,11 @@ public class OrderServiceTest {
 
         // WHEN, THEN
         Assertions.assertThrows(NotFoundException.class,
-                () -> orderService.updateOrderAddress(testUser, testFailOrderId, request), NOT_FOUND_ORDER);
+                () -> orderService.updateOrderAddress(testUser.getId(), testUser.getRole(), testFailOrderId, request),
+                NOT_FOUND_ORDER);
         Assertions.assertThrows(ForbiddenException.class,
-                () -> orderService.updateOrderAddress(anotherUser, orderResponse.getOrderId(), request), FORBIDDEN);
+                () -> orderService.updateOrderAddress(anotherUser.getId(), anotherUser.getRole(),
+                        orderResponse.getOrderId(), request), FORBIDDEN);
     }
 
     @Test
@@ -245,8 +249,11 @@ public class OrderServiceTest {
                 .build();
 
         // WHEN
-        OrderResponse result = orderService.updateOrderPhoneNumber(testUser, orderResponse.getOrderId(), request);
-        OrderResponse resultAdmin = orderService.updateOrderPhoneNumber(admin, orderResponse.getOrderId(), requestAdmin);
+        OrderResponse result = orderService.updateOrderPhoneNumber(testUser.getId(), testUser.getRole(),
+                orderResponse.getOrderId(), request);
+        OrderResponse resultAdmin = orderService.updateOrderPhoneNumber(admin.getId(), admin.getRole(),
+                orderResponse.getOrderId(),
+                requestAdmin);
 
         // THEN
         assertThat(result.getOrderId()).isEqualTo(orderResponse.getOrderId());
@@ -273,8 +280,10 @@ public class OrderServiceTest {
 
         // WHEN, THEN
         Assertions.assertThrows(NotFoundException.class,
-                () -> orderService.updateOrderPhoneNumber(testUser, testFailOrderId, request), NOT_FOUND_ORDER);
+                () -> orderService.updateOrderPhoneNumber(testUser.getId(), testUser.getRole(), testFailOrderId,
+                        request), NOT_FOUND_ORDER);
         Assertions.assertThrows(ForbiddenException.class,
-                () -> orderService.updateOrderPhoneNumber(anotherUser, orderResponse.getOrderId(), request), FORBIDDEN);
+                () -> orderService.updateOrderPhoneNumber(anotherUser.getId(), anotherUser.getRole(),
+                        orderResponse.getOrderId(), request), FORBIDDEN);
     }
 }
