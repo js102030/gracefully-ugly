@@ -5,6 +5,9 @@ import com.gracefullyugly.domain.report.dto.ReportRequest;
 import com.gracefullyugly.domain.report.dto.ReportResponse;
 import com.gracefullyugly.domain.report.entity.Report;
 import com.gracefullyugly.domain.report.repository.ReportRepository;
+import com.gracefullyugly.domain.user.entity.User;
+import com.gracefullyugly.domain.user.enumtype.Role;
+import com.gracefullyugly.domain.user.service.UserSearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +19,7 @@ public class ReportService {
 
     private final ReportSearchService reportSearchService;
     private final ReportRepository reportRepository;
+    private final UserSearchService userSearchService;
 
     public ReportResponse reportItem(Long userId, Long itemId, ReportRequest request) {
         Report report = Report.forItem(userId, itemId, request.getContents());
@@ -33,16 +37,30 @@ public class ReportService {
         return ReportDtoUtil.reportToReportResponse(savedReport);
     }
 
-    public void updateReportStatus(Long reportId) {
+    public void acceptReport(Long userId, Long reportId) {
+        User findUser = userSearchService.findById(userId);
+
+        validAdmin(findUser);
+
         Report findReport = reportSearchService.findById(reportId);
 
         findReport.accept();
     }
 
-    public void deleteReport(Long reportId) {
+    public void deleteReport(Long userId, Long reportId) {
+        User findUser = userSearchService.findById(userId);
+
+        validAdmin(findUser);
+
         Report findReport = reportSearchService.findById(reportId);
 
         findReport.delete();
+    }
+
+    private void validAdmin(User findUser) {
+        if (findUser.getRole() != Role.ADMIN) {
+            throw new IllegalArgumentException("권한이 없습니다.");
+        }
     }
 
 }
