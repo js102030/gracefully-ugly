@@ -4,8 +4,10 @@ import com.gracefullyugly.common.security.jwt.CustomLogoutFilter;
 import com.gracefullyugly.common.security.jwt.JWTFilter;
 import com.gracefullyugly.common.security.jwt.JWTUtil;
 import com.gracefullyugly.common.security.jwt.LoginFilter;
-import java.util.Collections;
+import com.gracefullyugly.common.security.oauth2.OAuth2CustomSuccessHandler;
+import com.gracefullyugly.common.security.oauth2.service.CustomOAuth2UserService;
 import com.gracefullyugly.domain.user.repository.UserRepository;
+import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +16,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -37,8 +38,9 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     //JWTUtil 주입
     private final JWTUtil jwtUtil;
-
     private final UserRepository userRepository;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2CustomSuccessHandler oAuth2CustomSuccessHandler;
 
     //AuthenticationManager Bean 등록
     @Bean
@@ -77,7 +79,7 @@ public class SecurityConfig {
 
         //csrf disable
         http
-                .csrf(AbstractHttpConfigurer::disable);
+                .csrf((auth) -> auth.disable());
 
         //From 로그인 방식 disable
         http
@@ -85,12 +87,17 @@ public class SecurityConfig {
                         .usernameParameter("loginId") // 변경된 부분
                         .disable());
 
-        //http basic 인증 방식 disable
+        //HTTP Basic 인증 방식 disable
         http
-                .httpBasic(AbstractHttpConfigurer::disable);
+                .httpBasic((auth) -> auth.disable());
 
+        //oauth2
         http
-                .httpBasic(AbstractHttpConfigurer::disable);
+                .oauth2Login((oauth2) -> oauth2
+                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+                                .userService(customOAuth2UserService))
+                        .successHandler(oAuth2CustomSuccessHandler)
+                );
 
         //경로별 인가 작업
         http
