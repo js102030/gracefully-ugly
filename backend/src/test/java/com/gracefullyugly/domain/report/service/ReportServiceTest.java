@@ -1,6 +1,7 @@
 package com.gracefullyugly.domain.report.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.gracefullyugly.domain.report.dto.ReportRequest;
 import com.gracefullyugly.domain.report.dto.ReportResponse;
@@ -71,7 +72,7 @@ class ReportServiceTest {
 
         // THEN
         Report findReport = reportSearchService.findById(response.getReportId());
-        assertEquals(findReport.isAccepted(), true);
+        assertTrue(findReport.isAccepted());
     }
 
     @Test
@@ -92,7 +93,7 @@ class ReportServiceTest {
 
         // THEN
         Report findReport = reportSearchService.findById(response.getReportId());
-        assertEquals(findReport.isDeleted(), true);
+        assertTrue(findReport.isDeleted());
     }
 
 }
