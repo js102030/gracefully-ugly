@@ -3,6 +3,7 @@ package com.gracefullyugly.common.exception;
 import com.gracefullyugly.common.exception.custom.AuthenticationException;
 import com.gracefullyugly.common.exception.custom.ExistException;
 import com.gracefullyugly.common.exception.custom.NotFoundException;
+import com.gracefullyugly.common.exception.custom.ForbiddenException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -40,4 +41,10 @@ public class GlobalExceptionHandler {
                 .body(e.getMessage());
     }
 
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<String> handleNotMatchInfoException(ForbiddenException e) {
+        return ResponseEntity
+            .status(HttpStatus.FORBIDDEN)
+            .body(e.getMessage());
+    }
 }
