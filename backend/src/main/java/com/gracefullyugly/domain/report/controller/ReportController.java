@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,7 +32,7 @@ public class ReportController {
     @PostMapping("/report/items/{itemId}")
     public ResponseEntity<ReportResponse> reportItem(@AuthenticationPrincipal(expression = "userId") Long userId,
                                                      @PathVariable Long itemId,
-                                                     @Valid @RequestPart ReportRequest request) {
+                                                     @Valid @RequestBody ReportRequest request) {
         final ReportResponse response = reportService.reportItem(userId, itemId, request);
 
         return ResponseEntity
@@ -43,7 +43,7 @@ public class ReportController {
     @PostMapping("/report/reviews/{reviewId}")
     public ResponseEntity<ReportResponse> reportReview(@AuthenticationPrincipal(expression = "userId") Long userId,
                                                        @PathVariable Long reviewId,
-                                                       @Valid @RequestPart ReportRequest request) {
+                                                       @Valid @RequestBody ReportRequest request) {
         final ReportResponse response = reportService.reportReview(userId, reviewId, request);
 
         return ResponseEntity
@@ -84,8 +84,9 @@ public class ReportController {
     }
 
     @PatchMapping("/report/{reportId}/status")
-    public ResponseEntity<Void> updateReportStatus(@PathVariable Long reportId) {
-        reportService.updateReportStatus(reportId);
+    public ResponseEntity<Void> acceptReport(@AuthenticationPrincipal(expression = "userId") Long userId,
+                                             @PathVariable Long reportId) {
+        reportService.acceptReport(userId, reportId);
 
         return ResponseEntity
                 .ok()
@@ -93,8 +94,9 @@ public class ReportController {
     }
 
     @DeleteMapping("/report/{reportId}")
-    public ResponseEntity<Void> deleteReport(@PathVariable Long reportId) {
-        reportService.deleteReport(reportId);
+    public ResponseEntity<Void> deleteReport(@AuthenticationPrincipal(expression = "userId") Long userId,
+                                             @PathVariable Long reportId) {
+        reportService.deleteReport(userId, reportId);
 
         return ResponseEntity
                 .noContent()

@@ -1,5 +1,9 @@
 package com.gracefullyugly.domain.item.controller.api;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
@@ -7,6 +11,7 @@ import com.gracefullyugly.domain.item.enumtype.Category;
 import com.gracefullyugly.domain.item.service.ItemService;
 import com.gracefullyugly.domain.user.repository.UserRepository;
 import com.gracefullyugly.testutil.SetupDataUtils;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +22,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.time.LocalDateTime;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @SpringBootTest
@@ -43,9 +44,12 @@ class ItemControllerTest {
     ObjectMapper objectMapper;
 
     // 판매글 여러개 제작할 때 사용
-    private ItemRequest createItemRequest(String name, String productionPlace, Category categoryId, LocalDateTime closedDate,
-                                          int minUnitWeight, int price, int totalSalesUnit, int minGroupBuyWeight, String description) {
-        return new ItemRequest(name, productionPlace, categoryId, closedDate, minUnitWeight, price, totalSalesUnit, minGroupBuyWeight, description);
+    private ItemRequest createItemRequest(String name, String productionPlace, Category categoryId,
+                                          LocalDateTime closedDate,
+                                          int minUnitWeight, int price, int totalSalesUnit, int minGroupBuyWeight,
+                                          String description) {
+        return new ItemRequest(name, productionPlace, categoryId, closedDate, minUnitWeight, price, totalSalesUnit,
+                minGroupBuyWeight, description);
     }
 
     private ResultActions performPostRequest(ItemRequest itemRequest) throws Exception {
@@ -59,7 +63,7 @@ class ItemControllerTest {
     @DisplayName("판매글 생성 테스트")
     void addItemTest() throws Exception {
         // GIVEN
-        String name = SetupDataUtils.NAME;
+        String name = SetupDataUtils.ITEM_NAME;
         String productionPlace = SetupDataUtils.PRODUCTION_PLACE;
         Category categoryId = SetupDataUtils.CATEGORY_ID;
         LocalDateTime closedDate = SetupDataUtils.CLOSED_DATE;
@@ -69,9 +73,9 @@ class ItemControllerTest {
         int minGroupBuyWeight = SetupDataUtils.MIN_GROUP_BUY_WEIGHT;
         String description = SetupDataUtils.DESCRIPTION;
 
-        ItemRequest itemRequest = new ItemRequest(name, productionPlace, categoryId, closedDate, minUnitWeight, price, totalSalesUnit, minGroupBuyWeight, description);
+        ItemRequest itemRequest = new ItemRequest(name, productionPlace, categoryId, closedDate, minUnitWeight, price,
+                totalSalesUnit, minGroupBuyWeight, description);
         String content = objectMapper.writeValueAsString(itemRequest);
-
 
         // WHEN
         ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/api/items")

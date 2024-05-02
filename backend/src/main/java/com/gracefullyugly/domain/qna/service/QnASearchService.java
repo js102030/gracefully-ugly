@@ -25,14 +25,14 @@ public class QnASearchService {
     public QnADto readQnA(Long id) {
         QnA findQnA = findById(id);
 
-        return QnADtoUtil.QnAToQnADto(findQnA);
+        return QnADtoUtil.qnAToQnADto(findQnA);
     }
 
     public ApiResponse<List<QnADto>> readQnAs(Long itemId) {
         List<QnA> findQnAs = qnARepository.findByItemId(itemId);
 
         List<QnADto> qnADtos = findQnAs.stream()
-                .map(QnADtoUtil::QnAToQnADto)
+                .map(QnADtoUtil::qnAToQnADto)
                 .toList();
 
         return new ApiResponse<>(qnADtos.size(), qnADtos);
