@@ -101,7 +101,7 @@ public class ItemController {
     // 인기 상품 목록 조회
     @GetMapping("/items/popularity")
     public ResponseEntity<List<?>> showPopularity() {
-        List<ItemResponse> itemResponseList = itemSearchService.getPopularityItems();
+        List<ItemResponse> itemResponseList = itemSearchService.findMostAddedToCartItems();
         return ResponseEntity
                 .ok(itemResponseList);
     }

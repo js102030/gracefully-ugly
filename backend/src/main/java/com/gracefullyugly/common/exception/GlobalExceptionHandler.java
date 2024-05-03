@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ForbiddenException.class)
-    public ResponseEntity<String> handleNotMatchInfoException(ForbiddenException e) {
+    public ResponseEntity<String> handleForbiddenException(ForbiddenException e) {
         return ResponseEntity
             .status(HttpStatus.FORBIDDEN)
             .body(e.getMessage());

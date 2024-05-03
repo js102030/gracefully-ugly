@@ -6,6 +6,7 @@ import static com.gracefullyugly.testutil.SetupDataUtils.NOT_FOUND_USER;
 import static com.gracefullyugly.testutil.SetupDataUtils.ORDER_NO_ITEM;
 import static com.gracefullyugly.testutil.SetupDataUtils.QUANTITY;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_ADDRESS;
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_ADMIN_LOGIN_ID;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_LOGIN_ID;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_PHONE_NUMBER;
@@ -113,7 +114,7 @@ public class OrderControllerTest {
         customAnotherUserDetails = (CustomUserDetails) testUserDetailsService.loadUserByUsername("customUser");
 
         // 어드민 UserDetails 세팅
-        admin = new CustomUserDetails(SetupDataUtils.makeTestAdmin(passwordEncoder));
+        admin = (CustomUserDetails) testUserDetailsService.loadUserByUsername(TEST_ADMIN_LOGIN_ID);
 
         // 없는 회원 UserDetails 세팅
         notExist = new CustomUserDetails(
