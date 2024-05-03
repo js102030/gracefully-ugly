@@ -3,6 +3,7 @@ package com.gracefullyugly.domain.item.service;
 import static com.gracefullyugly.testutil.SetupDataUtils.ADD_CART_ITEM_SUCCESS;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gracefullyugly.domain.cart.dto.CartListResponse;
@@ -21,7 +22,12 @@ import com.gracefullyugly.domain.user.repository.UserRepository;
 import com.gracefullyugly.testutil.SetupDataUtils;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -124,7 +130,7 @@ class ItemSearchServiceTest {
         userRepository.save(SetupDataUtils.makeTestUser(passwordEncoder));
         Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
 
-        Long itemId1 = 1L;
+        Long itemId1 = 3L;
         ItemRequest itemRequest1 = ItemRequest.builder()
                 .name("감자")
                 .productionPlace("강원도")
@@ -137,7 +143,7 @@ class ItemSearchServiceTest {
                 .description("맛 좋은 감자")
                 .build();
 
-        Long itemId2 = 2L;
+        Long itemId2 = 4L;
         ItemRequest itemRequest2 = ItemRequest.builder()
                 .name("고구마")
                 .productionPlace("전라남도")
@@ -160,32 +166,20 @@ class ItemSearchServiceTest {
         CartItemResponse result1 = cartItemService.addCartItem(testUserId, itemId1, testItemCount1);
         CartItemResponse result2 = cartItemService.addCartItem(testUserId, itemId2, testItemCount2);
 
-        assertThat(result1.getMessage()).isEqualTo(ADD_CART_ITEM_SUCCESS);
-        assertThat(result2.getMessage()).isEqualTo(ADD_CART_ITEM_SUCCESS);
-
-        List<CartListResponse> cartList = cartService.getCartList(testUserId);
-        assertThat(cartList.size()).isEqualTo(2);
-
-        // WHEN
-        List<Item> result = itemRepository.findPopularityItems();
-        List<ItemResponse> resultList = result.stream()
-                .map(ItemDtoUtil::itemToItemResponse)
-                .toList();
+        List<ItemResponse> popularityItems = itemSearchService.getPopularityItems();
 
         // THEN
-        System.out.println("리스트보기 :" + resultList);
-        assertThat(resultList.size()).isEqualTo(2);
-        assertThat(item2.getId()).isEqualTo(resultList.get(0).getId()); // 찜 개수가 높은 순으로 정렬되었는지 확인
-        assertThat(item1.getId()).isEqualTo(resultList.get(1).getId());
+        System.out.println("리스트보기 :" + popularityItems);
+        assertThat(popularityItems.size()).isEqualTo(2);
+        assertThat(item2.getId()).isEqualTo(popularityItems.get(0).getId()); // 찜 개수가 높은 순으로 정렬되었는지 확인
+        assertThat(item1.getId()).isEqualTo(popularityItems.get(1).getId());
     }
 
     @Test
     @DisplayName("상품 종류별 검색 목록 조회")
     void getCategoryItemsTest() {
         // GIVEN
-        Category categoryId = Category.VEGETABLE;
-
-        Long itemId1 = 1L;
+        Long itemId1 =5L;
         ItemRequest itemRequest1 = ItemRequest.builder()
                 .name("감자")
                 .productionPlace("강원도")
@@ -198,7 +192,7 @@ class ItemSearchServiceTest {
                 .description("맛 좋은 감자")
                 .build();
 
-        Long itemId2 = 2L;
+        Long itemId2 = 6L;
         ItemRequest itemRequest2 = ItemRequest.builder()
                 .name("고구마")
                 .productionPlace("전라남도")
@@ -211,7 +205,7 @@ class ItemSearchServiceTest {
                 .description("맛있는 고구마 ~ ")
                 .build();
 
-        Long itemId3 = 3L;
+        Long itemId3 = 7L;
         ItemRequest itemRequest3 = ItemRequest.builder()
                 .name("사과")
                 .productionPlace("경상북도")

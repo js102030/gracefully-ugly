@@ -50,6 +50,10 @@ public class ItemSearchService {
     public List<ItemResponse> getPopularityItems() {
         List<Item> popularityItems = itemRepository.findPopularityItems();
 
+        if (popularityItems.isEmpty()) {
+            throw new IllegalArgumentException("인기 상품이 존재하지 않습니다.");
+        }
+
         return popularityItems.stream()
                 .map(ItemDtoUtil::itemToItemResponse)
                 .collect(Collectors.toList());
