@@ -76,7 +76,7 @@ class ReviewControllerTest {
                 .andExpect(jsonPath("$.reviewId").value(1L))
                 .andExpect(jsonPath("$.userId").value(1L))
                 .andExpect(jsonPath("$.itemId").value(1L))
-                .andExpect(jsonPath("$.contents").value("좋아요"))
+                .andExpect(jsonPath("$.comments").value("좋아요"))
                 .andExpect(jsonPath("$.starPoint").value(5))
                 .andDo(print());
 
@@ -101,7 +101,7 @@ class ReviewControllerTest {
                 .andExpect(jsonPath("$.reviewId").value(1L))
                 .andExpect(jsonPath("$.userId").value(1L))
                 .andExpect(jsonPath("$.itemId").value(1L))
-                .andExpect(jsonPath("$.contents").value("좋아요"))
+                .andExpect(jsonPath("$.comments").value("좋아요"))
                 .andExpect(jsonPath("$.starPoint").value(5))
                 .andDo(print());
 
@@ -137,12 +137,12 @@ class ReviewControllerTest {
                 .andExpect(jsonPath("$.data[0].reviewId").value(1L))
                 .andExpect(jsonPath("$.data[0].userId").value(1L))
                 .andExpect(jsonPath("$.data[0].itemId").value(1L))
-                .andExpect(jsonPath("$.data[0].contents").value("좋아요"))
+                .andExpect(jsonPath("$.data[0].comments").value("좋아요"))
                 .andExpect(jsonPath("$.data[0].starPoint").value(5))
                 .andExpect(jsonPath("$.data[1].reviewId").value(2L))
                 .andExpect(jsonPath("$.data[1].userId").value(3L))
                 .andExpect(jsonPath("$.data[1].itemId").value(1L))
-                .andExpect(jsonPath("$.data[1].contents").value("좋아요"))
+                .andExpect(jsonPath("$.data[1].comments").value("좋아요"))
                 .andExpect(jsonPath("$.data[1].starPoint").value(3))
                 .andDo(print());
 
