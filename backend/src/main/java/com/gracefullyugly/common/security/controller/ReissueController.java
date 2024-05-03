@@ -6,13 +6,13 @@ import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory; // Import 추가
 
 @Controller
 @ResponseBody
@@ -75,14 +75,14 @@ public class ReissueController {
         String role = jwtUtil.getRole(refresh);
 
         //make new JWT
-        String newAccess = jwtUtil.createJwt("access",userId, loginId, role, 60 * 10 * 1000L);
-        String newRefresh = jwtUtil.createJwt("refresh", userId, loginId    , role, 86400000L);
+        String newAccess = jwtUtil.createJwt("access", userId, loginId, role, 60 * 10 * 1000L);
+        String newRefresh = jwtUtil.createJwt("refresh", userId, loginId, role, 86400000L);
 
         userRepository.saveRefreshToken(loginId, newRefresh);
         String saveRefresh = userRepository.findRefreshTokenByLoginId(loginId);
-        logger.info("기존 refresh =" + refresh) ;
-        logger.info("재발급한 refresh =" + newRefresh) ;
-        logger.info("저장한 refresh =" + saveRefresh) ;
+        logger.info("기존 refresh =" + refresh);
+        logger.info("재발급한 refresh =" + newRefresh);
+        logger.info("저장한 refresh =" + saveRefresh);
 
         //response
         response.setHeader("access", newAccess);
@@ -94,7 +94,7 @@ public class ReissueController {
     private Cookie createCookie(String key, String value) {
 
         Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(24*60*60);
+        cookie.setMaxAge(24 * 60 * 60);
         //cookie.setSecure(true);
         //cookie.setPath("/");
         cookie.setHttpOnly(true);

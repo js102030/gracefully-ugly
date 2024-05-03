@@ -1,17 +1,16 @@
 package com.gracefullyugly.domain.item.controller.api;
 
+import com.gracefullyugly.common.security.CustomUserDetails;
 import com.gracefullyugly.domain.item.dto.ItemDtoUtil;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
-import com.gracefullyugly.domain.item.dto.UpdateDescriptionDto;
+import com.gracefullyugly.domain.item.dto.UpdateDescriptionRequest;
 import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.enumtype.Category;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.item.service.ItemService;
-import com.gracefullyugly.domain.user.dto.UpdateAddressDto;
-
-import java.util.List;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +34,9 @@ public class ItemController {
 
     // 판매글 생성
     @PostMapping("/items")
-    public ResponseEntity<ItemResponse> addItem(@AuthenticationPrincipal Long userId,
+    public ResponseEntity<ItemResponse> addItem(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                                                 @RequestBody ItemRequest request) {
+        Long userId = customUserDetails.getUserId();
         final ItemResponse savedResponse = itemService.save(userId, request);
 
         return ResponseEntity
@@ -45,15 +45,16 @@ public class ItemController {
     }
 
     // 판매글 목록 조회
-    // TODO : 페이징 처리 후 리팩토링 예정
     @GetMapping("/items")
     public ResponseEntity<List<ItemResponse>> showItems() {
-        // TODO : List를 반환하지 않고 ApiResponse를 반환하는 것이 좋아 보임
         List<Item> itemList = itemSearchService.findAllItems();
+
         List<ItemResponse> responseList = itemList.stream()
                 .map(ItemDtoUtil::itemToItemResponse)
                 .toList();
-        return ResponseEntity.ok(responseList);
+
+        return ResponseEntity
+                .ok(responseList);
     }
 
 
@@ -69,18 +70,21 @@ public class ItemController {
 
     // 판매글 수정
     @PutMapping("/items/{itemId}")
-    public ResponseEntity<UpdateDescriptionDto> updateDescription(@PathVariable Long itemId,
-                                                              @Valid @RequestBody UpdateDescriptionDto updateDescriptionDto) {
-        final UpdateDescriptionDto updateAddress = itemService.updateDescription(itemId, updateDescriptionDto);
+    public ResponseEntity<ItemResponse> updateDescription(@AuthenticationPrincipal(expression = "userId") Long userId,
+                                                          @PathVariable Long itemId,
+                                                          @Valid @RequestBody UpdateDescriptionRequest updateDescriptionRequest) {
+        ItemResponse response = itemService.updateDescription(itemId, userId,
+                updateDescriptionRequest);
 
         return ResponseEntity
-                .ok(updateAddress);
+                .ok(response);
     }
 
     // 판매글 삭제
     @DeleteMapping("/items/{itemId}")
-    public ResponseEntity<Void> deleteOneItem(@PathVariable Long itemId) {
-        itemService.deletedById(itemId);
+    public ResponseEntity<Void> deleteOneItem(@AuthenticationPrincipal(expression = "userId") Long userId,
+                                              @PathVariable Long itemId) {
+        itemService.deletedById(itemId, userId);
 
         return ResponseEntity.
                 noContent()
@@ -95,6 +99,7 @@ public class ItemController {
                 .ok(itemResponseList);
 
     }
+
     // 인기 상품 목록 조회
     @GetMapping("/items/popularity")
     public ResponseEntity<List<?>> showPopularity() {

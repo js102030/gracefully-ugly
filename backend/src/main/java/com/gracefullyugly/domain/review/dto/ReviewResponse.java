@@ -9,10 +9,10 @@ import lombok.Data;
 @Builder
 public class ReviewResponse {
 
-    private Long id;
+    private Long reviewId;
     private Long userId;
     private Long itemId;
-    private String contents;
+    private String comments;
     private float starPoint;
     private boolean isDeleted;
 

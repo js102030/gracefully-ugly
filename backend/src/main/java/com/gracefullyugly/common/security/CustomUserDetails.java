@@ -1,6 +1,7 @@
 package com.gracefullyugly.common.security;
 
 import com.gracefullyugly.domain.user.entity.User;
+import com.gracefullyugly.domain.user.enumtype.Role;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,6 +26,10 @@ public class CustomUserDetails implements UserDetails {
 
     public Long getUserId() {
         return user.getId();
+    }
+
+    public Role getRole() {
+        return user.getRole();
     }
 
     @Override

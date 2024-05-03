@@ -3,10 +3,9 @@ package com.gracefullyugly.domain.item.service;
 import com.gracefullyugly.domain.item.dto.ItemDtoUtil;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
-import com.gracefullyugly.domain.item.dto.UpdateDescriptionDto;
+import com.gracefullyugly.domain.item.dto.UpdateDescriptionRequest;
 import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
-import com.gracefullyugly.domain.user.dto.UpdateAddressDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,15 +26,24 @@ public class ItemService {
         return ItemDtoUtil.itemToItemResponse(savedItem);
     }
 
-
-    public UpdateDescriptionDto updateDescription(Long itemId, UpdateDescriptionDto updateDescriptionDto) {
+    public ItemResponse updateDescription(Long itemId, Long userId, UpdateDescriptionRequest request) {
         Item findItem = itemSearchService.findById(itemId);
 
-        return findItem.updateDescription(updateDescriptionDto.getDescription());
+        if (!findItem.getUserId().equals(userId)) {
+            throw new IllegalArgumentException("작성자만 수정 가능합니다.");
+        }
+
+        findItem.updateDescription(request.getDescription());
+
+        return ItemDtoUtil.itemToItemResponse(findItem);
     }
 
-    public void deletedById(Long itemId) {
+    public void deletedById(Long itemId, Long userId) {
         Item findItem = itemSearchService.findById(itemId);
+
+        if (!findItem.getUserId().equals(userId)) {
+            throw new IllegalArgumentException("작성자만 삭제 가능합니다.");
+        }
 
         findItem.delete();
     }
