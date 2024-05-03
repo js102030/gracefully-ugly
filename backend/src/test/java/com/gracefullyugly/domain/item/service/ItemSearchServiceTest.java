@@ -1,5 +1,6 @@
 package com.gracefullyugly.domain.item.service;
 
+import static com.gracefullyugly.testutil.SetupDataUtils.ADD_CART_ITEM_SUCCESS;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,9 +22,9 @@ import com.gracefullyugly.testutil.SetupDataUtils;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -58,19 +59,6 @@ class ItemSearchServiceTest {
 
     @Autowired
     ObjectMapper objectMapper;
-    @BeforeEach
-    void deleteData() {
-        itemRepository.deleteAll();
-        userRepository.deleteAll();
-    }
-
-    @AfterEach
-    void deleteDataAfter() {
-        itemRepository.deleteAll();
-        userRepository.deleteAll();
-    }
-
-
 
     @Test
     @DisplayName("72시간 이내 마감임박 상품 목록 조회")
@@ -170,23 +158,22 @@ class ItemSearchServiceTest {
         AddCartItemRequest testItemCount2 = AddCartItemRequest.builder().itemCount(5L).build();
 
         CartItemResponse result1 = cartItemService.addCartItem(testUserId, itemId1, testItemCount1);
-        System.out.println("카트에 아이템 넣기1 : "+result1);
         CartItemResponse result2 = cartItemService.addCartItem(testUserId, itemId2, testItemCount2);
-        System.out.println("카트에 아이템 넣기2 : "+result2);
+
+        assertThat(result1.getMessage()).isEqualTo(ADD_CART_ITEM_SUCCESS);
+        assertThat(result2.getMessage()).isEqualTo(ADD_CART_ITEM_SUCCESS);
 
         List<CartListResponse> cartList = cartService.getCartList(testUserId);
         assertThat(cartList.size()).isEqualTo(2);
-        System.out.println("카트리스트 보기 : "+cartList);
 
         // WHEN
-        // todo 여기에 값이 안들어가는듯
         List<Item> result = itemRepository.findPopularityItems();
         List<ItemResponse> resultList = result.stream()
                 .map(ItemDtoUtil::itemToItemResponse)
-                .collect(Collectors.toList());
+                .toList();
 
         // THEN
-        System.out.println("리스트보기 : "+resultList);
+        System.out.println("리스트보기 :" + resultList);
         assertThat(resultList.size()).isEqualTo(2);
         assertThat(item2.getId()).isEqualTo(resultList.get(0).getId()); // 찜 개수가 높은 순으로 정렬되었는지 확인
         assertThat(item1.getId()).isEqualTo(resultList.get(1).getId());
@@ -242,6 +229,7 @@ class ItemSearchServiceTest {
         ItemResponse item3 = itemService.save(itemId3, itemRequest3);
 
         // WHEN
+        itemSearchService = new ItemSearchService(itemRepository);
         List<ItemResponse> fruitItems = itemSearchService.getCategoryItems(Category.FRUIT);
         List<ItemResponse> vegetableItems = itemSearchService.getCategoryItems(Category.VEGETABLE);
         List<ItemResponse> otherItems = itemSearchService.getCategoryItems(Category.OTHER);
