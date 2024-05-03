@@ -32,4 +32,9 @@ public class GroupBuy extends BaseTimeEntity {
         this.groupBuyStatus = groupBuyStatus;
         this.endDate = endDate;
     }
+
+    public GroupBuy updateGroupBuyStatus(GroupBuyStatus groupBuyStatus) {
+        this.groupBuyStatus = groupBuyStatus;
+        return this;
+    }
 }

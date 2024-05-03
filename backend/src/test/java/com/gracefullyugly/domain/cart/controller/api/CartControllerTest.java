@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.gracefullyugly.domain.cart.repository.CartRepository;
 import com.gracefullyugly.domain.cart_item.dto.AddCartItemRequest;
 import com.gracefullyugly.domain.cart_item.service.CartItemService;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
@@ -17,6 +18,7 @@ import com.gracefullyugly.domain.item.service.ItemService;
 import com.gracefullyugly.domain.user.repository.UserRepository;
 import com.gracefullyugly.testutil.SetupDataUtils;
 import java.util.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,7 +48,7 @@ public class CartControllerTest {
     MockMvc mockMvc;
 
     @Autowired
-    CartController cartController;
+    CartRepository cartRepository;
 
     @Autowired
     CartItemService cartItemService;
@@ -67,6 +69,13 @@ public class CartControllerTest {
             itemRepository.findAll().get(0).getId(), AddCartItemRequest.builder().itemCount(QUANTITY).build());
         cartItemService.addCartItem(userRepository.findByNickname(TEST_NICKNAME).get().getId(),
             itemRepository.findAll().get(1).getId(), AddCartItemRequest.builder().itemCount(QUANTITY + 3).build());
+    }
+
+    @AfterEach
+    void deleteTestData() {
+        userRepository.deleteAll();
+        itemRepository.deleteAll();
+        cartRepository.deleteAll();
     }
 
     @Test
