@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
 import com.gracefullyugly.domain.item.dto.UpdateDescriptionRequest;
 import com.gracefullyugly.domain.item.entity.Item;
+import com.gracefullyugly.domain.item.enumtype.Category;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
@@ -30,8 +31,19 @@ class ItemServiceTest {
     @DisplayName("판매글 수정 테스트")
     void updateDescriptionTest() {
         // GIVEN
-        Long itemId = 1L;
-        Long userId = 1L;
+        Item savedItem = itemRepository.save(Item.builder()
+                .userId(1L)
+                .categoryId(Category.FRUIT)
+                .name("테스트")
+                .productionPlace("테스트")
+                .closedDate(null)
+                .minUnitWeight(1)
+                .price(1000)
+                .totalSalesUnit(1)
+                .minGroupBuyWeight(1)
+                .description("테스트")
+                .build());
+
         String newDescription = "업데이트 테스트";
 
         // WHEN
@@ -39,7 +51,8 @@ class ItemServiceTest {
                 .description(newDescription)
                 .build();
 
-        ItemResponse updatedDto = itemService.updateDescription(itemId, userId, updateDescriptionRequest);
+        ItemResponse updatedDto = itemService.updateDescription(savedItem.getId(), savedItem.getUserId(),
+                updateDescriptionRequest);
 
         // THEN
         Assertions.assertEquals(newDescription, updatedDto.getDescription());
@@ -49,12 +62,22 @@ class ItemServiceTest {
     @DisplayName("판매글 삭제 테스트")
     void deletedById() {
         // GIVEN
-        Long itemId = 1L;
-        Long userId = 1L;
+        Item savedItem = itemRepository.save(Item.builder()
+                .userId(1L)
+                .categoryId(Category.FRUIT)
+                .name("테스트")
+                .productionPlace("테스트")
+                .closedDate(null)
+                .minUnitWeight(1)
+                .price(1000)
+                .totalSalesUnit(1)
+                .minGroupBuyWeight(1)
+                .description("테스트")
+                .build());
 
         // WHEN
-        itemService.deletedById(itemId, userId);
-        Item deletedItem = itemSearchService.findById(itemId);
+        itemService.deletedById(savedItem.getId(), savedItem.getUserId());
+        Item deletedItem = itemSearchService.findById(savedItem.getId());
 
         // THEN
         assertTrue(deletedItem.isDeleted());

@@ -1,13 +1,21 @@
 package com.gracefullyugly.domain.item.controller.api;
-import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import com.gracefullyugly.common.security.jwt.JWTUtil;
 import com.gracefullyugly.domain.item.dto.ItemDtoUtil;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
@@ -15,12 +23,12 @@ import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.enumtype.Category;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.item.service.ItemService;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
-
-import com.gracefullyugly.domain.user.repository.UserRepository;
-import com.gracefullyugly.testutil.SetupDataUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +36,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Slf4j
 class ItemControllerTest {
+
+    @Autowired
+    private JWTUtil jwtUtil;
 
     @Autowired
     private MockMvc mockMvc;
@@ -42,28 +53,16 @@ class ItemControllerTest {
     @MockBean
     private ItemSearchService itemSearchService;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    BCryptPasswordEncoder passwordEncoder;
-
-    @Autowired
+    @MockBean
     private ItemService itemService;
-
-    ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     @DisplayName("판매글 생성 테스트")
     void addItemTest() throws Exception {
         // GIVEN
-        userRepository.save(SetupDataUtils.makeTestUser(passwordEncoder));
-        userRepository.save(
-                SetupDataUtils.makeCustomTestUser(null, "customUser", "customUser", "customUser", "custom@custom.com",
-                        "customAddress", passwordEncoder));
-        userRepository.save(SetupDataUtils.makeTestAdmin(passwordEncoder));
-        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
-        Long itemId = 1L;
+        Long testItemId = 1L;
+        Long testUserId = 1L;
+
         ItemRequest itemRequest = ItemRequest.builder()
                 .categoryId(Category.VEGETABLE)
                 .name("감자")
@@ -77,11 +76,13 @@ class ItemControllerTest {
                 .build();
 
         ItemResponse itemResponse = ItemResponse.builder()
-                .id(itemId)
-                .id(testUserId)
+                .id(testItemId)
+                .userId(testUserId)
                 .name("감자")
                 .productionPlace("강원도")
+                .createdDate(LocalDateTime.now())
                 .closedDate(LocalDateTime.now().plusDays(1))
+                .lastModifiedDate(LocalDateTime.now())
                 .categoryId(Category.VEGETABLE)
                 .minUnitWeight(3)
                 .price(7900)
@@ -90,18 +91,35 @@ class ItemControllerTest {
                 .description("맛 좋은 감자")
                 .build();
 
-        // WHEN
-        when(itemService.save(testUserId, itemRequest)).thenReturn(itemResponse);
+        given(itemService.save(any(), any())).willReturn(itemResponse);
+
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
+        String json = gson.toJson(itemRequest);
+
+        String access = getToken();
 
         // THEN
         mockMvc.perform(post("/api/items")
+                        .header("access", access)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(itemRequest)))
+                        .content(json))
                 .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(itemResponse.getId()))
-                .andExpect(jsonPath("$.name").value(itemResponse.getName()))
-                .andExpect(jsonPath("$.description").value(itemResponse.getDescription()));
+                .andExpect(jsonPath("$.id").value(testItemId))
+                .andExpect(jsonPath("$.userId").value(testUserId))
+                .andExpect(jsonPath("$.name").value("감자"))
+                .andExpect(jsonPath("$.productionPlace").value("강원도"))
+                .andExpect(jsonPath("$.categoryId").value(Category.VEGETABLE.toString()))
+                .andExpect(jsonPath("$.minUnitWeight").value(3))
+                .andExpect(jsonPath("$.price").value(7900))
+                .andExpect(jsonPath("$.totalSalesUnit").value(20))
+                .andExpect(jsonPath("$.minGroupBuyWeight").value(15))
+                .andExpect(jsonPath("$.description").value("맛 좋은 감자"))
+                .andExpect(jsonPath("$.createdDate").exists())
+                .andExpect(jsonPath("$.lastModifiedDate").exists())
+                .andExpect(jsonPath("$.closedDate").exists())
+                .andDo(print());
     }
 
     @Test
@@ -140,7 +158,6 @@ class ItemControllerTest {
 
         // WHEN
         when(itemSearchService.findAllItems()).thenReturn(itemList);
-
 
         // THEN (상품 목록 조회 검증)
         mockMvc.perform(get("/api/items")
@@ -208,4 +225,21 @@ class ItemControllerTest {
                 .andExpect(jsonPath("$.description").value(expectedResponse.getDescription()));
     }
 
+    private String getToken() {
+        return jwtUtil.createJwt("access", 100L, "loginId", "ROLE_SELLER", 60 * 10 * 1000L);
+    }
+}
+
+class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
+    private final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+    @Override
+    public void write(JsonWriter out, LocalDateTime value) throws IOException {
+        out.value(value.format(formatter));
+    }
+
+    @Override
+    public LocalDateTime read(JsonReader in) throws IOException {
+        return LocalDateTime.parse(in.nextString(), formatter);
+    }
 }
