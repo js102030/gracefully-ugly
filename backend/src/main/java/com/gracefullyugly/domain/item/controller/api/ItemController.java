@@ -1,6 +1,5 @@
 package com.gracefullyugly.domain.item.controller.api;
 
-import com.gracefullyugly.common.security.CustomUserDetails;
 import com.gracefullyugly.domain.item.dto.ItemDtoUtil;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
@@ -34,14 +33,13 @@ public class ItemController {
 
     // 판매글 생성
     @PostMapping("/items")
-    public ResponseEntity<ItemResponse> addItem(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+    public ResponseEntity<ItemResponse> addItem(@AuthenticationPrincipal(expression = "userId") Long userId,
                                                 @RequestBody ItemRequest request) {
-        Long userId = customUserDetails.getUserId();
-        final ItemResponse savedResponse = itemService.save(userId, request);
+        final ItemResponse response = itemService.save(userId, request);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(savedResponse);
+                .body(response);
     }
 
     // 판매글 목록 조회

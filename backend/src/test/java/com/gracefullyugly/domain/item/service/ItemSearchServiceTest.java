@@ -22,9 +22,9 @@ import com.gracefullyugly.testutil.SetupDataUtils;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -170,10 +170,10 @@ class ItemSearchServiceTest {
         List<Item> result = itemRepository.findPopularityItems();
         List<ItemResponse> resultList = result.stream()
                 .map(ItemDtoUtil::itemToItemResponse)
-                .collect(Collectors.toList());
+                .toList();
 
         // THEN
-        System.out.println("리스트보기 :"+resultList);
+        System.out.println("리스트보기 :" + resultList);
         assertThat(resultList.size()).isEqualTo(2);
         assertThat(item2.getId()).isEqualTo(resultList.get(0).getId()); // 찜 개수가 높은 순으로 정렬되었는지 확인
         assertThat(item1.getId()).isEqualTo(resultList.get(1).getId());
