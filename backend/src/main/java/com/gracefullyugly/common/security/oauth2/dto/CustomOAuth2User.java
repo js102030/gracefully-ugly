@@ -1,11 +1,10 @@
 package com.gracefullyugly.common.security.oauth2.dto;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 public class CustomOAuth2User implements OAuth2User {
 
@@ -39,7 +38,7 @@ public class CustomOAuth2User implements OAuth2User {
         return collection;
     }
 
-    public String getUsername() {
+    public String getName() {
 
         return userDTO.getUsername();
     }
@@ -47,10 +46,5 @@ public class CustomOAuth2User implements OAuth2User {
     public Long getUserId() {
 
         return userDTO.getUserId();
-    }
-
-    @Override
-    public String getName() {
-        return null;
     }
 }
