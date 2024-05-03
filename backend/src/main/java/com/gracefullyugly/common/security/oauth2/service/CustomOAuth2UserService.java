@@ -64,7 +64,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             UserDTO userDTO = new UserDTO();
             userDTO.setUsername(username);
             userDTO.setUserId(saveUser.get().getId());
-            userDTO.setRole(Role.GUEST);
+            userDTO.setRole(Role.ADMIN); // 일단 예시로 ADMIN 해둠
 
             return new CustomOAuth2User(userDTO);
         } else {
