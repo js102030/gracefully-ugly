@@ -47,8 +47,12 @@ public class ItemSearchService {
     }
 
     // 인기 상품 목록 조회 / 찜 개수 기준
-    public List<ItemResponse> getPopularityItems() {
-        List<Item> popularityItems = itemRepository.findPopularityItems();
+    public List<ItemResponse> findMostAddedToCartItems() {
+        List<Item> popularityItems = itemRepository.findMostAddedToCartItems();
+
+        if (popularityItems.isEmpty()) {
+            throw new IllegalArgumentException("인기 상품이 없습니다.");
+        }
 
         return popularityItems.stream()
                 .map(ItemDtoUtil::itemToItemResponse)
