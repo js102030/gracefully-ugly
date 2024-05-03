@@ -51,7 +51,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String username = oAuth2Response.getProvider() + " " + oAuth2Response.getProviderId();
         Optional<User> existData = userRepository.findByLoginId(username);
 
-        if (existData == null) {
+        if (!existData.isPresent()) {
 
             User userEntity = User.builder()
                     .loginId(username)
