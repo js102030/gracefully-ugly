@@ -16,5 +16,6 @@ public class CheckGroupBuyEndDateTask {
     @Transactional
     public void updateExpiredGroupBuyToCanceled() {
         groupBuyRepository.updateExpiredGroupBuyToCanceled();
+        // TODO: 취소된 공동 구매 건에 대해 사용자에게 알림을 보내는 로직이 필요할 듯
     }
 }
