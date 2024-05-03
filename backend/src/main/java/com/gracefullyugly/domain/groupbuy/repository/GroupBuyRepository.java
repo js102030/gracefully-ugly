@@ -3,9 +3,11 @@ package com.gracefullyugly.domain.groupbuy.repository;
 import com.gracefullyugly.domain.groupbuy.dto.GroupBuyInfoResponse;
 import com.gracefullyugly.domain.groupbuy.dto.GroupBuySelectDto;
 import com.gracefullyugly.domain.groupbuy.entity.GroupBuy;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -32,10 +34,10 @@ public interface GroupBuyRepository extends JpaRepository<GroupBuy, Long> {
         nativeQuery = true)
     List<GroupBuySelectDto> findTop5ByItemIdOrderByIdDesc(Long itemId);
 
-    @Query(value =
-        "SELECT * "
-      + "FROM group_buy AS GB "
-      + "WHERE GB.item_id = :itemId AND GB.group_buy_status = '진행중' AND GB.end_date > NOW()",
-    nativeQuery = true)
+    @Query(value = "SELECT GB FROM GroupBuy AS GB WHERE GB.id = :itemId AND GB.groupBuyStatus = 'IN_PROGRESS' AND GB.endDate > CURRENT_TIMESTAMP")
     Optional<GroupBuy> findProgressGroupBuyByItemId(Long itemId);
+
+    @Modifying
+    @Query("UPDATE GroupBuy AS GB SET GB.groupBuyStatus = 'CANCELLED' WHERE GB.groupBuyStatus = 'IN_PROGRESS' AND GB.endDate <= CURRENT_TIMESTAMP")
+    void updateExpiredGroupBuyToCanceled();
 }
