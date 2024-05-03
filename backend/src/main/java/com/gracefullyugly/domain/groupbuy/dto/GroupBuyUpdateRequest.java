@@ -1,6 +1,5 @@
 package com.gracefullyugly.domain.groupbuy.dto;
 
-import com.gracefullyugly.common.validation.validateinterface.ValidEnum;
 import com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
