@@ -7,7 +7,6 @@ import com.gracefullyugly.common.security.jwt.LoginFilter;
 import com.gracefullyugly.common.security.oauth2.OAuth2CustomSuccessHandler;
 import com.gracefullyugly.common.security.oauth2.service.CustomOAuth2UserService;
 import com.gracefullyugly.domain.user.repository.UserRepository;
-import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +20,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
-import org.springframework.web.cors.CorsConfiguration;
 
 
 /**
@@ -58,24 +56,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        //front 단이랑 data 안보이는 오류 발생 막기위해서 CORS 설정
-        http
-                .cors(corsCustomizer -> corsCustomizer
-                        .configurationSource(request -> {
-
-                            CorsConfiguration configuration = new CorsConfiguration();
-
-                            configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
-                            configuration.setAllowedMethods(Collections.singletonList("*"));
-                            configuration.setAllowCredentials(true);
-                            configuration.setAllowedHeaders(Collections.singletonList("*"));
-                            configuration.setMaxAge(3600L);
-
-                            configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
-                            configuration.setExposedHeaders(Collections.singletonList("Authorization"));
-
-                            return configuration;
-                        }));
 
         //csrf disable
         http
