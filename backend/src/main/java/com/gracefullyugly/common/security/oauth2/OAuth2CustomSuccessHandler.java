@@ -33,7 +33,7 @@ public class OAuth2CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         //OAuth2User
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
-        String username = customUserDetails.getUsername();
+        String username = customUserDetails.getName();
         Long userId = customUserDetails.getUserId();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
@@ -52,7 +52,7 @@ public class OAuth2CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         response.setHeader("access", access);
         response.addCookie(createCookie("refresh", refresh));
-        response.sendRedirect("http://localhost:3000/");
+        response.sendRedirect("http://localhost:8080/");
     }
 
     private Cookie createCookie(String key, String value) {
