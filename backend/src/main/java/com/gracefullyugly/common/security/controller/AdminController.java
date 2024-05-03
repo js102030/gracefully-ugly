@@ -11,6 +11,12 @@ public class AdminController {
     @GetMapping("/admin")
     public String adminP() {
 
-        return "admin Controller";
+        return "접근권한 Admin 허용 TEST 통과";
+    }
+
+    @GetMapping("/test")
+    public String testP() {
+
+        return "접근권한 모두 허용 TEST 통과";
     }
 }
