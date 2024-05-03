@@ -6,10 +6,8 @@ import com.gracefullyugly.domain.item.dto.ItemResponse;
 import com.gracefullyugly.domain.item.dto.UpdateDescriptionRequest;
 import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
-import com.gracefullyugly.testutil.SetupDataUtils;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,25 +25,6 @@ class ItemServiceTest {
 
     @Autowired
     ItemRepository itemRepository;
-
-    private Item existingItem;
-
-    @BeforeEach
-    void setUp() {
-        existingItem = Item.builder()
-                .id(1L)
-                .name(SetupDataUtils.ITEM_NAME)
-                .productionPlace(SetupDataUtils.PRODUCTION_PLACE)
-                .categoryId(SetupDataUtils.CATEGORY_ID)
-                .closedDate(SetupDataUtils.CLOSED_DATE)
-                .minUnitWeight(SetupDataUtils.MIN_UNIT_WEIGHT)
-                .price(SetupDataUtils.PRICE)
-                .totalSalesUnit(SetupDataUtils.TOTAL_SALES_UNIT)
-                .minGroupBuyWeight(SetupDataUtils.MIN_GROUP_BUY_WEIGHT)
-                .description(SetupDataUtils.DESCRIPTION)
-                .build();
-        itemRepository.save(existingItem);
-    }
 
     @Test
     @DisplayName("판매글 수정 테스트")

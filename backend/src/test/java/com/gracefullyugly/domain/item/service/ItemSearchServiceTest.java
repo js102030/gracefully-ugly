@@ -11,6 +11,7 @@ import com.gracefullyugly.domain.cart.service.CartService;
 import com.gracefullyugly.domain.cart_item.dto.AddCartItemRequest;
 import com.gracefullyugly.domain.cart_item.dto.CartItemResponse;
 import com.gracefullyugly.domain.cart_item.service.CartItemService;
+import com.gracefullyugly.domain.item.dto.ItemDtoUtil;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
 import com.gracefullyugly.domain.item.entity.Item;
@@ -21,26 +22,25 @@ import com.gracefullyugly.testutil.SetupDataUtils;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
-@AutoConfigureMockMvc
 @Transactional
 class ItemSearchServiceTest {
 
     @Autowired
-    MockMvc mockMvc;
+    ItemRepository itemRepository;
 
     @Autowired
-    ItemRepository itemRepository;
+    ItemService itemService;
+
+    @Autowired
+    ItemSearchService itemSearchService;
 
     @Autowired
     CartRepository cartRepository;
@@ -52,12 +52,6 @@ class ItemSearchServiceTest {
     CartItemService cartItemService;
 
     @Autowired
-    ItemSearchService itemSearchService;
-
-    @Autowired
-    ItemService itemService;
-
-    @Autowired
     CartService cartService;
 
     @Autowired
@@ -66,34 +60,35 @@ class ItemSearchServiceTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    @BeforeEach
-    void setupUserData() {
-        userRepository.save(SetupDataUtils.makeTestUser(passwordEncoder));
-    }
-
-    private Item existingItem;
-
-    // 판매글 여러개 제작할 때 사용
-    private ItemRequest createItemRequest(String name, String productionPlace, Category categoryId,
-                                          LocalDateTime closedDate,
-                                          int minUnitWeight, int price, int totalSalesUnit, int minGroupBuyWeight,
-                                          String description) {
-        return new ItemRequest(name, productionPlace, categoryId, closedDate, minUnitWeight, price, totalSalesUnit,
-                minGroupBuyWeight, description);
-    }
-
-
     @Test
     @DisplayName("72시간 이내 마감임박 상품 목록 조회")
     void getImpendingItemsTest() {
         // GIVEN
         Long itemId1 = 1L;
-        Long itemId2 = 2L;
+        ItemRequest itemRequest1 = ItemRequest.builder()
+                .name("감자")
+                .productionPlace("강원도")
+                .categoryId(Category.VEGETABLE)
+                .closedDate(LocalDateTime.now().plusDays(1))
+                .minUnitWeight(3)
+                .price(7900)
+                .totalSalesUnit(20)
+                .minGroupBuyWeight(15)
+                .description("맛 좋은 감자")
+                .build();
 
-        ItemRequest itemRequest1 = createItemRequest("테스트용 이름1", "테스트용 생산지1", Category.FRUIT,
-                LocalDateTime.now().plusDays(1), 3, 7900, 20, 15, "테스트용 내용");
-        ItemRequest itemRequest2 = createItemRequest("테스트용 이름2", "테스트용 생산지2", Category.VEGETABLE,
-                LocalDateTime.now().plusDays(10), 5, 150000, 50, 30, "테스트용 내용2");
+        Long itemId2 = 2L;
+        ItemRequest itemRequest2 = ItemRequest.builder()
+                .name("고구마")
+                .productionPlace("전라남도")
+                .categoryId(Category.VEGETABLE)
+                .closedDate(LocalDateTime.now().plusDays(10))
+                .minUnitWeight(1)
+                .price(5000)
+                .totalSalesUnit(50)
+                .minGroupBuyWeight(20)
+                .description("맛있는 고구마 ~ ")
+                .build();
 
         ItemResponse item1 = itemService.save(itemId1, itemRequest1);
         ItemResponse item2 = itemService.save(itemId2, itemRequest2);
@@ -102,8 +97,8 @@ class ItemSearchServiceTest {
         List<ItemResponse> impendingItems = itemSearchService.getImpendingItems();
 
         // THEN
-        // 72시간 이상 남은 건 1개니까 결과는 하나여야됨
-        Assertions.assertTrue(impendingItems.size() == 1);
+        // 72시간 이내 남은 상품글은 1개(item2)니까 결과는 하나여야됨
+        Assertions.assertEquals(1, impendingItems.size());
 
         ItemResponse impendingItemResponse = impendingItems.get(0);
         Assertions.assertEquals(item1.getId(), impendingItemResponse.getId());
@@ -120,24 +115,43 @@ class ItemSearchServiceTest {
         // 72시간 이내 마감임박 상품 목록 조회 했으므로 다른 상품은 포함되지 않아야 함
         Assertions.assertFalse(impendingItems.stream().anyMatch(itemResponse ->
                 !itemResponse.getId().equals(item1.getId())));
-
     }
 
     @Test
     @DisplayName("인기 상품 목록 조회")
     void GetPopularityItemsTest() {
         // GIVEN
-        Long itemId1 = 1L;
-        Long itemId2 = 2L;
+        userRepository.save(SetupDataUtils.makeTestUser(passwordEncoder));
         Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
 
-        ItemRequest itemRequest1 = createItemRequest("테스트용 이름1", "테스트용 생산지1", Category.FRUIT,
-                LocalDateTime.now().plusDays(5), 3, 7900, 20, 15, "테스트용 내용");
-        ItemRequest itemRequest2 = createItemRequest("테스트용 이름2", "테스트용 생산지2", Category.VEGETABLE,
-                LocalDateTime.now().plusDays(7), 5, 150000, 50, 30, "테스트용 내용2");
+        Long itemId1 = 1L;
+        ItemRequest itemRequest1 = ItemRequest.builder()
+                .name("감자")
+                .productionPlace("강원도")
+                .categoryId(Category.VEGETABLE)
+                .closedDate(LocalDateTime.now().plusDays(1))
+                .minUnitWeight(3)
+                .price(7900)
+                .totalSalesUnit(20)
+                .minGroupBuyWeight(15)
+                .description("맛 좋은 감자")
+                .build();
 
-        ItemResponse item1 = itemService.save(itemId1, itemRequest1);
-        ItemResponse item2 = itemService.save(itemId2, itemRequest2);
+        Long itemId2 = 2L;
+        ItemRequest itemRequest2 = ItemRequest.builder()
+                .name("고구마")
+                .productionPlace("전라남도")
+                .categoryId(Category.VEGETABLE)
+                .closedDate(LocalDateTime.now().plusDays(10))
+                .minUnitWeight(1)
+                .price(5000)
+                .totalSalesUnit(50)
+                .minGroupBuyWeight(20)
+                .description("맛있는 고구마 ~ ")
+                .build();
+
+        ItemResponse item1 = itemService.save(testUserId, itemRequest1);
+        ItemResponse item2 = itemService.save(testUserId, itemRequest2);
 
         // 찜 상품에 데이터 추가
         AddCartItemRequest testItemCount1 = AddCartItemRequest.builder().itemCount(2L).build();
@@ -154,42 +168,81 @@ class ItemSearchServiceTest {
 
         // WHEN
         List<Item> result = itemRepository.findPopularityItems();
+        List<ItemResponse> resultList = result.stream()
+                .map(ItemDtoUtil::itemToItemResponse)
+                .collect(Collectors.toList());
 
         // THEN
-        Assertions.assertEquals(2, result.size()); // 결과는 2개여야 함
-        Assertions.assertEquals(item2.getId(), result.get(0).getId()); // 찜 개수가 높은 순으로 정렬되었는지 확인
-        Assertions.assertEquals(item1.getId(), result.get(1).getId());
-
+        System.out.println("리스트보기 :"+resultList);
+        assertThat(resultList.size()).isEqualTo(2);
+        assertThat(item2.getId()).isEqualTo(resultList.get(0).getId()); // 찜 개수가 높은 순으로 정렬되었는지 확인
+        assertThat(item1.getId()).isEqualTo(resultList.get(1).getId());
     }
 
     @Test
     @DisplayName("상품 종류별 검색 목록 조회")
     void getCategoryItemsTest() {
         // GIVEN
+        Category categoryId = Category.VEGETABLE;
+
         Long itemId1 = 1L;
+        ItemRequest itemRequest1 = ItemRequest.builder()
+                .name("감자")
+                .productionPlace("강원도")
+                .categoryId(Category.VEGETABLE)
+                .closedDate(LocalDateTime.now().plusDays(1))
+                .minUnitWeight(3)
+                .price(7900)
+                .totalSalesUnit(20)
+                .minGroupBuyWeight(15)
+                .description("맛 좋은 감자")
+                .build();
+
         Long itemId2 = 2L;
+        ItemRequest itemRequest2 = ItemRequest.builder()
+                .name("고구마")
+                .productionPlace("전라남도")
+                .categoryId(Category.VEGETABLE)
+                .closedDate(LocalDateTime.now().plusDays(10))
+                .minUnitWeight(1)
+                .price(5000)
+                .totalSalesUnit(50)
+                .minGroupBuyWeight(20)
+                .description("맛있는 고구마 ~ ")
+                .build();
 
-        ItemRequest itemRequest1 = createItemRequest("테스트용 이름1", "테스트용 생산지1", Category.FRUIT,
-                LocalDateTime.now().plusDays(5), 3, 7900, 20, 15, "테스트용 내용");
-        ItemRequest itemRequest2 = createItemRequest("테스트용 이름2", "테스트용 생산지2", Category.VEGETABLE,
-                LocalDateTime.now().plusDays(7), 5, 150000, 50, 30, "테스트용 내용2");
+        Long itemId3 = 3L;
+        ItemRequest itemRequest3 = ItemRequest.builder()
+                .name("사과")
+                .productionPlace("경상북도")
+                .categoryId(Category.FRUIT)
+                .closedDate(LocalDateTime.now().plusDays(10))
+                .minUnitWeight(2)
+                .price(8000)
+                .totalSalesUnit(20)
+                .minGroupBuyWeight(15)
+                .description("달콤한 꿀사과입니다.")
+                .build();
 
-        ItemResponse itemResponse1 = itemService.save(itemId1, itemRequest1);
-        ItemResponse itemResponse2 = itemService.save(itemId2, itemRequest2);
+        ItemResponse item1 = itemService.save(itemId1, itemRequest1);
+        ItemResponse item2 = itemService.save(itemId2, itemRequest2);
+        ItemResponse item3 = itemService.save(itemId3, itemRequest3);
 
         // WHEN
+        itemSearchService = new ItemSearchService(itemRepository);
         List<ItemResponse> fruitItems = itemSearchService.getCategoryItems(Category.FRUIT);
         List<ItemResponse> vegetableItems = itemSearchService.getCategoryItems(Category.VEGETABLE);
         List<ItemResponse> otherItems = itemSearchService.getCategoryItems(Category.OTHER);
 
         // THEN
+        Assertions.assertEquals(2, vegetableItems.size());
         Assertions.assertEquals(1, fruitItems.size());
-        Assertions.assertEquals(1, vegetableItems.size());
         Assertions.assertEquals(0, otherItems.size());
 
         // 카테고리별로 올바른 상품이 조회되었는지 확인
-        Assertions.assertEquals(itemResponse1.getId(), fruitItems.get(0).getId());
-        Assertions.assertEquals(itemResponse2.getId(), vegetableItems.get(0).getId());
+        Assertions.assertEquals(item1.getId(), vegetableItems.get(0).getId());
+        Assertions.assertEquals(item2.getId(), vegetableItems.get(1).getId());
+        Assertions.assertEquals(item3.getId(), fruitItems.get(0).getId());
 
     }
 
