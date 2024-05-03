@@ -11,12 +11,15 @@ import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
 import com.gracefullyugly.domain.orderitem.entity.OrderItem;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@AllArgsConstructor
 @Transactional
 public class GroupBuyUserService {
 
@@ -24,13 +27,19 @@ public class GroupBuyUserService {
     private GroupBuyRepository groupBuyRepository;
     private GroupBuyUserRepository groupBuyUserRepository;
 
-    public void joinGroupBuy(Long userId, List<OrderItem> orderItemList) {
+    public List<Long> joinGroupBuy(Long userId, List<OrderItem> orderItemList) {
+        List<Long> retVal = new ArrayList<>();
+
         orderItemList.forEach(orderItem -> {
             Long groupId = getGroupBuyId(orderItem.getItemId());
 
             groupBuyUserRepository.save(
                     new GroupBuyUser(groupId, userId, LocalDateTime.now(), orderItem.getQuantity()));
+
+            retVal.add(groupId);
         });
+
+        return retVal;
     }
 
     public GroupBuyUserFindResponse getGroupBuyUser(Long userId, Long itemId) {
