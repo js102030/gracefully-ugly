@@ -14,30 +14,31 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GroupBuyRepository extends JpaRepository<GroupBuy, Long> {
 
-    @Query(value =
-        "SELECT GB.group_buy_id AS groupBuyId, GB.item_id AS itemId, I.name AS itemName, GB.group_buy_status AS groupBuyStatus, GB.end_date AS endDate, COUNT(GBU.group_buy_user_id) AS participantCount "
-      + "FROM group_buy AS GB "
-      + "LEFT OUTER JOIN item AS I ON GB.item_id = I.item_id "
-      + "LEFT OUTER JOIN group_buy_user AS GBU ON GB.group_buy_id = GBU.group_buy_id "
-      + "WHERE GB.group_buy_id = :groupBuyId",
-    nativeQuery = true)
+    @Query(value = "SELECT GB.id AS groupBuyId, GB.itemId AS itemId, I.name AS itemName, GB.groupBuyStatus AS groupBuyStatus, GB.endDate AS endDate, COUNT(GBU.id) AS participantCount "
+      + "FROM GroupBuy AS GB "
+      + "LEFT OUTER JOIN Item AS I ON GB.itemId = I.id "
+      + "LEFT OUTER JOIN GroupBuyUser AS GBU ON GB.id = GBU.groupBuyId "
+      + "WHERE GB.id = :groupBuyId "
+      + "GROUP BY GB.id")
     Optional<GroupBuyInfoResponse> findGroupBuyById(Long groupBuyId);
 
-    @Query(value =
-        "SELECT GB.group_buy_id AS groupBuyId, GB.item_id AS itemId, GB.group_buy_status AS groupBuyStatus, GB.end_date AS endDate, COUNT(GBU.group_buy_user_id) AS participantCount "
-      + "FROM group_buy AS GB "
-      + "LEFT OUTER JOIN group_buy_user AS GBU ON GB.group_buy_id = GBU.group_buy_id "
-      + "WHERE GB.item_id = :itemId "
-      + "GROUP BY GB.group_buy_id "
-      + "ORDER BY GB.group_buy_id DESC "
-      + "LIMIT 5",
-        nativeQuery = true)
+    @Query(value = "SELECT GB.id AS groupBuyId, GB.itemId AS itemId, GB.groupBuyStatus AS groupBuyStatus, GB.endDate AS endDate, COUNT(GBU.id) AS participantCount "
+      + "FROM GroupBuy AS GB "
+      + "LEFT OUTER JOIN GroupBuyUser AS GBU ON GB.id = GBU.groupBuyId "
+      + "WHERE GB.itemId = :itemId "
+      + "GROUP BY GB.id "
+      + "ORDER BY GB.id DESC "
+      + "LIMIT 5")
     List<GroupBuySelectDto> findTop5ByItemIdOrderByIdDesc(Long itemId);
 
-    @Query(value = "SELECT GB FROM GroupBuy AS GB WHERE GB.id = :itemId AND GB.groupBuyStatus = 'IN_PROGRESS' AND GB.endDate > CURRENT_TIMESTAMP")
+    @Query(value = "SELECT GB "
+            + "FROM GroupBuy AS GB "
+            + "WHERE GB.id = :itemId AND GB.groupBuyStatus = com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus.IN_PROGRESS AND GB.endDate > CURRENT_TIMESTAMP")
     Optional<GroupBuy> findProgressGroupBuyByItemId(Long itemId);
 
     @Modifying
-    @Query("UPDATE GroupBuy AS GB SET GB.groupBuyStatus = 'CANCELLED' WHERE GB.groupBuyStatus = 'IN_PROGRESS' AND GB.endDate <= CURRENT_TIMESTAMP")
+    @Query("UPDATE GroupBuy AS GB "
+            + "SET GB.groupBuyStatus = com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus.CANCELLED "
+            + "WHERE GB.groupBuyStatus = com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus.IN_PROGRESS AND GB.endDate <= CURRENT_TIMESTAMP")
     void updateExpiredGroupBuyToCanceled();
 }

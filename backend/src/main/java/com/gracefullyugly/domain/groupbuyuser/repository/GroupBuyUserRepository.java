@@ -12,6 +12,6 @@ public interface GroupBuyUserRepository extends JpaRepository<GroupBuyUser, Long
     @Query("SELECT GBU "
          + "FROM GroupBuyUser AS GBU "
          + "LEFT OUTER JOIN GroupBuy AS GB ON GBU.groupBuyId = GB.id "
-         + "WHERE GB.itemId = :itemId AND GB.groupBuyStatus = 'IN_PROGRESS' AND GBU.userId = :userId")
+         + "WHERE GB.itemId = :itemId AND GB.groupBuyStatus = com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus.IN_PROGRESS AND GBU.userId = :userId")
     Optional<GroupBuyUser> findByUserIdAndItemId(Long userId, Long itemId);
 }
