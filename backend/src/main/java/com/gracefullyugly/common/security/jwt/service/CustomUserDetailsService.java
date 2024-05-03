@@ -1,14 +1,13 @@
-package com.gracefullyugly.common.security.service;
+package com.gracefullyugly.common.security.jwt.service;
 
 import com.gracefullyugly.common.security.CustomUserDetails;
 import com.gracefullyugly.domain.user.entity.User;
 import com.gracefullyugly.domain.user.repository.UserRepository;
+import java.util.Optional;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
