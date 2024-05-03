@@ -17,8 +17,9 @@ public class GroupBuySearchService {
 
     public GroupBuyInfoResponse getGroupBuyInfo(Long groupBuyId) {
         return groupBuyRepository.findGroupBuyById(groupBuyId)
-            .orElseThrow(() -> new NotFoundException("공동 구매 정보가 없습니다."));
+                .orElseThrow(() -> new NotFoundException("공동 구매 정보가 없습니다."));
     }
+
     public GroupBuyListResponse getGroupBuyListByItemId(Long itemId) {
         return new GroupBuyListResponse(groupBuyRepository.findTop5ByItemIdOrderByIdDesc(itemId));
     }
