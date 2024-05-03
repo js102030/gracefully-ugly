@@ -1,5 +1,7 @@
 package com.gracefullyugly.testutil;
 
+import com.gracefullyugly.domain.groupbuy.entity.GroupBuy;
+import com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
 import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.enumtype.Category;
@@ -64,6 +66,8 @@ public class SetupDataUtils {
     public final static String ORDER_NO_ITEM = "주문 가능한 상품이 없습니다.";
     public final static String NOT_FOUND_ORDER = "주문 정보가 없습니다.";
     public final static String FORBIDDEN = "접근 권한이 없습니다.";
+    public final static String NOT_FOUND_GROUP_BUY = "공동 구매 정보가 없습니다.";
+    public final static String NOT_FOUND_GROUP_BUY_USER= "공동 구매 참여 정보가 없습니다.";
 
     private SetupDataUtils() {
     }
@@ -159,5 +163,9 @@ public class SetupDataUtils {
                 .phoneNumber(TEST_PHONE_NUMBER)
                 .itemIdList(testOrderItemDtoList)
                 .build();
+    }
+
+    public static GroupBuy createGroupBuy(Long itemId, GroupBuyStatus status) {
+        return new GroupBuy(itemId, status, CLOSED_DATE);
     }
 }

@@ -54,6 +54,10 @@ public class ItemSearchService {
             throw new IllegalArgumentException("인기 상품이 없습니다.");
         }
 
+        if (popularityItems.isEmpty()) {
+            throw new IllegalArgumentException("인기 상품이 존재하지 않습니다.");
+        }
+
         return popularityItems.stream()
                 .map(ItemDtoUtil::itemToItemResponse)
                 .collect(Collectors.toList());
