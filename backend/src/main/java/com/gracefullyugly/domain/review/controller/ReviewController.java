@@ -30,7 +30,7 @@ public class ReviewController {
     public ResponseEntity<ReviewResponse> createReview(@AuthenticationPrincipal(expression = "userId") Long userId,
                                                        @RequestBody ReviewDto reviewDto,
                                                        @PathVariable Long itemId) {
-        final ReviewResponse response = reviewService.createReview(userId, reviewDto, itemId);
+        ReviewResponse response = reviewService.createReview(userId, reviewDto, itemId);
 
         return ResponseEntity
                 .ok(response);
@@ -38,7 +38,7 @@ public class ReviewController {
 
     @GetMapping("/reviews/{reviewId}")
     public ResponseEntity<ReviewResponse> findReview(@PathVariable Long reviewId) {
-        final ReviewResponse response = reviewSearchService.getReviewById(reviewId);
+        ReviewResponse response = reviewSearchService.getReviewById(reviewId);
 
         return ResponseEntity
                 .ok(response);
@@ -53,18 +53,18 @@ public class ReviewController {
     }
 
     @PatchMapping("/reviews/{reviewId}")
-    public ResponseEntity<ReviewDto> updateReview(@AuthenticationPrincipal(expression = "userId") Long userId,
-                                                  @PathVariable Long reviewId,
-                                                  @RequestBody ReviewDto request) {
-        ReviewDto response = reviewService.updateReview(userId, reviewId, request);
+    public ResponseEntity<ReviewResponse> updateReview(@AuthenticationPrincipal(expression = "userId") Long userId,
+                                                       @PathVariable Long reviewId,
+                                                       @RequestBody ReviewDto request) {
+        ReviewResponse response = reviewService.updateReview(userId, reviewId, request);
 
         return ResponseEntity
                 .ok(response);
     }
 
     @DeleteMapping("/reviews/{reviewId}")
-    public ResponseEntity<?> deleteReview(@AuthenticationPrincipal(expression = "userId") Long userId,
-                                          @PathVariable Long reviewId) {
+    public ResponseEntity<Void> deleteReview(@AuthenticationPrincipal(expression = "userId") Long userId,
+                                             @PathVariable Long reviewId) {
         reviewService.deleteReview(userId, reviewId);
 
         return ResponseEntity

@@ -52,7 +52,7 @@ class ReviewServiceTest {
 
         // when
         ReviewResponse saveResponse = reviewService.createReview(userId, reviewDto, itemId);
-        ReviewDto updateResponse = reviewService.updateReview(userId, saveResponse.getReviewId(), updateDto);
+        ReviewResponse updateResponse = reviewService.updateReview(userId, saveResponse.getReviewId(), updateDto);
 
         // then
         assertThat(updateResponse.getComments()).isEqualTo("싫어요");

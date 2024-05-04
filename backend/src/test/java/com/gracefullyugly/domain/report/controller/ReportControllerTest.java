@@ -74,18 +74,18 @@ class ReportControllerTest {
 
         // when then
         mockMvc.perform(post("/api/report/items/1")
-                       .header("access", access)
-                       .contentType(MediaType.APPLICATION_JSON)
-                       .content(json))
-               .andExpect(status().isCreated())
-               .andExpect(jsonPath("$.reportId").value(1L))
-               .andExpect(jsonPath("$.userId").value(1L))
-               .andExpect(jsonPath("$.itemId").value(1L))
-               .andExpect(jsonPath("$.comments").value("신고 내용"))
-               .andExpect(jsonPath("$.deleted").value(false))
-               .andExpect(jsonPath("$.accepted").value(false))
-               .andExpect(jsonPath("$.createdDate").isNotEmpty())
-               .andDo(print());
+                        .header("access", access)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.reportId").value(1L))
+                .andExpect(jsonPath("$.userId").value(1L))
+                .andExpect(jsonPath("$.itemId").value(1L))
+                .andExpect(jsonPath("$.comments").value("신고 내용"))
+                .andExpect(jsonPath("$.deleted").value(false))
+                .andExpect(jsonPath("$.accepted").value(false))
+                .andExpect(jsonPath("$.createdDate").isNotEmpty())
+                .andDo(print());
 
         verify(reportService).reportItem(any(), any(), any());
     }
@@ -117,18 +117,18 @@ class ReportControllerTest {
 
         // when then
         mockMvc.perform(post("/api/report/reviews/1")
-                       .header("access", access)
-                       .contentType(MediaType.APPLICATION_JSON)
-                       .content(json))
-               .andExpect(status().isCreated())
-               .andExpect(jsonPath("$.reportId").value(1L))
-               .andExpect(jsonPath("$.userId").value(1L))
-               .andExpect(jsonPath("$.reviewId").value(1L))
-               .andExpect(jsonPath("$.comments").value("신고 내용"))
-               .andExpect(jsonPath("$.deleted").value(false))
-               .andExpect(jsonPath("$.accepted").value(false))
-               .andExpect(jsonPath("$.createdDate").isNotEmpty())
-               .andDo(print());
+                        .header("access", access)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.reportId").value(1L))
+                .andExpect(jsonPath("$.userId").value(1L))
+                .andExpect(jsonPath("$.reviewId").value(1L))
+                .andExpect(jsonPath("$.comments").value("신고 내용"))
+                .andExpect(jsonPath("$.deleted").value(false))
+                .andExpect(jsonPath("$.accepted").value(false))
+                .andExpect(jsonPath("$.createdDate").isNotEmpty())
+                .andDo(print());
 
         verify(reportService).reportReview(any(), any(), any());
     }
@@ -153,15 +153,15 @@ class ReportControllerTest {
 
         // when then
         mockMvc.perform(get("/api/report/items/1"))
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("$.reportId").value(1L))
-               .andExpect(jsonPath("$.userId").value(1L))
-               .andExpect(jsonPath("$.itemId").value(1L))
-               .andExpect(jsonPath("$.comments").value("신고 내용"))
-               .andExpect(jsonPath("$.deleted").value(false))
-               .andExpect(jsonPath("$.accepted").value(false))
-               .andExpect(jsonPath("$.createdDate").isNotEmpty())
-               .andDo(print());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.reportId").value(1L))
+                .andExpect(jsonPath("$.userId").value(1L))
+                .andExpect(jsonPath("$.itemId").value(1L))
+                .andExpect(jsonPath("$.comments").value("신고 내용"))
+                .andExpect(jsonPath("$.deleted").value(false))
+                .andExpect(jsonPath("$.accepted").value(false))
+                .andExpect(jsonPath("$.createdDate").isNotEmpty())
+                .andDo(print());
 
         verify(reportSearchService).getItemReport(any());
     }
@@ -186,15 +186,15 @@ class ReportControllerTest {
 
         // when then
         mockMvc.perform(get("/api/report/reviews/1"))
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("$.reportId").value(1L))
-               .andExpect(jsonPath("$.userId").value(1L))
-               .andExpect(jsonPath("$.reviewId").value(1L))
-               .andExpect(jsonPath("$.comments").value("신고 내용"))
-               .andExpect(jsonPath("$.deleted").value(false))
-               .andExpect(jsonPath("$.accepted").value(false))
-               .andExpect(jsonPath("$.createdDate").isNotEmpty())
-               .andDo(print());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.reportId").value(1L))
+                .andExpect(jsonPath("$.userId").value(1L))
+                .andExpect(jsonPath("$.reviewId").value(1L))
+                .andExpect(jsonPath("$.comments").value("신고 내용"))
+                .andExpect(jsonPath("$.deleted").value(false))
+                .andExpect(jsonPath("$.accepted").value(false))
+                .andExpect(jsonPath("$.createdDate").isNotEmpty())
+                .andDo(print());
 
         verify(reportSearchService).getReviewReport(any());
     }
@@ -230,22 +230,22 @@ class ReportControllerTest {
 
         // when then
         mockMvc.perform(get("/api/report/items"))
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("$.data[0].reportId").value(1L))
-               .andExpect(jsonPath("$.data[0].userId").value(1L))
-               .andExpect(jsonPath("$.data[0].itemId").value(1L))
-               .andExpect(jsonPath("$.data[0].comments").value("신고 내용"))
-               .andExpect(jsonPath("$.data[0].deleted").value(false))
-               .andExpect(jsonPath("$.data[0].accepted").value(false))
-               .andExpect(jsonPath("$.data[0].createdDate").isNotEmpty())
-               .andExpect(jsonPath("$.data[1].reportId").value(2L))
-               .andExpect(jsonPath("$.data[1].userId").value(2L))
-               .andExpect(jsonPath("$.data[1].itemId").value(2L))
-               .andExpect(jsonPath("$.data[1].comments").value("신고 내용2"))
-               .andExpect(jsonPath("$.data[1].deleted").value(false))
-               .andExpect(jsonPath("$.data[1].accepted").value(false))
-               .andExpect(jsonPath("$.data[1].createdDate").isNotEmpty())
-               .andDo(print());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data[0].reportId").value(1L))
+                .andExpect(jsonPath("$.data[0].userId").value(1L))
+                .andExpect(jsonPath("$.data[0].itemId").value(1L))
+                .andExpect(jsonPath("$.data[0].comments").value("신고 내용"))
+                .andExpect(jsonPath("$.data[0].deleted").value(false))
+                .andExpect(jsonPath("$.data[0].accepted").value(false))
+                .andExpect(jsonPath("$.data[0].createdDate").isNotEmpty())
+                .andExpect(jsonPath("$.data[1].reportId").value(2L))
+                .andExpect(jsonPath("$.data[1].userId").value(2L))
+                .andExpect(jsonPath("$.data[1].itemId").value(2L))
+                .andExpect(jsonPath("$.data[1].comments").value("신고 내용2"))
+                .andExpect(jsonPath("$.data[1].deleted").value(false))
+                .andExpect(jsonPath("$.data[1].accepted").value(false))
+                .andExpect(jsonPath("$.data[1].createdDate").isNotEmpty())
+                .andDo(print());
 
         verify(reportSearchService).getItemReports();
     }
@@ -281,22 +281,22 @@ class ReportControllerTest {
 
         // when then
         mockMvc.perform(get("/api/report/reviews"))
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("$.data[0].reportId").value(1L))
-               .andExpect(jsonPath("$.data[0].userId").value(1L))
-               .andExpect(jsonPath("$.data[0].reviewId").value(1L))
-               .andExpect(jsonPath("$.data[0].comments").value("신고 내용"))
-               .andExpect(jsonPath("$.data[0].deleted").value(false))
-               .andExpect(jsonPath("$.data[0].accepted").value(false))
-               .andExpect(jsonPath("$.data[0].createdDate").isNotEmpty())
-               .andExpect(jsonPath("$.data[1].reportId").value(2L))
-               .andExpect(jsonPath("$.data[1].userId").value(2L))
-               .andExpect(jsonPath("$.data[1].reviewId").value(2L))
-               .andExpect(jsonPath("$.data[1].comments").value("신고 내용2"))
-               .andExpect(jsonPath("$.data[1].deleted").value(false))
-               .andExpect(jsonPath("$.data[1].accepted").value(false))
-               .andExpect(jsonPath("$.data[1].createdDate").isNotEmpty())
-               .andDo(print());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data[0].reportId").value(1L))
+                .andExpect(jsonPath("$.data[0].userId").value(1L))
+                .andExpect(jsonPath("$.data[0].reviewId").value(1L))
+                .andExpect(jsonPath("$.data[0].comments").value("신고 내용"))
+                .andExpect(jsonPath("$.data[0].deleted").value(false))
+                .andExpect(jsonPath("$.data[0].accepted").value(false))
+                .andExpect(jsonPath("$.data[0].createdDate").isNotEmpty())
+                .andExpect(jsonPath("$.data[1].reportId").value(2L))
+                .andExpect(jsonPath("$.data[1].userId").value(2L))
+                .andExpect(jsonPath("$.data[1].reviewId").value(2L))
+                .andExpect(jsonPath("$.data[1].comments").value("신고 내용2"))
+                .andExpect(jsonPath("$.data[1].deleted").value(false))
+                .andExpect(jsonPath("$.data[1].accepted").value(false))
+                .andExpect(jsonPath("$.data[1].createdDate").isNotEmpty())
+                .andDo(print());
 
         verify(reportSearchService).getReviewReports();
     }
@@ -308,12 +308,12 @@ class ReportControllerTest {
         String access = getToken();
 
         // when then
-        mockMvc.perform(patch("/api/report/1/status")
-                       .header("access", access))
-               .andExpect(status().isOk())
-               .andDo(print());
+        mockMvc.perform(patch("/api/report/1/accept")
+                        .header("access", access))
+                .andExpect(status().isOk())
+                .andDo(print());
 
-        verify(reportService).acceptReport(any(), any());
+        verify(reportService).acceptReport(any());
     }
 
     @Test
@@ -324,11 +324,11 @@ class ReportControllerTest {
 
         // when then
         mockMvc.perform(delete("/api/report/1")
-                       .header("access", access))
-               .andExpect(status().isNoContent())
-               .andDo(print());
+                        .header("access", access))
+                .andExpect(status().isNoContent())
+                .andDo(print());
 
-        verify(reportService).deleteReport(any(), any());
+        verify(reportService).deleteReport(any());
     }
 
 

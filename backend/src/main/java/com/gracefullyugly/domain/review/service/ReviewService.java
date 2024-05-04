@@ -30,12 +30,14 @@ public class ReviewService {
         return ReviewDtoUtil.reviewToReviewResponse(savedReview);
     }
 
-    public ReviewDto updateReview(Long userId, Long reviewId, ReviewDto request) {
+    public ReviewResponse updateReview(Long userId, Long reviewId, ReviewDto request) {
         Review findReview = reviewSearchService.findById(reviewId);
 
         validaUser(findReview, userId, "본인의 리뷰만 수정할 수 있습니다.");
 
-        return findReview.updateReview(request);
+        findReview.updateReview(request);
+
+        return ReviewDtoUtil.reviewToReviewResponse(findReview);
     }
 
     public void deleteReview(Long userId, Long reviewId) {

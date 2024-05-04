@@ -31,7 +31,7 @@ public class QnAController {
     @PostMapping("/questions/{itemId}")
     public ResponseEntity<QnADto> createQnA(@AuthenticationPrincipal(expression = "userId") Long userId,
                                             @PathVariable Long itemId, @Valid @RequestBody QuestionDto request) {
-        final QnADto response = qnAService.createQnA(userId, itemId, request);
+        QnADto response = qnAService.createQnA(userId, itemId, request);
 
         return ResponseEntity
                 .status(CREATED)
@@ -41,7 +41,7 @@ public class QnAController {
     @PostMapping("/answers/{qnaId}")
     public ResponseEntity<QnADto> createAnswer(@AuthenticationPrincipal(expression = "userId") Long userId,
                                                @PathVariable Long qnaId, @Valid @RequestBody AnswerDto request) {
-        final QnADto response = qnAService.createAnswer(userId, qnaId, request);
+        QnADto response = qnAService.createAnswer(userId, qnaId, request);
 
         return ResponseEntity
                 .status(CREATED)
