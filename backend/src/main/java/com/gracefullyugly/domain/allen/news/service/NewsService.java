@@ -65,7 +65,7 @@ public class NewsService {
 
     private List<News> listingNewses(String newsContent) {
         List<News> newsList = new ArrayList<>();
-        String[] newsItems = newsContent.split("\n");
+        String[] newsItems = newsContent.split("\n\n");
 
         for (String newsItem : newsItems) {
             newsList.add(formattedNewsItemToNews(newsItem));
@@ -89,7 +89,7 @@ public class NewsService {
 
     private String formatNews(String cleanedNews) {
         String[] parts = cleanedNews.split("\\[", 2);
-        return (parts[0] + ".").trim();
+        return parts[0].trim();
     }
 
     private String formatSource(String cleanedNews) {
