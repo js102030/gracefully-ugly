@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="white">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원 가입</title>
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.green.min.css"
+    />
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#joinForm').submit(function (e) {
+            e.preventDefault(); // 폼 기본 제출 동작 방지
+
+            // 폼 데이터 -> JSON
+            var formData = {};
+            $(this).serializeArray().forEach(function (item) {
+                formData[item.name] = item.value;
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/api/users",
+                contentType: "application/json",
+                data: JSON.stringify(formData),
+                success: function (response) {
+                    window.location.href = "/login";
+                },
+                error: function (response) {
+                    alert("회원가입 실패");
+                }
+            });
+        });
+    });
+</script>
+
+<body>
+<main class="container" style="width: 500px;">
+    <br>
+    <br>
+    <br>
+    <br>
+    <div style="border-radius: 10px; border: 5px solid green; padding: 20px;">
+
+        <h1>회원 가입</h1>
+
+        <form id="joinForm">
+            <label for="loginId">ID:</label>
+            <input type="text" id="loginId" name="loginId">
+
+            <label for="password">비밀번호:</label>
+            <input type="password" id="password" name="password">
+
+            <label for="confirmPassword">비밀번호 확인:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword">
+
+            <input type="submit" value="가입하기" style="background-color: green;">
+        </form>
+
+    </div>
+
+</main>
+</body>
+
+</html>

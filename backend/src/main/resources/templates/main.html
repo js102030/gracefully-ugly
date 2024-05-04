@@ -3,20 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>메인 페이지</title>
-    <link rel="stylesheet" href="/static/main.css">
+    <link rel="stylesheet" href="/main.css">
 </head>
 <body class="body">
-    <header class = "main-header">
-        <img class = "logo" src="/static/image/logo.png" alt="로고">
-        <button class="notice-button">알림</button>
-        <button class="login-button">로그인</button>
-        <button class="list-button">목차</button>
-    </header>
+<div th:replace="~{fragment/nav :: top}"></div>
     <div class="line-box"></div>
     <div class = "impending-text">놓치지 말아야 할 기회! 마감 임박 상품들</div>
     <div class = "impending-items">
         <div class = "item">
-            <img src="/static/image/item.png" alt="제품사진">
+            <img src="/image/item.png" alt="제품사진">
             <div>
                 <div>[30kg/40kg]</div>
                 <div>무농약 아담한 감자</div>
@@ -24,7 +19,7 @@
             </div>
         </div>
         <div class = "item">
-            <img src="/static/image/item.png" alt="제품사진">
+            <img src="/image/item.png" alt="제품사진">
             <div class = "description">
                 <div>[30kg/40kg]</div>
                 <div>무농약 아담한 감자</div>
@@ -32,7 +27,7 @@
             </div>
         </div>
         <div class = "item">
-            <img src="/static/image/item.png" alt="제품사진">
+            <img src="/image/item.png" alt="제품사진">
             <div class = "description">
                 <div>[30kg/40kg]</div>
                 <div>무농약 아담한 감자</div>
@@ -46,7 +41,7 @@
     </div>
         <div class = "pick-items">
             <div class = "pick">
-                <img src="/static/image/item.png" alt="제품사진">
+                <img src="/image/item.png" alt="제품사진">
                 <div>
                     <div>[30kg/40kg]</div>
                     <div>무농약 아담한 감자</div>
@@ -54,7 +49,7 @@
                 </div>
             </div>
             <div class = "pick">
-                <img src="/static/image/item.png" alt="제품사진">
+                <img src="/image/item.png" alt="제품사진">
                 <div class = "description">
                     <div>[30kg/40kg]</div>
                     <div>무농약 아담한 감자</div>
@@ -62,7 +57,7 @@
                 </div>
             </div>
             <div class = "pick">
-                <img src="/static/image/item.png" alt="제품사진">
+                <img src="/image/item.png" alt="제품사진">
                 <div class = "description">
                     <div>[30kg/40kg]</div>
                     <div>무농약 아담한 감자</div>
@@ -90,7 +85,7 @@
     <div class="more-text">더 많은 상품들!</div>
         <div class="more-items">
             <div class="more">
-                <img src="/static/image/item.png" alt="제품사진">
+                <img src="/image/item.png" alt="제품사진">
                 <div>
                     <div>[30kg/40kg]</div>
                     <div>무농약 아담한 감자</div>
@@ -98,7 +93,7 @@
                 </div>
             </div>
             <div class="more">
-                <img src="/static/image/item.png" alt="제품사진">
+                <img src="/image/item.png" alt="제품사진">
                 <div>
                     <div>[30kg/40kg]</div>
                     <div>무농약 아담한 감자</div>
@@ -106,7 +101,7 @@
                 </div>
             </div>
             <div class="more">
-                <img src="/static/image/item.png" alt="제품사진">
+                <img src="/image/item.png" alt="제품사진">
                 <div>
                     <div>[30kg/40kg]</div>
                     <div>무농약 아담한 감자</div>
