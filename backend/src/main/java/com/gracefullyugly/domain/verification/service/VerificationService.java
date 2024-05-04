@@ -37,7 +37,7 @@ public class VerificationService {
         MimeMessage message = createMessage(email, code);
         emailSender.send(message);
 
-        Verification verification = toVerification(code, userId);
+        Verification verification = createVerification(code, userId);
 
         verificationRepository.save(verification);
 
@@ -110,7 +110,7 @@ public class VerificationService {
         return message;
     }
 
-    private Verification toVerification(String code, Long userId) {
+    private Verification createVerification(String code, Long userId) {
         Date date = generateExpiryDate();
 
         return Verification.builder()
