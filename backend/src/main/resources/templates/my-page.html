@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="white">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.green.min.css" />
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+    <style>
+
+
+        table {
+            width: 100%;
+            table-layout: fixed;
+        }
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+        .date-column {
+            width: 32%;
+        }
+        .title-column {
+            width: 68%;
+        }
+
+
+        ul li {
+            list-style: none;
+        }
+
+        article div {
+            display: inline-flex;
+            justify-content: space-evenly
+        }
+
+        .flex-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between
+        }
+
+        #info1 {
+            margin-top: 100px;
+            margin-bottom: 80px;
+            padding-right: 40px;
+            padding-left: 40px;
+        }
+
+        #info1 li {
+            margin-bottom: 19px;
+        }
+
+        #info2 {
+            margin-top: 100px;
+            margin-bottom: 80px;
+            padding-right: 40px;
+            padding-left: 40px;
+            height: auto
+        }
+
+        #info2 li {
+            margin-bottom: 19px;
+        }
+
+        #info2:nth-child(2) {
+            padding-left: 30px;
+        }
+
+        #info3 {
+            margin-top: 100px;
+            margin-bottom: 80px;
+            padding-right: 40px;
+            padding-left: 40px;
+        }
+
+        #info3 li {
+            margin-bottom: 19px;
+        }
+
+        img {
+            margin-top: 25px;
+        }
+
+        main {
+            margin-right: 50px;
+            margin-left: 50px
+        }
+
+        section {
+            margin-top: 50px
+        }
+
+        #info2_2 {
+            display: flex;
+            justify-content: center
+        }
+
+        #info3_2 {
+            display: flex;
+            justify-content: center
+        }
+    </style>
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+
+<main class="container">
+<div th:replace="~{fragment/nav :: top}"></div>
+    <h2>MYPAGE</h2>
+    <hr>
+    <article>
+        <div class="container">
+            <div class="container">
+                <ul id="info1">
+                    <li><h4>닉네임 : <span>Orumi</span></h4></li>
+                    <li>아이디 : <span>ID1234</span></li>
+                    <li>주소 : <span>한국</span></li>
+                    <li>이메일 인증 : <span></span></li>
+                </ul>
+            </div>
+            <div class="vline" style="line{border-left: thick solid #EE402E;height:100px;left: 1000px;}"></div>
+            <div class="container">
+                <ul id="info2">
+                    <li id="info2_1">구매</li>
+                    <li id="info2_2"><h2>30</h2></li>
+                </ul>
+            </div>
+            <div class="container">
+                <ul id="info3">
+                    <li id="info3_1">리뷰</li>
+                    <li id="info3_2"><h2>0</h2></li>
+                </ul>
+            </div>
+        </div>
+    </article>
+</main>
+<footer class="grid" style="display:flex; justify-content: center">
+    <button onclick="window.location.href = '/profile/update'">회원정보수정</button>
+    <button style="background-color: #5d2d28; border-color: #5d2d28"
+            onclick="window.location.href = '/mail'">이메일 인증</button>
+    <button id="deleteUserBtn"
+            style="background-color: #EE402E; border-color: #EE402E">회원탈퇴</button>
+
+</footer>
+</body>
+
+</html>

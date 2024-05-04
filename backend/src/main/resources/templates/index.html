@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" data-theme="white">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원 가입</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.green.min.css" />
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+    .button {
+        display: inline-block;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+        background-color: darkgrey;
+    }
+</style>
+
+<body>
+<main class="container" style="width: 600px;">
+    <br>
+    <br>
+    <br>
+    <br>
+    <div style="border-radius: 10px; border: 5px solid green; padding: 20px;">
+
+        <h1>로그인</h1>
+
+
+        <form id="joinForm">
+            <label for="loginId">ID:</label>
+            <input type="text" id="loginId" name="loginId">
+
+            <label for="password">비밀번호:</label>
+            <input type="password" id="password" name="password">
+
+
+            <input type="submit" value="로그인" style="background-color: green;">
+        </form>
+
+        <br>
+        <br>
+        <a href="/oauth2/authorization/kakao" class="button" style="background-color: rgb(216, 216, 25); color: black;">카카오 로그인</a>
+
+        <a href="/join" class="button" style="background-color: rgb(71, 206, 138); color: white;">직접 회원가입</a>
+
+    </div>
+
+</main>
+</body>
+
+</html>
