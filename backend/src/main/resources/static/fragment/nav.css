@@ -7,7 +7,6 @@
 
 .line-box {
     width: 100%; /* 변경: 화면 너비에 맞게 조정 */
-    max-width: 1920px; /* 변경: 최대 너비 지정 */
     height: 3px;
     background-color: #29902C;
 }
