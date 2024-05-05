@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -24,6 +24,7 @@ public class PaymentService {
 
     private final static String KAKAO_PAY_READY_URL = "https://open-api.kakaopay.com/online/v1/payment/ready";
     private final static String KAKAO_PAY_APPROVE_URL = "https://open-api.kakaopay.com/online/v1/payment/approve";
+    private final static String KAKAO_PAY_CANCEL_URL = "https://open-api.kakaopay.com/online/v1/payment/cancel";
     private final static String SECRET_KEY = "Secret key(dev)";
     private PaymentRepository paymentRepository;
 
@@ -47,7 +48,17 @@ public class PaymentService {
         return response;
     }
 
-    private KakaoPayReadyResponse postKakaoPayReady(OrderResponse paymentRequest) throws RestClientException {
+    public void refundKakaoPay(Long orderId) {
+        Payment payment = paymentRepository.findPaymentByOrderId(orderId)
+                .orElseThrow(() -> new NotFoundException("결제 정보가 없습니다."));
+
+        postKakaoPayCancel(payment);
+
+        payment.updateIsPaid(false);
+        payment.updateIsRefunded(true);
+    }
+
+    private KakaoPayReadyResponse postKakaoPayReady(OrderResponse paymentRequest) throws RestClientResponseException {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 
@@ -59,6 +70,35 @@ public class PaymentService {
         HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<>(params, headers);
 
         return restTemplate.postForObject(KAKAO_PAY_READY_URL, body, KakaoPayReadyResponse.class);
+    }
+
+    private KakaoPayApproveResponse postKakaoPayApprove(Long userId, Payment payment, String pgToken)
+            throws RestClientResponseException {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+
+        // Header 설정
+        HttpHeaders headers = setHeader();
+        // Params 설정
+        MultiValueMap<String, String> params = setKakaoPayApproveParams(userId, payment, pgToken);
+        // Body 설정
+        HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<>(params, headers);
+
+        return restTemplate.postForObject(KAKAO_PAY_APPROVE_URL, body, KakaoPayApproveResponse.class);
+    }
+
+    private void postKakaoPayCancel(Payment payment) throws RestClientResponseException {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+
+        // Header 설정
+        HttpHeaders headers = setHeader();
+        // Params 설정
+        MultiValueMap<String, String> params = setKakaoPayCancelParams(payment);
+        // Body 설정
+        HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<>(params, headers);
+
+        restTemplate.postForObject(KAKAO_PAY_CANCEL_URL, body, String.class);
     }
 
     private HttpHeaders setHeader() {
@@ -82,24 +122,10 @@ public class PaymentService {
         params.add("approval_url",
                 "http://localhost:8080/api/payment/kakaopay/success/" + paymentRequest.getUserId() + "/"
                         + paymentRequest.getOrderId());
-        params.add("cancel_url", "http://localhost:8080/");
+        params.add("cancel_url", "http://localhost:8080/payment/cancel");
         params.add("fail_url", "http://localhost:8080/");
 
         return params;
-    }
-
-    private KakaoPayApproveResponse postKakaoPayApprove(Long userId, Payment payment, String pgToken) throws RestClientException {
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-
-        // Header 설정
-        HttpHeaders headers = setHeader();
-        // Params 설정
-        MultiValueMap<String, String> params = setKakaoPayApproveParams(userId, payment, pgToken);
-        // Body 설정
-        HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<>(params, headers);
-
-        return restTemplate.postForObject(KAKAO_PAY_APPROVE_URL, body, KakaoPayApproveResponse.class);
     }
 
     private MultiValueMap<String, String> setKakaoPayApproveParams(Long userId, Payment payment, String pgToken) {
@@ -109,6 +135,16 @@ public class PaymentService {
         params.add("partner_order_id", payment.getOrderId().toString());
         params.add("partner_user_id", userId.toString());
         params.add("pg_token", pgToken);
+
+        return params;
+    }
+
+    private MultiValueMap<String, String> setKakaoPayCancelParams(Payment payment) {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("cid", "TC0ONETIME");
+        params.add("tid", payment.getTid());
+        params.add("cancel_amount", String.valueOf(payment.getTotalPrice()));
+        params.add("cnacel_tax_free_amount", String.valueOf(0));
 
         return params;
     }
