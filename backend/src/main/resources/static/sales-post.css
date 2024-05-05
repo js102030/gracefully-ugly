@@ -1,0 +1,45 @@
+body {
+    text-align: center; /* 전체적으로 가운데 정렬 */
+}
+
+/* 상품 정보를 담는 박스 */
+.product-box {
+    width: 70%; /* 너비를 70%로 설정하여 중앙에 위치하도록 합니다. */
+    margin: 0 auto; /* 가운데 정렬 */
+    border-radius: 10px;
+    border: 3px solid green;
+    padding: 20px;
+    text-align: left; /* 내부 텍스트를 왼쪽 정렬 */
+}
+
+/* 회색 라인 스타일 */
+.gray-line {
+    border-top: 1px solid gray; /* 회색 실선 */
+    margin-top: 20px; /* 위 여백 추가 */
+    margin-bottom: 20px; /* 아래 여백 추가 */
+}
+
+/* 버튼 스타일 */
+button.attach {
+    display: block; /* 블록 요소로 표시 */
+    margin: 0 auto; /* 가운데 정렬 */
+    margin-top: 20px; /* 위 여백 추가 */
+}
+
+/* 입력 요소와 라벨을 한 줄에 정렬하는 스타일 */
+.input-group {
+    margin-bottom: 10px; /* 입력 요소 사이 여백 추가 */
+    display: flex; /* 플렉스 박스 사용 */
+    align-items: center; /* 수직 중앙 정렬 */
+}
+
+/* 라벨 스타일 */
+.input-label {
+    margin-right: 10px; /* 라벨과 입력 요소 사이 여백 추가 */
+}
+
+/* textarea 스타일 */
+textarea {
+    width: 100%; /* 가로 길이를 100%로 설정하여 부모 요소에 맞게 조정합니다. */
+    min-height: 200px; /* 최소 높이 설정 */
+}
