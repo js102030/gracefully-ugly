@@ -26,9 +26,9 @@ public class CommonController {
         return "my-page";
     }
 
-    @GetMapping("/sales-post")
+    @GetMapping("/salesPost")
     public String sales_post() {
-        return "sales-post";
+        return "salesPost";
     }
 
 }
