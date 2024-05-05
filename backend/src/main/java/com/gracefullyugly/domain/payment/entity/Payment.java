@@ -42,4 +42,9 @@ public class Payment extends BaseTimeEntity {
         this.isPaid = isPaid;
         return this;
     }
+
+    public Payment updateIsRefunded(boolean isRefunded) {
+        this.isRefunded = isRefunded;
+        return this;
+    }
 }
