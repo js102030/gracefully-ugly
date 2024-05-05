@@ -1,0 +1,98 @@
+.current_time {
+    text-align: right;
+    margin-top: 50px;
+    width: 85%;
+}
+
+.green-box {
+    background-color: #C2E0C6; /* 연한 초록색 배경색 */
+    padding: 20px; /* 내부 여백 설정 */
+    border-radius: 10px; /* 모서리를 둥글게 만듦 */
+    display: flex;
+    justify-content: space-between; /* 요소들을 동일한 간격으로 배치 */
+    align-items: center; /* 세로 가운데 정렬 */
+    width: 70%; /* 너비를 70%로 설정하여 중앙에 위치하도록 합니다. */
+    margin: 0 auto; /* 가운데 정렬 */
+}
+
+.green-container {
+    display: flex; /* 버튼을 가로로 정렬하기 위해 플렉스 사용 */
+    justify-content: space-between; /* 요소들을 동일한 간격으로 배치 */
+    flex-grow: 1; /* 나머지 공간을 균일하게 확장 */
+}
+
+.button {
+    border: none; /* 테두리 없앰 */
+    background-color: #29902C; /* 배경색 설정 */
+    color: white; /* 텍스트 색상 설정 */
+    padding: 10px 20px; /* 내부 여백 설정 */
+    border-radius: 5px; /* 모서리를 둥글게 만듦 */
+    cursor: pointer; /* 포인터 커서 설정 */
+}
+
+.middle_wrapper {
+    display: flex;
+    gap: 20px; /* 상자 간격 설정 */
+    margin: 0 auto; /* 가운데 정렬 */
+    width: 70%;
+}
+
+.middle_wrapper div {
+    flex: auto;
+}
+
+.pink-box {
+    background-color: pink; /* 핑크색 배경 */
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px; /* 모서리 둥글게 */
+    padding: 20px;
+}
+
+.input_review, .input_count {
+    margin: 10px;
+}
+
+.input_review p, .input_count p {
+    display: inline;
+}
+
+.input_data {
+    text-align: center;
+}
+
+.table_wrapper {
+    text-align: center; /* 요소들을 수평 가운데 정렬 */
+    margin-top: 20px; /* 원하는 만큼의 위 여백 설정 */
+}
+
+h1 {
+    margin-bottom: 20px; /* h1 요소와 테이블 사이에 여백 추가 */
+    text-align: center;
+    width: 30%;
+    margin-top: 100px;
+}
+
+/* 추가: 표 관련 스타일 */
+.table_list {
+    width: 80%; /* 변경: 표 너비를 화면의 80%로 설정 */
+    border-collapse: collapse; /* 변경: 테두리 겹치게 설정 */
+    margin: 0 auto; /* 가운데 정렬 */
+}
+
+.table_title th {
+    background-color: #29902C; /* 변경: 제목 배경색 설정 */
+    color: white; /* 변경: 제목 텍스트 색상 설정 */
+    padding: 15px; /* 변경: 셀 안 패딩 설정 */
+}
+
+.table_items td {
+    background-color: #F5F5F5; /* 변경: 행 배경색 설정 */
+    color: black; /* 변경: 행 텍스트 색상 설정 */
+    padding: 15px; /* 변경: 셀 안 패딩 설정 */
+    text-align: center; /* 변경: 가운데 정렬 */
+}
+
+.table_items:nth-child(even) {
+    background-color: #E0E0E0; /* 변경: 짝수 행 배경색 설정 */
+}
