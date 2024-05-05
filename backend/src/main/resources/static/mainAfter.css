@@ -27,6 +27,49 @@
     flex-direction: row;
 }
 
+.notice-button {
+    margin-top: 10px;
+    margin-right: 20px;
+    border: 3px solid darkgreen;
+    background-color: #29902C;
+    color: darkgreen;
+    border-radius: 15px;
+    padding: 10px;
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.login-button {
+    margin-top: 10px;
+    margin-right: 20px;
+    border: 3px solid green;
+    background-color: #FFFFFF;
+    font-size: 15px;
+    color: black;
+    border-radius: 15px;
+    padding: 10px;
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.list-button {
+    margin-top: 10px;
+    margin-right: 20px;
+    border: 3px solid green;
+    background-color: #FFFFFF;
+    font-size: 15px;
+    color: black;
+    border-radius: 15px;
+    padding: 10px;
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+}
+
+/*여기까지 복사해서 사용하면 헤더 & 중간선 css*/
+
 .impending-text {
     margin-right: 400px;
     display: flex;
@@ -87,47 +130,6 @@
 .more-items {
     display: flex;
     flex-direction: row;
-}
-
-.notice-button {
-    margin-top: 10px;
-    margin-right: 20px;
-    border: 3px solid darkgreen;
-    background-color: #29902C;
-    color: darkgreen;
-    border-radius: 15px;
-    padding: 10px;
-    width: 100px;
-    height: 50px;
-    cursor: pointer;
-}
-
-.login-button {
-    margin-top: 10px;
-    margin-right: 20px;
-    border: 3px solid green;
-    background-color: #FFFFFF;
-    font-size: 15px;
-    color: black;
-    border-radius: 15px;
-    padding: 10px;
-    width: 100px;
-    height: 50px;
-    cursor: pointer;
-}
-
-.list-button {
-    margin-top: 10px;
-    margin-right: 20px;
-    border: 3px solid green;
-    background-color: #FFFFFF;
-    font-size: 15px;
-    color: black;
-    border-radius: 15px;
-    padding: 10px;
-    width: 100px;
-    height: 50px;
-    cursor: pointer;
 }
 
 .pickup-button {

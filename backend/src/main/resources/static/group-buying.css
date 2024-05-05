@@ -1,0 +1,389 @@
+.body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.line-box {
+    width: 1920px;
+    height: 3px;
+    background-color: #29902C;
+}
+
+.line-use {
+    margin-bottom: 10px;
+    width: 1300px;
+    height: 2px;
+    background-color: gray;
+}
+
+.logo {
+    margin-right: 1000px;
+}
+
+.main-header {
+    display: flex;
+    flex-direction: row;
+}
+
+.notice-button {
+    margin-top: 10px;
+    margin-right: 20px;
+    border: 3px solid darkgreen;
+    background-color: #29902C;
+    color: darkgreen;
+    border-radius: 15px;
+    padding: 10px;
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.login-button {
+    margin-top: 10px;
+    margin-right: 20px;
+    border: 3px solid green;
+    background-color: #FFFFFF;
+    font-size: 15px;
+    color: black;
+    border-radius: 15px;
+    padding: 10px;
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.list-button {
+    margin-top: 10px;
+    margin-right: 20px;
+    border: 3px solid green;
+    background-color: #FFFFFF;
+    font-size: 15px;
+    color: black;
+    border-radius: 15px;
+    padding: 10px;
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px;
+}
+
+.item-content {
+    margin-left: 60px;
+    margin-top: 30px;
+}
+
+.item-image {
+    width: 550px;
+    height: 550px;
+}
+
+.description {
+    display: flex;
+    justify-content: center;
+}
+
+.review-list {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.star-review {
+    display: flex;
+}
+
+.point {
+    font-size: 20px;
+    font-weight: 600;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.title-price {
+    display: flex;
+    margin-top: 10px;
+}
+
+.title {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.price {
+    font-size: 55px;
+    font-weight: 600;
+    color: #4ECF72;
+    margin-left: 50px;
+    margin-top: -30px;
+}
+
+.data-time {
+    display: flex;
+    color: #B9B9B9;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.end-time {
+    margin-left: 40px;
+}
+
+.createdFrom {
+    display: flex;
+    font-size: 25px;
+    margin-top: 10px;
+}
+
+.createdFrom-text {
+    font-weight: 600;
+}
+
+.createdFrom-place {
+    margin-left: 20px;
+}
+
+.minimum-purchase-unit {
+    display: flex;
+    font-size: 26px;
+    font-weight: 600;
+    margin-top: 110px;
+}
+
+.buttons {
+    display: flex;
+    margin-top: 130px;
+}
+
+.join-group-buying {
+    margin-right: 20px;
+    border: 3px solid #4ECF72;
+    background-color: #4ECF72;
+    color: white;
+    font-weight: 600;
+    font-size: 20px;
+    border-radius: 15px;
+    padding: 10px;
+    width: 120px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.join-cart {
+    margin-right: 20px;
+    border: 3px solid #4ECF72;
+    background-color: #4ECF72;
+    color: white;
+    font-weight: 600;
+    font-size: 20px;
+    border-radius: 15px;
+    padding: 10px;
+    width: 120px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.ask {
+    margin-right: 20px;
+    border: 3px solid #4ECF72;
+    background-color: #4ECF72;
+    color: white;
+    font-weight: 600;
+    font-size: 20px;
+    border-radius: 15px;
+    padding: 10px;
+    width: 120px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.description {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.hr-1 {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    width: 1300px;
+    height: 2px;
+    background-color: gray;
+}
+
+.description-text {
+    margin-top: 40px;
+    font-weight: 600;
+    font-size: 25px;
+}
+
+.review-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 100px;
+}
+
+.review-count {
+    font-size: 20px;
+    font-weight: 600;
+}
+.hr-2 {
+    margin-top: 10px;
+    width: 900px;
+    height: 1px;
+    background-color: gray;
+}
+
+.nickname-star {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+}
+
+.nickname {
+    font-size: 20px;
+}
+
+.image-and-review {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+}
+
+.review-and-createdDay {
+    display: flex;
+    flex-direction: column;
+    margin-top: 60px;
+    margin-left: 40px;
+}
+
+.review-content {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.review-createdDay {
+    margin-top: 20px;
+    color: #969393;
+}
+
+/*모달*/
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-box {
+    border : 5px #29902C solid;
+    background: #FFFFFF;
+    border-radius: 50px;
+    width : 500px;
+    height : 500px;
+    padding : 12px 23px 0 0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.modal-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ask9 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.ask8 {
+    margin-top: 60px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#modal-1 {
+    cursor: pointer;
+}
+
+#modal-2 {
+    cursor: pointer;
+}
+
+#modal-3 {
+    cursor: pointer;
+}
+
+#modal-4 {
+    margin-right: 70px;
+    cursor: pointer;
+}
+
+.modal-close {
+    border: 3px solid green;
+    background-color: #FFFFFF;
+    font-size: 15px;
+    color: black;
+    border-radius: 15px;
+    padding: 10px;
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+    margin-right: -180px;
+}
+/*모달 모집 기간 종료*/
+.notice-modal {
+    display: flex;
+    position: absolute;
+    z-index: 999;
+    left: 130px;
+    top: 130px;
+}
+
+.notice {
+    display: flex;
+    flex-direction: column;
+}
+
+.notice-modal-box {
+    border : 5px #29902C solid;
+    background: #FFFFFF;
+    border-radius: 15px;
+    width : 500px;
+    height : 100px;
+    padding : 12px 23px 0 0;
+}
+
+.notice-title {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.notice-text {
+    margin-top: 10px;
+}
+
+.notice-modal-close-box {
+    border : 5px #29902C solid;
+    background: #FFFFFF;
+    border-radius: 15px;
+    width : 300px;
+    height : 50px;
+    padding : 12px 23px 0 0;
+}
