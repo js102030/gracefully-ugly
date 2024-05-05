@@ -84,7 +84,7 @@ public class OrderService {
         Order order = orderOptional.get();
         String nickname = userOptional.get().getNickname();
         Payment payment = paymentRepository.findByOrderId(orderId).orElse(null);
-        List<OrderItemInfoResponse> orderItemList = orderItemRepository.findAllByOrderId(orderId);
+        List<OrderItemInfoResponse> orderItemList = orderItemRepository.getOrderItemListByOrderId(orderId);
 
         return OrderInfoResponse.builder()
                 .order(order)
