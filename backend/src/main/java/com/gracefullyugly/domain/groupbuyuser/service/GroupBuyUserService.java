@@ -36,6 +36,8 @@ public class GroupBuyUserService {
             groupBuyUserRepository.save(
                     new GroupBuyUser(groupId, userId, LocalDateTime.now(), orderItem.getQuantity()));
 
+            groupBuyRepository.updateGroupBuyStatusByGroupId(groupId);
+
             retVal.add(groupId);
         });
 
