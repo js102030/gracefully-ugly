@@ -49,7 +49,7 @@ public class PaymentController {
     public ResponseEntity<Void> refundKakaoPay(
             @Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
             @PathVariable("orderId") Long orderId) {
-        paymentService.refundKakaoPay(orderId);
+        paymentService.refundKakaoPay(userId, orderId);
         return ResponseEntity.ok().build();
     }
 }
