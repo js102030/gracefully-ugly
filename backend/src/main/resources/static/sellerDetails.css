@@ -29,6 +29,33 @@
     cursor: pointer; /* 포인터 커서 설정 */
 }
 
+.middle_wrapper {
+    display: flex;
+    gap: 20px; /* 상자 간격 설정 */
+    margin: 0 auto; /* 가운데 정렬 */
+    width: 70%;
+}
+
+.middle_wrapper div {
+    flex: auto;
+}
+
+.pink-box {
+    background-color: pink; /* 핑크색 배경 */
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px; /* 모서리 둥글게 */
+    padding: 20px;
+}
+
+.input_review, .input_count {
+    margin: 10px;
+}
+
+.input_review p, .input_count p {
+    display: inline;
+}
+
 .input_data {
     text-align: center;
 }

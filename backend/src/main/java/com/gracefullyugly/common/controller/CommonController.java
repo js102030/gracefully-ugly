@@ -36,4 +36,8 @@ public class CommonController {
         return "sellerList";
     }
 
+    @GetMapping("/sellerDetails")
+    public String sellerDetails() {
+        return "sellerDetails";
+    }
 }

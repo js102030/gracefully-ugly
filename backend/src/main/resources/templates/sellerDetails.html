@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>판매자 판매현황 페이지</title>
+    <link rel="stylesheet" href="/fragment/nav.css">
+    <link rel="stylesheet" href="/sellerDetails.css">
+</head>
+<body>
+<div th:replace="~{fragment/nav :: top}"></div>
+<div class="line-box"></div>
+<h1>세부 판매현황</h1>
+<div class="current_time">
+    <p>현재시간 : 2024-04-25 18:00</p>
+</div>
+<div class="green-box">
+    <div class="green-container">
+        <div>
+            <p>판매량(g)</p>
+            <p class="input_data">30200</p>
+        </div>
+        <div>
+            <p>주문 건</p>
+            <p class="input_data">51</p>
+        </div>
+        <div>
+            <p>리뷰 글 수</p>
+            <p class="input_data">32</p>
+        </div>
+        <div>
+            <p>문의 글 수</p>
+            <p class="input_data">17</p>
+        </div>
+    </div>
+</div>
+<div class="middle_wrapper">
+    <div>
+        <h2>리뷰</h2>
+        <div class="pink-box">
+            <div class="input_review">
+                <p>총총이 </p>
+                <p> : </p>
+                <p>너무맛있어여~~</p>
+            </div>
+            <div class="input_review">
+                <p>준석이행님 </p>
+                <p> : </p>
+                <p>아우 가성비짱! 근데 가끔 안좋은 녀석이 섞여있네여,,</p>
+            </div>
+            <div class="input_review">
+                <p>진환쨩 </p>
+                <p> : </p>
+                <p>또 시켜먹을게요!!</p>
+            </div>
+            <div class="input_review">
+                <p>핑크현진 </p>
+                <p> : </p>
+                <p>앙 김오띠~~</p>
+            </div>
+            <div class="input_review">
+                <p>현수왕자 </p>
+                <p> : </p>
+                <p>감사합니다!</p>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h2>문의 사항</h2>
+        <div class="pink-box">
+            <div class="input_count">
+                <p>총총이 </p>
+                <p> : </p>
+                <p>세일좀 안되나여?</p>
+            </div>
+            <div class="input_count">
+                <p>준석이행님 </p>
+                <p> : </p>
+                <p>g수 꼭 정해져잇는 단위로 시켜야하나요?</p>
+            </div>
+            <div class="input_count">
+                <p>진환쨩 </p>
+                <p> : </p>
+                <p>배송 평균 얼마정도 걸리나여?</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h1>주문 정보</h1>
+<div class="table_wrapper">
+    <table class="table_list">
+        <thead class="table_title">
+        <tr>
+            <th>번호</th>
+            <th>회원 아이디</th>
+            <th>주문 가격</th>
+            <th>주문 상태</th>
+            <th>주소</th>
+            <th>요청 사항</th>
+            <th>주문 날짜</th>
+        </tr>
+        </thead>
+        <!--tbody class="table_items">
+        <tr th:each="item : ${items}">
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.perPirce}"></td>
+            <td th:text="${item.goalWeight}"></td>
+            <td th:text="${item.currentWeight}"></td>
+            <td th:text="${item.status}"></td>
+        </tr>
+        </tbody>-->
+        <tbody class="table_items">
+        <td>1</td>
+        <td>qwer1234</td>
+        <td>23900</td>
+        <td>배송 완료</td>
+        <td>경기도 성남시 블라블라</td>
+        <td>문앞에 놓아주세요</td>
+        <td>2024-04-25</td>
+        </tbody>
+        <tbody class="table_items">
+        <td>2</td>
+        <td>qsdf14</td>
+        <td>23900</td>
+        <td>배송 완료</td>
+        <td>경기도 성남시 블라블라</td>
+        <td>문앞에 놓아주세요</td>
+        <td>2024-04-25</td>
+        </tbody>
+        <tbody class="table_items">
+        <td>3</td>
+        <td>krewoo34</td>
+        <td>23900</td>
+        <td>배송 전</td>
+        <td>경기도 성남시 블라블라</td>
+        <td>문앞에 놓아주세요</td>
+        <td>2024-04-25</td>
+        </tbody>
+        <tbody class="table_items">
+        <td>4</td>
+        <td>tewst34</td>
+        <td>23900</td>
+        <td>배송 전</td>
+        <td>경기도 성남시 블라블라</td>
+        <td>문앞에 놓아주세요</td>
+        <td>2024-04-25</td>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
