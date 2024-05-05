@@ -4,9 +4,86 @@
     <meta charset="UTF-8">
     <title>판매자 판매내역 페이지</title>
     <link rel="stylesheet" href="/fragment/nav.css">
+    <link rel="stylesheet" href="sellerList.css">
 </head>
 <body>
 <div th:replace="~{fragment/nav :: top}"></div>
-
+<div class="line-box"></div>
+<div class="current_time">
+    <p>현재시간 : 2024-04-25 18:00</p>
+</div>
+<div class="green-box">
+    <div class="green-container">
+        <div>
+            <p>판매글 업로드 개수</p>
+            <p class="input_data">3</p>
+        </div>
+        <div>
+            <p>모집 완료</p>
+            <p class="input_data">2</p>
+        </div>
+        <div>
+            <p>모집중</p>
+            <p class="input_data">1</p>
+        </div>
+        <button class="button">판매상품 등록</button>
+    </div>
+</div>
+<h1>판매 내역</h1>
+<div class="table_wrapper">
+    <table class="table_list">
+        <thead class="table_title">
+        <tr>
+            <th>번호</th>
+            <th>상품명</th>
+            <th>단위당 가격</th>
+            <th>목표 무게(g)</th>
+            <th>현재 무게(g)</th>
+            <th>모집 상태</th>
+        </tr>
+        </thead>
+        <!--tbody class="table_items">
+        <tr th:each="item : ${items}">
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.perPirce}"></td>
+            <td th:text="${item.goalWeight}"></td>
+            <td th:text="${item.currentWeight}"></td>
+            <td th:text="${item.status}"></td>
+        </tr>
+        </tbody>-->
+        <tbody class="table_items">
+        <td>1</td>
+        <td><a href="#somewhere">못난이 수박</a></td>
+        <td>14900</td>
+        <td>30000</td>
+        <td>30200</td>
+        <td>모집 완료</td>
+        </tbody>
+        <tbody class="table_items">
+        <td>2</td>
+        <td><a href="#somewhere">못난이 수박</a></td>
+        <td>14900</td>
+        <td>30000</td>
+        <td>30200</td>
+        <td>모집 완료</td>
+        </tbody>
+        <tbody class="table_items">
+        <td>3</td>
+        <td><a href="#somewhere">못난이 수박</a></td>
+        <td>14900</td>
+        <td>30000</td>
+        <td>30200</td>
+        <td>모집 완료</td>
+        </tbody>
+        <tbody class="table_items">
+        <td>4</td>
+        <td><a href="#somewhere">못난이 수박</a></td>
+        <td>14900</td>
+        <td>30000</td>
+        <td>30200</td>
+        <td>모집 완료</td>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
