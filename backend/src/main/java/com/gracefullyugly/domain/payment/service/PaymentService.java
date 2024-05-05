@@ -1,11 +1,17 @@
 package com.gracefullyugly.domain.payment.service;
 
 import com.gracefullyugly.common.exception.custom.NotFoundException;
+import com.gracefullyugly.domain.groupbuy.repository.GroupBuyRepository;
+import com.gracefullyugly.domain.groupbuyuser.repository.GroupBuyUserRepository;
+import com.gracefullyugly.domain.groupbuyuser.service.GroupBuyUserService;
 import com.gracefullyugly.domain.order.dto.OrderResponse;
+import com.gracefullyugly.domain.orderitem.entity.OrderItem;
+import com.gracefullyugly.domain.orderitem.repository.OrderItemRepository;
 import com.gracefullyugly.domain.payment.dto.KakaoPayApproveResponse;
 import com.gracefullyugly.domain.payment.dto.KakaoPayReadyResponse;
 import com.gracefullyugly.domain.payment.entity.Payment;
 import com.gracefullyugly.domain.payment.repository.PaymentRepository;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -27,6 +33,10 @@ public class PaymentService {
     private final static String KAKAO_PAY_CANCEL_URL = "https://open-api.kakaopay.com/online/v1/payment/cancel";
     private final static String SECRET_KEY = "Secret key(dev)";
     private PaymentRepository paymentRepository;
+    private OrderItemRepository orderItemRepository;
+    private GroupBuyRepository groupBuyRepository;
+    private GroupBuyUserRepository groupBuyUserRepository;
+    private GroupBuyUserService groupBuyUserService;
 
     public String readyKakaoPay(OrderResponse paymentRequest) {
         KakaoPayReadyResponse response = postKakaoPayReady(paymentRequest);
@@ -45,10 +55,13 @@ public class PaymentService {
         KakaoPayApproveResponse response = postKakaoPayApprove(userId, payment, pgToken);
         payment.updateIsPaid(true);
 
+        List<OrderItem> orderItemList =  orderItemRepository.findAllByOrderId(orderId);
+        groupBuyUserService.joinGroupBuy(userId, orderItemList);
+
         return response;
     }
 
-    public void refundKakaoPay(Long orderId) {
+    public void refundKakaoPay(Long userId, Long orderId) {
         Payment payment = paymentRepository.findPaymentByOrderId(orderId)
                 .orElseThrow(() -> new NotFoundException("결제 정보가 없습니다."));
 
@@ -56,6 +69,8 @@ public class PaymentService {
 
         payment.updateIsPaid(false);
         payment.updateIsRefunded(true);
+
+        groupBuyUserRepository.deleteAllByUserIdAndOrderId(userId, orderId);
     }
 
     private KakaoPayReadyResponse postKakaoPayReady(OrderResponse paymentRequest) throws RestClientResponseException {
