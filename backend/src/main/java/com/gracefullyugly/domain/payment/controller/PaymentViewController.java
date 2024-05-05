@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -20,5 +21,12 @@ public class PaymentViewController {
     public String readyKakaoPay(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
                                 @Valid @RequestBody OrderResponse order) {
         return "redirect:" + paymentService.readyKakaoPay(order);
+    }
+
+    // ToDo: 카카오 페이 결제 취소 시 보여줄 페이지 제작 필요
+    @GetMapping("/payment/cancel")
+    public String cancelKakaoPay() {
+
+        return "";
     }
 }
