@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>공동 구매 페이지</title>
+    <link rel="stylesheet" href="/group-buying.css">
+</head>
+<body class="body">
+<header class = "main-header">
+    <img class = "logo" src="/image/logo.png" alt="로고">
+    <button class="notice-button">알림</button>
+    <button class="login-button">로그아웃</button>
+    <button class="list-button">목록</button>
+</header>
+<div class="line-box"></div>
+<div class="menu">
+    <img src="/image/item.png" class="item-image" alt="제품사진">
+    <div class="item-content">
+        <div class="star-review">
+            <div class="point">4</div>
+            <div class="star"><img src="/image/star.png" alt="별점"></div>
+            <div class="star"><img src="/image/star.png" alt="별점"></div>
+            <div class="star"><img src="/image/star.png" alt="별점"></div>
+            <div class="star"><img src="/image/star.png" alt="별점"></div>
+        </div>
+        <div class="title-price">
+            <div class="title">못난이 아담한 감자</div>
+            <div class="price">7900원</div>
+        </div>
+        <div class="data-time">
+            <div class="create-time">작성일 2024.04.25</div>
+            <div class="end-time">마감일 2024.04.30</div>
+        </div>
+        <div class="젤 작은 구분선 예정"></div>
+        <div class="createdFrom">
+            <div class="createdFrom-text">생산지</div>
+            <div class="createdFrom-place">강원도 원주</div>
+        </div>
+        <div class="minimum-purchase-unit">최소 구매 단위는 <span style="color:red"> 3KG</span> 입니다.</div>
+        <div class="buttons">
+            <button class="join-group-buying">공구 참여</button>
+            <button class="join-cart">찜하기</button>
+            <button class="ask">문의하기</button>
+        </div>
+    </div>
+</div>
+<div class="description">
+    <div class="hr-1"></div>
+    <div class="description-text">
+        알감자로 하나씩 쏙쏙 먹기 좋은 크기의 맛난 감자들이에요! 무농약으로 기른만큼 껍질째로 드시길 강력 추천드립니다 :)
+        알감자조림, 알감자버터구이로 만들어 먹으면 겉은 바삭 속은 쫀득 포슬한 감자의 매력을 100% 즐기실 수 있습니다.
+    </div>
+</div>
+<div class="review-list">
+    <div class="review-count">후기<span style="color:orange">20</span>개</div>
+    <div class="hr-2"></div>
+    <div class="review">
+        <div class="nickname-star">
+            <div class="nickname">감자 좋아요</div>
+            <div class="star-review">
+                <div class="point">4</div>
+                <div class="star"><img src="/image/star.png" alt="별점"></div>
+                <div class="star"><img src="/image/star.png" alt="별점"></div>
+                <div class="star"><img src="/image/star.png" alt="별점"></div>
+                <div class="star"><img src="/image/star.png" alt="별점"></div>
+            </div>
+        </div>
+        <div class="image-and-review">
+            <div class="item"><img src="/image/item.png" alt="리뷰 사진"></div>
+            <div class="review-and-createdDay">
+                <div class="review-content">
+                    좋은 가격에 사서 너무 좋네요!! 다음에 또 사겠습니다!!
+                </div>
+                <div class="review-createdDay">2024.04.25</div>
+            </div>
+        </div>
+        <div class="hr-2"></div>
+    </div>
+    <div class="review">
+        <div class="nickname-star">
+            <div class="nickname">빅사이즈</div>
+            <div class="star-review">
+                <div class="point">2</div>
+                <div class="star"><img src="/image/star.png" alt="별점"></div>
+                <div class="star"><img src="/image/star.png" alt="별점"></div>
+            </div>
+        </div>
+        <div class="image-and-review">
+            <div class="item"><img src="/image/item.png" alt="리뷰 사진"></div>
+            <div class="review-and-createdDay">
+                <div class="review-content">
+                    감자 크기가 너무 작네요..
+                </div>
+                <div class="review-createdDay">2024.04.27</div>
+            </div>
+        </div>
+        <div class="hr-2"></div>
+    </div>
+    <div class="review">
+        <div class="nickname-star">
+            <div class="nickname">휴게소 알감자</div>
+            <div class="star-review">
+                <div class="point">4</div>
+                <div class="star"><img src="/image/star.png" alt="별점"></div>
+                <div class="star"><img src="/image/star.png" alt="별점"></div>
+                <div class="star"><img src="/image/star.png" alt="별점"></div>
+                <div class="star"><img src="/image/star.png" alt="별점"></div>
+            </div>
+        </div>
+        <div class="image-and-review">
+            <div class="item"><img src="/image/item.png" alt="리뷰 사진"></div>
+            <div class="review-and-createdDay">
+                <div class="review-content">
+                    어렸을 때 먹던 바로 그 맛이에요 감동 ㅠㅠ
+                </div>
+                <div class="review-createdDay">2024.05.05</div>
+            </div>
+        </div>
+        <div class="hr-2"></div>
+    </div>
+</div>
+<!--목록 모달-->
+<section class="modal">
+    <div class="modal-box">
+        <div class="modal-inner">
+            <div>
+                <p class="ask9">구매자이신가요?</p>
+                <img id="modal-1" src="/image/modal-1.png" alt="찜한 내역">
+                <img id="modal-2" src="/image/modal-2.png" alt="구매 내역">
+                <img id="modal-3" src="/image/modal-3.png" alt="내 정보">
+                <p class="ask8">판매자이신가요?</p>
+                <img id="modal-4" src="/image/modal-4.png" alt="판매 내역">
+                <button class="modal-close">닫기</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--공구 현황 알림 모달-->
+
+<!--1) 공구 모집 기간이 종료되었습니다.-->
+<section class="notice-modal">
+    <div class="notice-modal-box">
+        <div class="notice-modal-inner">
+            <div class="notice-content">
+                <div class="notice">
+                    <div class="notice-title">
+                        공구 모집 기간이 종료되었습니다.
+                    </div>
+                    <div class="notice-text">
+                        인원 모집에 실패하여 공구가 자동 취소되었습니다. <br>
+                        근무일 2~3일안으로 자동 환불 예정입니다.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--2) 공구가 완료되었습니다.-->
+<section class="notice-modal">
+    <div class="notice-modal-box">
+        <div class="notice-modal-inner">
+            <div class="notice-content">
+                <div class="notice">
+                    <div class="notice-title">
+                        공구가 완료되었습니다.
+                    </div>
+                    <div class="notice-text">
+                        상품이 정상적으로 배송 진행될 예정입니다.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--3) 마감일 안내-->
+<section class="notice-modal">
+    <div class="notice-modal-close-box">
+        <div class="notice-modal-inner">
+            <div class="notice-content">
+                <div class="notice">
+                    <div class="notice-title">
+                        마감<span style="color:red">4</span>일 전
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript" src="/js/group-buying.js" ></script>
+</body>
+</html>

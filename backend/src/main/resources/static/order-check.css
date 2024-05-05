@@ -68,95 +68,10 @@
     cursor: pointer;
 }
 
-/*여기까지 복사해서 사용하면 헤더 & 중간선 css*/
-
-.impending-text {
-    margin-right: 400px;
+.menu {
     display: flex;
-    font-size: 36px;
-    font-weight: 600;
-    margin-top: 50px;
-    margin-bottom: 20px;
-}
-
-.impending-items {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 50px;
-}
-
-.pick-text {
-    margin-right: 700px;
-    font-size: 36px;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-.pick-items {
-    display: flex;
-    flex-direction: row;
-}
-
-.news {
-    margin-bottom: 30px;
-    width: 300px;
-    height: 400px;
-    background-color: #FFFFFF;
-    border: 3px solid #29902C;
-    border-radius: 15px;
-}
-
-.news-text {
-    font-size: 36px;
-    font-weight: 600;
-}
-
-.pickup-text {
-    display: flex;
-    font-size: 36px;
-    font-weight: 600;
-    margin-top: 50px;
-    margin-bottom: 20px;
-}
-
-.more-text {
-    display: flex;
-    font-size: 36px;
-    font-weight: 600;
-    margin-top: 50px;
-    margin-bottom: 20px;
-}
-
-.more-items {
-    display: flex;
-    flex-direction: row;
-}
-
-.pickup-button {
-    margin-top: 10px;
-    margin-right: 20px;
-    border: 3px solid green;
-    background-color: #FFFFFF;
-    font-size: 15px;
-    color: black;
-    border-radius: 15px;
-    padding: 10px;
-    width: 100px;
-    height: 50px;
-    cursor: pointer;
-}
-
-.item {
-    margin-right: 100px;
-}
-
-
-.pick {
-    margin-right: 100px;
-}
-
-.more {
-    margin-right: 100px;
+    justify-content: center;
+    margin-top: 80px;
 }
 
 /*모달*/
@@ -231,11 +146,52 @@
     cursor: pointer;
     margin-right: -180px;
 }
-/*모달 끝*/
 
+.check {
+    margin-top: 90px;
+}
 
+.order-text {
+    font-size: 30px;
+    font-weight: 600;
+}
 
+.payment-sum-text {
+    color: #B0B0B0;
+    font-size: 20px;
+}
 
+.payment-sum {
+    margin-top: -10px;
+    font-size: 35px;
+    font-weight: 600;
+}
 
+.view-order {
+    border: 3px solid #00BF08;
+    background-color: #00BF08;
+    color: white;
+    border-radius: 15px;
+    padding: 10px;
+    width: 717px;
+    height: 89px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 20px;
+    margin-right: 20px;
+}
 
-
+.go-to-main {
+    margin-top: 10px;
+    border: 3px solid #A6A6A6;
+    background-color: #FFFFFF;
+    color: #565656;
+    border-radius: 15px;
+    padding: 10px;
+    width: 717px;
+    height: 89px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 20px;
+    margin-right: 20px;
+}

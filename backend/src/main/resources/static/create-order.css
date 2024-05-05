@@ -68,95 +68,10 @@
     cursor: pointer;
 }
 
-/*여기까지 복사해서 사용하면 헤더 & 중간선 css*/
-
-.impending-text {
-    margin-right: 400px;
+.menu {
     display: flex;
-    font-size: 36px;
-    font-weight: 600;
-    margin-top: 50px;
-    margin-bottom: 20px;
-}
-
-.impending-items {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 50px;
-}
-
-.pick-text {
-    margin-right: 700px;
-    font-size: 36px;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-.pick-items {
-    display: flex;
-    flex-direction: row;
-}
-
-.news {
-    margin-bottom: 30px;
-    width: 300px;
-    height: 400px;
-    background-color: #FFFFFF;
-    border: 3px solid #29902C;
-    border-radius: 15px;
-}
-
-.news-text {
-    font-size: 36px;
-    font-weight: 600;
-}
-
-.pickup-text {
-    display: flex;
-    font-size: 36px;
-    font-weight: 600;
-    margin-top: 50px;
-    margin-bottom: 20px;
-}
-
-.more-text {
-    display: flex;
-    font-size: 36px;
-    font-weight: 600;
-    margin-top: 50px;
-    margin-bottom: 20px;
-}
-
-.more-items {
-    display: flex;
-    flex-direction: row;
-}
-
-.pickup-button {
-    margin-top: 10px;
-    margin-right: 20px;
-    border: 3px solid green;
-    background-color: #FFFFFF;
-    font-size: 15px;
-    color: black;
-    border-radius: 15px;
-    padding: 10px;
-    width: 100px;
-    height: 50px;
-    cursor: pointer;
-}
-
-.item {
-    margin-right: 100px;
-}
-
-
-.pick {
-    margin-right: 100px;
-}
-
-.more {
-    margin-right: 100px;
+    justify-content: center;
+    margin-top: 80px;
 }
 
 /*모달*/
@@ -231,11 +146,93 @@
     cursor: pointer;
     margin-right: -180px;
 }
-/*모달 끝*/
 
+.hr-2 {
+    margin-top: 10px;
+    width: 900px;
+    height: 1px;
+    background-color: gray;
+}
 
+.back-and-order-text {
+    display: flex;
+    flex-direction: row;
+    margin-top: 40px;
+}
 
+.back-button {
+    border: 3px solid #40B44B;
+    background-color: #40B44B;
+    color: white;
+    border-radius: 15px;
+    padding: 10px;
+    width: 126px;
+    height: 48px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 20px;
+    margin-right: 20px;
+}
 
+.order-text {
+    font-size: 30px;
+    font-weight: 600;
+}
 
+.order-content-box {
+    margin-top: 20px;
+    border : 5px #29902C solid;
+    background: #FFFFFF;
+    border-radius: 50px;
+    width : 1233px;
+    height : 550px;
+}
 
+.title {
+    margin-top: 20px;
+}
 
+.title-text-front {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.title-text {
+    font-size: 23px;
+    font-weight: 600;
+}
+
+.order-content {
+    margin-top: 20px;
+}
+
+.input-address {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+#address {
+    margin-top: 10px;
+    width: 206px;
+    height: 37px;
+}
+
+#number {
+    margin-top: 10px;
+    width: 206px;
+    height: 37px;
+}
+
+.input-number {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.sum-item-and-result {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.kakao-pay {
+    margin-top: 20px;
+}
