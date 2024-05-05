@@ -1,6 +1,5 @@
 .current_time {
     text-align: right;
-    margin-top: 50px;
     width: 85%;
 }
 
@@ -43,7 +42,7 @@ h1 {
     margin-bottom: 20px; /* h1 요소와 테이블 사이에 여백 추가 */
     text-align: center;
     width: 30%;
-    margin-top: 100px;
+    margin-top: 50px;
 }
 
 /* 추가: 표 관련 스타일 */
