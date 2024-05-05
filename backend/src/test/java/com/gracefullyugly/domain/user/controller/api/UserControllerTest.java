@@ -20,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.google.gson.Gson;
+import com.gracefullyugly.common.security.jwt.JWTUtil;
 import com.gracefullyugly.domain.user.dto.AdditionalRegRequest;
 import com.gracefullyugly.domain.user.dto.BasicRegRequest;
 import com.gracefullyugly.domain.user.dto.BasicRegResponse;
@@ -50,6 +51,9 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 @Slf4j
 class UserControllerTest {
+
+    @Autowired
+    private JWTUtil jwtUtil;
 
     @Autowired
     private MockMvc mockMvc;
@@ -89,7 +93,6 @@ class UserControllerTest {
         AdditionalRegRequest additionalRegRequest = AdditionalRegRequest.builder()
                 .role(TEST_ROLE)
                 .nickname(TEST_NICKNAME)
-                .email(TEST_EMAIL)
                 .address(TEST_ADDRESS)
                 .build();
 
@@ -98,7 +101,6 @@ class UserControllerTest {
                         .userId(100L)
                         .loginId(TEST_LOGIN_ID)
                         .nickname(TEST_NICKNAME)
-                        .email(TEST_EMAIL)
                         .address(TEST_ADDRESS)
                         .role(TEST_ROLE)
                         .createdDate(LocalDateTime.now())
@@ -108,15 +110,17 @@ class UserControllerTest {
         Gson gson = new Gson();
         String json = gson.toJson(additionalRegRequest);
 
+        String access = getToken();
+
         // When & Then
-        mockMvc.perform(patch("/api/users/100/registration")
+        mockMvc.perform(patch("/api/users/registration")
+                        .header("access", access)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(100L))
                 .andExpect(jsonPath("$.loginId").value(TEST_LOGIN_ID))
                 .andExpect(jsonPath("$.nickname").value(TEST_NICKNAME))
-                .andExpect(jsonPath("$.email").value(TEST_EMAIL))
                 .andExpect(jsonPath("$.address").value(TEST_ADDRESS))
                 .andExpect(jsonPath("$.role").value(TEST_ROLE.name()))
                 .andDo(print());
@@ -170,7 +174,7 @@ class UserControllerTest {
     @DisplayName("프로필 조회 테스트")
     void getProfileTest() throws Exception {
         // Given
-        given(userSearchService.getProfile(100L))
+        given(userSearchService.getProfile(any()))
                 .willReturn(
                         ProfileResponse.builder()
                                 .userId(100L)
@@ -207,16 +211,31 @@ class UserControllerTest {
     void updateNicknameTest() throws Exception {
         // Given
         given(userService.updateNickname(100L, NEW_NICKNAME))
-                .willReturn(UpdateNicknameDto.builder()
-                        .nickname(NEW_NICKNAME)
-                        .build()
+                .willReturn(
+                        UserResponse.builder()
+                                .userId(100L)
+                                .signUpType(SignUpType.GENERAL)
+                                .role(TEST_ROLE)
+                                .loginId(TEST_LOGIN_ID)
+                                .nickname(NEW_NICKNAME)
+                                .email(TEST_EMAIL)
+                                .address(TEST_ADDRESS)
+                                .isBanned(false)
+                                .isDeleted(false)
+                                .isVerified(false)
+                                .createdDate(LocalDateTime.now())
+                                .lastModifiedDate(LocalDateTime.now())
+                                .build()
                 );
 
         Gson gson = new Gson();
         String json = gson.toJson(new UpdateNicknameDto(NEW_NICKNAME));
 
+        String access = getToken();
+
         // When & Then
-        mockMvc.perform(patch("/api/users/100/nickname")
+        mockMvc.perform(patch("/api/users/nickname")
+                        .header("access", access)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -237,8 +256,10 @@ class UserControllerTest {
         Gson gson = new Gson();
         String json = gson.toJson(new UpdatePasswordRequest(newPassword));
 
+        String access = getToken();
         // When
-        mockMvc.perform(patch("/api/users/100/password")
+        mockMvc.perform(patch("/api/users/password")
+                        .header("access", access)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -253,16 +274,31 @@ class UserControllerTest {
     void updateAddressTest() throws Exception {
         // Given
         given(userService.updateAddress(100L, TEST_ADDRESS))
-                .willReturn(UpdateAddressDto.builder()
-                        .address(TEST_ADDRESS)
-                        .build()
+                .willReturn(
+                        UserResponse.builder()
+                                .userId(100L)
+                                .signUpType(SignUpType.GENERAL)
+                                .role(TEST_ROLE)
+                                .loginId(TEST_LOGIN_ID)
+                                .nickname(TEST_NICKNAME)
+                                .email(TEST_EMAIL)
+                                .address(TEST_ADDRESS)
+                                .isBanned(false)
+                                .isDeleted(false)
+                                .isVerified(false)
+                                .createdDate(LocalDateTime.now())
+                                .lastModifiedDate(LocalDateTime.now())
+                                .build()
                 );
 
         Gson gson = new Gson();
         String json = gson.toJson(new UpdateAddressDto(TEST_ADDRESS));
 
+        String access = getToken();
+
         // When & Then
-        mockMvc.perform(patch("/api/users/100/address")
+        mockMvc.perform(patch("/api/users/address")
+                        .header("access", access)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -278,8 +314,11 @@ class UserControllerTest {
         // Given
         doNothing().when(userService).delete(100L);
 
+        String access = getToken();
+
         // When
-        mockMvc.perform(delete("/api/users/100"))
+        mockMvc.perform(delete("/api/users")
+                        .header("access", access))
                 .andExpect(status().isNoContent())
                 .andDo(print());
 
@@ -350,5 +389,8 @@ class UserControllerTest {
         verify(userSearchService).existsByEmail(TEST_EMAIL);
     }
 
+    private String getToken() {
+        return jwtUtil.createJwt("access", 100L, "loginId", "ROLE_SELLER", 60 * 10 * 1000L);
+    }
 
 }

@@ -1,14 +1,12 @@
 package com.gracefullyugly.domain.user.service;
 
 import static com.gracefullyugly.testutil.SetupDataUtils.ADDRESS_VALID_MESSAGE;
-import static com.gracefullyugly.testutil.SetupDataUtils.EMAIL_VALID_MESSAGE;
 import static com.gracefullyugly.testutil.SetupDataUtils.ID_VALID_MESSAGE;
 import static com.gracefullyugly.testutil.SetupDataUtils.NICKNAME_VALID_MESSAGE;
 import static com.gracefullyugly.testutil.SetupDataUtils.PASSWORD;
 import static com.gracefullyugly.testutil.SetupDataUtils.PASSWORD_VALID_MESSAGE;
 import static com.gracefullyugly.testutil.SetupDataUtils.ROLE_VALID_MESSAGE;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_ADDRESS;
-import static com.gracefullyugly.testutil.SetupDataUtils.TEST_EMAIL;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_LOGIN_ID;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_ROLE;
@@ -122,7 +120,6 @@ class UserServiceTest {
         AdditionalRegRequest additionalRegRequest = AdditionalRegRequest.builder()
                 .role(TEST_ROLE)
                 .nickname(TEST_NICKNAME + 1)
-                .email(TEST_EMAIL + 1)
                 .address(TEST_ADDRESS)
                 .build();
 
@@ -134,7 +131,6 @@ class UserServiceTest {
         assertEquals(response.getUserId(), finalRegResponse.getUserId());
         assertEquals(TEST_LOGIN_ID + 1, finalRegResponse.getLoginId());
         assertEquals(TEST_NICKNAME + 1, finalRegResponse.getNickname());
-        assertEquals(TEST_EMAIL + 1, finalRegResponse.getEmail());
         assertEquals(TEST_ADDRESS, finalRegResponse.getAddress());
         assertEquals(TEST_ROLE, finalRegResponse.getRole());
     }
@@ -147,7 +143,6 @@ class UserServiceTest {
         AdditionalRegRequest additionalRegRequest = AdditionalRegRequest.builder()
                 .role(null)
                 .nickname("")
-                .email("")
                 .address("")
                 .build();
 
@@ -156,7 +151,7 @@ class UserServiceTest {
 
         // then
         assertFalse(violations.isEmpty());
-        assertEquals(4, violations.size());
+        assertEquals(3, violations.size());
 
         Set<String> messages = violations.stream()
                 .map(ConstraintViolation::getMessage)
@@ -164,7 +159,6 @@ class UserServiceTest {
 
         assertTrue(messages.contains(ROLE_VALID_MESSAGE));
         assertTrue(messages.contains(NICKNAME_VALID_MESSAGE));
-        assertTrue(messages.contains(EMAIL_VALID_MESSAGE));
         assertTrue(messages.contains(ADDRESS_VALID_MESSAGE));
     }
 

@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +34,7 @@ public class ReportController {
     public ResponseEntity<ReportResponse> reportItem(@AuthenticationPrincipal(expression = "userId") Long userId,
                                                      @PathVariable Long itemId,
                                                      @Valid @RequestBody ReportRequest request) {
-        final ReportResponse response = reportService.reportItem(userId, itemId, request);
+        ReportResponse response = reportService.reportItem(userId, itemId, request);
 
         return ResponseEntity
                 .status(CREATED)
@@ -44,7 +45,7 @@ public class ReportController {
     public ResponseEntity<ReportResponse> reportReview(@AuthenticationPrincipal(expression = "userId") Long userId,
                                                        @PathVariable Long reviewId,
                                                        @Valid @RequestBody ReportRequest request) {
-        final ReportResponse response = reportService.reportReview(userId, reviewId, request);
+        ReportResponse response = reportService.reportReview(userId, reviewId, request);
 
         return ResponseEntity
                 .status(CREATED)
@@ -53,7 +54,7 @@ public class ReportController {
 
     @GetMapping("/report/items/{itemId}")
     public ResponseEntity<ReportResponse> getItemReport(@PathVariable Long itemId) {
-        final ReportResponse response = reportSearchService.getItemReport(itemId);
+        ReportResponse response = reportSearchService.getItemReport(itemId);
 
         return ResponseEntity
                 .ok(response);
@@ -61,7 +62,7 @@ public class ReportController {
 
     @GetMapping("/report/reviews/{reviewId}")
     public ResponseEntity<ReportResponse> getReviewReport(@PathVariable Long reviewId) {
-        final ReportResponse response = reportSearchService.getReviewReport(reviewId);
+        ReportResponse response = reportSearchService.getReviewReport(reviewId);
 
         return ResponseEntity
                 .ok(response);
@@ -69,7 +70,7 @@ public class ReportController {
 
     @GetMapping("/report/items")
     public ResponseEntity<ApiResponse<List<ReportResponse>>> getItemReports() {
-        final ApiResponse<List<ReportResponse>> response = reportSearchService.getItemReports();
+        ApiResponse<List<ReportResponse>> response = reportSearchService.getItemReports();
 
         return ResponseEntity
                 .ok(response);
@@ -77,16 +78,16 @@ public class ReportController {
 
     @GetMapping("/report/reviews")
     public ResponseEntity<ApiResponse<List<ReportResponse>>> getReviewReports() {
-        final ApiResponse<List<ReportResponse>> response = reportSearchService.getReviewReports();
+        ApiResponse<List<ReportResponse>> response = reportSearchService.getReviewReports();
 
         return ResponseEntity
                 .ok(response);
     }
 
-    @PatchMapping("/report/{reportId}/status")
-    public ResponseEntity<Void> acceptReport(@AuthenticationPrincipal(expression = "userId") Long userId,
-                                             @PathVariable Long reportId) {
-        reportService.acceptReport(userId, reportId);
+    @PatchMapping("/report/{reportId}/accept")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> acceptReport(@PathVariable Long reportId) {
+        reportService.acceptReport(reportId);
 
         return ResponseEntity
                 .ok()
@@ -94,9 +95,9 @@ public class ReportController {
     }
 
     @DeleteMapping("/report/{reportId}")
-    public ResponseEntity<Void> deleteReport(@AuthenticationPrincipal(expression = "userId") Long userId,
-                                             @PathVariable Long reportId) {
-        reportService.deleteReport(userId, reportId);
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteReport(@PathVariable Long reportId) {
+        reportService.deleteReport(reportId);
 
         return ResponseEntity
                 .noContent()

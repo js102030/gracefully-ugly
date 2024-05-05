@@ -13,7 +13,6 @@ public class UserDtoUtil {
                 .userId(user.getId())
                 .loginId(user.getLoginId())
                 .nickname(user.getNickname())
-                .email(user.getEmail())
                 .address(user.getAddress())
                 .role(user.getRole())
                 .createdDate(user.getCreatedDate())
@@ -37,7 +36,7 @@ public class UserDtoUtil {
                 .build();
     }
 
-    public static ProfileResponse userToProfileResponse(User user) {
+    public static ProfileResponse toProfileResponse(User user, int reviewCount) {
         return ProfileResponse.builder()
                 .userId(user.getId())
                 .loginId(user.getLoginId())
@@ -47,7 +46,7 @@ public class UserDtoUtil {
                 .role(user.getRole())
                 .isVerified(user.isVerified())
                 .buyCount(0) //TODO 임시 값
-                .reviewCount(0) //TODO 임시 값
+                .reviewCount(reviewCount)
                 .build();
     }
 }

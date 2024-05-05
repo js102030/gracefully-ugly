@@ -39,14 +39,9 @@ public class Review extends BaseTimeEntity {
         this.starPoint = starPoint;
     }
 
-    public ReviewDto updateReview(ReviewDto reviewRequest) {
+    public void updateReview(ReviewDto reviewRequest) {
         this.comments = reviewRequest.getComments();
         this.starPoint = reviewRequest.getStarPoint();
-
-        return ReviewDto.builder()
-                .comments(this.comments)
-                .starPoint(this.starPoint)
-                .build();
     }
 
     public void deleteReview() {

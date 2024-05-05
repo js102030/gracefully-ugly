@@ -18,9 +18,6 @@ public class AdditionalRegRequest {
     @NotBlank(message = "닉네임 입력은 필수입니다.")
     private String nickname;
 
-    @NotBlank(message = "이메일 입력은 필수입니다.")
-    private String email;
-
     @NotBlank(message = "주소 입력은 필수입니다.")
     private String address;
 

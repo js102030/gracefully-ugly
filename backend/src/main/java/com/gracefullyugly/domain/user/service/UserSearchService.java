@@ -1,5 +1,6 @@
 package com.gracefullyugly.domain.user.service;
 
+import com.gracefullyugly.domain.review.service.ReviewSearchService;
 import com.gracefullyugly.domain.user.dto.ProfileResponse;
 import com.gracefullyugly.domain.user.dto.UserDtoUtil;
 import com.gracefullyugly.domain.user.dto.UserResponse;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserSearchService {
 
     private final UserRepository userRepository;
+    private final ReviewSearchService reviewSearchService;
 
     public User findById(Long userId) {
         return userRepository.findById(userId)
@@ -26,11 +28,13 @@ public class UserSearchService {
                 .orElseThrow(() -> new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다."));
     }
 
-    // TODO buyCount, reviewCount 따로 가져와서 넣어주든 join으로 한번에 가져오든 해야함
+    // TODO 총 구매 횟수 추가해야함.
     public ProfileResponse getProfile(Long userId) {
         User findUser = findById(userId);
 
-        return UserDtoUtil.userToProfileResponse(findUser);
+        int reviewCount = reviewSearchService.countByUserId(userId);
+
+        return UserDtoUtil.toProfileResponse(findUser, reviewCount);
     }
 
     public UserResponse getUser(Long userId) {

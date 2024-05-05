@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" data-theme="white">
+<html lang="en" data-theme="white">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원 가입</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.green.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.green.min.css"/>
 
     <style>
         .grid {
@@ -78,7 +78,13 @@
                 <div>
                     <input type="text" id="nickname" name="nickname" placeholder="닉네임을 입력해주세요.">
                 </div>
-                <button class="button">중복 확인</button>
+                <button class="button" style="width: 150px; height: 60px;">중복 확인</button>
+            </div>
+
+            <div class="grid">
+                <div>
+                    <input type="text" id="address" name="address" placeholder="주소를 입력해주세요.">
+                </div>
             </div>
 
 

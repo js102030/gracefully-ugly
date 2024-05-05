@@ -157,7 +157,7 @@ class ItemControllerTest {
                 .toList();
 
         // WHEN
-        when(itemSearchService.findAllItems()).thenReturn(itemList);
+        when(itemSearchService.findAllItems()).thenReturn(expectedResponses);
 
         // THEN (상품 목록 조회 검증)
         mockMvc.perform(get("/api/items")

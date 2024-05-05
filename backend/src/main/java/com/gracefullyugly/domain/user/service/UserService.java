@@ -4,9 +4,8 @@ import com.gracefullyugly.domain.user.dto.AdditionalRegRequest;
 import com.gracefullyugly.domain.user.dto.BasicRegRequest;
 import com.gracefullyugly.domain.user.dto.BasicRegResponse;
 import com.gracefullyugly.domain.user.dto.FinalRegResponse;
-import com.gracefullyugly.domain.user.dto.UpdateAddressDto;
-import com.gracefullyugly.domain.user.dto.UpdateNicknameDto;
 import com.gracefullyugly.domain.user.dto.UserDtoUtil;
+import com.gracefullyugly.domain.user.dto.UserResponse;
 import com.gracefullyugly.domain.user.entity.User;
 import com.gracefullyugly.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,10 +36,12 @@ public class UserService {
         return UserDtoUtil.userToFinalRegResponse(findUser);
     }
 
-    public UpdateNicknameDto updateNickname(Long userId, String newNickname) {
+    public UserResponse updateNickname(Long userId, String newNickname) {
         User findUser = userSearchService.findById(userId);
 
-        return findUser.updateNickname(newNickname);
+        findUser.updateNickname(newNickname);
+
+        return UserDtoUtil.userToUserResponse(findUser);
     }
 
     public void updatePassword(Long userId, String password) {
@@ -49,10 +50,12 @@ public class UserService {
         findUser.updatePassword(passwordEncoder.encode(password));
     }
 
-    public UpdateAddressDto updateAddress(Long userId, String address) {
+    public UserResponse updateAddress(Long userId, String address) {
         User findUser = userSearchService.findById(userId);
 
-        return findUser.updateAddress(address);
+        findUser.updateAddress(address);
+
+        return UserDtoUtil.userToUserResponse(findUser);
     }
 
     public void delete(Long userId) {
@@ -61,16 +64,16 @@ public class UserService {
         findUser.delete();
     }
 
+    public void updateVerify(Long userId, String email) {
+        User findUser = userSearchService.findById(userId);
+
+        findUser.updateVerify(email);
+    }
+
     private User joinRequestToUser(BasicRegRequest request) {
         return new User(
                 request.getLoginId(),
                 passwordEncoder.encode(request.getPassword())
         );
-    }
-
-    public void updateVerify(Long userId, String email) {
-        User findUser = userSearchService.findById(userId);
-
-        findUser.updateVerify(email);
     }
 }
