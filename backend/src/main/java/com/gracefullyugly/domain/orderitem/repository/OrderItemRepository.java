@@ -16,5 +16,7 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
       + "LEFT OUTER JOIN item AS I ON OI.item_id = I.item_id "
       + "WHERE OI.order_id = :orderId",
         nativeQuery = true)
-    List<OrderItemInfoResponse> findAllByOrderId(Long orderId);
+    List<OrderItemInfoResponse> getOrderItemListByOrderId(Long orderId);
+
+    List<OrderItem> findAllByOrderId(Long orderId);
 }
