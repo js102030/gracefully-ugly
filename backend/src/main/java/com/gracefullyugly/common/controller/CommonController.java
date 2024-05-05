@@ -31,4 +31,9 @@ public class CommonController {
         return "salesPost";
     }
 
+    @GetMapping("/sellerList")
+    public String sellerList() {
+        return "sellerList";
+    }
+
 }
