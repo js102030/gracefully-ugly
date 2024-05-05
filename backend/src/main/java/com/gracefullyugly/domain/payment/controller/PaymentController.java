@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,8 +39,17 @@ public class PaymentController {
     }
 
     @GetMapping("/payment/kakaopay/success/{userId}/{orderId}")
-    public ResponseEntity<KakaoPayApproveResponse> approveKakaoPay(@PathVariable("userId") Long userId, @PathVariable("orderId") Long orderId,
+    public ResponseEntity<KakaoPayApproveResponse> approveKakaoPay(@PathVariable("userId") Long userId,
+                                                                   @PathVariable("orderId") Long orderId,
                                                                    @RequestParam("pg_token") String pgToken) {
         return ResponseEntity.ok(paymentService.approveKakaoPay(userId, orderId, pgToken));
+    }
+
+    @PutMapping("/payment/kakaopay/refund/{orderId}")
+    public ResponseEntity<Void> refundKakaoPay(
+            @Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
+            @PathVariable("orderId") Long orderId) {
+        paymentService.refundKakaoPay(orderId);
+        return ResponseEntity.ok().build();
     }
 }
