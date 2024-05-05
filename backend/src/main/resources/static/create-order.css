@@ -1,0 +1,238 @@
+.body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.line-box {
+    width: 1920px;
+    height: 3px;
+    background-color: #29902C;
+}
+
+.line-use {
+    margin-bottom: 10px;
+    width: 1300px;
+    height: 2px;
+    background-color: gray;
+}
+
+.logo {
+    margin-right: 1000px;
+}
+
+.main-header {
+    display: flex;
+    flex-direction: row;
+}
+
+.notice-button {
+    margin-top: 10px;
+    margin-right: 20px;
+    border: 3px solid darkgreen;
+    background-color: #29902C;
+    color: darkgreen;
+    border-radius: 15px;
+    padding: 10px;
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.login-button {
+    margin-top: 10px;
+    margin-right: 20px;
+    border: 3px solid green;
+    background-color: #FFFFFF;
+    font-size: 15px;
+    color: black;
+    border-radius: 15px;
+    padding: 10px;
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.list-button {
+    margin-top: 10px;
+    margin-right: 20px;
+    border: 3px solid green;
+    background-color: #FFFFFF;
+    font-size: 15px;
+    color: black;
+    border-radius: 15px;
+    padding: 10px;
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+    margin-top: 80px;
+}
+
+/*모달*/
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-box {
+    border : 5px #29902C solid;
+    background: #FFFFFF;
+    border-radius: 50px;
+    width : 500px;
+    height : 500px;
+    padding : 12px 23px 0 0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.modal-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ask9 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.ask8 {
+    margin-top: 60px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#modal-1 {
+    cursor: pointer;
+}
+
+#modal-2 {
+    cursor: pointer;
+}
+
+#modal-3 {
+    cursor: pointer;
+}
+
+#modal-4 {
+    margin-right: 70px;
+    cursor: pointer;
+}
+
+.modal-close {
+    border: 3px solid green;
+    background-color: #FFFFFF;
+    font-size: 15px;
+    color: black;
+    border-radius: 15px;
+    padding: 10px;
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+    margin-right: -180px;
+}
+
+.hr-2 {
+    margin-top: 10px;
+    width: 900px;
+    height: 1px;
+    background-color: gray;
+}
+
+.back-and-order-text {
+    display: flex;
+    flex-direction: row;
+    margin-top: 40px;
+}
+
+.back-button {
+    border: 3px solid #40B44B;
+    background-color: #40B44B;
+    font-size: 15px;
+    color: white;
+    border-radius: 15px;
+    padding: 10px;
+    width: 126px;
+    height: 48px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 20px;
+    margin-right: 20px;
+}
+
+.order-text {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.order-content-box {
+    margin-top: 20px;
+    border : 5px #29902C solid;
+    background: #FFFFFF;
+    border-radius: 50px;
+    width : 1233px;
+    height : 550px;
+}
+
+.title {
+    margin-top: 20px;
+}
+
+.title-text-front {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.title-text {
+    font-size: 23px;
+    font-weight: 600;
+}
+
+.order-content {
+    margin-top: 20px;
+}
+
+.input-address {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+#address {
+    margin-top: 10px;
+    width: 206px;
+    height: 37px;
+}
+
+#number {
+    margin-top: 10px;
+    width: 206px;
+    height: 37px;
+}
+
+.input-number {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.sum-item-and-result {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.kakao-pay {
+}
