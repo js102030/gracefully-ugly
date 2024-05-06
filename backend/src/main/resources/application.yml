@@ -1,4 +1,13 @@
 spring:
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+
   application:
     name: gracefully-ugly
   profiles:
