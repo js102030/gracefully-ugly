@@ -2,10 +2,6 @@ li{
     list-style: none
 }
 
-.list-button{
-    margin-left: 400px;
-}
-
 .history{
     display: flex;
     flex-direction: column;
@@ -39,6 +35,10 @@ li{
     height: 100px;
 }
 
+.buttons-page {
+    margin-left: 150px;
+}
+
 .purchase-item-title{
     width: 200px;
     height: 100px;
@@ -64,7 +64,7 @@ li{
 .btn-review{
     display: flex;
     justify-content: center;
-    width: 150px;
+    width: 130px;
     margin-top: -37px;
     margin-left: 570px;
 }
