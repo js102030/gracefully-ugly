@@ -1,0 +1,49 @@
+.body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.line-box {
+    width: 100%; /* 변경: 화면 너비에 맞게 조정 */
+    height: 3px;
+    background-color: #29902C;
+}
+
+.line-use {
+    margin-bottom: 10px;
+    width: 100%; /* 변경: 화면 너비에 맞게 조정 */
+    max-width: 1300px; /* 변경: 최대 너비 지정 */
+    height: 2px;
+    background-color: gray;
+}
+
+.logo {
+    margin-right: auto; /* 변경: 자동 마진을 통해 왼쪽 정렬 */
+}
+
+.main-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center; /* 변경: 세로 중앙 정렬 */
+    justify-content: center; /* 변경: 가로 중앙 정렬 */
+    margin-right: 60px;
+    margin-left: 60px;
+}
+
+.notice-button,
+.login-button,
+.list-button {
+    margin-top: 10px;
+    margin-right: 20px;
+    border: 3px solid green;
+    background-color: #FFFFFF;
+    font-size: 15px;
+    color: black;
+    border-radius: 15px;
+    padding: 10px;
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+}
