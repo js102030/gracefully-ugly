@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class CommonController {
 
-    @GetMapping("/main")
+    @GetMapping("/")
     public String mainPage() {
         return "main";
     }
@@ -69,5 +69,10 @@ public class CommonController {
     @GetMapping("/admin-report")
     public String adminReport() {
         return "admin-report";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
     }
 }

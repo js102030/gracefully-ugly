@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" data-theme="white">
+<html lang="en" data-theme="white">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원 가입</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.green.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.green.min.css"/>
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
@@ -35,9 +35,9 @@
         <h1>로그인</h1>
 
 
-        <form id="joinForm">
-            <label for="loginId">ID:</label>
-            <input type="text" id="loginId" name="loginId">
+        <form id="joinForm" action="/login" method="post">
+            <label for="username">ID:</label>
+            <input type="text" id="username" name="username">
 
             <label for="password">비밀번호:</label>
             <input type="password" id="password" name="password">
@@ -48,7 +48,8 @@
 
         <br>
         <br>
-        <a href="/oauth2/authorization/kakao" class="button" style="background-color: rgb(216, 216, 25); color: black;">카카오 로그인</a>
+        <a href="/oauth2/authorization/kakao" class="button" style="background-color: rgb(216, 216, 25); color: black;">카카오
+            로그인</a>
 
         <a href="/join" class="button" style="background-color: rgb(71, 206, 138); color: white;">직접 회원가입</a>
 
