@@ -25,12 +25,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
 @Transactional
+@Slf4j
 public class OrderService {
 
     private UserRepository userRepository;
@@ -132,9 +134,8 @@ public class OrderService {
 
                     if (!result.isDeleted() && !result.getClosedDate().isBefore(LocalDateTime.now())) {
                         itemInfoToPaymentDto.setFirstItemName(result.getName())
-                                .addQuantity(item.getQuantity().intValue() / result.getTotalSalesUnit())
-                                .addTotalAmount(result.getPrice() * (item.getQuantity().intValue()
-                                        / result.getTotalSalesUnit()));
+                                .addQuantity(item.getQuantity().intValue())
+                                .addTotalAmount(result.getPrice() * item.getQuantity().intValue());
                         return true;
                     }
 
