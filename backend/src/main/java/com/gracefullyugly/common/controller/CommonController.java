@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class CommonController {
 
-    @GetMapping("/main")
+    @GetMapping("/")
     public String mainPage() {
         return "main";
     }
@@ -39,5 +39,40 @@ public class CommonController {
     @GetMapping("/sellerDetails")
     public String sellerDetails() {
         return "sellerDetails";
+    }
+
+    @GetMapping("/check-order")
+    public String checkOrder() {
+        return "check-order";
+    }
+
+    @GetMapping("/create-order")
+    public String createOrder() {
+        return "create-order";
+    }
+
+    @GetMapping("/create-review")
+    public String createReview() {
+        return "create-review";
+    }
+
+    @GetMapping("/group-buying")
+    public String groupBuying() {
+        return "group-buying";
+    }
+
+    @GetMapping("/admin")
+    public String admin() {
+        return "admin";
+    }
+
+    @GetMapping("/admin-report")
+    public String adminReport() {
+        return "admin-report";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
     }
 }
