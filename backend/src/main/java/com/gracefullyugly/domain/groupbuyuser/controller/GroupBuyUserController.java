@@ -4,6 +4,7 @@ import com.gracefullyugly.domain.groupbuyuser.dto.GroupBuyUserFindResponse;
 import com.gracefullyugly.domain.groupbuyuser.service.GroupBuyUserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,7 +21,7 @@ public class GroupBuyUserController {
     private GroupBuyUserService groupBuyUserService;
 
     @GetMapping("/groupbuyuser/{itemId}")
-    public ResponseEntity<GroupBuyUserFindResponse> getGroupBuyUser(
+    public ResponseEntity<List<GroupBuyUserFindResponse>> getGroupBuyUser(
             @Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
             @PathVariable("itemId") Long itemId) {
         return ResponseEntity.ok(groupBuyUserService.getGroupBuyUser(userId, itemId));
