@@ -1,5 +1,6 @@
 package com.gracefullyugly.domain.payment.service;
 
+import com.gracefullyugly.common.exception.custom.ExistException;
 import com.gracefullyugly.common.exception.custom.NotFoundException;
 import com.gracefullyugly.domain.groupbuy.repository.GroupBuyRepository;
 import com.gracefullyugly.domain.groupbuyuser.repository.GroupBuyUserRepository;
@@ -11,27 +12,29 @@ import com.gracefullyugly.domain.payment.dto.KakaoPayApproveResponse;
 import com.gracefullyugly.domain.payment.dto.KakaoPayReadyResponse;
 import com.gracefullyugly.domain.payment.entity.Payment;
 import com.gracefullyugly.domain.payment.repository.PaymentRepository;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
 @AllArgsConstructor
 @Transactional
+@Slf4j
 public class PaymentService {
 
     private final static String KAKAO_PAY_READY_URL = "https://open-api.kakaopay.com/online/v1/payment/ready";
     private final static String KAKAO_PAY_APPROVE_URL = "https://open-api.kakaopay.com/online/v1/payment/approve";
     private final static String KAKAO_PAY_CANCEL_URL = "https://open-api.kakaopay.com/online/v1/payment/cancel";
-    private final static String SECRET_KEY = "Secret key(dev)";
+    private final static String SECRET_KEY = "DEV0E39D58BA039991E20FB24D32905C6B1B0648";
     private PaymentRepository paymentRepository;
     private OrderItemRepository orderItemRepository;
     private GroupBuyRepository groupBuyRepository;
@@ -44,10 +47,11 @@ public class PaymentService {
         paymentRepository.save(new Payment(paymentRequest.getOrderId(), response.getTid(),
                 paymentRequest.getItemInfoToPayment().getTotalAmount()));
 
+        log.error("{}", response.getNext_redirect_pc_url());
+
         return response.getNext_redirect_pc_url();
     }
 
-    // ToDo: 결제 승인 실패 시 예외 처리를 해야 함
     public KakaoPayApproveResponse approveKakaoPay(Long userId, Long orderId, String pgToken) {
         Payment payment = paymentRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new NotFoundException("결제 정보가 없습니다."));
@@ -65,7 +69,11 @@ public class PaymentService {
         Payment payment = paymentRepository.findPaymentByOrderId(orderId)
                 .orElseThrow(() -> new NotFoundException("결제 정보가 없습니다."));
 
-        postKakaoPayCancel(payment);
+        if (!groupBuyRepository.findCompletedGroupBuyByOrderId(orderId).isEmpty()) {
+            throw new ExistException("완료된 공동 구매는 환불이 불가합니다.");
+        }
+
+        postKakaoPayRefund(payment);
 
         payment.updateIsPaid(false);
         payment.updateIsRefunded(true);
@@ -73,6 +81,10 @@ public class PaymentService {
         groupBuyUserRepository.deleteAllByUserIdAndOrderId(userId, orderId);
     }
 
+    /**
+     * 카카오 결제 준비 단계 API를 호출해 Response를 받아오는 메소드 입니다.
+     * 결제 준비 단계 도중 문제 발생 시 RestClientResponseException을 던집니다.
+     */
     private KakaoPayReadyResponse postKakaoPayReady(OrderResponse paymentRequest) throws RestClientResponseException {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
@@ -80,13 +92,17 @@ public class PaymentService {
         // Header 설정
         HttpHeaders headers = setHeader();
         // Params 설정
-        MultiValueMap<String, String> params = setKakaoPayReadyParams(paymentRequest);
+        Map<String, String> params = setKakaoPayReadyParams(paymentRequest);
         // Body 설정
-        HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<>(params, headers);
+        HttpEntity<Map<String, String>> body = new HttpEntity<>(params, headers);
 
         return restTemplate.postForObject(KAKAO_PAY_READY_URL, body, KakaoPayReadyResponse.class);
     }
 
+    /**
+     * 카카오 결제 승인 단계 API를 호출해 Response를 받아오는 메소드 입니다.
+     * 결제 승인 단계 도중 문제 발생 시 RestClientResponseException을 던집니다.
+     */
     private KakaoPayApproveResponse postKakaoPayApprove(Long userId, Payment payment, String pgToken)
             throws RestClientResponseException {
         RestTemplate restTemplate = new RestTemplate();
@@ -95,27 +111,34 @@ public class PaymentService {
         // Header 설정
         HttpHeaders headers = setHeader();
         // Params 설정
-        MultiValueMap<String, String> params = setKakaoPayApproveParams(userId, payment, pgToken);
+        Map<String, String> params = setKakaoPayApproveParams(userId, payment, pgToken);
         // Body 설정
-        HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<>(params, headers);
+        HttpEntity<Map<String, String>> body = new HttpEntity<>(params, headers);
 
         return restTemplate.postForObject(KAKAO_PAY_APPROVE_URL, body, KakaoPayApproveResponse.class);
     }
 
-    private void postKakaoPayCancel(Payment payment) throws RestClientResponseException {
+    /**
+     * 카카오 결제 환불 단계 API를 호출해 Response를 받아오는 메소드 입니다.
+     * 결제 환불 단계 도중 문제 발생 시 RestClientResponseException을 던집니다.
+     */
+    private void postKakaoPayRefund(Payment payment) throws RestClientResponseException {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 
         // Header 설정
         HttpHeaders headers = setHeader();
         // Params 설정
-        MultiValueMap<String, String> params = setKakaoPayCancelParams(payment);
+        Map<String, String> params = setKakaoPayRefundParams(payment);
         // Body 설정
-        HttpEntity<MultiValueMap<String, String>> body = new HttpEntity<>(params, headers);
+        HttpEntity<Map<String, String>> body = new HttpEntity<>(params, headers);
 
         restTemplate.postForObject(KAKAO_PAY_CANCEL_URL, body, String.class);
     }
 
+    /**
+     * 카카오 결제 API 호출을 위한 Header 정보를 세팅하는 메소드 입니다.
+     */
     private HttpHeaders setHeader() {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "SECRET_KEY " + SECRET_KEY);
@@ -125,41 +148,50 @@ public class PaymentService {
         return headers;
     }
 
-    private MultiValueMap<String, String> setKakaoPayReadyParams(OrderResponse paymentRequest) {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("cid", "TC0ONETIME");
-        params.add("partner_order_id", paymentRequest.getOrderId().toString());
-        params.add("partner_user_id", paymentRequest.getUserId().toString());
-        params.add("item_name", paymentRequest.getItemInfoToPayment().getItemName());
-        params.add("quantity", String.valueOf(paymentRequest.getItemInfoToPayment().getQuantity()));
-        params.add("total_amount", String.valueOf(paymentRequest.getItemInfoToPayment().getTotalAmount()));
-        params.add("tax_free_amount", String.valueOf(paymentRequest.getItemInfoToPayment().getTaxFreeAmount()));
-        params.add("approval_url",
+    /**
+     * 카카오 결제 준비 단계에 필요한 파라메터를 세팅하는 메소드 입니다.
+     */
+    private Map<String, String> setKakaoPayReadyParams(OrderResponse paymentRequest) {
+        Map<String, String> params = new HashMap<>();
+        params.put("cid", "TC0ONETIME");
+        params.put("partner_order_id", paymentRequest.getOrderId().toString());
+        params.put("partner_user_id", paymentRequest.getUserId().toString());
+        params.put("item_name", paymentRequest.getItemInfoToPayment().getItemName());
+        params.put("quantity", String.valueOf(paymentRequest.getItemInfoToPayment().getQuantity()));
+        params.put("total_amount", String.valueOf(paymentRequest.getItemInfoToPayment().getTotalAmount()));
+        params.put("tax_free_amount", String.valueOf(paymentRequest.getItemInfoToPayment().getTaxFreeAmount()));
+        params.put("approval_url",
                 "http://localhost:8080/api/payment/kakaopay/success/" + paymentRequest.getUserId() + "/"
                         + paymentRequest.getOrderId());
-        params.add("cancel_url", "http://localhost:8080/payment/cancel");
-        params.add("fail_url", "http://localhost:8080/");
+        params.put("cancel_url", "http://localhost:8080/payment/cancel");
+        params.put("fail_url", "http://localhost:8080/");
 
         return params;
     }
 
-    private MultiValueMap<String, String> setKakaoPayApproveParams(Long userId, Payment payment, String pgToken) {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("cid", "TC0ONETIME");
-        params.add("tid", payment.getTid());
-        params.add("partner_order_id", payment.getOrderId().toString());
-        params.add("partner_user_id", userId.toString());
-        params.add("pg_token", pgToken);
+    /**
+     * 카카오 결제 승인 단계에 필요한 파라메터를 세팅하는 메소드 입니다.
+     */
+    private Map<String, String> setKakaoPayApproveParams(Long userId, Payment payment, String pgToken) {
+        Map<String, String> params = new HashMap<>();
+        params.put("cid", "TC0ONETIME");
+        params.put("tid", payment.getTid());
+        params.put("partner_order_id", payment.getOrderId().toString());
+        params.put("partner_user_id", userId.toString());
+        params.put("pg_token", pgToken);
 
         return params;
     }
 
-    private MultiValueMap<String, String> setKakaoPayCancelParams(Payment payment) {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("cid", "TC0ONETIME");
-        params.add("tid", payment.getTid());
-        params.add("cancel_amount", String.valueOf(payment.getTotalPrice()));
-        params.add("cnacel_tax_free_amount", String.valueOf(0));
+    /**
+     * 카카오 결제 환불 단계에 필요한 파라메터를 세팅하는 메소드 입니다.
+     */
+    private Map<String, String> setKakaoPayRefundParams(Payment payment) {
+        Map<String, String> params = new HashMap<>();
+        params.put("cid", "TC0ONETIME");
+        params.put("tid", payment.getTid());
+        params.put("cancel_amount", String.valueOf(payment.getTotalPrice()));
+        params.put("cancel_tax_free_amount", String.valueOf(payment.getTotalPrice()));
 
         return params;
     }
