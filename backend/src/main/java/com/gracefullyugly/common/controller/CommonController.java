@@ -1,10 +1,19 @@
 package com.gracefullyugly.common.controller;
 
+import com.gracefullyugly.domain.item.dto.ItemResponse;
+import com.gracefullyugly.domain.item.service.ItemSearchService;
+import com.gracefullyugly.domain.item.service.ItemService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
+@RequiredArgsConstructor
 public class CommonController {
+
+    private final ItemSearchService itemSearchService;
 
     @GetMapping("/")
     public String mainPage() {
@@ -71,8 +80,23 @@ public class CommonController {
         return "admin-report";
     }
 
-    @GetMapping("/login")
+    @GetMapping("/login.html")
     public String login() {
-        return "login";
+        return "login.html";
+    }
+
+    @GetMapping("/mainAfter")
+    public String mainAfterPage() {
+        return "mainAfter";
+    }
+
+    @GetMapping("/cart-list")
+    public String cartListPage() {
+        return "cart-list";
+    }
+
+    @GetMapping("/purchase_history")
+    public String PurchaseHistory() {
+        return "purchase_history";
     }
 }

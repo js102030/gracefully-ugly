@@ -56,7 +56,6 @@ public class ItemController {
 
         return ResponseEntity
                 .ok(itemResponse);
-
     }
 
     // 판매글 수정

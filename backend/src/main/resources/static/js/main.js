@@ -1,48 +1,25 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.querySelector('.modal');
-    const modalCloseButton = document.querySelector('.modal-close');
-    const listButton = document.querySelector('.list-button');
-
-    if (listButton) {
-        listButton.addEventListener('click', function() {
-            modal.style.display = 'block';
-        });
-    }
-
-    if (modalCloseButton) {
-        modalCloseButton.addEventListener('click', function() {
-            modal.style.display = 'none';
-        });
-    }
-
-    window.addEventListener('click', function(event) {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
-});
 
 // ----------------------- 마감임박 상품 조회
-document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
     // 페이지 로드가 완료된 후 실행될 코드
     fetchImpendingItems();
 });
 
-function fetchImpendingItems() {
+    function fetchImpendingItems() {
     fetch('/api/items/impending')
         .then(response => response.json())
         .then(data => displayImpendingItems(data))
         .catch(error => console.error('Error fetching impending items:', error));
 }
 
-function displayImpendingItems(items) {
+    function displayImpendingItems(items) {
     const impendingItemsContainer = document.querySelector('.impending-items');
 
     items.forEach(item => {
-        const itemElement = document.createElement('div');
-        itemElement.classList.add('item');
+    const itemElement = document.createElement('div');
+    itemElement.classList.add('item');
 
-        itemElement.innerHTML = `
+    itemElement.innerHTML = `
                 <img src="${item.imageUrl}" alt="제품사진">
                 <div>
                     <div>${item.totalSalesUnit}Kg</div>
@@ -51,8 +28,8 @@ function displayImpendingItems(items) {
                 </div>
             `;
 
-        impendingItemsContainer.appendChild(itemElement);
-    });
+    impendingItemsContainer.appendChild(itemElement);
+});
 }
 
 // ----------------------- 인기 상품 조회
