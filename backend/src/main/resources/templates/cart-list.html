@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>찜 목록 페이지</title>
+    <link rel="stylesheet" href="/cart-list.css">
+</head>
+<body class="body">
+<header class = "main-header">
+    <img class = "logo" src="/image/logo.png" alt="로고">
+    <button class="notice-button">알림</button>
+    <button class="login-button">로그아웃</button>
+    <button class="list-button">목록</button>
+</header>
+<div class="line-box"></div>
+<div class="item-box">
+    <img class ="item-image" src="/image/item.png" alt="상품">
+    <div class="item-content">
+        <div class="title">못난이 감자</div>
+        <div class="end-time">마감일 2024.05.15</div>
+        <div class="button">상품 페이지로 이동</div>
+    </div>
+    <div class="delete-and-payment">
+        <button class="delete-button">삭제</button>
+        <button class="payment-button">결제하기</button>
+    </div>
+</div>
+<div class="item-box">
+    <img class ="item-image" src="/image/item.png" alt="상품">
+    <div class="item-content">
+        <div class="title">싱싱 제철 못난이 수박</div>
+        <div class="end-time">마감일 2024.05.10</div>
+        <div class="button">상품 페이지로 이동</div>
+    </div>
+    <div class="delete-and-payment">
+        <button class="delete-button">삭제</button>
+        <button class="payment-button">결제하기</button>
+    </div>
+</div>
+<!--목록 모달-->
+<section class="modal">
+    <div class="modal-box">
+        <div class="modal-inner">
+            <div>
+                <p class="ask9">구매자이신가요?</p>
+                <img id="modal-1" src="/image/modal-1.png" alt="찜한 내역">
+                <img id="modal-2" src="/image/modal-2.png" alt="구매 내역">
+                <img id="modal-3" src="/image/modal-3.png" alt="내 정보">
+                <p class="ask8">판매자이신가요?</p>
+                <img id="modal-4" src="/image/modal-4.png" alt="판매 내역">
+                <button class="modal-close">닫기</button>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript" src="/js/cart-list.js" ></script>
+</body>
+</html>
