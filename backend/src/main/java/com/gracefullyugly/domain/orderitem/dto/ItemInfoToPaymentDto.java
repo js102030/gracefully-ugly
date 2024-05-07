@@ -30,6 +30,7 @@ public class ItemInfoToPaymentDto {
 
     public ItemInfoToPaymentDto addTotalAmount(int totalAmount) {
         this.totalAmount += totalAmount;
+        this.taxFreeAmount += totalAmount;
         return this;
     }
 }
