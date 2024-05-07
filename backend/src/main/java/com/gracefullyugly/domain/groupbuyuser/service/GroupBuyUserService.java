@@ -44,14 +44,16 @@ public class GroupBuyUserService {
         return retVal;
     }
 
-    public GroupBuyUserFindResponse getGroupBuyUser(Long userId, Long itemId) {
-        GroupBuyUser groupBuyUser = groupBuyUserRepository.findByUserIdAndItemId(userId, itemId)
-                .orElseThrow(() -> new NotFoundException("공동 구매 참여 정보가 없습니다."));
+    public List<GroupBuyUserFindResponse> getGroupBuyUser(Long userId, Long itemId) {
+        List<GroupBuyUser> groupBuyUserList = groupBuyUserRepository.findByUserIdAndItemId(userId, itemId);
 
-        return GroupBuyUserFindResponse.builder()
-                .joinDate(groupBuyUser.getJoinDate())
-                .quantity(groupBuyUser.getQuantity())
-                .build();
+        return groupBuyUserList.stream()
+                .map(groupBuyUser ->
+                        GroupBuyUserFindResponse.builder()
+                        .joinDate(groupBuyUser.getJoinDate())
+                        .quantity(groupBuyUser.getQuantity())
+                        .build())
+                .toList();
     }
 
     /**

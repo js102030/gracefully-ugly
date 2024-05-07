@@ -1,7 +1,7 @@
 package com.gracefullyugly.domain.groupbuyuser.repository;
 
 import com.gracefullyugly.domain.groupbuyuser.entity.GroupBuyUser;
-import java.util.Optional;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,8 +13,9 @@ public interface GroupBuyUserRepository extends JpaRepository<GroupBuyUser, Long
     @Query("SELECT GBU "
          + "FROM GroupBuyUser AS GBU "
          + "LEFT OUTER JOIN GroupBuy AS GB ON GBU.groupBuyId = GB.id "
-         + "WHERE GB.itemId = :itemId AND GB.groupBuyStatus = com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus.IN_PROGRESS AND GBU.userId = :userId")
-    Optional<GroupBuyUser> findByUserIdAndItemId(Long userId, Long itemId);
+         + "WHERE GB.itemId = :itemId AND GBU.userId = :userId "
+         + "ORDER BY GBU.id DESC LIMIT 5")
+    List<GroupBuyUser> findByUserIdAndItemId(Long userId, Long itemId);
 
     @Modifying
     @Query(value = "DELETE FROM group_buy_user AS GBU "
