@@ -27,16 +27,12 @@ public class News {
     @Column(length = 1000)
     private String contents;
 
-    @Column(length = 1000)
-    private String source;
-
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @Builder
-    public News(String contents, String source) {
+    public News(String contents) {
         this.contents = contents;
-        this.source = source;
     }
 }

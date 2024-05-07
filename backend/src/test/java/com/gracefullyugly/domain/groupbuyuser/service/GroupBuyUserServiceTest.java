@@ -1,6 +1,5 @@
 package com.gracefullyugly.domain.groupbuyuser.service;
 
-import static com.gracefullyugly.testutil.SetupDataUtils.NOT_FOUND_GROUP_BUY_USER;
 import static com.gracefullyugly.testutil.SetupDataUtils.QUANTITY;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -154,16 +153,16 @@ public class GroupBuyUserServiceTest {
         groupBuyUserService.joinGroupBuy(userId, orderItemList);
 
         // WHEN
-        GroupBuyUserFindResponse firstGroupInfo = groupBuyUserService.getGroupBuyUser(userId,
+        List<GroupBuyUserFindResponse> firstGroupInfo = groupBuyUserService.getGroupBuyUser(userId,
                 orderItemList.get(0).getItemId());
-        GroupBuyUserFindResponse secondGroupInfo = groupBuyUserService.getGroupBuyUser(userId,
+        List<GroupBuyUserFindResponse> secondGroupInfo = groupBuyUserService.getGroupBuyUser(userId,
                 orderItemList.get(1).getItemId());
 
         // THEN
-        assertThat(firstGroupInfo.getQuantity()).isEqualTo(QUANTITY.intValue());
-        assertThat(firstGroupInfo.getJoinDate()).isNotNull();
-        assertThat(secondGroupInfo.getQuantity()).isEqualTo(QUANTITY.intValue() + 3);
-        assertThat(secondGroupInfo.getJoinDate()).isNotNull();
+        assertThat(firstGroupInfo.get(0).getQuantity()).isEqualTo(QUANTITY.intValue());
+        assertThat(firstGroupInfo.get(0).getJoinDate()).isNotNull();
+        assertThat(secondGroupInfo.get(0).getQuantity()).isEqualTo(QUANTITY.intValue() + 3);
+        assertThat(secondGroupInfo.get(0).getJoinDate()).isNotNull();
     }
 
     @Test
@@ -174,10 +173,12 @@ public class GroupBuyUserServiceTest {
         List<OrderItem> orderItemList = List.of(new OrderItem(firstItem.getId(), orderId, QUANTITY.intValue()));
         groupBuyUserService.joinGroupBuy(userId, orderItemList);
 
-        // WHEN, THEN
-        Assertions.assertThrows(NotFoundException.class, () -> groupBuyUserService.getGroupBuyUser(userId, 100L),
-                NOT_FOUND_GROUP_BUY_USER);
-        Assertions.assertThrows(NotFoundException.class,
-                () -> groupBuyUserService.getGroupBuyUser(userId, secondItem.getId()), NOT_FOUND_GROUP_BUY_USER);
+        // WHEN
+        List<GroupBuyUserFindResponse> firstResult =  groupBuyUserService.getGroupBuyUser(userId, 100L);
+        List<GroupBuyUserFindResponse> secondResult = groupBuyUserService.getGroupBuyUser(userId, secondItem.getId());
+
+        // THEN
+        assertThat(firstResult.size()).isEqualTo(0);
+        assertThat(secondResult.size()).isEqualTo(0);
     }
 }

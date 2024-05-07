@@ -12,6 +12,7 @@ import com.gracefullyugly.domain.order.dto.UpdateOrderAddressRequest;
 import com.gracefullyugly.domain.order.dto.UpdateOrderPhoneNumberRequest;
 import com.gracefullyugly.domain.order.entity.Order;
 import com.gracefullyugly.domain.order.repository.OrderRepository;
+import com.gracefullyugly.domain.orderitem.dto.ItemInfoToPaymentDto;
 import com.gracefullyugly.domain.orderitem.dto.OrderItemInfoResponse;
 import com.gracefullyugly.domain.orderitem.entity.OrderItem;
 import com.gracefullyugly.domain.orderitem.repository.OrderItemRepository;
@@ -24,12 +25,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
 @Transactional
+@Slf4j
 public class OrderService {
 
     private UserRepository userRepository;
@@ -44,18 +47,28 @@ public class OrderService {
         }
 
         Order order = orderRepository.save(new Order(userId, request.getAddress(), request.getPhoneNumber()));
-        List<OrderItem> orderItemList = makeOrderItemList(order.getId(), request.getItemIdList());
+
+        ItemInfoToPaymentDto itemInfoToPaymentDto = new ItemInfoToPaymentDto();
+        List<OrderItem> orderItemList = makeOrderItemList(order.getId(), request.getItemIdList(),
+                itemInfoToPaymentDto);
 
         if (orderItemList.isEmpty()) {
             throw new NotFoundException("주문 가능한 상품이 없습니다.");
         }
-        orderItemRepository.saveAll(makeOrderItemList(order.getId(), request.getItemIdList()));
+
+        orderItemRepository.saveAll(orderItemList);
+
+        if (orderItemList.size() != 1) {
+            itemInfoToPaymentDto.setItemName(
+                    itemInfoToPaymentDto.getItemName() + " 외 " + (orderItemList.size() - 1) + "종");
+        }
 
         return OrderResponse.builder()
                 .orderId(order.getId())
                 .userId(order.getUserId())
                 .address(order.getAddress())
                 .phoneNumber(order.getPhoneNumber())
+                .ItemInfoToPayment(itemInfoToPaymentDto)
                 .build();
     }
 
@@ -73,7 +86,7 @@ public class OrderService {
         Order order = orderOptional.get();
         String nickname = userOptional.get().getNickname();
         Payment payment = paymentRepository.findByOrderId(orderId).orElse(null);
-        List<OrderItemInfoResponse> orderItemList = orderItemRepository.findAllByOrderId(orderId);
+        List<OrderItemInfoResponse> orderItemList = orderItemRepository.getOrderItemListByOrderId(orderId);
 
         return OrderInfoResponse.builder()
                 .order(order)
@@ -93,7 +106,8 @@ public class OrderService {
                 .build();
     }
 
-    public OrderResponse updateOrderPhoneNumber(Long userId, Role role, Long orderId, UpdateOrderPhoneNumberRequest request) {
+    public OrderResponse updateOrderPhoneNumber(Long userId, Role role, Long orderId,
+                                                UpdateOrderPhoneNumberRequest request) {
         Order order = returnOrder(userId, role, orderId);
         order.updatePhoneNumber(request.getPhoneNumber());
 
@@ -104,9 +118,11 @@ public class OrderService {
     }
 
     /**
-     * 주문하고자 하는 상품들 중 유효하지 않은 상품을 걸러낸 뒤, OrderItem 객체의 List를 만드는 메소드 입니다.
+     * 주문하고자 하는 상품들 중 유효하지 않은 상품을 걸러낸 뒤, OrderItem 객체의 List를 만드는 메소드 입니다. orderItemInfoDto는 결제 프로세스에 필요한 정보를 저장하기 위한
+     * 파라메터입니다.
      */
-    private List<OrderItem> makeOrderItemList(Long orderId, List<OrderItemDto> items) {
+    private List<OrderItem> makeOrderItemList(Long orderId, List<OrderItemDto> items,
+                                              ItemInfoToPaymentDto itemInfoToPaymentDto) {
         return items.stream()
                 .filter(item -> {
                     Optional<Item> resultOptional = itemRepository.findById(item.getItemId());
@@ -116,7 +132,14 @@ public class OrderService {
 
                     Item result = resultOptional.get();
 
-                    return !result.isDeleted() && !result.getClosedDate().isBefore(LocalDateTime.now());
+                    if (!result.isDeleted() && !result.getClosedDate().isBefore(LocalDateTime.now())) {
+                        itemInfoToPaymentDto.setFirstItemName(result.getName())
+                                .addQuantity(item.getQuantity().intValue())
+                                .addTotalAmount(result.getPrice() * item.getQuantity().intValue());
+                        return true;
+                    }
+
+                    return false;
                 })
                 .map(item -> new OrderItem(item.getItemId(), orderId, item.getQuantity().intValue()))
                 .toList();

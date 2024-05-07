@@ -1,6 +1,5 @@
 package com.gracefullyugly.domain.groupbuyuser.controller.api;
 
-import static com.gracefullyugly.testutil.SetupDataUtils.NOT_FOUND_GROUP_BUY_USER;
 import static com.gracefullyugly.testutil.SetupDataUtils.QUANTITY;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_LOGIN_ID;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
@@ -155,11 +154,11 @@ public class GroupBuyUserControllerTest {
 
         // THEN
         resultFirstItem.andExpect(status().isOk())
-                .andExpect(jsonPath("joinDate").isNotEmpty())
-                .andExpect(jsonPath("quantity").value(QUANTITY.intValue()));
+                .andExpect(jsonPath("$[0].joinDate").isNotEmpty())
+                .andExpect(jsonPath("$[0].quantity").value(QUANTITY.intValue()));
         resultSecondItem.andExpect(status().isOk())
-                .andExpect(jsonPath("joinDate").isNotEmpty())
-                .andExpect(jsonPath("quantity").value(QUANTITY.intValue() + 3));
+                .andExpect(jsonPath("$[0].joinDate").isNotEmpty())
+                .andExpect(jsonPath("$[0].quantity").value(QUANTITY.intValue() + 3));
     }
 
     @Test
@@ -175,7 +174,7 @@ public class GroupBuyUserControllerTest {
                 .with(user(customUserDetails)));
 
         // THEN
-        result.andExpect(status().isNotFound())
-                .andExpect(jsonPath("$").value(NOT_FOUND_GROUP_BUY_USER));
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$[0]").doesNotExist());
     }
 }

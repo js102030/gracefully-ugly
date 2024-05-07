@@ -23,6 +23,8 @@ public class Image extends BaseTimeEntity {
 
     private Long reviewId;
 
+    private String url;
+
     private String originalImageName;
 
     private String storedImageName;
