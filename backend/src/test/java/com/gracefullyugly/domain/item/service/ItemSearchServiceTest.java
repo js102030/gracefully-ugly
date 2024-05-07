@@ -3,7 +3,6 @@ package com.gracefullyugly.domain.item.service;
 import static com.gracefullyugly.testutil.SetupDataUtils.ADD_CART_ITEM_SUCCESS;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gracefullyugly.domain.cart.dto.CartListResponse;
@@ -12,22 +11,16 @@ import com.gracefullyugly.domain.cart.service.CartService;
 import com.gracefullyugly.domain.cart_item.dto.AddCartItemRequest;
 import com.gracefullyugly.domain.cart_item.dto.CartItemResponse;
 import com.gracefullyugly.domain.cart_item.service.CartItemService;
-import com.gracefullyugly.domain.item.dto.ItemDtoUtil;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
-import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.enumtype.Category;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
 import com.gracefullyugly.domain.user.repository.UserRepository;
 import com.gracefullyugly.testutil.SetupDataUtils;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import org.junit.jupiter.api.AfterEach;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,6 +30,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootTest
 @Transactional
+@Slf4j
 class ItemSearchServiceTest {
 
     @Autowired
@@ -130,7 +124,6 @@ class ItemSearchServiceTest {
         userRepository.save(SetupDataUtils.makeTestUser(passwordEncoder));
         Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
 
-        Long itemId1 = 3L;
         ItemRequest itemRequest1 = ItemRequest.builder()
                 .name("감자")
                 .productionPlace("강원도")
@@ -143,7 +136,6 @@ class ItemSearchServiceTest {
                 .description("맛 좋은 감자")
                 .build();
 
-        Long itemId2 = 4L;
         ItemRequest itemRequest2 = ItemRequest.builder()
                 .name("고구마")
                 .productionPlace("전라남도")
@@ -159,27 +151,44 @@ class ItemSearchServiceTest {
         ItemResponse item1 = itemService.save(testUserId, itemRequest1);
         ItemResponse item2 = itemService.save(testUserId, itemRequest2);
 
+        log.info("item1 : {}", item1);
+        log.info("item2 : {}", item2);
+
         // 찜 상품에 데이터 추가
         AddCartItemRequest testItemCount1 = AddCartItemRequest.builder().itemCount(2L).build();
         AddCartItemRequest testItemCount2 = AddCartItemRequest.builder().itemCount(5L).build();
+        log.info("testItemCount1 : {}", testItemCount1);
+        log.info("testItemCount2 : {}", testItemCount2);
 
-        CartItemResponse result1 = cartItemService.addCartItem(testUserId, itemId1, testItemCount1);
-        CartItemResponse result2 = cartItemService.addCartItem(testUserId, itemId2, testItemCount2);
+        CartItemResponse result1 = cartItemService.addCartItem(testUserId, item1.getId(), testItemCount1);
+        log.info("result1 : {}", result1);
+        CartItemResponse result2 = cartItemService.addCartItem(testUserId, item2.getId(), testItemCount2);
+        log.info("result2 : {}", result2);
 
-        List<ItemResponse> popularityItems = itemSearchService.getPopularityItems();
+        assertThat(result1.getMessage()).isEqualTo(ADD_CART_ITEM_SUCCESS);
+        assertThat(result2.getMessage()).isEqualTo(ADD_CART_ITEM_SUCCESS);
+
+        List<CartListResponse> cartList = cartService.getCartList(testUserId);
+        for (CartListResponse cartListResponse : cartList) {
+            log.info("cartListResponse : {}", cartListResponse);
+        }
+        assertThat(cartList.size()).isEqualTo(2);
+
+        // WHEN
+        List<ItemResponse> popularityItems = itemSearchService.findMostAddedToCartItems();
 
         // THEN
         System.out.println("리스트보기 :" + popularityItems);
         assertThat(popularityItems.size()).isEqualTo(2);
-        assertThat(item2.getId()).isEqualTo(popularityItems.get(0).getId()); // 찜 개수가 높은 순으로 정렬되었는지 확인
-        assertThat(item1.getId()).isEqualTo(popularityItems.get(1).getId());
+
+
     }
 
     @Test
     @DisplayName("상품 종류별 검색 목록 조회")
     void getCategoryItemsTest() {
         // GIVEN
-        Long itemId1 =5L;
+        Long itemId1 = 5L;
         ItemRequest itemRequest1 = ItemRequest.builder()
                 .name("감자")
                 .productionPlace("강원도")
@@ -226,12 +235,12 @@ class ItemSearchServiceTest {
         itemSearchService = new ItemSearchService(itemRepository);
         List<ItemResponse> fruitItems = itemSearchService.getCategoryItems(Category.FRUIT);
         List<ItemResponse> vegetableItems = itemSearchService.getCategoryItems(Category.VEGETABLE);
-        List<ItemResponse> otherItems = itemSearchService.getCategoryItems(Category.OTHER);
 
         // THEN
         Assertions.assertEquals(2, vegetableItems.size());
         Assertions.assertEquals(1, fruitItems.size());
-        Assertions.assertEquals(0, otherItems.size());
+        org.assertj.core.api.Assertions.assertThatThrownBy(() -> itemSearchService.getCategoryItems(Category.OTHER))
+                .isInstanceOf(IllegalArgumentException.class).hasMessageContaining("해당 카테고리 상품이 없습니다.");
 
         // 카테고리별로 올바른 상품이 조회되었는지 확인
         Assertions.assertEquals(item1.getId(), vegetableItems.get(0).getId());

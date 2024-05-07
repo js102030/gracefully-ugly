@@ -30,16 +30,27 @@ public class ItemSearchService {
         return ItemDtoUtil.itemToItemResponse(findItem);
     }
 
-    public List<Item> findAllItems() {
-        return itemRepository.findAll();
+    public List<ItemResponse> findAllItems() {
+        List<Item> findItems = itemRepository.findAll();
+
+        if (findItems.isEmpty()) {
+            throw new IllegalArgumentException("상품이 없습니다.");
+        }
+
+        return findItems.stream()
+                .map(ItemDtoUtil::itemToItemResponse)
+                .toList();
     }
 
     // 72시간 이내 마감임박 상품 목록 조회
     public List<ItemResponse> getImpendingItems() {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime endTime = now.plusHours(72);
+        LocalDateTime endTime = LocalDateTime.now().plusHours(72);
 
         List<Item> impendingItems = itemRepository.findRandomImpendingItems(endTime);
+
+        if (impendingItems.isEmpty()) {
+            throw new IllegalArgumentException("마감임박 상품이 없습니다.");
+        }
 
         return impendingItems.stream()
                 .map(ItemDtoUtil::itemToItemResponse)
@@ -47,11 +58,11 @@ public class ItemSearchService {
     }
 
     // 인기 상품 목록 조회 / 찜 개수 기준
-    public List<ItemResponse> getPopularityItems() {
-        List<Item> popularityItems = itemRepository.findPopularityItems();
+    public List<ItemResponse> findMostAddedToCartItems() {
+        List<Item> popularityItems = itemRepository.findMostAddedToCartItems();
 
         if (popularityItems.isEmpty()) {
-            throw new IllegalArgumentException("인기 상품이 존재하지 않습니다.");
+            throw new IllegalArgumentException("인기 상품이 없습니다.");
         }
 
         return popularityItems.stream()
@@ -62,6 +73,10 @@ public class ItemSearchService {
     // 상품 종류별 검색 목록 조회
     public List<ItemResponse> getCategoryItems(Category categoryId) {
         List<Item> categoryItems = itemRepository.findCategoryItems(categoryId);
+
+        if (categoryItems.isEmpty()) {
+            throw new IllegalArgumentException("해당 카테고리 상품이 없습니다.");
+        }
 
         return categoryItems.stream()
                 .map(ItemDtoUtil::itemToItemResponse)

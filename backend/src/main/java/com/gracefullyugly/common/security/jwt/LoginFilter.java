@@ -73,7 +73,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         logger.info("역할 가져옴 = " + role);
 
         String access = jwtUtil.createJwt("access", userId, loginId, role, 60 * 10 * 1000L); //10분
-        String refresh = jwtUtil.createJwt("refresh", userId, loginId, role, 60 * 10 * 1000L); //24시간
+        String refresh = jwtUtil.createJwt("refresh", userId, loginId, role, 60 * 60 * 24 * 1000L); //24시간
         userRepository.saveRefreshToken(loginId, refresh);
         String saveRefresh = userRepository.findRefreshTokenByLoginId(loginId);
 
@@ -97,7 +97,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private Cookie createCookie(String key, String value) {
 
         Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(24*60*60);   //쿠키 생명주기
+        cookie.setMaxAge(24 * 60 * 60);   //쿠키 생명주기
         //cookie.setSecure(true);    //https 통신하면 이 값 넣어줌
         //cookie.setPath("/");       //쿠키 적용될 범위
         cookie.setHttpOnly(true);    //js에서 해당 쿠키 접근 불가하게 막음

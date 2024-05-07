@@ -4,7 +4,8 @@ import com.gracefullyugly.common.security.jwt.CustomLogoutFilter;
 import com.gracefullyugly.common.security.jwt.JWTFilter;
 import com.gracefullyugly.common.security.jwt.JWTUtil;
 import com.gracefullyugly.common.security.jwt.LoginFilter;
-import java.util.Collections;
+import com.gracefullyugly.common.security.oauth2.OAuth2CustomSuccessHandler;
+import com.gracefullyugly.common.security.oauth2.service.CustomOAuth2UserService;
 import com.gracefullyugly.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -14,13 +15,11 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
-import org.springframework.web.cors.CorsConfiguration;
 
 
 /**
@@ -37,8 +36,9 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     //JWTUtil 주입
     private final JWTUtil jwtUtil;
-
     private final UserRepository userRepository;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2CustomSuccessHandler oAuth2CustomSuccessHandler;
 
     //AuthenticationManager Bean 등록
     @Bean
@@ -56,28 +56,10 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        //front 단이랑 data 안보이는 오류 발생 막기위해서 CORS 설정
-        http
-                .cors(corsCustomizer -> corsCustomizer
-                        .configurationSource(request -> {
-
-                            CorsConfiguration configuration = new CorsConfiguration();
-
-                            configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
-                            configuration.setAllowedMethods(Collections.singletonList("*"));
-                            configuration.setAllowCredentials(true);
-                            configuration.setAllowedHeaders(Collections.singletonList("*"));
-                            configuration.setMaxAge(3600L);
-
-                            configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
-                            configuration.setExposedHeaders(Collections.singletonList("Authorization"));
-
-                            return configuration;
-                        }));
 
         //csrf disable
         http
-                .csrf(AbstractHttpConfigurer::disable);
+                .csrf((auth) -> auth.disable());
 
         //From 로그인 방식 disable
         http
@@ -85,17 +67,25 @@ public class SecurityConfig {
                         .usernameParameter("loginId") // 변경된 부분
                         .disable());
 
-        //http basic 인증 방식 disable
+        //HTTP Basic 인증 방식 disable
         http
-                .httpBasic(AbstractHttpConfigurer::disable);
+                .httpBasic((auth) -> auth.disable());
 
+        //oauth2
         http
-                .httpBasic(AbstractHttpConfigurer::disable);
+                .oauth2Login((oauth2) -> oauth2
+                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+                                .userService(customOAuth2UserService))
+                        .successHandler(oAuth2CustomSuccessHandler)
+                );
 
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/api/users", "/api/users/{userId}/registration", "/**", "/logout", "/reissue")
+                        .requestMatchers("/login", "/", "/api/users",
+                                "/api/users/{userId}/registration", "/**",
+                                "/logout", "/reissue",
+                                "/my-page", "/join", "/join2", "/main")
                         .permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
@@ -106,7 +96,8 @@ public class SecurityConfig {
 
         //필터 추가 LoginFilter()는 인자를 받음 (AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함) 따라서 등록 필요
         http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, userRepository),
+                .addFilterAt(
+                        new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, userRepository),
                         UsernamePasswordAuthenticationFilter.class);
 
         http

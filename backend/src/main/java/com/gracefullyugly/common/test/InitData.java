@@ -34,8 +34,8 @@ public class InitData {
                 "test"
         );
         BasicRegRequest basicRegRequestSeller = new BasicRegRequest(
-            "testSeller",
-            "testSeller"
+                "testSeller",
+                "testSeller"
         );
 
         // 일반 유저 (BUYER) 계정 생성
@@ -46,7 +46,6 @@ public class InitData {
         AdditionalRegRequest additionalRegRequest = AdditionalRegRequest.builder()
                 .role(Role.BUYER)
                 .nickname("testNickname")
-                .email("test@test.com")
                 .address("testAddress")
                 .build();
 
@@ -60,7 +59,6 @@ public class InitData {
         AdditionalRegRequest additionalRegRequestSeller = AdditionalRegRequest.builder()
                 .role(Role.SELLER)
                 .nickname("testNicknameSeller")
-                .email("testSeller@test.com")
                 .address("testSellerAddress")
                 .build();
 

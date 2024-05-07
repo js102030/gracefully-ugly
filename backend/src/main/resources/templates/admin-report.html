@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="white">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.green.min.css"/>
+    <title>관리자페이지</title>
+    <style>
+        th, td {
+            text-align: center;
+        }
+
+        #col_name {
+            width: 200px
+        }
+
+        #col_level {
+            width: 250px
+        }
+
+        #col_down {
+            width: 150px;
+        }
+
+    </style>
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+<main class="container">
+    <div th:replace="~{fragment/nav :: top}"></div>
+    <br>
+    <h2>ADMIN - 신고</h2>
+    <hr>
+    <table class="custom-table">
+        <colgroup>
+            <col style="width: 10%;">
+            <col style="width: 10%;">
+            <col style="width: 35%;">
+            <col style="width: 10%;">
+            <col style="width: 10%;">
+        </colgroup>
+        <thead>
+        <tr>
+            <th scope="col" id="col_name">신고번호</th>
+            <th scope="col" id="col_level">분류</th>
+            <th scope="col" id="col_title">신고 사유</th>
+            <th scope="col" id="col_down">신고 승인</th>
+            <th scope="col" id="col_down">잘못된 신고</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr> <!-- 사용자 ID를 data-user-id 속성에 저장 -->
+            <th scope="row">1</th>
+            <td>판매글</td>
+            <td>올바르지 않은 판매 내용</td>
+            <td>
+                <button type="button" style="background-color: rgb(196, 94, 116); border-color:  rgb(196, 94, 116);">신고
+                    승인
+                </button>
+            </td>
+            <td>
+                <button type="button" style="background-color: rgb(80, 80, 138); border-color: rgb(80, 80, 138);">신고
+                    삭제
+                </button>
+            </td>
+        </tr>
+
+        <tr> <!-- 사용자 ID를 data-user-id 속성에 저장 -->
+            <th scope="row">2</th>
+            <td>리뷰</td>
+            <td>욕설 리뷰</td>
+            <td>
+                <button type="button" style="background-color: rgb(196, 94, 116); border-color:  rgb(196, 94, 116);">신고
+                    승인
+                </button>
+            </td>
+            <td>
+                <button type="button" style="background-color: rgb(80, 80, 138); border-color: rgb(80, 80, 138);">신고
+                    삭제
+                </button>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</main>
+
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 검색 입력 필드에 이벤트 리스너 추가
+        document.querySelector('input[type="search"]').addEventListener('keypress', function (event) {
+            // 엔터 키가 눌렸는지 확인
+            if (event.keyCode === 13) {
+                // 엔터 키 이벤트가 발생하면 폼 제출 방지
+                event.preventDefault();
+                // 폼 제출
+                this.form.submit();
+            }
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // "확인" 버튼에 대한 클릭 이벤트 리스너 등록
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function () {
+                // 선택된 등급(역할)을 가져오기
+                const selectedRole = this.closest('tr').querySelector('select[name="Level"]').value;
+                // 사용자 ID 가져오기 (행에 userId 값을 저장하는 방식에 따라 다를 수 있음)
+                const userId = this.closest('tr').querySelector('th[scope="row"]').textContent;
+
+                // 역할 값과 사용자 ID 확인 (디버깅 용도)
+                console.log('Selected Role:', selectedRole, 'User ID:', userId);
+
+                // Fetch API를 사용하여 서버에 PATCH 요청 보내기
+                fetch(`/api/users/role/${userId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // 인증 헤더 등 필요한 경우 여기에 추가
+                    },
+                    body: JSON.stringify({role: selectedRole})
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // 요청 성공 처리, 예: 성공 메시지 표시
+                        alert('사용자 등급이 성공적으로 업데이트되었습니다.');
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('등급 업데이트 중 오류가 발생했습니다.');
+                    });
+            });
+        });
+    });
+</script>
+
+
+</html>

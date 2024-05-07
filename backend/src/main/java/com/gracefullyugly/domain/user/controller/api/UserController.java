@@ -19,6 +19,7 @@ import com.gracefullyugly.domain.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -38,17 +39,17 @@ public class UserController {
 
     @PostMapping("/users")
     public ResponseEntity<BasicRegResponse> createBasicAccount(@RequestBody BasicRegRequest request) {
-        final BasicRegResponse basicRegResponse = userService.createBasicAccount(request);
+        BasicRegResponse basicRegResponse = userService.createBasicAccount(request);
 
         return ResponseEntity
                 .status(CREATED)
                 .body(basicRegResponse);
     }
 
-    @PatchMapping("/users/{userId}/registration")
-    public ResponseEntity<FinalRegResponse> completeRegistration(@PathVariable Long userId,
-                                                                 @RequestBody AdditionalRegRequest request) {
-        final FinalRegResponse finalRegResponse = userService.completeRegistration(userId, request);
+    @PatchMapping("/users/registration")
+    public ResponseEntity<FinalRegResponse> completeRegistration(@RequestBody @Valid AdditionalRegRequest request,
+                                                                 @AuthenticationPrincipal(expression = "userId") Long userId) {
+        FinalRegResponse finalRegResponse = userService.completeRegistration(userId, request);
 
         return ResponseEntity
                 .ok(finalRegResponse);
@@ -56,7 +57,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public ResponseEntity<UserResponse> getUser(@PathVariable Long userId) {
-        final UserResponse userResponse = userSearchService.getUser(userId);
+        UserResponse userResponse = userSearchService.getUser(userId);
 
         return ResponseEntity
                 .ok(userResponse);
@@ -64,23 +65,23 @@ public class UserController {
 
     @GetMapping("/users/{userId}/profile")
     public ResponseEntity<ProfileResponse> getProfile(@PathVariable Long userId) {
-        final ProfileResponse profileResponse = userSearchService.getProfile(userId);
+        ProfileResponse profileResponse = userSearchService.getProfile(userId);
 
         return ResponseEntity
                 .ok(profileResponse);
     }
 
-    @PatchMapping("/users/{userId}/nickname")
-    public ResponseEntity<UpdateNicknameDto> updateNickname(@PathVariable Long userId,
-                                                            @Valid @RequestBody UpdateNicknameDto request) {
-        final UpdateNicknameDto updatedNickname = userService.updateNickname(userId, request.getNickname());
+    @PatchMapping("/users/nickname")
+    public ResponseEntity<UserResponse> updateNickname(@AuthenticationPrincipal(expression = "userId") Long userId,
+                                                       @Valid @RequestBody UpdateNicknameDto request) {
+        UserResponse userResponse = userService.updateNickname(userId, request.getNickname());
 
         return ResponseEntity
-                .ok(updatedNickname);
+                .ok(userResponse);
     }
 
-    @PatchMapping("/users/{userId}/password")
-    public ResponseEntity<Void> updatePassword(@PathVariable Long userId,
+    @PatchMapping("/users/password")
+    public ResponseEntity<Void> updatePassword(@AuthenticationPrincipal(expression = "userId") Long userId,
                                                @Valid @RequestBody UpdatePasswordRequest request) {
         userService.updatePassword(userId, request.getPassword());
 
@@ -89,17 +90,17 @@ public class UserController {
                 .build();
     }
 
-    @PatchMapping("/users/{userId}/address")
-    public ResponseEntity<UpdateAddressDto> updateAddress(@PathVariable Long userId,
-                                                          @Valid @RequestBody UpdateAddressDto request) {
-        final UpdateAddressDto updatedAddress = userService.updateAddress(userId, request.getAddress());
+    @PatchMapping("/users/address")
+    public ResponseEntity<UserResponse> updateAddress(@AuthenticationPrincipal(expression = "userId") Long userId,
+                                                      @Valid @RequestBody UpdateAddressDto request) {
+        UserResponse userResponse = userService.updateAddress(userId, request.getAddress());
 
         return ResponseEntity
-                .ok(updatedAddress);
+                .ok(userResponse);
     }
 
-    @DeleteMapping("/users/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+    @DeleteMapping("/users")
+    public ResponseEntity<Void> deleteUser(@AuthenticationPrincipal(expression = "userId") Long userId) {
         userService.delete(userId);
 
         return ResponseEntity

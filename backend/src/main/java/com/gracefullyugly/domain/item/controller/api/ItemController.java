@@ -1,10 +1,8 @@
 package com.gracefullyugly.domain.item.controller.api;
 
-import com.gracefullyugly.domain.item.dto.ItemDtoUtil;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
 import com.gracefullyugly.domain.item.dto.UpdateDescriptionRequest;
-import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.enumtype.Category;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.item.service.ItemService;
@@ -35,7 +33,7 @@ public class ItemController {
     @PostMapping("/items")
     public ResponseEntity<ItemResponse> addItem(@AuthenticationPrincipal(expression = "userId") Long userId,
                                                 @RequestBody ItemRequest request) {
-        final ItemResponse response = itemService.save(userId, request);
+        ItemResponse response = itemService.save(userId, request);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -45,21 +43,16 @@ public class ItemController {
     // 판매글 목록 조회
     @GetMapping("/items")
     public ResponseEntity<List<ItemResponse>> showItems() {
-        List<Item> itemList = itemSearchService.findAllItems();
-
-        List<ItemResponse> responseList = itemList.stream()
-                .map(ItemDtoUtil::itemToItemResponse)
-                .toList();
+        List<ItemResponse> response = itemSearchService.findAllItems();
 
         return ResponseEntity
-                .ok(responseList);
+                .ok(response);
     }
-
 
     // 판매글 상세 조회
     @GetMapping("/items/{itemId}")
     public ResponseEntity<ItemResponse> showOneItem(@PathVariable Long itemId) {
-        final ItemResponse itemResponse = itemSearchService.findOneItem(itemId);
+        ItemResponse itemResponse = itemSearchService.findOneItem(itemId);
 
         return ResponseEntity
                 .ok(itemResponse);
@@ -93,6 +86,7 @@ public class ItemController {
     @GetMapping("/items/impending")
     public ResponseEntity<List<?>> showImpendingItems() {
         List<ItemResponse> itemResponseList = itemSearchService.getImpendingItems();
+
         return ResponseEntity
                 .ok(itemResponseList);
 
@@ -101,7 +95,8 @@ public class ItemController {
     // 인기 상품 목록 조회
     @GetMapping("/items/popularity")
     public ResponseEntity<List<?>> showPopularity() {
-        List<ItemResponse> itemResponseList = itemSearchService.getPopularityItems();
+        List<ItemResponse> itemResponseList = itemSearchService.findMostAddedToCartItems();
+
         return ResponseEntity
                 .ok(itemResponseList);
     }
@@ -111,6 +106,7 @@ public class ItemController {
     @GetMapping("/items/category/{categoryId}")
     public ResponseEntity<List<?>> showCategory(@PathVariable Category categoryId) {
         List<ItemResponse> itemResponseList = itemSearchService.getCategoryItems(categoryId);
+
         return ResponseEntity
                 .ok(itemResponseList);
     }

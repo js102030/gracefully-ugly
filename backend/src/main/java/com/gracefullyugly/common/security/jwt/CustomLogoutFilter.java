@@ -9,9 +9,8 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.web.filter.GenericFilterBean;
-
 import java.io.IOException;
+import org.springframework.web.filter.GenericFilterBean;
 
 public class CustomLogoutFilter extends GenericFilterBean {
 
@@ -41,7 +40,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
         }
         String requestMethod = request.getMethod();
         if (!requestMethod.equals("POST")) {
-            logger.info("로그아웃 요청은 POST로 하세여" );
+            logger.info("로그아웃 요청은 POST로 하세여");
             filterChain.doFilter(request, response);
             return;
         }
@@ -59,7 +58,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
 
         //refresh null check
         if (refresh == null) {
-            logger.info("이미 로그아웃 되셧어여") ;
+            logger.info("이미 로그아웃 되셧어여");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }

@@ -28,6 +28,10 @@ public class ReviewSearchService {
         return ReviewDtoUtil.reviewToReviewResponse(findReview);
     }
 
+    public int countByUserId(Long userId) {
+        return reviewRepository.countByUserId(userId);
+    }
+
     public ApiResponse<List<ReviewResponse>> getReviewsByItemId(Long itemId) {
         List<Review> reviews = reviewRepository.findByItemId(itemId);
 

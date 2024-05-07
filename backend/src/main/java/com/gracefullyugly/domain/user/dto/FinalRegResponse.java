@@ -14,7 +14,6 @@ public class FinalRegResponse {
     private Long userId;
     private String loginId;
     private String nickname;
-    private String email;
     private String address;
     private Role role;
     private LocalDateTime createdDate;

@@ -153,16 +153,19 @@ class ReviewControllerTest {
     @DisplayName("리뷰 수정 테스트")
     void updateReviewTest() throws Exception {
         given(reviewService.updateReview(any(), any(), any())).willReturn(
-                ReviewDto.builder()
-                        .comments("싫어요")
-                        .starPoint(3)
+                ReviewResponse.builder()
+                        .reviewId(1L)
+                        .userId(1L)
+                        .itemId(1L)
+                        .comments("좋아요")
+                        .starPoint(5)
                         .build()
         );
 
         Gson gson = new Gson();
         String json = gson.toJson(ReviewDto.builder()
-                .comments("싫어요")
-                .starPoint(3)
+                .comments("좋아요")
+                .starPoint(5)
                 .build());
 
         String access = getToken();
@@ -172,8 +175,11 @@ class ReviewControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.comments").value("싫어요"))
-                .andExpect(jsonPath("$.starPoint").value(3))
+                .andExpect(jsonPath("$.reviewId").value(1L))
+                .andExpect(jsonPath("$.userId").value(1L))
+                .andExpect(jsonPath("$.itemId").value(1L))
+                .andExpect(jsonPath("$.comments").value("좋아요"))
+                .andExpect(jsonPath("$.starPoint").value(5))
                 .andDo(print());
 
         verify(reviewService, times(1)).updateReview(any(), any(), any());

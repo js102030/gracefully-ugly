@@ -36,7 +36,7 @@ public class JWTFilter extends OncePerRequestFilter {
             logger.info("accessToken null");
             filterChain.doFilter(request, response);
 
-            //조건이 해당되면 메소드 종료 (필수)
+            //TODO 이 부분에서 /reissue api 요청해서 토큰 재발급 해줘야함
             return;
         }
 
@@ -51,6 +51,8 @@ public class JWTFilter extends OncePerRequestFilter {
             PrintWriter writer = response.getWriter();
             writer.print("access token expired");
             logger.info("토큰 만료됨");
+
+            //TODO 이 부분에서 /reissue api 요청해서 토큰 재발급 해줘야함
 
             //response status code 만료가 되면 그다음 필터로 안넘김
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
