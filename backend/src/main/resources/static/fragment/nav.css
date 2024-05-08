@@ -1,9 +1,11 @@
+/*
 .body {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
 }
+*/
 
 .line-box {
     width: 100%; /* 변경: 화면 너비에 맞게 조정 */
@@ -32,9 +34,22 @@
     margin-left: 60px;
 }
 
-.notice-button,
+.notice-button {
+    margin-top: 10px;
+    margin-right: 20px;
+    border: 3px solid darkgreen;
+    background-color: #29902C;
+    color: darkgreen;
+    border-radius: 15px;
+    padding: 10px;
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+}
+
 .login-button,
-.list-button {
+.list-button,
+.logout-btn {
     margin-top: 10px;
     margin-right: 20px;
     border: 3px solid green;
@@ -46,4 +61,8 @@
     width: 100px;
     height: 50px;
     cursor: pointer;
+}
+
+.logout-btn {
+    display: none;
 }
