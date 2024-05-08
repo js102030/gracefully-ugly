@@ -24,7 +24,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     viewOrder.addEventListener('click', event => {
-        window.location.href = '/';
+        const orderId = document.querySelector('.order-id');
+
+        window.location.href = ('http://localhost:8080/orders/' + orderId);
     })
 
     goToMain.addEventListener('click', event => {
