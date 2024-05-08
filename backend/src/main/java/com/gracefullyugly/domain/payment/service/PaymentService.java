@@ -161,10 +161,10 @@ public class PaymentService {
         params.put("total_amount", String.valueOf(paymentRequest.getItemInfoToPayment().getTotalAmount()));
         params.put("tax_free_amount", String.valueOf(paymentRequest.getItemInfoToPayment().getTaxFreeAmount()));
         params.put("approval_url",
-                "http://localhost:8080/api/payment/kakaopay/success/" + paymentRequest.getUserId() + "/"
+                "http://localhost:8080/payment/kakaopay/success/" + paymentRequest.getUserId() + "/"
                         + paymentRequest.getOrderId());
-        params.put("cancel_url", "http://localhost:8080/payment/cancel");
-        params.put("fail_url", "http://localhost:8080/");
+        params.put("cancel_url", "http://localhost:8080/payment/cancel?orderId=" + paymentRequest.getOrderId());
+        params.put("fail_url", "http://localhost:8080/payment/fail?orderId=" + paymentRequest.getOrderId());
 
         return params;
     }
