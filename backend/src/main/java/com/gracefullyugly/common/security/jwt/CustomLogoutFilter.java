@@ -46,18 +46,18 @@ public class CustomLogoutFilter extends GenericFilterBean {
         }
 
         //get refresh token
-        String refresh = null;
+        String token = null;
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
 
-            if (cookie.getName().equals("refresh")) {
+            if (cookie.getName().equals("token")) {
 
-                refresh = cookie.getValue();
+                token = cookie.getValue();
             }
         }
 
         //refresh null check
-        if (refresh == null) {
+        if (token == null) {
             logger.info("이미 로그아웃 되셧어여");
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
@@ -65,7 +65,7 @@ public class CustomLogoutFilter extends GenericFilterBean {
 
         //expired check
         try {
-            jwtUtil.isExpired(refresh);
+            jwtUtil.isExpired(token);
         } catch (ExpiredJwtException e) {
 
             //response status code
@@ -73,33 +73,13 @@ public class CustomLogoutFilter extends GenericFilterBean {
             return;
         }
 
-        // 토큰이 refresh인지 확인 (발급시 페이로드에 명시)
-        String category = jwtUtil.getCategory(refresh);
-        if (!category.equals("refresh")) {
-
-            //response status code
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
-
-        //DB에 저장되어 있는지 확인
-        Boolean isExist = userRepository.existsByRefreshToken(refresh);
-        if (!isExist) {
-
-            //response status code
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
-
         //loginId 꺼내옴
-        String loginId = jwtUtil.getUsername(refresh); // 예를 들어서 loginId를 추출하는 방법
+        String loginId = jwtUtil.getUsername(token); // 예를 들어서 loginId를 추출하는 방법
 
         //로그아웃 진행
-        //Refresh 토큰 DB에서 제거
-        userRepository.deleteRefreshTokenByLoginId(loginId);
 
         //Refresh 토큰 Cookie 값 0
-        Cookie cookie = new Cookie("refresh", null);
+        Cookie cookie = new Cookie("token", null);
         cookie.setMaxAge(0);
         cookie.setPath("/");
 

@@ -2,20 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="#">
     <title>로그인 이후 메인페이지</title>
-    <link rel="stylesheet" href="/mainAfter.css">
+    <link rel="stylesheet" href="/css/mainAfter.css">
 </head>
 <body class="body">
-<header class = "main-header">
-    <img class = "logo" src="/image/logo.png" alt="로고">
+<header class="main-header">
+    <img class="logo" src="/image/logo.png" alt="로고">
     <button class="notice-button">알림</button>
-    <button class="login-button">로그아웃</button>
+    <button class="login-button" , id="logout-button">로그아웃</button>
     <button class="list-button">목록</button>
 </header>
 <div class="line-box"></div>
-<div class = "impending-text">놓치지 말아야 할 기회! 마감 임박 상품들</div>
-<div class = "impending-items">
-    <div class = "item">
+<div class="impending-text">놓치지 말아야 할 기회! 마감 임박 상품들</div>
+<div class="impending-items">
+    <div class="item">
         <img src="/image/item.png" alt="제품사진">
         <div>
             <div>[30kg/40kg]</div>
@@ -23,17 +24,17 @@
             <div>7900원</div>
         </div>
     </div>
-    <div class = "item">
+    <div class="item">
         <img src="/image/item.png" alt="제품사진">
-        <div class = "description">
+        <div class="description">
             <div>[30kg/40kg]</div>
             <div>무농약 아담한 감자</div>
             <div>7900원</div>
         </div>
     </div>
-    <div class = "item">
+    <div class="item">
         <img src="/image/item.png" alt="제품사진">
-        <div class = "description">
+        <div class="description">
             <div>[30kg/40kg]</div>
             <div>무농약 아담한 감자</div>
             <div>7900원</div>
@@ -42,10 +43,10 @@
 </div>
 <div class="line-use"></div>
 <div class="pick-news-text">
-    <div class = "pick-text">많이 Pick한 인기 상품들</div>
+    <div class="pick-text">많이 Pick한 인기 상품들</div>
 </div>
-<div class = "pick-items">
-    <div class = "pick">
+<div class="pick-items">
+    <div class="pick">
         <img src="/image/item.png" alt="제품사진">
         <div>
             <div>[30kg/40kg]</div>
@@ -53,17 +54,17 @@
             <div>7900원</div>
         </div>
     </div>
-    <div class = "pick">
+    <div class="pick">
         <img src="/image/item.png" alt="제품사진">
-        <div class = "description">
+        <div class="description">
             <div>[30kg/40kg]</div>
             <div>무농약 아담한 감자</div>
             <div>7900원</div>
         </div>
     </div>
-    <div class = "pick">
+    <div class="pick">
         <img src="/image/item.png" alt="제품사진">
-        <div class = "description">
+        <div class="description">
             <div>[30kg/40kg]</div>
             <div>무농약 아담한 감자</div>
             <div>7900원</div>
@@ -122,7 +123,7 @@
                 <p class="ask9">구매자이신가요?</p>
                 <img id="modal-1" src="/image/modal-1.png" alt="찜한 내역">
                 <img id="modal-2" src="/image/modal-2.png" alt="구매 내역">
-                <img id="modal-3" src="/image/modal-3.png" alt="내 정보">
+                <img id="modal-3" src="/image/modal-3.png" onclick="location.href='/my-page'" alt="내 정보">
                 <p class="ask8">판매자이신가요?</p>
                 <img id="modal-4" src="/image/modal-4.png" alt="판매 내역">
                 <button class="modal-close">닫기</button>
@@ -130,6 +131,7 @@
         </div>
     </div>
 </section>
-<script type="text/javascript" src="/js/mainAfter.js" ></script>
+<script type="text/javascript" src="/js/mainAfter.js"></script>
+<script type="text/javascript" src="/js/security.js"></script>
 </body>
 </html>

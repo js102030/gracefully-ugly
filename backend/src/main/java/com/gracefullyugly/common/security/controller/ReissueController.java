@@ -38,7 +38,7 @@ public class ReissueController {
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
 
-            if (cookie.getName().equals("refresh")) {
+            if (cookie.getName().equals("token")) {
 
                 refresh = cookie.getValue();
             }
@@ -75,8 +75,8 @@ public class ReissueController {
         String role = jwtUtil.getRole(refresh);
 
         //make new JWT
-        String newAccess = jwtUtil.createJwt("access", userId, loginId, role, 60 * 10 * 1000L);
-        String newRefresh = jwtUtil.createJwt("refresh", userId, loginId, role, 86400000L);
+        String newAccess = jwtUtil.createJwt(userId, loginId, role, 60 * 10 * 1000L);
+        String newRefresh = jwtUtil.createJwt(userId, loginId, role, 86400000L);
 
         userRepository.saveRefreshToken(loginId, newRefresh);
         String saveRefresh = userRepository.findRefreshTokenByLoginId(loginId);
