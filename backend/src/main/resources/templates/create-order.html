@@ -1,44 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>주문서 작성 페이지</title>
-    <link rel="stylesheet" href="/create-order.css">
+    <link rel="stylesheet" href="/static/create-order.css">
 </head>
 <body class="body">
 <header class = "main-header">
-    <img class = "logo" src="/image/logo.png" alt="로고">
+    <img class = "logo" src="/static/image/logo.png" alt="로고">
     <button class="notice-button">알림</button>
     <button class="login-button">로그아웃</button>
     <button class="list-button">목록</button>
 </header>
 <div class="line-box"></div>
 <div class="back-and-order-text">
-    <button class="back-button">뒤로가기</button>
-    <div class="order-text">주문서를 작성하고 결제해주세요.</div>
+    <div class="order-text">주문서를 작성해주세요.</div>
 </div>
 <div class="order-content-box">
+    <input class="item-id" th:value="${Item.getId()}" style="display: none">
     <div class="title">
         <div class="title-text-front">상품명</div>
-        <div class="title-text">못난이 아담한 감자</div>
+        <div class="title-text" th:text="${Item.getName()}">못난이 아담한 감자</div>
     </div>
     <div class="order-content">
+        <div class="input-quantity">
+            <div class="input">수량</div>
+            <div class="quantity"><input type="text" id="quantity" name="수량"></div>
+        </div>
         <div class="input-address">
             <div class="input">받는분 주소</div>
             <div class="address"><input type="text" id="address" name="받는분 주소"></div>
         </div>
         <div class="input-number">
             <div class="input">받는분 연락처</div>
-            <div class="number"><input type="tel" id="number" name="받는분 연락처"></div>
+            <div class="number"><input type="tel" id="number" name="받는분 연락처" placeholder="숫자만 입력해주세요"></div>
         </div>
     </div>
-    <div class="payment-content">
-        <div class="sum-item-and-result">
-            <div class="sum-item">총 결제 금액</div>
-            <div class="result"><span style="color:orange">20,000</span>원</div>
+    <div class="create-order-content">
+        <div class="create-order">
+            <button class="back-button">뒤로가기</button>
+            <button class="create-order-btn">주문하기</button>
         </div>
-        <div class="kakao-pay"><img src="/image/kakao-pay.png" alt="카카오페이 결제"></div>
     </div>
+<!--    <div class="payment-content">-->
+<!--        <div class="sum-item-and-result">-->
+<!--            <div class="sum-item">총 결제 금액</div>-->
+<!--            <div class="result"><span style="color:orange">20,000</span>원</div>-->
+<!--        </div>-->
+<!--        <a href="/" class="kakao-pay"><img src="/static/image/kakao-pay.png" alt="카카오페이 결제"></a>-->
+<!--    </div>-->
 </div>
 <!--목록 모달-->
 <section class="modal">
@@ -46,16 +56,17 @@
         <div class="modal-inner">
             <div>
                 <p class="ask9">구매자이신가요?</p>
-                <img id="modal-1" src="/image/modal-1.png" alt="찜한 내역">
-                <img id="modal-2" src="/image/modal-2.png" alt="구매 내역">
-                <img id="modal-3" src="/image/modal-3.png" alt="내 정보">
+                <img id="modal-1" src="/static/image/modal-1.png" alt="찜한 내역">
+                <img id="modal-2" src="/static/image/modal-2.png" alt="구매 내역">
+                <img id="modal-3" src="/static/image/modal-3.png" alt="내 정보">
                 <p class="ask8">판매자이신가요?</p>
-                <img id="modal-4" src="/image/modal-4.png" alt="판매 내역">
+                <img id="modal-4" src="/static/image/modal-4.png" alt="판매 내역">
                 <button class="modal-close">닫기</button>
             </div>
         </div>
     </div>
 </section>
-<script type="text/javascript" src="/js/create-order.js" ></script>
+<script type="text/javascript" src="/static/js/create-order.js" ></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </body>
 </html>
