@@ -3,16 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>주문서 작성 페이지</title>
+    <link rel="stylesheet" href="/fragment/nav.css">
     <link rel="stylesheet" href="/css/create-order.css">
 </head>
 <body class="body">
-<header class="main-header">
-    <img class="logo" src="/image/logo.png" alt="로고">
-    <button class="notice-button">알림</button>
-    <button class="login-button">로그아웃</button>
-    <button class="list-button">목록</button>
-</header>
-<div class="line-box"></div>
+<div th:replace="~{fragment/nav :: top}"></div>
+<div th:replace="~{fragment/nav :: modal}"></div>
 <div class="back-and-order-text">
     <button class="back-button">뒤로가기</button>
     <div class="order-text">주문서를 작성하고 결제해주세요.</div>
@@ -57,5 +53,6 @@
     </div>
 </section>
 <script type="text/javascript" src="/js/create-order.js"></script>
+<script type="text/javascript" src="/fragment/nav.js"></script>
 </body>
 </html>

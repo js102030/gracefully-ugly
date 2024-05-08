@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>찜 목록 페이지</title>
+    <link rel="stylesheet" href="/fragment/nav.css">
     <link rel="stylesheet" href="/css/cart-list.css">
 </head>
 <body class="body">
-<header class="main-header">
-    <img class="logo" src="/image/logo.png" alt="로고">
-    <button class="notice-button">알림</button>
-    <button class="login-button">로그아웃</button>
-    <button class="list-button">목록</button>
-</header>
+<div th:replace="~{fragment/nav :: top}"></div>
+<div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
 <div class="item-box">
     <img class="item-image" src="/image/item.png" alt="상품">
@@ -54,5 +51,6 @@
     </div>
 </section>
 <script type="text/javascript" src="/js/cart-list.js"></script>
+<script type="text/javascript" src="/fragment/nav.js"></script>
 </body>
 </html>

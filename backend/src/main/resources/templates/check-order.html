@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>주문 완료 확인 페이지</title>
+    <link rel="stylesheet" href="/fragment/nav.css">
     <link rel="stylesheet" href="/css/check-order.css">
 </head>
 <body class="body">
-<header class="main-header">
-    <img class="logo" src="/image/logo.png" alt="로고">
-    <button class="notice-button">알림</button>
-    <button class="login-button">로그아웃</button>
-    <button class="list-button">목록</button>
-</header>
+<div th:replace="~{fragment/nav :: top}"></div>
+<div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
 <img class="check" src="/image/check.png" alt="체크">
 <p class="order-text">주문이 완료되었습니다.</p>
@@ -36,5 +33,6 @@
     </div>
 </section>
 <script type="text/javascript" src="/js/check-order.js"></script>
+<script type="text/javascript" src="/fragment/nav.js"></script>
 </body>
 </html>
