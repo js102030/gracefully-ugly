@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>주문 완료 확인 페이지</title>
+    <title>주문서 확인</title>
     <link rel="stylesheet" href="/fragment/nav.css">
     <link rel="stylesheet" href="/css/check-order.css">
 </head>
@@ -10,29 +10,88 @@
 <div th:replace="~{fragment/nav :: top}"></div>
 <div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
-<img class="check" src="/image/check.png" alt="체크">
-<p class="order-text">주문이 완료되었습니다.</p>
-<p class="payment-sum-text">결제금액</p>
-<p class="payment-sum">20,000원</p>
-<button class="view-order">주문내역 상세보기</button>
-<button class="go-to-main">메인으로 돌아가기</button>
+<div class="back-and-order-text">
+    <div class="order-text">주문서</div>
+</div>
+<div class="order-content-box">
+    <input class="order-id" th:value="${OrderInfoResponse.getOrder().getId()}" style="display: none">
+    <div class="order-item-list">
+        <div class="head">상품명</div>
+        <ul class="order-list">
+            <li th:each="orderItem : ${OrderInfoResponse.getOrderItemList()}">
+                <div class="order-item"
+                     th:text="${orderItem.getName()} '('${#numbers.formatCurrency(orderItem.getPrice())}'원)' '-' ${orderItem.getQuantity()}'개'">
+                    못난이 아담한 감자 (~~~원) - 1개
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="payment-content">
+        <div class="info info-address">
+            <div class="head">받는분 주소</div>
+            <div class="address" th:text="${OrderInfoResponse.getOrder().getAddress()}">테스트 주소</div>
+        </div>
+        <div class="info info-number">
+            <div class="head">받는분 연락처</div>
+            <div class="number" th:text="${OrderInfoResponse.getOrder().getPhoneNumber()}">테스트 연락처</div>
+        </div>
+        <div class="info info-total-price">
+            <div class="head">총 결제 금액</div>
+            <div class="price" th:text="${OrderInfoResponse.getPayment().getTotalPrice()}">테스트 결제 금액</div>
+        </div>
+        <div class="info info-payment-condition">
+            <div class="head">결제 상태</div>
+            <div class="condition payment-success"
+                 th:if="${OrderInfoResponse.getPayment() != null and OrderInfoResponse.getPayment().isPaid() and not OrderInfoResponse.getPayment().isRefunded()}">
+                결제 완료
+            </div>
+            <div class="condition payment-cancel"
+                 th:if="${OrderInfoResponse.getPayment() != null and not OrderInfoResponse.getPayment().isPaid() and not OrderInfoResponse.getPayment().isRefunded()}">
+                결제 취소
+            </div>
+            <div class="condition payment-refund"
+                 th:if="${OrderInfoResponse.getPayment() != null and OrderInfoResponse.getPayment().isRefunded()}">환불
+            </div>
+            <div class="condition payment-fail" th:if="${OrderInfoResponse.getPayment() == null}">결제 실패</div>
+        </div>
+    </div>
+    <div class="create-order-content">
+        <div class="create-order">
+            <button class="back-button">뒤로가기</button>
+            <span class="modify-or-refund"
+                 th:if="OrderInfoResponse.getPayment() != null and (OrderInfoResponse.getPayment().isPaid() and not OrderInfoResponse.getPayment().isRefunded())">
+                <button class="modify-order-btn">주문서 수정</button>
+                <button class="refund-btn">환불하기</button>
+            </span>
+        </div>
+    </div>
+    <!--    <div class="payment-content">-->
+    <!--        <div class="sum-item-and-result">-->
+    <!--            <div class="sum-item">총 결제 금액</div>-->
+    <!--            <div class="result"><span style="color:orange">20,000</span>원</div>-->
+    <!--        </div>-->
+    <!--        <a href="/" class="kakao-pay"><img src="/static/image/kakao-pay.png" alt="카카오페이 결제"></a>-->
+    <!--    </div>-->
+</div>
 <!--목록 모달-->
 <section class="modal">
     <div class="modal-box">
         <div class="modal-inner">
             <div>
                 <p class="ask9">구매자이신가요?</p>
-                <img id="modal-1" src="/image/modal-1.png" alt="찜한 내역">
-                <img id="modal-2" src="/image/modal-2.png" alt="구매 내역">
-                <img id="modal-3" src="/image/modal-3.png" alt="내 정보">
+                <img id="modal-1" src="/static/image/modal-1.png" alt="찜한 내역">
+                <img id="modal-2" src="/static/image/modal-2.png" alt="구매 내역">
+                <img id="modal-3" src="/static/image/modal-3.png" alt="내 정보">
                 <p class="ask8">판매자이신가요?</p>
-                <img id="modal-4" src="/image/modal-4.png" alt="판매 내역">
+                <img id="modal-4" src="/static/image/modal-4.png" alt="판매 내역">
                 <button class="modal-close">닫기</button>
             </div>
         </div>
     </div>
 </section>
-<script type="text/javascript" src="/js/check-order.js"></script>
 <script type="text/javascript" src="/fragment/nav.js"></script>
+<script type="text/javascript" src="/static/js/check-order.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </body>
 </html>

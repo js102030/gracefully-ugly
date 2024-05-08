@@ -161,8 +161,8 @@
 }
 
 .back-button {
-    border: 3px solid #40B44B;
-    background-color: #40B44B;
+    border: 3px solid #EE402E;
+    background-color: #EE402E;
     color: white;
     border-radius: 15px;
     padding: 10px;
@@ -206,6 +206,17 @@
     margin-top: 20px;
 }
 
+#quantity {
+    margin-top: 10px;
+    width: 206px;
+    height: 37px;
+}
+
+.input-quantity {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
 .input-address {
     margin-bottom: 20px;
     font-size: 20px;
@@ -228,11 +239,30 @@
     font-size: 20px;
 }
 
-.sum-item-and-result {
+/*.sum-item-and-result {*/
+/*    font-size: 30px;*/
+/*    font-weight: 600;*/
+/*}*/
+
+/*.kakao-pay {*/
+/*    margin-top: 20px;*/
+/*}*/
+
+.create-order {
     font-size: 30px;
     font-weight: 600;
 }
 
-.kakao-pay {
-    margin-top: 20px;
+.create-order-btn {
+    border: 3px solid #40B44B;
+    background-color: #40B44B;
+    color: white;
+    border-radius: 15px;
+    padding: 10px;
+    width: 126px;
+    height: 48px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 20px;
+    margin-top: 50px;
 }
