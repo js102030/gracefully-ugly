@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>주문서 확인</title>
-    <link rel="stylesheet" href="/static/css/check-order.css">
+    <link rel="stylesheet" href="/fragment/nav.css">
+    <link rel="stylesheet" href="/css/check-order.css">
 </head>
 <body class="body">
-<header class="main-header">
-    <img class="logo" src="/static/image/logo.png" alt="로고">
-    <button class="notice-button">알림</button>
-    <button class="login-button">로그아웃</button>
-    <button class="list-button">목록</button>
-</header>
+<div th:replace="~{fragment/nav :: top}"></div>
+<div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
 <div class="back-and-order-text">
     <div class="order-text">주문서</div>
@@ -92,6 +89,7 @@
         </div>
     </div>
 </section>
+<script type="text/javascript" src="/fragment/nav.js"></script>
 <script type="text/javascript" src="/static/js/check-order.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>

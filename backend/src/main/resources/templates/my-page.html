@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.green.min.css"/>
     <meta charset="UTF-8">
     <title>마이페이지</title>
+    <link rel="stylesheet" href="/fragment/nav.css">
     <style>
 
 
@@ -105,9 +106,10 @@
     <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-
+<div th:replace="~{fragment/nav :: top}"></div>
+<div th:replace="~{fragment/nav :: modal}"></div>
+<div class="line-box"></div>
 <main class="container">
-    <div th:replace="~{fragment/nav :: top}"></div>
     <h2>MYPAGE</h2>
     <hr>
     <article>
@@ -146,6 +148,7 @@
     </button>
 </footer>
 <script type="text/javascript" src="/js/my-page.js"></script>
+<script type="text/javascript" src="/fragment/nav.js"></script>
 </body>
 
 </html>
