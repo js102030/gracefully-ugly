@@ -23,30 +23,32 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ------------ 알림 모달창 상태 변경
+
+
+// ------------- 리뷰 별 개수 설정
 document.addEventListener('DOMContentLoaded', function() {
-    // Item의 closedDate 변수를 체크하여 모달을 표시
-    checkItemStatus();
-});
+    const reviewPoint = document.querySelector('.point').textContent; // HTML 요소에서 리뷰 평점 가져오기
 
-// ------------- 별점 보여주기
+    const starReviewContainer = document.querySelector('.star-review'); // 별점을 표시할 컨테이너 요소 선택
 
-document.addEventListener('DOMContentLoaded', function() {
-    // 페이지가 로드된 후 실행되는 코드
+    // 리뷰 평점에 따라 별점 이미지 동적 생성
+    function generateStarRating(point) {
+        const roundedPoint = Math.round(point); // 리뷰 평점 반올림
 
-    // 서버에서 전달받은 review 객체 (이 예시에서는 임의의 데이터를 사용)
-    const review = {
-        starPoint: 4 // 실제로는 서버에서 전달받은 데이터
-    };
-
-    // 별점을 표시할 부모 요소를 선택
-    const starContainer = document.querySelector('.star-review');
-
-    // 서버에서 전달받은 review.starPoint의 값에 따라 별점 이미지를 동적으로 생성하여 추가
-    for (let i = 0; i < review.starPoint; i++) {
-        const starImg = document.createElement('img');
-        starImg.src = '/image/star.png';
-        starImg.alt = '별점';
-        starContainer.appendChild(starImg);
+        // 별점 이미지를 생성하여 컨테이너에 추가
+        for (let i = 0; i < roundedPoint; i++) {
+            const starImg = document.createElement('img');
+            starImg.src = '/image/star.png';
+            starImg.alt = '별점';
+            starReviewContainer.appendChild(starImg);
+        }
     }
+
+    generateStarRating(reviewPoint); // 별점 생성 함수 호출
 });
+
+// ------------- 리뷰 목록 가져오기
+// 현재 페이지의 URL에서 itemId 가져오기
+const urlParams = new URLSearchParams(window.location.search);
+const itemId = urlParams.get('itemId');
 

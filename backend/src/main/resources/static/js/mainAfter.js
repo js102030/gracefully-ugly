@@ -5,14 +5,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const popularItemsContainer = document.getElementById('popular-items-container');
     const moreItemsContainer = document.querySelector('.more-items');
 
+    function handleItemClick(itemId) {
+        window.location.href = `/group-buying?itemId=${itemId}`;
+    }
+
     // 마감임박 상품 클릭 시
     impendingItemsContainer.addEventListener('click', function(event) {
         const itemElement = event.target.closest('.item');
         if (itemElement) {
             const itemId = itemElement.dataset.itemId;
             if (itemId) {
-                const url = `/api/items/${itemId}`;
-                window.location.href = url;
+                handleItemClick(itemId);
             }
         }
     });
@@ -23,8 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (itemElement) {
             const itemId = itemElement.dataset.itemId;
             if (itemId) {
-                const url = `/api/items/${itemId}`;
-                window.location.href = url;
+                handleItemClick(itemId);
             }
         }
     });
@@ -35,8 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (itemElement) {
             const itemId = itemElement.dataset.itemId;
             if (itemId) {
-                const url = `/api/items/${itemId}`;
-                window.location.href = url;
+                handleItemClick(itemId);
             }
         }
     });

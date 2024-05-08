@@ -115,14 +115,15 @@
 .title {
     font-size: 30px;
     font-weight: 600;
+    margin-bottom: -20px;
 }
 
 .price {
-    font-size: 55px;
+    font-size: 50px;
     font-weight: 600;
     color: #4ECF72;
     margin-left: 50px;
-    margin-top: -30px;
+    margin-top: -20px;
 }
 
 .data-time {

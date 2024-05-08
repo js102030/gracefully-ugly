@@ -1,19 +1,26 @@
 package com.gracefullyugly.common.controller;
 
+import com.gracefullyugly.common.wrapper.ApiResponse;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
-import com.gracefullyugly.domain.item.service.ItemService;
+import com.gracefullyugly.domain.review.dto.ReviewResponse;
+import com.gracefullyugly.domain.review.service.ReviewSearchService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+
 
 @Controller
 @RequiredArgsConstructor
 public class CommonController {
 
     private final ItemSearchService itemSearchService;
+    private final ReviewSearchService reviewSearchService;
 
     @GetMapping("/")
     public String mainPage() {
@@ -66,7 +73,11 @@ public class CommonController {
     }
 
     @GetMapping("/group-buying")
-    public String groupBuying() {
+    public String groupBuying(@RequestParam("itemId") Long itemId, Model model) {
+        ApiResponse<List<ReviewResponse>> reviewResponse = reviewSearchService.getReviewsByItemId(itemId);
+        ItemResponse itemResponse = itemSearchService.findOneItem(itemId);
+        model.addAttribute("reviews", reviewResponse.getData()); // 리뷰 데이터를 모델에 추가
+        model.addAttribute("item", itemResponse);
         return "group-buying";
     }
 
