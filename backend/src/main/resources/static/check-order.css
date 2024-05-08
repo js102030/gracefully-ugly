@@ -156,6 +156,32 @@
     font-weight: 600;
 }
 
+.order-content-box {
+    margin-top: 20px;
+    border : 5px #29902C solid;
+    background: #FFFFFF;
+    border-radius: 50px;
+    width : 1233px;
+}
+
+.order-item-list, .info {
+    margin-top: 20px;
+}
+
+.head {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.title-text {
+    font-size: 23px;
+    font-weight: 600;
+}
+
+.order-content {
+    margin-top: 20px;
+}
+
 .payment-sum-text {
     color: #B0B0B0;
     font-size: 20px;
@@ -167,31 +193,57 @@
     font-weight: 600;
 }
 
-.view-order {
-    border: 3px solid #00BF08;
-    background-color: #00BF08;
+.refund-btn {
+    border: 3px solid #EE402E;
+    background-color: #EE402E;
     color: white;
     border-radius: 15px;
     padding: 10px;
-    width: 717px;
-    height: 89px;
+    width: 126px;
+    height: 48px;
     cursor: pointer;
     font-weight: 600;
     font-size: 20px;
-    margin-right: 20px;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
 
-.go-to-main {
-    margin-top: 10px;
-    border: 3px solid #A6A6A6;
-    background-color: #FFFFFF;
-    color: #565656;
+.modify-order-btn {
+    border: 3px solid #ffc107;
+    background-color: #ffc107;
+    color: white;
     border-radius: 15px;
     padding: 10px;
-    width: 717px;
-    height: 89px;
+    width: 140px;
+    height: 48px;
     cursor: pointer;
     font-weight: 600;
     font-size: 20px;
-    margin-right: 20px;
+    margin-bottom: 50px;
+}
+
+.back-button {
+    border: 3px solid #40B44B;
+    background-color: #40B44B;
+    color: white;
+    border-radius: 15px;
+    padding: 10px;
+    width: 126px;
+    height: 48px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 50px;
+}
+
+.condition {
+    font-size: 25px;
+}
+
+.payment-success {
+    color: #00BF08;
+}
+
+.payment-cancel, .payment-refund, .payment-fail {
+    color: #EE402E;
 }
