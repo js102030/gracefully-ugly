@@ -13,11 +13,11 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findRandomImpendingItems(LocalDateTime endTime);
 
     @Query(value = """
-                SELECT i.* 
-                FROM item i 
-                JOIN cart_item ci ON i.item_id = ci.item_id 
-                GROUP BY i.item_id 
-                ORDER BY COUNT(ci.item_id) DESC 
+                SELECT i.*
+                FROM item i
+                JOIN cart_item ci ON i.item_id = ci.item_id
+                GROUP BY i.item_id
+                ORDER BY COUNT(ci.item_id) DESC
                 LIMIT 3
             """, nativeQuery = true)
     List<Item> findMostAddedToCartItems();
