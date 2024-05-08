@@ -30,9 +30,9 @@ public class PaymentViewController {
 
     @GetMapping("/payment/kakaopay/success/{userId}/{orderId}")
     public String approveKakaoPay(@PathVariable("userId") Long userId,
-                                                                   @PathVariable("orderId") Long orderId,
-                                                                   @RequestParam("pg_token") String pgToken,
-                                                                   @ModelAttribute Model model) {
+                                  @PathVariable("orderId") Long orderId,
+                                  @RequestParam("pg_token") String pgToken,
+                                  @ModelAttribute Model model) {
         KakaoPayApproveResponse response = paymentService.approveKakaoPay(userId, orderId, pgToken);
         model.addAttribute("KakaoPayApproveResponse", response);
 
@@ -44,5 +44,11 @@ public class PaymentViewController {
     public String cancelKakaoPay() {
 
         return "/payment-cancel";
+    }
+
+    @GetMapping("/payment/fail")
+    public String failKakaoPay() {
+
+        return "/payment-fail";
     }
 }
