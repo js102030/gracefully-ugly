@@ -7,7 +7,7 @@
 </head>
 <body class="body">
 <header class = "main-header">
-    <img class = "logo" src="/image/logo.png" alt="로고">
+    <img class = "logo" onclick="location.href='/mainAfter'" src="/image/logo.png" alt="로고">
     <button class="notice-button">알림</button>
     <button class="login-button">로그아웃</button>
     <button class="list-button">목록</button>
@@ -17,13 +17,12 @@
     <img src="/image/item.png" class="item-image" alt="제품사진">
     <div class="item-content">
         <div class="star-review">
-<!--            <div class="point" th:text="${review.starPoint}">4</div> 데이터 추가하면 변경-->
-            <div class="point" >4</div>
+            <div class="point" th:text="${review.starPoint}"></div>
             <div class="star-review"></div>
         </div>
         <div class="title-price">
-            <div class="title">못난이 아담한 감자</div>
-            <div class="price">7900원</div>
+            <div class="title" th:text="${item.name}"></div>
+            <div class="price" th:text="${item.price}">원</div>
         </div>
         <div class="data-time">
             <div class="create-time">작성일 2024.04.25</div>

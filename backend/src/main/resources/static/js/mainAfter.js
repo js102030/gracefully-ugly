@@ -1,3 +1,40 @@
+
+//----- 상품 클릭 시 itemId에 따라서 다른 페이지 띄워주기
+document.addEventListener('DOMContentLoaded', function() {
+    const impendingItemsContainer = document.querySelector('.impending-items');
+    const popularItemsContainer = document.getElementById('popular-items-container');
+
+    // 마감임박 상품 클릭 시
+    impendingItemsContainer.addEventListener('click', function(event) {
+        const itemElement = event.target.closest('.item');
+        if (itemElement) {
+            const itemId = itemElement.dataset.itemId;
+            if (itemId) {
+                const url = `/items/${itemId}`;
+                window.location.href = url;
+            }
+        }
+    });
+
+    // 인기 상품 클릭 시
+    popularItemsContainer.addEventListener('click', function(event) {
+        const itemElement = event.target.closest('.item');
+        if (itemElement) {
+            const itemId = itemElement.dataset.itemId;
+            if (itemId) {
+                const url = `/items/${itemId}`;
+                window.location.href = url;
+            }
+        }
+    });
+});
+
+
+
+
+
+// ------------ 모달창 js
+
 document.addEventListener('DOMContentLoaded', function() {
     const modal = document.querySelector('.modal');
     const modalCloseButton = document.querySelector('.modal-close');
@@ -43,11 +80,11 @@ function displayImpendingItems(items) {
         itemElement.classList.add('item');
 
         itemElement.innerHTML = `
-                <img src="${item.imageUrl}" alt="제품사진">
+                <img src="/image/item.png" alt="제품 사진">
                 <div>
-                    <div>${item.totalSalesUnit}Kg</div>
-                    <div>${item.name}</div>
-                    <div>${item.price}원</div>
+                    <div>전체물량 : ${item.totalSalesUnit}Kg</div>
+                    <div style="font-size: 25px">${item.name}</div>
+                    <div style="font-size: 20px">${item.price}원</div>
                 </div>
             `;
 
@@ -56,118 +93,133 @@ function displayImpendingItems(items) {
 }
 
 // ----------------------- 인기 상품 조회
+
 document.addEventListener('DOMContentLoaded', function() {
-    fetchPopularItems();
-});
+    // API 엔드포인트 URL
+    const apiUrl = '/api/items/popularity';
 
-function fetchPopularItems() {
-    fetch('/api/items/popularity')
-        .then(response => response.json())
-        .then(data => displayPopularItems(data))
-        .catch(error => console.error('Error fetching popularity items:', error))
-}
+    // API 호출
+    fetch(apiUrl)
+        .then(response => {
+            // HTTP 응답 코드를 확인하여 처리
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json(); // JSON 형태로 응답 데이터 파싱
+        })
+        .then(data => {
+            // API로부터 받은 데이터를 처리하여 HTML에 추가
+            const popularItemsContainer = document.getElementById('popular-items-container');
 
-function displayPopularItems(popularItems) {
-    const popularItemsContainer = document.getElementById('popular-items-container');
+            // 받은 데이터를 반복하여 각 상품을 HTML에 추가
+            data.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.classList.add('item');
 
-    // popularItems가 배열이 아니더라도 데이터가 있는지 확인
-    if (popularItems && typeof popularItems === 'object') {
-        // 객체에서 데이터를 추출하여 처리
-        for (const key in popularItems) {
-            if (Object.hasOwnProperty.call(popularItems, key)) {
-                const item = popularItems[key];
-
-                const popularElement = document.createElement('div');
-                popularElement.classList.add('item');
-
-                popularElement.innerHTML =  `
-                    <img src="${item.imageUrl}" alt="제품사진">
+                // 각 상품 정보를 표시할 방법에 따라 구성
+                itemElement.innerHTML = `
+                    <img src="/image/item.png" alt="제품 사진">
                     <div>
-                        <div>${item.totalSalesUnit}Kg</div>
-                        <div>${item.name}</div>
-                        <div>${item.price}원</div>
+                        <div>전체물량 : ${item.totalSalesUnit}Kg</div>
+                        <div style="font-size: 25px">${item.name}</div>
+                        <div style="font-size: 20px">${item.price}원</div>
                     </div>
                 `;
 
-                popularItemsContainer.appendChild(popularElement);
-            }
-        }
-    } else {
-        console.log(data);
-        console.error('Error fetching popularity items: Invalid data format');
-    }
-}
+                // 상품 요소를 컨테이너에 추가
+                popularItemsContainer.appendChild(itemElement);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+});
+
 
 
 // ----------------------- 판매글 목록 조회
-// 페이지가 로드될 때 모든 상품 목록을 가져오기
 document.addEventListener('DOMContentLoaded', function() {
-    fetchItems(); // 모든 상품 목록 가져오기
-});
+    // DOM이 로드된 후 실행되는 부분
 
-// 버튼 클릭 시 상품 목록을 가져오는 함수
-function fetchItemsByCategory(category) {
-    fetch('/api/items/category/' + category) // 해당 카테고리에 따른 API 호출
-        .then(response => response.json())
-        .then(data => {
-            displayItems(data); // 상품 목록을 화면에 표시
-        })
-        .catch(error => {
-            console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
-        });
-}
-
-// 모든 상품 목록을 가져오는 함수
-function fetchItems() {
-    fetch('/api/items') // 전체 상품 목록을 가져오는 API 호출
-        .then(response => response.json())
-        .then(data => {
-            displayItems(data); // 상품 목록을 화면에 표시
-        })
-        .catch(error => {
-            console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
-        });
-}
-
-// 상품 목록을 화면에 표시하는 함수
-function displayItems(items) {
-    const itemsContainer = document.getElementById('items-container');
-    itemsContainer.innerHTML = ''; // 기존 내용을 초기화
-
-    if (items.length === 0) {
-        itemsContainer.innerHTML = '<p>상품이 없습니다.</p>';
-    } else {
-        items.forEach(item => {
-            const itemElement = document.createElement('div');
-            itemElement.innerHTML = `
-                <img src="${item.imageUrl}" alt="제품사진">
-                <div>
-                    <div>${item.totalSalesUnit}Kg</div>
-                    <div>${item.name}</div>
-                    <div>${item.price}원</div>
-                </div>
-            `;
-
-            itemsContainer.appendChild(itemElement);
-        });
+    // 모든 상품 목록을 가져오는 함수
+    function fetchAllItems() {
+        fetch('/api/items')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('상품 목록을 불러오는 중 오류가 발생했습니다.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                displayItems(data); // 모든 상품 목록을 화면에 표시
+            })
+            .catch(error => {
+                console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
+            });
     }
-}
 
-// 채소 버튼 클릭 시
-document.querySelector('.pickup-button:nth-child(1)').addEventListener('click', function() {
-    fetchItemsByCategory('VEGETABLE');
+    // 카테고리별 상품 목록을 가져오는 함수
+    function fetchItemsByCategory(category) {
+        fetch('/api/items/category/' + category)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('상품 목록을 불러오는 중 오류가 발생했습니다.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                displayItems(data); // 해당 카테고리 상품 목록을 화면에 표시
+            })
+            .catch(error => {
+                console.error('상품 목록을 불러오는 중 오류가 발생했습니다:', error);
+            });
+    }
+
+    // 상품 목록을 화면에 표시하는 함수
+    function displayItems(items) {
+        const itemsContainer = document.getElementById('items-container');
+        itemsContainer.innerHTML = ''; // 기존 내용을 초기화
+
+        if (items.length === 0) {
+            itemsContainer.innerHTML = '<p>상품이 없습니다.</p>';
+        } else {
+            items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.classList.add('item');
+
+                // 상품 이미지 및 정보 표시
+                itemElement.innerHTML = `
+                    <img src="/image/item.png" alt="제품 사진">
+                    <div>
+                        <div>전체물량 : ${item.totalSalesUnit}Kg</div>
+                        <div style="font-size: 25px">${item.name}</div>
+                        <div style="font-size: 20px">${item.price}원</div>
+                    </div>
+                `;
+
+                itemsContainer.appendChild(itemElement);
+            });
+        }
+    }
+
+    // 페이지가 로드될 때 모든 상품 목록을 가져와서 화면에 표시
+    fetchAllItems();
+
+    // 채소 버튼 클릭 시
+    document.querySelector('.pickup-button:nth-child(1)').addEventListener('click', function() {
+        fetchItemsByCategory('VEGETABLE');
+    });
+
+    // 과일 버튼 클릭 시
+    document.querySelector('.pickup-button:nth-child(2)').addEventListener('click', function() {
+        fetchItemsByCategory('FRUIT');
+    });
+
+    // 기타 버튼 클릭 시
+    document.querySelector('.pickup-button:nth-child(3)').addEventListener('click', function() {
+        fetchItemsByCategory('OTHER');
+    });
 });
-
-// 과일 버튼 클릭 시
-document.querySelector('.pickup-button:nth-child(2)').addEventListener('click', function() {
-    fetchItemsByCategory('FRUIT');
-});
-
-// 기타 버튼 클릭 시
-document.querySelector('.pickup-button:nth-child(3)').addEventListener('click', function() {
-    fetchItemsByCategory('OTHER');
-});
-
 // ----------------------- 뉴스 조회
 document.addEventListener("DOMContentLoaded", function() {
     // DOM이 로드된 후 실행되는 부분
