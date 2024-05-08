@@ -3,6 +3,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const impendingItemsContainer = document.querySelector('.impending-items');
     const popularItemsContainer = document.getElementById('popular-items-container');
+    const moreItemsContainer = document.querySelector('.more-items');
 
     // 마감임박 상품 클릭 시
     impendingItemsContainer.addEventListener('click', function(event) {
@@ -10,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (itemElement) {
             const itemId = itemElement.dataset.itemId;
             if (itemId) {
-                const url = `/items/${itemId}`;
+                const url = `/api/items/${itemId}`;
                 window.location.href = url;
             }
         }
@@ -22,15 +23,24 @@ document.addEventListener('DOMContentLoaded', function() {
         if (itemElement) {
             const itemId = itemElement.dataset.itemId;
             if (itemId) {
-                const url = `/items/${itemId}`;
+                const url = `/api/items/${itemId}`;
+                window.location.href = url;
+            }
+        }
+    });
+
+    // 더보기 상품 클릭 시
+    moreItemsContainer.addEventListener('click', function(event) {
+        const itemElement = event.target.closest('.item');
+        if (itemElement) {
+            const itemId = itemElement.dataset.itemId;
+            if (itemId) {
+                const url = `/api/items/${itemId}`;
                 window.location.href = url;
             }
         }
     });
 });
-
-
-
 
 
 // ------------ 모달창 js
@@ -78,6 +88,8 @@ function displayImpendingItems(items) {
     items.forEach(item => {
         const itemElement = document.createElement('div');
         itemElement.classList.add('item');
+        itemElement.dataset.itemId = item.id;
+
 
         itemElement.innerHTML = `
                 <img src="/image/item.png" alt="제품 사진">
@@ -115,6 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
             data.forEach(item => {
                 const itemElement = document.createElement('div');
                 itemElement.classList.add('item');
+                itemElement.dataset.itemId = item.id;
 
                 // 각 상품 정보를 표시할 방법에 따라 구성
                 itemElement.innerHTML = `
@@ -186,6 +199,7 @@ document.addEventListener('DOMContentLoaded', function() {
             items.forEach(item => {
                 const itemElement = document.createElement('div');
                 itemElement.classList.add('item');
+                itemElement.dataset.itemId = item.id;
 
                 // 상품 이미지 및 정보 표시
                 itemElement.innerHTML = `
