@@ -41,4 +41,14 @@ public class OrderViewController {
 
         return "/check-order";
     }
+
+    @GetMapping("/orders/modify/{ordersId}")
+    public String modifyOrderView(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
+                                  @PathVariable("ordersId") Long orderId,
+                                  @ModelAttribute Model model) {
+        OrderInfoResponse response = orderService.getOrderInfo(userId, orderId);
+        model.addAttribute("OrderInfoResponse", response);
+
+        return "/modify-order";
+    }
 }
