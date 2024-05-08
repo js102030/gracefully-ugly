@@ -6,38 +6,23 @@
     <link rel="stylesheet" href="/static/css/complete-payment.css">
 </head>
 <body class="body">
-<header class = "main-header">
-    <img class = "logo" src="/image/logo.png" alt="로고">
+<header class="main-header">
+    <img class="logo" src="/image/logo.png" alt="로고">
     <button class="notice-button">알림</button>
     <button class="login-button">로그아웃</button>
     <button class="list-button">목록</button>
 </header>
 <div class="line-box"></div>
 <input class="order-id" th:value="${KakaoPayApproveResponse.getPartner_order_id()}" style="display: none">
-<img class = "check" src="/static/image/check.png" alt="체크">
+<img class="check" src="/static/image/check.png" alt="체크">
 <p class="order-text">주문이 완료되었습니다.</p>
 <p class="payment-sum-text">결제 항목</p>
 <p class="payment-sum" th:text="${KakaoPayApproveResponse.getItem_name()}">결제 항목 이름</p>
 <p class="payment-sum-text">결제금액</p>
-<p class="payment-sum" th:text="${#numbers.formatCurrency(KakaoPayApproveResponse.getAmount().getTotal())}원">(결제 금액)원</p>
+<p class="payment-sum" th:text="${#numbers.formatCurrency(KakaoPayApproveResponse.getAmount().getTotal())}원">(결제
+    금액)원</p>
 <button class="view-order">주문내역 상세보기</button>
 <button class="go-to-main">메인으로 돌아가기</button>
-<!--목록 모달-->
-<section class="modal">
-    <div class="modal-box">
-        <div class="modal-inner">
-            <div>
-                <p class="ask9">구매자이신가요?</p>
-                <img id="modal-1" src="/image/modal-1.png" alt="찜한 내역">
-                <img id="modal-2" src="/image/modal-2.png" alt="구매 내역">
-                <img id="modal-3" src="/image/modal-3.png" alt="내 정보">
-                <p class="ask8">판매자이신가요?</p>
-                <img id="modal-4" src="/image/modal-4.png" alt="판매 내역">
-                <button class="modal-close">닫기</button>
-            </div>
-        </div>
-    </div>
-</section>
-<script type="text/javascript" src="/js/complete-payment.js" ></script>
+<script type="text/javascript" src="/js/complete-payment.js"></script>
 </body>
 </html>
