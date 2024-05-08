@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>주문 완료 확인 페이지</title>
-    <link rel="stylesheet" href="../static/check-order.css">
+    <link rel="stylesheet" href="../static/complete-payment.css">
 </head>
 <body class="body">
 <header class = "main-header">
@@ -13,6 +13,7 @@
     <button class="list-button">목록</button>
 </header>
 <div class="line-box"></div>
+<input class="order-id" th:value="${KakaoPayApproveResponse.getPartner_order_id()}" style="display: none">
 <img class = "check" src="/static/image/check.png" alt="체크">
 <p class="order-text">주문이 완료되었습니다.</p>
 <p class="payment-sum-text">결제 항목</p>
