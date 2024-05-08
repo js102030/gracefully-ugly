@@ -193,42 +193,27 @@
     font-weight: 600;
 }
 
-.refund-btn {
-    border: 3px solid #EE402E;
-    background-color: #EE402E;
-    color: white;
-    border-radius: 15px;
-    padding: 10px;
-    width: 126px;
-    height: 48px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 20px;
-    margin-top: 50px;
-    margin-bottom: 50px;
-}
-
-.modify-order-btn {
-    border: 3px solid #ffc107;
-    background-color: #ffc107;
-    color: white;
-    border-radius: 15px;
-    padding: 10px;
-    width: 140px;
-    height: 48px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 20px;
-    margin-bottom: 50px;
-}
-
-.back-button {
+.view-order {
     border: 3px solid #40B44B;
     background-color: #40B44B;
     color: white;
     border-radius: 15px;
     padding: 10px;
-    width: 126px;
+    width: 200px;
+    height: 48px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.go-to-main {
+    border: 3px solid #40B44B;
+    background-color: #40B44B;
+    color: white;
+    border-radius: 15px;
+    padding: 10px;
+    width: 200px;
     height: 48px;
     cursor: pointer;
     font-weight: 600;

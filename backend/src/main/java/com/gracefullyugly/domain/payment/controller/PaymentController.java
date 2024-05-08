@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -36,13 +35,6 @@ public class PaymentController {
             @Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
             @PathVariable("orderId") Long orderId) {
         return ResponseEntity.ok(paymentSearchService.getPayment(userId, orderId));
-    }
-
-    @GetMapping("/payment/kakaopay/success/{userId}/{orderId}")
-    public ResponseEntity<KakaoPayApproveResponse> approveKakaoPay(@PathVariable("userId") Long userId,
-                                                                   @PathVariable("orderId") Long orderId,
-                                                                   @RequestParam("pg_token") String pgToken) {
-        return ResponseEntity.ok(paymentService.approveKakaoPay(userId, orderId, pgToken));
     }
 
     @PutMapping("/payment/kakaopay/refund/{orderId}")

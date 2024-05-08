@@ -49,7 +49,7 @@ public class CommonController {
 
     @GetMapping("/check-order")
     public String checkOrder() {
-        return "check-order";
+        return "complete-payment";
     }
 
     @GetMapping("/create-order")
