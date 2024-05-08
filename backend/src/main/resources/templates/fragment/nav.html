@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -10,8 +10,8 @@
 <header class="main-header" th:fragment="top">
 
     <img class="logo" src="/image/logo.png" alt="로고">
-    <button class="notice-button">알림</button>
-    <button class="login-button">로그인</button>
+    <button class="notice-button" id="test_btn">알림</button>
+    <button class="login-button" sec:!authorize="isAuthenticated()" onclick="location.href='/log'">로그인</button>
     <button class="list-button">목차</button>
 </header>
 

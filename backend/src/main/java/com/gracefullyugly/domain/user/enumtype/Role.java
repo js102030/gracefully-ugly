@@ -1,5 +1,8 @@
 package com.gracefullyugly.domain.user.enumtype;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public enum Role {
     //첫 로그인 구별하려고 GUEST 추가
     ADMIN("ROLE_ADMIN"),
@@ -19,8 +22,10 @@ public enum Role {
 
     // 이전에 사용한 valueOf 메서드 대신, roleName으로 역할을 가져오는 메서드를 추가할 수 있습니다.
     public static Role fromRoleName(String roleName) {
-        for (Role role : values()) {
+        for (Role role : Role.values()) {
             if (role.getRoleName().equals(roleName)) {
+                log.info("rolename=" + roleName);
+                log.info("/role=" + role);
                 return role;
             }
         }
