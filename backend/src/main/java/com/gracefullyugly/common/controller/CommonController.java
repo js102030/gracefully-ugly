@@ -84,6 +84,22 @@ public class CommonController {
 
     @PostMapping("/login")
     public String login() {
-        return "/mainAfter";
+        return "/";
     }
+
+    @GetMapping("/cart-list")
+    public String cart_list() {
+        return "cart-list";
+    }
+
+    @GetMapping("/modify-order")
+    public String modify_order() {
+        return "modify-order";
+    }
+
+    @GetMapping("/purchase_history")
+    public String purchase_history() {
+        return "purchase_history";
+    }
+
 }
