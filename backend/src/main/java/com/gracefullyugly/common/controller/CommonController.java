@@ -12,11 +12,6 @@ public class CommonController {
         return "main";
     }
 
-    @GetMapping("/mainAfter")
-    public String mainAfterPage() {
-        return "mainAfter";
-    }
-
     @GetMapping("/join")
     public String joinPage() {
         return "join";
