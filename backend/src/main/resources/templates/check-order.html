@@ -59,7 +59,7 @@
         <div class="create-order">
             <button class="back-button">뒤로가기</button>
             <span class="modify-or-refund"
-                 th:if="OrderInfoResponse.getPayment() != null and (OrderInfoResponse.getPayment().isPaid() and not OrderInfoResponse.getPayment().isRefunded())">
+                  th:if="OrderInfoResponse.getPayment() != null and (OrderInfoResponse.getPayment().isPaid() and not OrderInfoResponse.getPayment().isRefunded())">
                 <button class="modify-order-btn">주문서 수정</button>
                 <button class="refund-btn">환불하기</button>
             </span>
@@ -73,22 +73,6 @@
     <!--        <a href="/" class="kakao-pay"><img src="/static/image/kakao-pay.png" alt="카카오페이 결제"></a>-->
     <!--    </div>-->
 </div>
-<!--목록 모달-->
-<section class="modal">
-    <div class="modal-box">
-        <div class="modal-inner">
-            <div>
-                <p class="ask9">구매자이신가요?</p>
-                <img id="modal-1" src="/static/image/modal-1.png" alt="찜한 내역">
-                <img id="modal-2" src="/static/image/modal-2.png" alt="구매 내역">
-                <img id="modal-3" src="/static/image/modal-3.png" alt="내 정보">
-                <p class="ask8">판매자이신가요?</p>
-                <img id="modal-4" src="/static/image/modal-4.png" alt="판매 내역">
-                <button class="modal-close">닫기</button>
-            </div>
-        </div>
-    </div>
-</section>
 <script type="text/javascript" src="/fragment/nav.js"></script>
 <script type="text/javascript" src="/static/js/check-order.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
