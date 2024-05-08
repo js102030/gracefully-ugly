@@ -71,7 +71,6 @@
 /*여기까지 복사해서 사용하면 헤더 & 중간선 css*/
 
 .impending-text {
-    margin-right: 400px;
     display: flex;
     font-size: 36px;
     font-weight: 600;
@@ -86,36 +85,38 @@
 }
 
 .pick-text {
-    margin-right: 700px;
     font-size: 36px;
     font-weight: 600;
     margin-bottom: 20px;
 }
 
 .pick-items {
+    margin-top: 20px;
     display: flex;
     flex-direction: row;
 }
 
 .news {
+    margin-top: 30px;
     margin-bottom: 30px;
-    width: 300px;
-    height: 400px;
+    width: 1000px;
+    height: 700px;
     background-color: #FFFFFF;
     border: 3px solid #29902C;
     border-radius: 15px;
 }
 
 .news-text {
+    margin-top: 20px;
     font-size: 36px;
     font-weight: 600;
 }
 
 .pickup-text {
     display: flex;
-    font-size: 36px;
-    font-weight: 600;
-    margin-top: 50px;
+    font-size: 15px;
+    color: #7C7C7C;
+    margin-top: 20px;
     margin-bottom: 20px;
 }
 
@@ -128,6 +129,8 @@
 }
 
 .more-items {
+    margin-top: 10px;
+    margin-right: 30px;
     display: flex;
     flex-direction: row;
 }

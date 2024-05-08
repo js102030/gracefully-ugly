@@ -41,27 +41,37 @@ function fetchPopularItems() {
     fetch('/api/items/popularity')
         .then(response => response.json())
         .then(data => displayPopularItems(data))
-        .catch(error => console.error('Error fetching popular items:', error));
+        .catch(error => console.error('Error fetching popularity items:', error))
 }
 
-function displayPopularItems(items) {
+function displayPopularItems(popularItems) {
     const popularItemsContainer = document.getElementById('popular-items-container');
 
-    items.forEach(item => {
-        const pickElement = document.createElement('div');
-        pickElement.classList.add('pick');
+    // popularItems가 배열이 아니더라도 데이터가 있는지 확인
+    if (popularItems && typeof popularItems === 'object') {
+        // 객체에서 데이터를 추출하여 처리
+        for (const key in popularItems) {
+            if (Object.hasOwnProperty.call(popularItems, key)) {
+                const item = popularItems[key];
 
-        pickElement.innerHTML = `
-                <img src="${item.imageUrl}" alt="제품사진">
-                <div>
-                    <div>${item.totalSalesUnit}Kg</div>
-                    <div>${item.name}</div>
-                    <div>${item.price}원</div>
-                </div>
-            `;
+                const popularElement = document.createElement('div');
+                popularElement.classList.add('item');
 
-        popularItemsContainer.appendChild(pickElement);
-    });
+                popularElement.innerHTML =  `
+                    <img src="${item.imageUrl}" alt="제품사진">
+                    <div>
+                        <div>${item.totalSalesUnit}Kg</div>
+                        <div>${item.name}</div>
+                        <div>${item.price}원</div>
+                    </div>
+                `;
+
+                popularItemsContainer.appendChild(popularElement);
+            }
+        }
+    } else {
+        console.error('Error fetching popularity items: Invalid data format');
+    }
 }
 
 // ----------------------- 판매글 목록 조회
@@ -134,34 +144,45 @@ document.querySelector('.pickup-button:nth-child(3)').addEventListener('click', 
 });
 
 // ----------------------- 뉴스 조회
-// 뉴스 데이터를 화면에 표시하는 함수
-function displayNews(newsList) {
-    const newsContainer = document.querySelector('.news div');
-    newsContainer.innerHTML = ''; // 기존 내용 초기화
+document.addEventListener("DOMContentLoaded", function() {
+    // DOM이 로드된 후 실행되는 부분
 
-    newsList.forEach(news => {
-        const newsElement = document.createElement('div');
-        newsElement.innerHTML = news.content; // 데이터베이스에서 가져온 뉴스 내용을 삽입
-
-        newsContainer.appendChild(newsElement);
-    });
-}
-
-// API를 호출하여 뉴스 데이터 가져오기
-function fetchNews() {
-    fetch('/api/news') // API 엔드포인트 호출
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                displayNews(data.data); // 데이터 성공적으로 가져오면 화면에 표시
-            } else {
-                console.error('뉴스 데이터를 가져오지 못했습니다.');
+    // API 호출 및 데이터 가져오기
+    fetch('/api/news')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch news');
             }
+            return response.json();
+        })
+        .then(data => {
+            // 응답 데이터 처리
+            const newsContainer = document.querySelector('.news-content');
+
+            // data 객체에서 뉴스 데이터 배열 가져오기
+            const newsData = data.data; // data 객체의 'data' 속성에 배열이 있음
+
+            // 뉴스 데이터를 반복하여 HTML 요소로 추가
+            newsData.forEach(newsItem => {
+                const newsElement = document.createElement('div');
+                newsElement.classList.add('news-item');
+
+                // 뉴스 제목과 내용을 추가
+                const titleElement = document.createElement('h3');
+                titleElement.textContent = newsItem.contents;
+                newsElement.appendChild(titleElement);
+
+                // 뉴스 생성일 추가 (예시: 날짜 형식을 변환하여 표시)
+                const createdAt = new Date(newsItem.createdAt);
+                const dateElement = document.createElement('p');
+                dateElement.textContent = `게시일: ${createdAt.toLocaleDateString()}`;
+                newsElement.appendChild(dateElement);
+
+                // newsContainer에 뉴스 요소 추가
+                newsContainer.appendChild(newsElement);
+            });
         })
         .catch(error => {
-            console.error('API 호출 중 오류 발생:', error);
+            console.error('Error fetching news:', error);
         });
-}
-
-// 페이지 로드 시 뉴스 데이터 가져오기
-window.addEventListener('load', fetchNews);
+});
