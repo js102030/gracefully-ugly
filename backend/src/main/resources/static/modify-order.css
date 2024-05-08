@@ -200,7 +200,6 @@
     background: #FFFFFF;
     border-radius: 50px;
     width : 1233px;
-    height : 500px;
 }
 
 .title {
@@ -238,7 +237,7 @@
     cursor: pointer;
 }
 
-.save-button {
+.save-address-button, .save-phone-number-button {
     margin-top: 15px;
     border: 3px solid #40B44B;
     background-color: #40B44B;
@@ -270,6 +269,7 @@
 .sum-item-and-result {
     font-size: 30px;
     font-weight: 600;
+    margin-bottom: 50px;
 }
 
 
