@@ -39,6 +39,6 @@ public class OrderViewController {
         OrderInfoResponse response = orderService.getOrderInfo(userId, orderId);
         model.addAttribute("OrderInfoResponse", response);
 
-        return "/";
+        return "/check-order";
     }
 }
