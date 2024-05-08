@@ -2,6 +2,7 @@ package com.gracefullyugly.common.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class CommonController {
@@ -9,6 +10,11 @@ public class CommonController {
     @GetMapping("/")
     public String mainPage() {
         return "main";
+    }
+
+    @GetMapping("/mainAfter")
+    public String mainAfterPage() {
+        return "mainAfter";
     }
 
     @GetMapping("/join")
@@ -71,8 +77,13 @@ public class CommonController {
         return "admin-report";
     }
 
-    @GetMapping("/login")
-    public String login() {
+    @GetMapping("/log")
+    public String log() {
         return "login";
+    }
+
+    @PostMapping("/login")
+    public String login() {
+        return "/mainAfter";
     }
 }
