@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -11,9 +11,28 @@
 
     <img class="logo" src="/image/logo.png" alt="로고">
     <button class="notice-button" id="test_btn">알림</button>
-    <button class="login-button" sec:!authorize="isAuthenticated()" onclick="location.href='/log'">로그인</button>
+    <button class="login-button" onclick="location.href='/log'">로그인</button>
+    <button class="logout-btn" id="logout-button">로그아웃</button>
     <button class="list-button">목차</button>
 </header>
+<!--목록 모달-->
 
+<section class="modal" th:fragment="modal">
+    <div class="modal-box">
+        <div class="modal-inner">
+            <div>
+                <p class="ask9">구매자이신가요?</p>
+                <img id="modal-1" src="/image/modal-1.png" onclick="location.href='/cart-list'" alt="찜한 내역">
+                <img id="modal-2" src="/image/modal-2.png" onclick="location.href='/purchase_history'" alt="구매 내역">
+                <img id="modal-3" src="/image/modal-3.png" onclick="location.href='/my-page'" alt="내 정보">
+                <p class="ask8">판매자이신가요?</p>
+                <img id="modal-4" src="/image/modal-4.png" onclick="location.href='/sellerList'" alt="판매 내역">
+                <button class="modal-close">닫기</button>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript" src="/js/security.js"></script>
+<script type="text/javascript" src="/fragment/nav.js"></script>
 </body>
 </html>

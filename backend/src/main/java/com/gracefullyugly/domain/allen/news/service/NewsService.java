@@ -18,7 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class NewsService {
 
     private static final String BASE_URL = "https://kdt-api-function.azurewebsites.net/api/v1/question";
-    private static final String CLIENT_ID = "702270b5-e901-4823-a62e-4f8708c65509";
+    private static final String CLIENT_ID = "62f951f4-38be-45ee-9d9c-16885b4a098a";
     private static final String REQUEST_CONTENT =
             """
                     오늘의 농산물 뉴스 5개를 알려주세요.
@@ -42,7 +42,7 @@ public class NewsService {
     }
 
     public ApiResponse<List<News>> getLastFiveNews() {
-        List<News> lastFiveNews = newsRepository.findTop5ByOrderByCreatedAtAsc();
+        List<News> lastFiveNews = newsRepository.findTop5ByOrderByIdAsc();
 
         if (lastFiveNews.isEmpty()) {
             throw new IllegalArgumentException("뉴스가 존재하지 않습니다.");
