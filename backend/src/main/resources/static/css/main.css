@@ -34,24 +34,26 @@
 }
 
 .news {
+    margin-top: 30px;
     margin-bottom: 30px;
-    width: 300px;
-    height: 400px;
+    width: 1000px;
+    height: 700px;
     background-color: #FFFFFF;
     border: 3px solid #29902C;
     border-radius: 15px;
 }
 
 .news-text {
+    margin-top: 20px;
     font-size: 36px;
     font-weight: 600;
 }
 
 .pickup-text {
     display: flex;
-    font-size: 36px;
-    font-weight: 600;
-    margin-top: 50px;
+    font-size: 15px;
+    color: #7C7C7C;
+    margin-top: 20px;
     margin-bottom: 20px;
 }
 
@@ -64,6 +66,7 @@
 }
 
 .more-items {
+    margin-top: 10px;
     display: flex;
     flex-direction: row;
 }

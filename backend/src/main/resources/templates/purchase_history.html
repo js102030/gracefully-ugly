@@ -58,6 +58,25 @@
     </ul>
 </div>
 <script type="text/javascript" src="/fragment/nav.js"></script>
+
+<!--목록 모달-->
+<section class="modal">
+    <div class="modal-box">
+        <div class="modal-inner">
+            <div>
+                <p class="ask9">구매자이신가요?</p>
+                <img id="modal-1" onclick="location.href='/cart-list'" src="/image/modal-1.png" alt="찜한 내역">
+                <img id="modal-2" onclick="location.href='/purchase_history'" src="/image/modal-2.png" alt="구매 내역">
+                <img id="modal-3" onclick="location.href='/my-page'" src="/image/modal-3.png" alt="내 정보">
+                <p class="ask8">판매자이신가요?</p>
+                <img id="modal-4" onclick="location.href='/sellerList'" src="/image/modal-4.png" alt="판매 내역">
+                <button class="modal-close">닫기</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript" src="/js/purchase_history.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
