@@ -1,13 +1,10 @@
 package com.gracefullyugly.domain.item.service;
 
-import com.gracefullyugly.domain.item.dto.ItemDtoUtil;
-import com.gracefullyugly.domain.item.dto.ItemResponse;
+import com.gracefullyugly.domain.item.dto.ItemWithImageUrlResponse;
 import com.gracefullyugly.domain.item.entity.Item;
-import com.gracefullyugly.domain.item.enumtype.Category;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,63 +21,32 @@ public class ItemSearchService {
                 .orElseThrow(() -> new IllegalArgumentException(itemId + "에 해당하는 상품이 없습니다."));
     }
 
-    public ItemResponse findOneItem(Long itemId) {
-        Item findItem = findById(itemId);
-
-        return ItemDtoUtil.itemToItemResponse(findItem);
+    public ItemWithImageUrlResponse findOneItem(Long itemId) {
+        return itemRepository.findOneItemWithImage(itemId);
     }
 
-    public List<ItemResponse> findAllItems() {
-        List<Item> findItems = itemRepository.findAll();
-
-        if (findItems.isEmpty()) {
-            throw new IllegalArgumentException("상품이 없습니다.");
-        }
-
-        return findItems.stream()
-                .map(ItemDtoUtil::itemToItemResponse)
-                .toList();
+    public List<ItemWithImageUrlResponse> findAllItems() {
+        return itemRepository.findAllItemsWithImages();
     }
 
     // 72시간 이내 마감임박 상품 목록 조회
-    public List<ItemResponse> getImpendingItems() {
+    public List<ItemWithImageUrlResponse> getImpendingItems() {
         LocalDateTime endTime = LocalDateTime.now().plusHours(72);
 
-        List<Item> impendingItems = itemRepository.findRandomImpendingItems(endTime);
-
-        if (impendingItems.isEmpty()) {
-            throw new IllegalArgumentException("마감임박 상품이 없습니다.");
-        }
-
-        return impendingItems.stream()
-                .map(ItemDtoUtil::itemToItemResponse)
-                .collect(Collectors.toList());
+        return itemRepository.findRandomImpendingItems(endTime);
     }
 
     // 인기 상품 목록 조회 / 찜 개수 기준
-    public List<ItemResponse> findMostAddedToCartItems() {
-        List<Item> popularityItems = itemRepository.findMostAddedToCartItems();
+    public List<ItemWithImageUrlResponse> findMostAddedToCartItems() {
+        List<ItemWithImageUrlResponse> response = itemRepository.findMostAddedToCartItems();
 
-        if (popularityItems.isEmpty()) {
-            throw new IllegalArgumentException("인기 상품이 없습니다.");
-        }
-
-        return popularityItems.stream()
-                .map(ItemDtoUtil::itemToItemResponse)
-                .collect(Collectors.toList());
+        return response;
     }
 
     // 상품 종류별 검색 목록 조회
-    public List<ItemResponse> getCategoryItems(Category categoryId) {
-        List<Item> categoryItems = itemRepository.findCategoryItems(categoryId);
-
-        if (categoryItems.isEmpty()) {
-            throw new IllegalArgumentException("해당 카테고리 상품이 없습니다.");
-        }
-
-        return categoryItems.stream()
-                .map(ItemDtoUtil::itemToItemResponse)
-                .collect(Collectors.toList());
+    public List<ItemWithImageUrlResponse> getCategoryItems(String categoryId) {
+        return itemRepository.findCategoryItemsWithImageUrl(
+                categoryId);
     }
 
 }

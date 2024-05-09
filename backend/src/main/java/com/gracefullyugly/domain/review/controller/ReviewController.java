@@ -45,8 +45,8 @@ public class ReviewController {
     }
 
     @GetMapping("/reviews/items/{itemId}")
-    public ResponseEntity<ApiResponse<List<ReviewResponse>>> findReviewsByItemId(@PathVariable Long itemId) {
-        ApiResponse<List<ReviewResponse>> response = reviewSearchService.getReviewsByItemId(itemId);
+    public ResponseEntity<List<ReviewResponse>> findReviewsByItemId(@PathVariable Long itemId) {
+        List<ReviewResponse> response = reviewSearchService.getReviewsOrEmptyByItemId(itemId);
 
         return ResponseEntity
                 .ok(response);

@@ -1,4 +1,4 @@
-package com.gracefullyugly.domain.image.demo.config;
+package com.gracefullyugly.domain.image.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

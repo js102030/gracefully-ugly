@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
     @Query(value =
-        "SELECT CI.cart_item_id AS cartItemId, CI.item_count AS itemCount, I.item_id AS itemId, I.name AS name, I.price AS price, I.category_id AS categoryId "
+        "SELECT CI.cart_item_id AS cartItemId, CI.item_count AS itemCount, I.item_id AS itemId, I.name AS name, I.price AS price, I.category_id AS categoryId, I.closed_date AS closeDate "
       + "FROM cart AS C "
       + "LEFT OUTER JOIN cart_item AS CI ON C.cart_id = CI.cart_id "
       + "LEFT OUTER JOIN item AS I ON CI.item_id = I.item_id "
