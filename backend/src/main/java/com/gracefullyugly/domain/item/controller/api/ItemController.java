@@ -55,11 +55,9 @@ public class ItemController {
 
     // 판매글 목록 조회
     @GetMapping("/all/items")
-    public ResponseEntity<List<ItemResponse>> showItems() {
-        List<ItemResponse> response = itemSearchService.findAllItems();
-
+    public ResponseEntity<List<ItemWithImageUrlResponse>> showItems() {
         return ResponseEntity
-                .ok(response);
+                .ok(itemSearchService.findAllItems());
     }
 
     // 판매글 상세 조회
@@ -96,21 +94,17 @@ public class ItemController {
 
     // 72시간 이내 마감임박 상품 목록 조회
     @GetMapping("/all/items/impending")
-    public ResponseEntity<List<?>> showImpendingItems() {
-        List<ItemResponse> itemResponseList = itemSearchService.getImpendingItems();
-
+    public ResponseEntity<List<ItemWithImageUrlResponse>> showImpendingItems() {
         return ResponseEntity
-                .ok(itemResponseList);
+                .ok(itemSearchService.getImpendingItems());
 
     }
 
     // 인기 상품 목록 조회
     @GetMapping("/all/items/popularity")
-    public ResponseEntity<List<?>> showPopularity() {
-        List<ItemResponse> itemResponseList = itemSearchService.findMostAddedToCartItems();
-
+    public ResponseEntity<List<ItemWithImageUrlResponse>> showPopularity() {
         return ResponseEntity
-                .ok(itemResponseList);
+                .ok(itemSearchService.findMostAddedToCartItems());
     }
 
     // 상품 종류별 검색 목록 조회
