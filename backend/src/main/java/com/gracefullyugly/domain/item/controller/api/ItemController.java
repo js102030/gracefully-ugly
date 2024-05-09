@@ -41,7 +41,7 @@ public class ItemController {
     }
 
     // 판매글 목록 조회
-    @GetMapping("/items")
+    @GetMapping("/all/items")
     public ResponseEntity<List<ItemResponse>> showItems() {
         List<ItemResponse> response = itemSearchService.findAllItems();
 
@@ -50,7 +50,7 @@ public class ItemController {
     }
 
     // 판매글 상세 조회
-    @GetMapping("/items/{itemId}")
+    @GetMapping("/all/items/{itemId}")
     public ResponseEntity<ItemResponse> showOneItem(@PathVariable Long itemId) {
         ItemResponse itemResponse = itemSearchService.findOneItem(itemId);
 
@@ -82,7 +82,7 @@ public class ItemController {
     }
 
     // 72시간 이내 마감임박 상품 목록 조회
-    @GetMapping("/items/impending")
+    @GetMapping("/all/items/impending")
     public ResponseEntity<List<?>> showImpendingItems() {
         List<ItemResponse> itemResponseList = itemSearchService.getImpendingItems();
 
@@ -92,7 +92,7 @@ public class ItemController {
     }
 
     // 인기 상품 목록 조회
-    @GetMapping("/items/popularity")
+    @GetMapping("/all/items/popularity")
     public ResponseEntity<List<?>> showPopularity() {
         List<ItemResponse> itemResponseList = itemSearchService.findMostAddedToCartItems();
 
@@ -102,7 +102,7 @@ public class ItemController {
 
 
     // 상품 종류별 검색 목록 조회
-    @GetMapping("/items/category/{categoryId}")
+    @GetMapping("/all/items/category/{categoryId}")
     public ResponseEntity<List<?>> showCategory(@PathVariable Category categoryId) {
         List<ItemResponse> itemResponseList = itemSearchService.getCategoryItems(categoryId);
 
