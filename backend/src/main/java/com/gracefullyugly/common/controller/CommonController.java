@@ -5,15 +5,13 @@ import com.gracefullyugly.domain.item.dto.ItemResponse;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.review.dto.ReviewResponse;
 import com.gracefullyugly.domain.review.service.ReviewSearchService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 
 @Controller
@@ -97,7 +95,7 @@ public class CommonController {
 
     @PostMapping("/login")
     public String login() {
-        return "/";
+        return "main";
     }
 
     @GetMapping("/cart-list")
@@ -114,12 +112,5 @@ public class CommonController {
     public String purchase_history() {
         return "purchase_history";
     }
-
-    @GetMapping("/mainAfter")
-    public String mainAfterPage() {
-        return "mainAfter";
-    }
-
-
 
 }

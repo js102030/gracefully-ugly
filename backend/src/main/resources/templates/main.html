@@ -12,30 +12,32 @@
 <div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
 <div class="body_wrapper">
-<div class="impending-text">놓치지 말아야 할 기회! 마감 임박 상품들</div>
-<div class="impending-items" onclick="location.href='/group-buying'">
-</div>
-<div class="line-use"></div>
-<div class="pick-news-text">
-    <div class="pick-text">많이 Pick한 인기 상품들</div>
-</div>
-<div class="pick-items" onclick="location.href='/group-buying'" id="popular-items-container">
-</div>
-<div class="news">
-    <div class="news-content">
+    <div class="impending-text">놓치지 말아야 할 기회! 마감 임박 상품들</div>
+    <div class="impending-items" onclick="location.href='/group-buying'">
+    </div>
+    <div class="line-use"></div>
+    <div class="pick-news-text">
+        <div class="pick-text">많이 Pick한 인기 상품들</div>
+    </div>
+    <div class="pick-items" onclick="location.href='/group-buying'" id="popular-items-container">
+    </div>
+    <div class="news">
+        <div class="news-content">
+        </div>
+    </div>
+    <div class="line-use"></div>
+    <div class="pickup-text">원하시는 상품을 골라보세요.</div>
+    <div>
+        <button class="pickup-button">채소</button>
+        <button class="pickup-button">과일</button>
+        <button class="pickup-button">기타</button>
+    </div>
+    <div class="more-text">더 많은 상품들!</div>
+    <div class="more-items" onclick="location.href='/group-buying'" id="items-container">
     </div>
 </div>
-<div class="line-use"></div>
-<div class="pickup-text">원하시는 상품을 골라보세요.</div>
-<div>
-    <button class="pickup-button">채소</button>
-    <button class="pickup-button">과일</button>
-    <button class="pickup-button">기타</button>
-</div>
-<div class="more-text">더 많은 상품들!</div>
-<div class="more-items" onclick="location.href='/group-buying'" id="items-container">
-</div>
-</div>
-<script type="text/javascript" src="/js/main.js" ></script>
+<script type="text/javascript" src="/js/main.js"></script>
+<script type="text/javascript" src="/fragment/nav.js"></script>
+<script type="text/javascript" src="/js/security.js"></script>
 </body>
 </html>

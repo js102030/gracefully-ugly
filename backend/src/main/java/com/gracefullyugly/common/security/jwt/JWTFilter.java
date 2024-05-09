@@ -32,10 +32,9 @@ public class JWTFilter extends OncePerRequestFilter {
         //Authorization 헤더 검증
         if (cookies == null) {
 
-            logger.info("accessToken null");
+            logger.info("쿠기값 null");
             filterChain.doFilter(request, response);
 
-            //TODO 이 부분에서 /reissue api 요청해서 토큰 재발급 해줘야함
             return;
         }
 
@@ -58,12 +57,18 @@ public class JWTFilter extends OncePerRequestFilter {
             //response body
             PrintWriter writer = response.getWriter();
             writer.print("access token expired");
-            logger.info("토큰 만료됨");
+            logger.info("만료된 토큰으로 삭제");
 
-            //TODO 이 부분에서 /reissue api 요청해서 토큰 재발급 해줘야함
+            //만료되면 그냥 지워버림
+            Cookie cookie = new Cookie("token", null);
+            cookie.setMaxAge(0);
+            cookie.setPath("/");
 
+            response.addCookie(cookie);
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.sendRedirect("/log"); // 재로그인 페이지로 리다이렉트
             //response status code 만료가 되면 그다음 필터로 안넘김
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
