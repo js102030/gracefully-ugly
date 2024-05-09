@@ -104,7 +104,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ---- username 가져오기
-//  ??????????????
 
 
 // ------------- 공구 참여 버튼 이벤트 헨들러
