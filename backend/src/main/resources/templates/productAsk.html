@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>상품문의 페이지</title>
+    <link rel="stylesheet" href="/fragment/nav.css">
+    <style>
+        .first_wrapper {
+            width: 38%;
+            text-align: center;
+            margin-bottom: 10px;
+            margin-top: 60px;
+        }
+
+        .back {
+            display: inline;
+        }
+
+        /*버튼 전체 스타일 설정*/
+        button {
+            background-color: #4CAF50; /* 더 밝은 초록색으로 설정 */
+            color: white; /* 글자색 흰색으로 설정 */
+            font-weight: bold; /* 글자를 굵게 설정 */
+            border-radius: 20px; /* 라운드 처리 */
+            padding: 15px 20px; /* 내부 여백 설정 */
+            border: none; /* 테두리 없음 */
+            outline: none; /* 포커스 효과 제거 */
+            cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+            margin: 20px;
+        }
+
+        h1 {
+            display: inline;
+        }
+
+        .second_wrapper {
+            text-align: center; /* 텍스트를 가운데 정렬 */
+        }
+
+        /* textarea 스타일 */
+        .ask {
+            width: 60%; /* 가로 길이를 60%로 설정하여 부모 요소에 맞게 조정합니다. */
+            min-height: 200px; /* 최소 높이 설정 */
+            display: inline; /* display를 block으로 변경하여 한 줄에 하나씩 표시되도록 합니다. */
+            border-radius: 30px; /* 테두리를 둥글게 만듭니다. */
+            background-color: #F1F1F1; /* 배경색 설정 */
+            padding: 10px; /* 내부 여백 추가 */
+            margin: 0 auto; /* 가운데 정렬 */
+            border: none; /* 테두리 없음 */
+            outline: none; /* 포커스 효과 제거 */
+        }
+
+        .askAdd {
+            display: inline;
+        }
+
+        .oneRoute {
+            margin-top: 20px;
+        }
+
+        .ask_tab {
+            width: 75%; /* 가로 길이를 60%로 설정하여 부모 요소에 맞게 조정합니다. */
+            border-radius: 30px; /* 테두리를 둥글게 만듭니다. */
+            border: 2px solid gray; /* 회색 테두리 설정 */
+            padding: 10px;
+            margin: 0 auto; /* 가운데 정렬 */
+        }
+
+        .ask_tab div {
+            display: flex; /* Flexbox 사용 */
+            justify-content: space-between; /* 요소 사이의 공간을 동일하게 분배하여 배치 */
+        }
+
+        .nickname {
+            margin-top: 0;
+            margin-bottom: 0;
+            margin-left: 10px;
+        }
+
+        .content {
+            font-weight: bold; /* 글씨를 진하게 만듭니다. */
+            font-size: 20px; /* 글자 크기를 크게 설정합니다. */
+            font-family: 'Arial', sans-serif; /* 이쁜 글꼴로 변경합니다. */
+            display: inline;
+        }
+
+        .answer {
+            display: inline;
+        }
+
+    </style>
+</head>
+<body>
+<div th:replace="~{fragment/nav :: top}"></div>
+<div th:replace="~{fragment/nav :: modal}"></div>
+<div class="line-box"></div>
+<div class="first_wrapper">
+    <button class="back">뒤로가기</button>
+    <h1>상품 문의하기</h1>
+</div>
+<div class="second_wrapper">
+    <textarea class="ask" placeholder="문의사항을 입력해주세요"></textarea>
+    <button class="askAdd">등록하기</button>
+</div>
+<!--댓글, 대댓글-->
+<div class="oneRoute">
+    <div class="ask_tab">
+        <p class="nickname">호롤로</p>
+        <div>
+            <p class="content">이거 맛있는거 맞아?</p>
+            <button class="answer">답변하기</button>
+        </div>
+    </div>
+</div>
+<div class="oneRoute">
+    <div class="ask_tab">
+        <p class="nickname">큰손30대형님</p>
+        <div>
+            <p class="content">이거 맛있는거 맞아?</p>
+            <button class="answer">답변하기</button>
+        </div>
+    </div>
+</div>
+<div class="oneRoute">
+    <div class="ask_tab">
+        <p class="nickname">막가파고라파덕한입줘</p>
+        <div>
+            <p class="content">이거 맛있는거 맞아?이거 맛있는거 맞아이거 맛있는거 맞아?이거 맛있는거 맞아?</p>
+            <button class="answer">답변하기</button>
+        </div>
+    </div>
+</div>
+<div class="oneRoute">
+    <div class="ask_tab">
+        <p class="nickname">내눈에캔디니코니</p>
+        <div>
+            <p class="content">이거 맛있는거 맞아?이거 맛있는거 맞아?이거 맛있는거 맞아?</p>
+            <button class="answer">답변하기</button>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/fragment/nav.js"></script>
+</body>
+</html>
