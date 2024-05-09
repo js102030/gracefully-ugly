@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log(data);
                 console.log(status);
                 console.log(error);
-                alert('주문서 생성 중 문제가 발생했습니다.\n[status: ' + data.status +', error: ' + data.responseText + ']');
+                alert('주문서 생성 중 문제가 발생했습니다.\n[status: ' + data.status +']\n[error: ' + data.responseText + ']');
             }
         })
     })
