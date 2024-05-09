@@ -47,15 +47,15 @@ public class CommonController {
         return "sellerDetails";
     }
 
-    @GetMapping("/check-order")
-    public String checkOrder() {
-        return "complete-payment";
-    }
+//    @GetMapping("/check-order")
+//    public String checkOrder() {
+//        return "complete-payment";
+//    }
 
-    @GetMapping("/create-order")
-    public String createOrder() {
-        return "create-order";
-    }
+//    @GetMapping("/create-order")
+//    public String createOrder() {
+//        return "create-order";
+//    }
 
     @GetMapping("/create-review")
     public String createReview() {
