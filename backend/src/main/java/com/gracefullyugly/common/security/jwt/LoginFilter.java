@@ -72,17 +72,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         logger.info("역할 가져옴 = " + role);
 
-        String access = jwtUtil.createJwt("access", userId, loginId, role, 60 * 10 * 1000L); //10분
-        String refresh = jwtUtil.createJwt("refresh", userId, loginId, role, 60 * 60 * 24 * 1000L); //24시간
-        userRepository.saveRefreshToken(loginId, refresh);
+        String token = jwtUtil.createJwt(userId, loginId, role, 60 * 10 * 1000L); //10분
+
         String saveRefresh = userRepository.findRefreshTokenByLoginId(loginId);
 
-        logger.info("token 로그인 성공하고 토큰 발급 완료 access토큰 = " + access);
-        logger.info("token 로그인 성공하고 토큰 발급 완료 refresh토큰 = " + refresh + "/ 저장된 refresh = " + saveRefresh);
+        logger.info("token 로그인 성공하고 토큰 발급 완료 토큰 = " + token);
 
         //응답 설정
-        response.setHeader("access", access);
-        response.addCookie(createCookie("refresh", refresh));
+        response.addCookie(createCookie("token", token));
         response.setStatus(HttpStatus.OK.value());
     }
 
@@ -100,7 +97,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         cookie.setMaxAge(24 * 60 * 60);   //쿠키 생명주기
         //cookie.setSecure(true);    //https 통신하면 이 값 넣어줌
         //cookie.setPath("/");       //쿠키 적용될 범위
-        cookie.setHttpOnly(true);    //js에서 해당 쿠키 접근 불가하게 막음
+//        cookie.setHttpOnly(true);    //js에서 해당 쿠키 접근 불가하게 막음
 
         return cookie;
     }

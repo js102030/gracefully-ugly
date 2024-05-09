@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="#">
     <title>메인 페이지</title>
-    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="/fragment/nav.css">
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body class="body">
-<header class = "main-header">
-    <img class = "logo" src="/image/logo.png" alt="로고">
-    <button class="notice-button">알림</button>
-    <button class="login-button" onclick="location.href='/login.html'">로그인</button>
-</header>
+<div th:replace="~{fragment/nav :: top}"></div>
+<div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
+<div class="body_wrapper">
 <div class="impending-text">놓치지 말아야 할 기회! 마감 임박 상품들</div>
 <div class="impending-items" onclick="location.href='/group-buying'">
 </div>
@@ -34,6 +34,7 @@
 </div>
 <div class="more-text">더 많은 상품들!</div>
 <div class="more-items" onclick="location.href='/group-buying'" id="items-container">
+</div>
 </div>
 <script type="text/javascript" src="/js/main.js" ></script>
 </body>

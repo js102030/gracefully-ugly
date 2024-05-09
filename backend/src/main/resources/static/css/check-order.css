@@ -147,51 +147,13 @@
     margin-right: -180px;
 }
 
-.hr-2 {
-    margin-top: 10px;
-    width: 900px;
-    height: 1px;
-    background-color: gray;
-}
-
-.back-and-order-text {
-    display: flex;
-    flex-direction: row;
-    margin-top: 40px;
-}
-
-.back-button {
-    border: 3px solid #40B44B;
-    background-color: #40B44B;
-    color: white;
-    border-radius: 15px;
-    padding: 10px;
-    width: 126px;
-    height: 48px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 20px;
-    margin-left: -30px;
-    margin-right: 80px;
-    margin-top: 40px;
-}
-
-.up-text {
-    display: flex;
-    flex-direction: column;
-}
-
-.notice {
-    font-size: 35px;
-    font-weight: 600;
-    color: red;
-    margin-left: -140px;
+.check {
+    margin-top: 90px;
 }
 
 .order-text {
     font-size: 30px;
     font-weight: 600;
-    margin-left: -20px;
 }
 
 .order-content-box {
@@ -200,14 +162,13 @@
     background: #FFFFFF;
     border-radius: 50px;
     width : 1233px;
-    height : 500px;
 }
 
-.title {
+.order-item-list, .info {
     margin-top: 20px;
 }
 
-.title-text-front {
+.head {
     font-size: 20px;
     font-weight: 600;
 }
@@ -221,55 +182,68 @@
     margin-top: 20px;
 }
 
-.input-address {
-    margin-bottom: 20px;
+.payment-sum-text {
+    color: #B0B0B0;
     font-size: 20px;
 }
 
-.modify-button {
-    margin-top: 15px;
-    border: 3px solid #40B44B;
-    background-color: #40B44B;
+.payment-sum {
+    margin-top: -10px;
+    font-size: 35px;
     font-weight: 600;
-    color: white;
-    width: 70px;
-    height: 30px;
-    border-radius: 10px;
-    cursor: pointer;
 }
 
-.save-button {
-    margin-top: 15px;
-    border: 3px solid #40B44B;
-    background-color: #40B44B;
+.refund-btn {
+    border: 3px solid #EE402E;
+    background-color: #EE402E;
+    color: white;
+    border-radius: 15px;
+    padding: 10px;
+    width: 126px;
+    height: 48px;
+    cursor: pointer;
     font-weight: 600;
-    color: white;
-    width: 70px;
-    height: 30px;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-#address {
-    margin-top: 10px;
-    width: 206px;
-    height: 37px;
-}
-
-#number {
-    margin-top: 10px;
-    width: 206px;
-    height: 37px;
-}
-
-.input-number {
-    margin-bottom: 20px;
     font-size: 20px;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
 
-.sum-item-and-result {
-    font-size: 30px;
+.modify-order-btn {
+    border: 3px solid #ffc107;
+    background-color: #ffc107;
+    color: white;
+    border-radius: 15px;
+    padding: 10px;
+    width: 140px;
+    height: 48px;
+    cursor: pointer;
     font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 50px;
 }
 
+.back-button {
+    border: 3px solid #40B44B;
+    background-color: #40B44B;
+    color: white;
+    border-radius: 15px;
+    padding: 10px;
+    width: 126px;
+    height: 48px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 20px;
+    margin-bottom: 50px;
+}
 
+.condition {
+    font-size: 25px;
+}
+
+.payment-success {
+    color: #00BF08;
+}
+
+.payment-cancel, .payment-refund, .payment-fail {
+    color: #EE402E;
+}

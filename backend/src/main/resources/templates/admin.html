@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.green.min.css"/>
+    <link rel="stylesheet" href="/fragment/nav.css">
     <title>관리자페이지</title>
     <style>
         .header_box {
@@ -32,11 +33,13 @@
         }
 
     </style>
-    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 <main class="container">
     <div th:replace="~{fragment/nav :: top}"></div>
+    <div th:replace="~{fragment/nav :: modal}"></div>
+    <div class="line-box"></div>
     <br>
     <h2>ADMIN - 유저 관리</h2>
     <hr>
@@ -166,6 +169,6 @@
         });
     });
 </script>
-
+<script type="text/javascript" src="/fragment/nav.js"></script>
 
 </html>

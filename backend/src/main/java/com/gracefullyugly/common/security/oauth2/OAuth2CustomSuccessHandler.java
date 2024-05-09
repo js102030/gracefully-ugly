@@ -41,8 +41,8 @@ public class OAuth2CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        String access = jwtUtil.createJwt("access", userId, username, role, 60 * 10 * 1000L); //10분
-        String refresh = jwtUtil.createJwt("refresh", userId, username, role, 60 * 60 * 24 * 1000L); //24시간
+        String access = jwtUtil.createJwt(userId, username, role, 60 * 10 * 1000L); //10분
+        String refresh = jwtUtil.createJwt(userId, username, role, 60 * 60 * 24 * 1000L); //24시간
 
         userRepository.saveRefreshToken(username, refresh);
         String saveRefresh = userRepository.findRefreshTokenByLoginId(username);
@@ -52,7 +52,7 @@ public class OAuth2CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         response.setHeader("access", access);
         response.addCookie(createCookie("refresh", refresh));
-        response.sendRedirect("http://localhost:8080/");
+        response.sendRedirect("http://localhost:8080/mainAfter");
     }
 
     private Cookie createCookie(String key, String value) {

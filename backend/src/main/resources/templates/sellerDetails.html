@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <title>판매자 판매현황 페이지</title>
     <link rel="stylesheet" href="/fragment/nav.css">
-    <link rel="stylesheet" href="/sellerDetails.css">
+    <link rel="stylesheet" href="/css/sellerDetails.css">
 </head>
 <body>
 <div th:replace="~{fragment/nav :: top}"></div>
+<div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
 <h1>세부 판매현황</h1>
 <div class="current_time">
@@ -147,5 +148,6 @@
         </tbody>
     </table>
 </div>
+<script type="text/javascript" src="/fragment/nav.js"></script>
 </body>
 </html>

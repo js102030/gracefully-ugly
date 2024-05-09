@@ -5,6 +5,7 @@ import com.gracefullyugly.domain.user.enumtype.Role;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class CustomUserDetails implements UserDetails {
@@ -19,8 +20,9 @@ public class CustomUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
 
-        authorities.add((GrantedAuthority) () -> "ROLE_" + user.getRole());
-
+        authorities.add(new SimpleGrantedAuthority(user.getRole().getRoleName()));
+//        new SimpleGrantedAuthority(user.getRole().getRoleName());
+//        (GrantedAuthority) () -> "ROLE_" + user.getRole()
         return authorities;
     }
 

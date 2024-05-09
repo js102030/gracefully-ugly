@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="white">
 <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.green.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.green.min.css"/>
     <meta charset="UTF-8">
     <title>마이페이지</title>
+    <link rel="stylesheet" href="/fragment/nav.css">
     <style>
 
 
@@ -11,13 +12,16 @@
             width: 100%;
             table-layout: fixed;
         }
+
         th, td {
             text-align: left;
             padding: 8px;
         }
+
         .date-column {
             width: 32%;
         }
+
         .title-column {
             width: 68%;
         }
@@ -99,12 +103,13 @@
             justify-content: center
         }
     </style>
-    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-
-<main class="container">
 <div th:replace="~{fragment/nav :: top}"></div>
+<div th:replace="~{fragment/nav :: modal}"></div>
+<div class="line-box"></div>
+<main class="container">
     <h2>MYPAGE</h2>
     <hr>
     <article>
@@ -136,11 +141,14 @@
 <footer class="grid" style="display:flex; justify-content: center">
     <button onclick="window.location.href = '/profile/update'">회원정보수정</button>
     <button style="background-color: #5d2d28; border-color: #5d2d28"
-            onclick="window.location.href = '/mail'">이메일 인증</button>
+            onclick="window.location.href = '/mail'">이메일 인증
+    </button>
     <button id="deleteUserBtn"
-            style="background-color: #EE402E; border-color: #EE402E">회원탈퇴</button>
-
+            style="background-color: #EE402E; border-color: #EE402E">회원탈퇴
+    </button>
 </footer>
+<script type="text/javascript" src="/js/my-page.js"></script>
+<script type="text/javascript" src="/fragment/nav.js"></script>
 </body>
 
 </html>

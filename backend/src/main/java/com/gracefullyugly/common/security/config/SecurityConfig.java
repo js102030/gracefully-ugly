@@ -50,7 +50,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer configure() {      // 스프링 시큐리티 기능 비활성화
         return web -> web.ignoring()  //.requestMatchers(toH2Console())
-                .requestMatchers("/static/**", "/vendor/**", "/css/**", "/img/**", "/js/**", "/favicon.ico",
+                .requestMatchers("/vendor/**", "/static/**", "/css/**", "/image/**", "/js/**", "/fragment/**", "/favicon.ico",
                         "/h2-console/**");
     }
 
@@ -71,21 +71,18 @@ public class SecurityConfig {
         http
                 .httpBasic((auth) -> auth.disable());
 
-        //oauth2
+       /* //oauth2
         http
                 .oauth2Login((oauth2) -> oauth2
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService))
                         .successHandler(oAuth2CustomSuccessHandler)
-                );
+                );*/
 
         //경로별 인가 작업
         http
-                .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/api/users",
-                                "/api/users/{userId}/registration", "/**",
-                                "/logout", "/reissue",
-                                "/my-page", "/join", "/join2", "/main")
+                .authorizeHttpRequests((auth) -> auth //"/**", "/api/users", 빼고 실험
+                        .requestMatchers("/log", "/custom-login", "/login", "/", "/reissue", "/join", "/join2", "/api/groupbuy/**")
                         .permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());

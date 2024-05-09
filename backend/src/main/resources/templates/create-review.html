@@ -3,32 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>구매자 리뷰 작성 페이지</title>
-    <link rel="stylesheet" href="/create-review.css">
+    <link rel="stylesheet" href="/fragment/nav.css">
+    <link rel="stylesheet" href="/css/create-review.css">
 </head>
 <body class="body">
-<header class = "main-header">
-    <img class = "logo" src="/image/logo.png" alt="로고">
-    <button class="notice-button">알림</button>
-    <button class="login-button">로그아웃</button>
-    <button class="list-button">목록</button>
-</header>
+<div th:replace="~{fragment/nav :: top}"></div>
+<div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
 <div class="up-content">
-    <img class = "item-image" src="/image/item-review.png" alt="상품-리뷰 아이템">
+    <img class="item-image" src="/image/item-review.png" alt="상품-리뷰 아이템">
     <div class="item-content">
         <div class="point-and-star">
             <div class="point">
                 4
             </div>
             <div class="star">
-                <img class = "star" src="/image/star.png" alt="별점">
-                <img class = "star" src="/image/star.png" alt="별점">
-                <img class = "star" src="/image/star.png" alt="별점">
-                <img class = "star" src="/image/star.png" alt="별점">
+                <img class="star" src="/image/star.png" alt="별점">
+                <img class="star" src="/image/star.png" alt="별점">
+                <img class="star" src="/image/star.png" alt="별점">
+                <img class="star" src="/image/star.png" alt="별점">
             </div>
         </div>
         <div class="item-and-name">
-            <div class="item-and">상품명 : </div>
+            <div class="item-and">상품명 :</div>
             <div class="name">못난이 감자 3Kg</div>
         </div>
         <div class="add-text">
@@ -64,22 +61,7 @@
         </div>
     </div>
 </div>
-<!--목록 모달-->
-<section class="modal">
-    <div class="modal-box">
-        <div class="modal-inner">
-            <div>
-                <p class="ask9">구매자이신가요?</p>
-                <img id="modal-1" src="/image/modal-1.png" alt="찜한 내역">
-                <img id="modal-2" src="/image/modal-2.png" alt="구매 내역">
-                <img id="modal-3" src="/image/modal-3.png" alt="내 정보">
-                <p class="ask8">판매자이신가요?</p>
-                <img id="modal-4" src="/image/modal-4.png" alt="판매 내역">
-                <button class="modal-close">닫기</button>
-            </div>
-        </div>
-    </div>
-</section>
-<script type="text/javascript" src="/js/create-review.js" ></script>
+<script type="text/javascript" src="/js/create-review.js"></script>
+<script type="text/javascript" src="/fragment/nav.js"></script>
 </body>
 </html>

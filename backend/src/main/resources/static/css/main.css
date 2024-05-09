@@ -1,33 +1,13 @@
-.body {
+
+.body_wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
 }
 
-.line-box {
-    width: 1920px;
-    height: 3px;
-    background-color: #29902C;
-}
-
-.line-use {
-    margin-bottom: 10px;
-    width: 1300px;
-    height: 2px;
-    background-color: gray;
-}
-
-.logo {
-    margin-right: 1000px;
-}
-
-.main-header {
-    display: flex;
-    flex-direction: row;
-}
-
 .impending-text {
+    margin-right: 400px;
     display: flex;
     font-size: 36px;
     font-weight: 600;
@@ -42,13 +22,13 @@
 }
 
 .pick-text {
+    margin-right: 700px;
     font-size: 36px;
     font-weight: 600;
     margin-bottom: 20px;
 }
 
 .pick-items {
-    margin-top: 20px;
     display: flex;
     flex-direction: row;
 }
@@ -91,33 +71,6 @@
     flex-direction: row;
 }
 
-.notice-button {
-    margin-top: 10px;
-    margin-right: 20px;
-    border: 3px solid darkgreen;
-    background-color: #29902C;
-    color: darkgreen;
-    border-radius: 15px;
-    padding: 10px;
-    width: 100px;
-    height: 50px;
-    cursor: pointer;
-}
-
-.login-button {
-    margin-top: 10px;
-    margin-right: 20px;
-    border: 3px solid green;
-    background-color: #FFFFFF;
-    font-size: 15px;
-    color: black;
-    border-radius: 15px;
-    padding: 10px;
-    width: 100px;
-    height: 50px;
-    cursor: pointer;
-}
-
 .pickup-button {
     margin-top: 10px;
     margin-right: 20px;
@@ -144,5 +97,10 @@
 .more {
     margin-right: 100px;
 }
+
+
+
+
+
 
 

@@ -50,6 +50,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const modal = document.querySelector('.modal');
     const modalCloseButton = document.querySelector('.modal-close');
     const listButton = document.querySelector('.list-button');
+    const viewOrder = document.querySelector('.view-order');
+    const goToMain = document.querySelector(".go-to-main");
 
     if (listButton) {
         listButton.addEventListener('click', function() {
@@ -68,6 +70,16 @@ document.addEventListener('DOMContentLoaded', function() {
             modal.style.display = 'none';
         }
     });
+
+    viewOrder.addEventListener('click', event => {
+        const orderId = document.querySelector('.order-id');
+
+        window.location.href = ('http://localhost:8080/orders/' + orderId);
+    })
+
+    goToMain.addEventListener('click', event => {
+        window.location.href = '/';
+    })
 });
 
 // ----------------------- 마감임박 상품 조회

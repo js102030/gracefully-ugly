@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -59,7 +60,7 @@ public class CommonController {
 
     @GetMapping("/check-order")
     public String checkOrder() {
-        return "check-order";
+        return "complete-payment";
     }
 
     @GetMapping("/create-order")
@@ -91,9 +92,29 @@ public class CommonController {
         return "admin-report";
     }
 
-    @GetMapping("/login.html")
+    @GetMapping("/log")
+    public String log() {
+        return "login";
+    }
+
+    @PostMapping("/login")
     public String login() {
-        return "login.html";
+        return "/";
+    }
+
+    @GetMapping("/cart-list")
+    public String cart_list() {
+        return "cart-list";
+    }
+
+    @GetMapping("/modify-order")
+    public String modify_order() {
+        return "modify-order";
+    }
+
+    @GetMapping("/purchase_history")
+    public String purchase_history() {
+        return "purchase_history";
     }
 
     @GetMapping("/mainAfter")
@@ -101,13 +122,6 @@ public class CommonController {
         return "mainAfter";
     }
 
-    @GetMapping("/cart-list")
-    public String cartListPage() {
-        return "cart-list";
-    }
 
-    @GetMapping("/purchase_history")
-    public String PurchaseHistory() {
-        return "purchase_history";
-    }
+
 }

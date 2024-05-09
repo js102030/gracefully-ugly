@@ -22,11 +22,14 @@
         }
 
     </style>
-    <link rel="stylesheet" href="/main.css">
+    <link rel="stylesheet" href="/fragment/nav.css">
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 <main class="container">
     <div th:replace="~{fragment/nav :: top}"></div>
+    <div th:replace="~{fragment/nav :: modal}"></div>
+    <div class="line-box"></div>
     <br>
     <h2>ADMIN - 신고</h2>
     <hr>
@@ -141,6 +144,6 @@
         });
     });
 </script>
-
+<script type="text/javascript" src="/fragment/nav.js"></script>
 
 </html>
