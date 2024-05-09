@@ -74,7 +74,7 @@ saveAddressButton.addEventListener('click', (event) => {
             alert('주소가 성공적으로 변경되었습니다.');
         },
         error: function (data, status, error) {
-            alert('변경 도중 문제가 발생했습니다.\n[status: ' + data.status +', error: ' + data.response + ']');
+            alert('변경 도중 문제가 발생했습니다.\n[status: ' + data.status +']\n[error: ' + data.responseText + ']');
         }
     });
 });
@@ -101,7 +101,7 @@ savePhoneNumberButton.addEventListener('click', (event) => {
                  alert('연락처가 성공적으로 변경되었습니다.');
              },
              error: function (data, status, error) {
-                 alert('변경 도중 문제가 발생했습니다.\n[status: ' + data.status +', error: ' + data.response + ']');
+                 alert('변경 도중 문제가 발생했습니다.\n[status: ' + data.status +']\n[error: ' + data.responseText + ']');
              }
          });
      }
