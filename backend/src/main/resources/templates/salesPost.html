@@ -31,7 +31,7 @@
     <br>
     <div class="input-group">
         <label for="closedDate" class="input-label">마감일자</label>
-        <input type="date" id="closedDate">
+        <input type="datetime-local" id="closedDate">
     </div>
     <br>
     <div class="input-group">
@@ -62,9 +62,9 @@
 <script type="text/javascript" src="/fragment/nav.js"></script>
 </body>
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         const submitButton = document.getElementById('submitBtn');
-        submitButton.addEventListener('click', function(event) {
+        submitButton.addEventListener('click', function (event) {
             event.preventDefault();
 
 
