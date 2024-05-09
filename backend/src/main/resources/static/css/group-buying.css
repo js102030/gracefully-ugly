@@ -349,9 +349,17 @@
     cursor: pointer;
     margin-right: -180px;
 }
-/*모달 모집 기간 종료*/
-.notice-modal {
-    display: flex;
+/*모달 모집 기간 관리*/
+.notice-modal-CANCELLED {
+    display: none;
+    position: absolute;
+    z-index: 999;
+    left: 130px;
+    top: 130px;
+}
+
+.notice-modal-COMPLETED {
+    display: none;
     position: absolute;
     z-index: 999;
     left: 130px;
@@ -381,11 +389,11 @@
     margin-top: 10px;
 }
 
-.notice-modal-close-box {
-    border : 5px #29902C solid;
-    background: #FFFFFF;
-    border-radius: 15px;
-    width : 300px;
-    height : 50px;
-    padding : 12px 23px 0 0;
-}
+/*.notice-modal-close-box {*/
+/*    border : 5px #29902C solid;*/
+/*    background: #FFFFFF;*/
+/*    border-radius: 15px;*/
+/*    width : 300px;*/
+/*    height : 50px;*/
+/*    padding : 12px 23px 0 0;*/
+/*}*/

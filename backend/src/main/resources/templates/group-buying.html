@@ -35,7 +35,7 @@
         <div class="buttons">
             <button class="join-group-buying">공구 참여</button>
             <button class="join-cart">찜하기</button>
-            <button class="ask">문의하기</button>
+            <button class="ask" onclick="location.href='/productAsk'">문의하기</button>
         </div>
     </div>
 </div>
@@ -46,32 +46,25 @@
 <div class="review-list">
     <div class="review-count">후기&nbsp;<span th:text="${reviews.size()}" style="color:orange"></span>개</div>
     <div class="hr-2"></div>
-    <div class="review">
-
+    <div th:each="review : ${reviews}" class="review">
+        <div class="nickname-star">
+            <div class="nickname" th:text="${review.userId}"></div>
+            <div class="point" th:text="${review.starPoint}"></div>
+            <div class="star-review"></div>
+        </div>
+        <div class="image-and-review">
+            <div class="item"><img src="/image/item-review.png" alt="리뷰 사진"></div>
+            <div class="review-and-createdDay">
+                <div class="review-content" th:text="${review.comments}"></div>
+            </div>
+        </div>
+        <div class="hr-2"></div>
     </div>
 </div>
 
-<!--목록 모달-->
-<section class="modal">
-    <div class="modal-box">
-        <div class="modal-inner">
-            <div>
-                <p class="ask9">구매자이신가요?</p>
-                <img id="modal-1" onclick="location.href='/cart-list'" src="/image/modal-1.png" alt="찜한 내역">
-                <img id="modal-2" onclick="location.href='/purchase_history'" src="/image/modal-2.png" alt="구매 내역">
-                <img id="modal-3" onclick="location.href='/my-page'" src="/image/modal-3.png" alt="내 정보">
-                <p class="ask8">판매자이신가요?</p>
-                <img id="modal-4" onclick="location.href='/sellerList'" src="/image/modal-4.png" alt="판매 내역">
-                <button class="modal-close">닫기</button>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!--공구 현황 알림 모달-->
-
 <!--1) 공구 모집 기간이 종료되었습니다.-->
-<section class="notice-modal">
+<section class="notice-modal-CANCELLED">
     <div class="notice-modal-box">
         <div class="notice-modal-inner">
             <div class="notice-content">
@@ -90,7 +83,7 @@
 </section>
 
 <!--2) 공구가 완료되었습니다.-->
-<section class="notice-modal">
+<section class="notice-modal-COMPLETED">
     <div class="notice-modal-box">
         <div class="notice-modal-inner">
             <div class="notice-content">
@@ -108,19 +101,22 @@
 </section>
 
 <!--3) 마감일 안내-->
-<section class="notice-modal">
-    <div class="notice-modal-close-box">
-        <div class="notice-modal-inner">
-            <div class="notice-content">
-                <div class="notice">
-                    <div class="notice-title">
-                        마감<span style="color:red">4</span>일 전
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+<!--<section class="notice-modal">-->
+<!--    <div class="notice-modal-close-box">-->
+<!--        <div class="notice-modal-inner">-->
+<!--            <div class="notice-content">-->
+<!--                <div class="notice">-->
+<!--                    <div class="notice-title">-->
+<!--                        마감<span style="color:red">4</span>일 전-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+<script th:inline="javascript">
+    var itemId = [[${item.id}]];
+</script>
 <script type="text/javascript" src="/js/group-buying.js"></script>
 <script type="text/javascript" src="/fragment/nav.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
