@@ -29,7 +29,29 @@ public class Image extends BaseTimeEntity {
 
     private String storedImageName;
 
-    private int size;
+    private long size;
 
     private boolean isDeleted;
+
+    public static Image createItemImage(Long itemId, String url, String originalImageName, String storedImageName,
+                                        long size) {
+        Image image = new Image();
+        image.itemId = itemId;
+        image.url = url;
+        image.originalImageName = originalImageName;
+        image.storedImageName = storedImageName;
+        image.size = size;
+        return image;
+    }
+
+    public static Image createReviewImage(Long reviewId, String url, String originalImageName, String storedImageName,
+                                          long size) {
+        Image image = new Image();
+        image.reviewId = reviewId;
+        image.url = url;
+        image.originalImageName = originalImageName;
+        image.storedImageName = storedImageName;
+        image.size = size;
+        return image;
+    }
 }

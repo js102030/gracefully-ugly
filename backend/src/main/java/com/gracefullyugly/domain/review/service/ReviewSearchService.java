@@ -32,18 +32,12 @@ public class ReviewSearchService {
         return reviewRepository.countByUserId(userId);
     }
 
-    public ApiResponse<List<ReviewResponse>> getReviewsByItemId(Long itemId) {
+    public List<ReviewResponse> getReviewsOrEmptyByItemId(Long itemId) {
         List<Review> reviews = reviewRepository.findByItemId(itemId);
 
-        if (reviews.isEmpty()) {
-            throw new IllegalArgumentException("해당 상품에 대한 리뷰가 존재하지 않습니다.");
-        }
-
-        List<ReviewResponse> reviewResponses = reviews
+        return reviews
                 .stream()
                 .map(ReviewDtoUtil::reviewToReviewResponse)
                 .toList();
-
-        return new ApiResponse<>(reviewResponses.size(), reviewResponses);
     }
 }

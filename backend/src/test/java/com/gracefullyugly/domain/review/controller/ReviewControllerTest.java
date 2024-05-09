@@ -128,7 +128,7 @@ class ReviewControllerTest {
                         .build()
         );
 
-        given(reviewSearchService.getReviewsByItemId(any())).willReturn(
+        given(reviewSearchService.getReviewsOrEmptyByItemId(any())).willReturn(
                 new ApiResponse<>(responses.size(), responses)
         );
 
@@ -146,7 +146,7 @@ class ReviewControllerTest {
                 .andExpect(jsonPath("$.data[1].starPoint").value(3))
                 .andDo(print());
 
-        verify(reviewSearchService, times(1)).getReviewsByItemId(any());
+        verify(reviewSearchService, times(1)).getReviewsOrEmptyByItemId(any());
     }
 
     @Test

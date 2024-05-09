@@ -1,7 +1,9 @@
 package com.gracefullyugly.domain.item.controller.api;
 
+import com.gracefullyugly.domain.image.service.ImageUploadService;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
+import com.gracefullyugly.domain.item.dto.ItemWithImageUrlResponse;
 import com.gracefullyugly.domain.item.dto.UpdateDescriptionRequest;
 import com.gracefullyugly.domain.item.enumtype.Category;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
@@ -14,12 +16,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,17 +33,25 @@ public class ItemController {
 
     private final ItemService itemService;
     private final ItemSearchService itemSearchService;
+    private final ImageUploadService imageUploadService;
 
     // 판매글 생성
     @PostMapping("/items")
     public ResponseEntity<ItemResponse> addItem(@AuthenticationPrincipal(expression = "userId") Long userId,
-                                                @RequestBody ItemRequest request) {
+                                                @ModelAttribute ItemRequest request,
+                                                @RequestParam("productImage") MultipartFile file) {
+
         ItemResponse response = itemService.save(userId, request);
+
+        if (!file.isEmpty()) {
+            imageUploadService.saveFile(file, response.getId(), null);
+        }
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
     }
+
 
     // 판매글 목록 조회
     @GetMapping("/all/items")
@@ -100,14 +113,11 @@ public class ItemController {
                 .ok(itemResponseList);
     }
 
-
     // 상품 종류별 검색 목록 조회
     @GetMapping("/all/items/category/{categoryId}")
-    public ResponseEntity<List<?>> showCategory(@PathVariable Category categoryId) {
-        List<ItemResponse> itemResponseList = itemSearchService.getCategoryItems(categoryId);
-
+    public ResponseEntity<List<ItemWithImageUrlResponse>> showCategory(@PathVariable Category categoryId) {
         return ResponseEntity
-                .ok(itemResponseList);
+                .ok(itemSearchService.getCategoryItems(categoryId));
     }
 
 }

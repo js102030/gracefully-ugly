@@ -1,7 +1,9 @@
 package com.gracefullyugly.domain.item.service;
 
+import com.gracefullyugly.domain.image.service.ImageSearchService;
 import com.gracefullyugly.domain.item.dto.ItemDtoUtil;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
+import com.gracefullyugly.domain.item.dto.ItemWithImageUrlResponse;
 import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.enumtype.Category;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ItemSearchService {
 
     private final ItemRepository itemRepository;
+    private final ImageSearchService imageSearchService;
 
     public Item findById(Long itemId) {
         return itemRepository.findById(itemId)
@@ -71,16 +74,9 @@ public class ItemSearchService {
     }
 
     // 상품 종류별 검색 목록 조회
-    public List<ItemResponse> getCategoryItems(Category categoryId) {
-        List<Item> categoryItems = itemRepository.findCategoryItems(categoryId);
-
-        if (categoryItems.isEmpty()) {
-            throw new IllegalArgumentException("해당 카테고리 상품이 없습니다.");
-        }
-
-        return categoryItems.stream()
-                .map(ItemDtoUtil::itemToItemResponse)
-                .collect(Collectors.toList());
+    public List<ItemWithImageUrlResponse> getCategoryItems(Category categoryId) {
+        return itemRepository.findCategoryItemsWithImageUrl(
+                categoryId);
     }
 
 }

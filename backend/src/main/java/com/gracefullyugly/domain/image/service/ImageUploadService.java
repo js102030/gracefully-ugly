@@ -1,28 +1,31 @@
-package com.gracefullyugly.domain.image.demo.service;
+package com.gracefullyugly.domain.image.service;
 
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.gracefullyugly.domain.image.dto.ImageUploadResponse;
+import com.gracefullyugly.domain.image.entity.Image;
+import com.gracefullyugly.domain.image.repository.ImageRepository;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+@RequiredArgsConstructor
 @Service
+@Slf4j
 public class ImageUploadService {
 
     private final AmazonS3 amazonS3;
-
-    public ImageUploadService(AmazonS3 amazonS3) {
-        this.amazonS3 = amazonS3;
-    }
+    private final ImageRepository imageRepository;
 
     private final Set<String> uploadedFileNames = new HashSet<>();
     private final Set<Long> uploadedFileSizes = new HashSet<>();
@@ -34,22 +37,22 @@ public class ImageUploadService {
     private String maxSizeString;
 
     // 여러장의 파일 저장
-    public List<String> saveFiles(List<MultipartFile> multipartFiles) {
-        List<String> uploadedUrls = new ArrayList<>();
-
-        for (MultipartFile multipartFile : multipartFiles) {
-
-            if (isDuplicate(multipartFile)) {
-                throw new RuntimeException("Duplicate file request");
-            }
-
-            String uploadedUrl = saveFile(multipartFile);
-            uploadedUrls.add(uploadedUrl);
-        }
-
-        clear();
-        return uploadedUrls;
-    }
+//    public List<String> saveFiles(List<MultipartFile> multipartFiles) {
+//        List<String> uploadedUrls = new ArrayList<>();
+//
+//        for (MultipartFile multipartFile : multipartFiles) {
+//
+//            if (isDuplicate(multipartFile)) {
+//                throw new RuntimeException("Duplicate file request");
+//            }
+//
+//            String uploadedUrl = saveFile(multipartFile);
+//            uploadedUrls.add(uploadedUrl);
+//        }
+//
+//        clear();
+//        return uploadedUrls;
+//    }
 
     // 파일 삭제
     public void deleteFile(String fileUrl) {
@@ -69,10 +72,10 @@ public class ImageUploadService {
         try {
             amazonS3.deleteObject(bucket, objectKey);
         } catch (AmazonS3Exception e) {
-            System.out.println("error : File delete fail : " + e.getMessage());
+            log.error("error : Amazon S3 error while deleting file: {}", e.getMessage());
             throw new RuntimeException("Fail to delete file");
         } catch (SdkClientException e) {
-            System.out.println("error : AWS SDK client error : " + e.getMessage());
+            log.error("error : AWS SDK client error while deleting file: {}", e.getMessage());
             throw new RuntimeException("Fail to delete file");
         }
 
@@ -80,10 +83,12 @@ public class ImageUploadService {
     }
 
     // 단일 파일 저장
-    public String saveFile(MultipartFile file) {
+    public ImageUploadResponse saveFile(MultipartFile file, Long itemId, Long reviewId) {
+
+        String originalFilename = file.getOriginalFilename();
         String randomFilename = generateRandomFilename(file);
 
-        System.out.println("File upload started: " + randomFilename);
+        log.info("File upload started: {}", randomFilename);
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(file.getSize());
@@ -92,19 +97,36 @@ public class ImageUploadService {
         try {
             amazonS3.putObject(bucket, randomFilename, file.getInputStream(), metadata);
         } catch (AmazonS3Exception e) {
-            System.out.println("error : Amazon S3 error while uploading file: " + e.getMessage());
+            log.error("error : Amazon S3 error while uploading file: {}", e.getMessage());
             throw new RuntimeException("Fail to upload file");
         } catch (SdkClientException e) {
-            System.out.println("error : AWS SDK client error while uploading file: " + e.getMessage());
+            log.error("error : AWS SDK client error while uploading file: {}", e.getMessage());
             throw new RuntimeException("Fail to upload file");
         } catch (IOException e) {
-            System.out.println("error : IO error while uploading file: " + e.getMessage());
+            log.error("error : IO error while uploading file: {}", e.getMessage());
             throw new RuntimeException("Fail to upload file");
         }
 
         System.out.println("File upload completed: " + randomFilename);
 
-        return amazonS3.getUrl(bucket, randomFilename).toString();
+        String url = amazonS3.getUrl(bucket, randomFilename).toString();
+
+        Image savedImage;
+        Image createdImage;
+        if (reviewId == null) {
+            createdImage = Image.createItemImage(itemId, url, originalFilename, randomFilename, file.getSize());
+        } else {
+            createdImage = Image.createReviewImage(reviewId, url, originalFilename, randomFilename, file.getSize());
+        }
+        savedImage = imageRepository.save(createdImage);
+
+        return ImageUploadResponse.builder()
+                .url(savedImage.getUrl())
+                .originalImageName(savedImage.getOriginalImageName())
+                .storedImageName(savedImage.getStoredImageName())
+                .size(savedImage.getSize())
+                .build();
+
     }
 
     // 요청에 중복되는 파일 여부 확인

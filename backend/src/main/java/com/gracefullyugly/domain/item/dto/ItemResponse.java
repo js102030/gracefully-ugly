@@ -26,6 +26,5 @@ public class ItemResponse {
     private int totalSalesUnit;
     private int minGroupBuyWeight;
     private String description;
-    // TODO 이미지 추가
 
 }

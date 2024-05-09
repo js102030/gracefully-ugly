@@ -14,7 +14,7 @@
     <img src="/image/item.png" class="item-image" alt="제품사진">
     <div class="item-content">
         <div class="star-review">
-            <div class="point" th:text="${reviews[0].starPoint}"></div>
+            <div class="point" >4</div>
             <div class="star-review"></div>
         </div>
         <div class="title-price">
@@ -43,7 +43,7 @@
     <div class="description-text" th:text="${item.description}"></div>
 </div>
 <div class="review-list">
-    <div class="review-count">후기&nbsp;<span th:text="${reviews.size()}" style="color:orange"></span>개</div>
+    <div class="review-count">후기&nbsp;<span th:text="${#lists.size(reviews)}" style="color:orange"></span>개</div>
     <div class="hr-2"></div>
     <div class="review">
 
