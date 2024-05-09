@@ -4,11 +4,14 @@ import static com.gracefullyugly.testutil.SetupDataUtils.CATEGORY_ID;
 import static com.gracefullyugly.testutil.SetupDataUtils.ITEM_NAME;
 import static com.gracefullyugly.testutil.SetupDataUtils.PRICE;
 import static com.gracefullyugly.testutil.SetupDataUtils.QUANTITY;
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_LOGIN_ID;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.gracefullyugly.common.security.CustomUserDetails;
 import com.gracefullyugly.domain.cart.repository.CartRepository;
 import com.gracefullyugly.domain.cart_item.dto.AddCartItemRequest;
 import com.gracefullyugly.domain.cart_item.service.CartItemService;
@@ -16,6 +19,7 @@ import com.gracefullyugly.domain.item.dto.ItemRequest;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
 import com.gracefullyugly.domain.item.service.ItemService;
 import com.gracefullyugly.domain.user.repository.UserRepository;
+import com.gracefullyugly.testuserdetails.TestUserDetailsService;
 import com.gracefullyugly.testutil.SetupDataUtils;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -53,6 +57,9 @@ public class CartControllerTest {
     @Autowired
     CartItemService cartItemService;
 
+    private TestUserDetailsService testUserDetailsService;
+    private CustomUserDetails customUserDetails;
+
     @BeforeEach
     void setupTestData() {
         // 회원 정보 세팅
@@ -69,6 +76,10 @@ public class CartControllerTest {
             itemRepository.findAll().get(0).getId(), AddCartItemRequest.builder().itemCount(QUANTITY).build());
         cartItemService.addCartItem(userRepository.findByNickname(TEST_NICKNAME).get().getId(),
             itemRepository.findAll().get(1).getId(), AddCartItemRequest.builder().itemCount(QUANTITY + 3).build());
+
+        // UserDetails 세팅
+        testUserDetailsService = new TestUserDetailsService(userRepository);
+        customUserDetails = (CustomUserDetails) testUserDetailsService.loadUserByUsername(TEST_LOGIN_ID);
     }
 
     @AfterEach
@@ -85,7 +96,7 @@ public class CartControllerTest {
         Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
 
         // WHEN, THEN
-        mockMvc.perform(get("/api/cart/" + testUserId))
+        mockMvc.perform(get("/api/cart").with(user(customUserDetails)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$[0].itemCount").value(QUANTITY))
             .andExpect(jsonPath("$[0].name").value(ITEM_NAME))
