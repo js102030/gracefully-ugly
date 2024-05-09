@@ -35,7 +35,7 @@
         <div class="buttons">
             <button class="join-group-buying">공구 참여</button>
             <button class="join-cart">찜하기</button>
-            <button class="ask">문의하기</button>
+            <button class="ask" onclick="location.href='/productAsk'">문의하기</button>
         </div>
     </div>
 </div>
@@ -48,7 +48,7 @@
     <div class="hr-2"></div>
     <div th:each="review : ${reviews}" class="review">
         <div class="nickname-star">
-            <div class="nickname" th:value="${review.userId}"></div>
+            <div class="nickname" th:text="${review.userId}"></div>
             <div class="point" th:text="${review.starPoint}"></div>
             <div class="star-review"></div>
         </div>

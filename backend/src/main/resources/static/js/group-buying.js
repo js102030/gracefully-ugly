@@ -109,12 +109,17 @@ joinGroupBuy.addEventListener('click', event => {
     window.location.href = ('http://localhost:8080/orders/item/' + itemId);
 })
 
+// -------------  문의하기 버튼 이벤트 헨들러
 
+const questions = document.querySelector('.ask');
+questions.addEventListener('click', event => {
+    window.location.href = (`/productAsk?itemId=${itemId}`);
+})
 
 // ------------ 알림 모달창 상태 변경
 
 // 페이지 로드 완료 후 실행
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         console.log(itemId);
         var apiUrl = '/api/groupbuy/items/' + itemId;
 
