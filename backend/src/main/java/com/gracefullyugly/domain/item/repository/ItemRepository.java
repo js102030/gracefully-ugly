@@ -18,6 +18,19 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
                    i.description as description, img.url as imageUrl
             FROM item i
             LEFT JOIN image img ON i.item_id = img.item_id AND img.is_deleted = false
+            WHERE i.item_id = :itemId
+            """, nativeQuery = true)
+    ItemWithImageUrlResponse findOneItemWithImage(@Param("itemId") Long itemId);
+
+
+    @Query(value = """
+            SELECT i.item_id as id, i.user_id as userId, i.name as name, i.production_place as productionPlace,
+                   i.category_id as category, i.closed_date as closedDate, i.created_date as createdDate,
+                   i.last_modified_date as last_modified_date, i.min_unit_weight as minUnitWeight, i.price as price,
+                   i.total_sales_unit as totalSalesUnit, i.min_group_buy_weight as minGroupBuyWeight,
+                   i.description as description, img.url as imageUrl
+            FROM item i
+            LEFT JOIN image img ON i.item_id = img.item_id AND img.is_deleted = false
             """, nativeQuery = true)
     List<ItemWithImageUrlResponse> findAllItemsWithImages();
 

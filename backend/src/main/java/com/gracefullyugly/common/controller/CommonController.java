@@ -1,18 +1,12 @@
 package com.gracefullyugly.common.controller;
 
-import com.gracefullyugly.common.wrapper.ApiResponse;
 import com.gracefullyugly.domain.groupbuy.dto.GroupBuyListResponse;
-import com.gracefullyugly.domain.groupbuy.dto.GroupBuySelectDto;
-import com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus;
 import com.gracefullyugly.domain.groupbuy.service.GroupBuySearchService;
-import com.gracefullyugly.domain.item.dto.ItemResponse;
+import com.gracefullyugly.domain.item.dto.ItemWithImageUrlResponse;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.review.dto.ReviewResponse;
 import com.gracefullyugly.domain.review.service.ReviewSearchService;
 import java.util.List;
-
-import com.gracefullyugly.domain.user.dto.UserResponse;
-import com.gracefullyugly.domain.user.service.UserSearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -82,7 +76,7 @@ public class CommonController {
     @GetMapping("/group-buying")
     public String groupBuying(@RequestParam("itemId") Long itemId, Model model) {
         List<ReviewResponse> reviewResponse = reviewSearchService.getReviewsOrEmptyByItemId(itemId);
-        ItemResponse itemResponse = itemSearchService.findOneItem(itemId);
+        ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
         GroupBuyListResponse groupByListResponse = groupBuySearchService.getGroupBuyListByItemId(itemId);
 
         model.addAttribute("reviews", reviewResponse); // 리뷰 데이터를 모델에 추가
