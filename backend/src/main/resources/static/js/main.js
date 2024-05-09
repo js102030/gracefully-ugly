@@ -1,3 +1,74 @@
+//----- 상품 클릭 시 itemId에 따라서 다른 페이지 띄워주기
+document.addEventListener('DOMContentLoaded', function() {
+    const impendingItemsContainer = document.querySelector('.impending-items');
+    const popularItemsContainer = document.getElementById('popular-items-container');
+    const moreItemsContainer = document.querySelector('.more-items');
+
+    function handleItemClick(itemId) {
+        window.location.href = `/group-buying?itemId=${itemId}`;
+    }
+
+    // 마감임박 상품 클릭 시
+    impendingItemsContainer.addEventListener('click', function(event) {
+        const itemElement = event.target.closest('.item');
+        if (itemElement) {
+            const itemId = itemElement.dataset.itemId;
+            if (itemId) {
+                handleItemClick(itemId);
+            }
+        }
+    });
+
+    // 인기 상품 클릭 시
+    popularItemsContainer.addEventListener('click', function(event) {
+        const itemElement = event.target.closest('.item');
+        if (itemElement) {
+            const itemId = itemElement.dataset.itemId;
+            if (itemId) {
+                handleItemClick(itemId);
+            }
+        }
+    });
+
+    // 더보기 상품 클릭 시
+    moreItemsContainer.addEventListener('click', function(event) {
+        const itemElement = event.target.closest('.item');
+        if (itemElement) {
+            const itemId = itemElement.dataset.itemId;
+            if (itemId) {
+                handleItemClick(itemId);
+            }
+        }
+    });
+});
+
+
+// ------------ 모달창 js
+
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.querySelector('.modal');
+    const modalCloseButton = document.querySelector('.modal-close');
+    const listButton = document.querySelector('.list-button');
+
+    if (listButton) {
+        listButton.addEventListener('click', function() {
+            modal.style.display = 'block';
+        });
+    }
+
+    if (modalCloseButton) {
+        modalCloseButton.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+    }
+
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+
 // ----------------------- 마감임박 상품 조회
 document.addEventListener('DOMContentLoaded', function() {
     // 페이지 로드가 완료된 후 실행될 코드
@@ -17,6 +88,8 @@ function displayImpendingItems(items) {
     items.forEach(item => {
         const itemElement = document.createElement('div');
         itemElement.classList.add('item');
+        itemElement.dataset.itemId = item.id;
+
 
         itemElement.innerHTML = `
                 <img src="/image/item.png" alt="제품 사진">
@@ -54,6 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
             data.forEach(item => {
                 const itemElement = document.createElement('div');
                 itemElement.classList.add('item');
+                itemElement.dataset.itemId = item.id;
 
                 // 각 상품 정보를 표시할 방법에 따라 구성
                 itemElement.innerHTML = `
@@ -125,6 +199,7 @@ document.addEventListener('DOMContentLoaded', function() {
             items.forEach(item => {
                 const itemElement = document.createElement('div');
                 itemElement.classList.add('item');
+                itemElement.dataset.itemId = item.id;
 
                 // 상품 이미지 및 정보 표시
                 itemElement.innerHTML = `
