@@ -227,3 +227,7 @@
     height: 40px;
     cursor: pointer;
 }
+
+.empty-box {
+    justify-content: center;
+}
