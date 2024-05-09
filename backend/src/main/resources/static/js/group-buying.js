@@ -57,3 +57,23 @@ const joinGroupBuy = document.querySelector('.join-group-buying');
 joinGroupBuy.addEventListener('click', event => {
     window.location.href = ('http://localhost:8080/orders/item/' + itemId);
 })
+
+// ------------- 찜 하기 버튼 이벤트 핸들러
+const joinCart = document.querySelector('.join-cart');
+joinCart.addEventListener('click', event => {
+    $.ajax({
+        url: "http://localhost:8080/api/cart/" + itemId,
+        method: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            itemCount: 1
+        }),
+        success: function (data) {
+            alert("상품이 찜 목록에 추가되었습니다.");
+        },
+        error: function (data, status, error) {
+            alert('찜 목록에 추가 도중 문제가 발생했습니다.\n[status: ' + data.status +']\n[error: ' + data.responseText + ']');
+        }
+    })
+})
