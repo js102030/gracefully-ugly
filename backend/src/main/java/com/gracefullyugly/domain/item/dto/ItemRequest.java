@@ -1,13 +1,13 @@
 package com.gracefullyugly.domain.item.dto;
 
 import com.gracefullyugly.domain.item.entity.Item;
-import java.time.LocalDateTime;
-
 import com.gracefullyugly.domain.item.enumtype.Category;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @NoArgsConstructor
@@ -18,7 +18,10 @@ public class ItemRequest {
     private String name;
     private String productionPlace;
     private Category categoryId;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime closedDate;
+
     private int minUnitWeight;
     private int price;
     private int totalSalesUnit;
