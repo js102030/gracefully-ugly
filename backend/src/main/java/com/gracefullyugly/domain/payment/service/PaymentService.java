@@ -59,7 +59,7 @@ public class PaymentService {
         KakaoPayApproveResponse response = postKakaoPayApprove(userId, payment, pgToken);
         payment.updateIsPaid(true);
 
-        List<OrderItem> orderItemList =  orderItemRepository.findAllByOrderId(orderId);
+        List<OrderItem> orderItemList =  orderItemRepository.findAllByOrdersId(orderId);
         groupBuyUserService.joinGroupBuy(userId, orderItemList);
 
         return response;
