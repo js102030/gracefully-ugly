@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>주문서 조회 및 수정 페이지</title>
-    <link rel="stylesheet" href="/static/css/modify-order.css">
+    <link rel="stylesheet" href="/css/modify-order.css">
 </head>
 <body class="body">
 <header class="main-header">
-    <img class="logo" src="/static/image/logo.png" alt="로고">
+    <img class="logo" src="/image/logo.png" alt="로고">
     <button class="notice-button">알림</button>
     <button class="login-button">로그아웃</button>
     <button class="list-button">목록</button>
@@ -26,9 +26,10 @@
         <div class="title-text-front">상품명</div>
         <ul class="order-list">
             <li th:each="orderItem : ${OrderInfoResponse.getOrderItemList()}">
-                <div class="title-text"
-                     th:text="${orderItem.getName()} '('${#numbers.formatCurrency(orderItem.getPrice())}'원)' '-' ${orderItem.getQuantity()}'개'">
-                    못난이 아담한 감자 (~~~원) - 1개
+                <div class="title-text">
+                    <span th:text="${orderItem.getName()}">못난이 아담한 감자</span> (<span
+                        th:text="${#numbers.formatCurrency(orderItem.getPrice())}">~~~원</span>) -
+                    <span th:text="${orderItem.getQuantity()}">1</span>개
                 </div>
             </li>
         </ul>
@@ -50,7 +51,7 @@
     </div>
     <div class="sum-item-and-result">
         <div class="sum-item">총 결제 금액</div>
-        <div class="result"><span th:taxt="${#numbers.formatCurrency(OrderInfoResponse.getPayment().getTotalPrice())}" style="color:orange">20,000</span>원</div>
+        <div class="result"><span th:text="${#numbers.formatCurrency(OrderInfoResponse.getPayment().getTotalPrice())}" style="color:orange">~~~원</span></div>
     </div>
 </div>
 <!--목록 모달-->
@@ -59,16 +60,18 @@
         <div class="modal-inner">
             <div>
                 <p class="ask9">구매자이신가요?</p>
-                <img id="modal-1" src="/static/image/modal-1.png" alt="찜한 내역">
-                <img id="modal-2" src="/static/image/modal-2.png" alt="구매 내역">
-                <img id="modal-3" src="/static/image/modal-3.png" alt="내 정보">
+                <img id="modal-1" src="/image/modal-1.png" alt="찜한 내역">
+                <img id="modal-2" src="/image/modal-2.png" alt="구매 내역">
+                <img id="modal-3" src="/image/modal-3.png" alt="내 정보">
                 <p class="ask8">판매자이신가요?</p>
-                <img id="modal-4" src="/static/image/modal-4.png" alt="판매 내역">
+                <img id="modal-4" src="/image/modal-4.png" alt="판매 내역">
                 <button class="modal-close">닫기</button>
             </div>
         </div>
     </div>
 </section>
-<script type="text/javascript" src="/static/js/modify-order.js"></script>
+<script type="text/javascript" src="/js/modify-order.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </body>
 </html>
