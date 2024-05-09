@@ -49,8 +49,8 @@
     </div>
     <div class="sum-item-and-result">
         <div class="sum-item">총 결제 금액</div>
-        <div class="result"><span th:taxt="${#numbers.formatCurrency(OrderInfoResponse.getPayment().getTotalPrice())}"
-                                  style="color:orange">20,000</span>원
+        <div class="result">
+            <span th:text="${#numbers.formatCurrency(OrderInfoResponse.getPayment().getTotalPrice())}" style="color:orange">20,000원</span>
         </div>
     </div>
 </div>
