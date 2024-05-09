@@ -29,10 +29,10 @@ public class CartItemController {
         return ResponseEntity.ok(cartItemService.addCartItem(userId, itemId, request));
     }
 
-    @DeleteMapping("/cart/{itemId}")
+    @DeleteMapping("/cart/{cartItemId}")
     public ResponseEntity<CartItemResponse> deleteCartItem(
             @Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
-            @PathVariable(name = "itemId") Long itemId) {
-        return ResponseEntity.ok(cartItemService.deleteCartItem(userId, itemId));
+            @PathVariable(name = "cartItemId") Long cartItemId) {
+        return ResponseEntity.ok(cartItemService.deleteCartItem(userId, cartItemId));
     }
 }
