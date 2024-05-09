@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>공동 구매 페이지</title>
@@ -43,16 +43,27 @@
     <div class="description-text" th:text="${item.description}"></div>
 </div>
 <div class="review-list">
-    <div class="review-count">후기&nbsp;<span class="review-count-get" style="color:orange"></span>개</div>
+    <div class="review-count">후기&nbsp;<span th:text="${reviews.size()}" style="color:orange"></span>개</div>
     <div class="hr-2"></div>
-    <div class="review">
-
+    <div th:each="review : ${reviews}" class="review">
+        <div class="nickname-star">
+            <div class="nickname" th:value="${review.userId}"></div>
+            <div class="point" th:text="${review.starPoint}"></div>
+            <div class="star-review"></div>
+        </div>
+        <div class="image-and-review">
+            <div class="item"><img src="/image/item-review.png" alt="리뷰 사진"></div>
+            <div class="review-and-createdDay">
+                <div class="review-content" th:text="${review.comments}"></div>
+            </div>
+        </div>
+        <div class="hr-2"></div>
     </div>
 </div>
 
 <!--공구 현황 알림 모달-->
 <!--1) 공구 모집 기간이 종료되었습니다.-->
-<section class="notice-modal">
+<section class="notice-modal-CANCELLED">
     <div class="notice-modal-box">
         <div class="notice-modal-inner">
             <div class="notice-content">
@@ -71,7 +82,7 @@
 </section>
 
 <!--2) 공구가 완료되었습니다.-->
-<section class="notice-modal">
+<section class="notice-modal-COMPLETED">
     <div class="notice-modal-box">
         <div class="notice-modal-inner">
             <div class="notice-content">
@@ -89,19 +100,22 @@
 </section>
 
 <!--3) 마감일 안내-->
-<section class="notice-modal">
-    <div class="notice-modal-close-box">
-        <div class="notice-modal-inner">
-            <div class="notice-content">
-                <div class="notice">
-                    <div class="notice-title">
-                        마감<span style="color:red">4</span>일 전
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+<!--<section class="notice-modal">-->
+<!--    <div class="notice-modal-close-box">-->
+<!--        <div class="notice-modal-inner">-->
+<!--            <div class="notice-content">-->
+<!--                <div class="notice">-->
+<!--                    <div class="notice-title">-->
+<!--                        마감<span style="color:red">4</span>일 전-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
+<script th:inline="javascript">
+    var itemId = [[${item.id}]];
+</script>
 <script type="text/javascript" src="/js/group-buying.js"></script>
 <script type="text/javascript" src="/fragment/nav.js"></script>
 </body>
