@@ -49,7 +49,7 @@ public class ItemController {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(response);
+                .body(response); //TODO 이미지 URL 추가
     }
 
 
@@ -62,11 +62,9 @@ public class ItemController {
 
     // 판매글 상세 조회
     @GetMapping("/all/items/{itemId}")
-    public ResponseEntity<ItemResponse> showOneItem(@PathVariable Long itemId) {
-        ItemResponse itemResponse = itemSearchService.findOneItem(itemId);
-
+    public ResponseEntity<ItemWithImageUrlResponse> showOneItem(@PathVariable Long itemId) {
         return ResponseEntity
-                .ok(itemResponse);
+                .ok(itemSearchService.findOneItem(itemId));
     }
 
     // 판매글 수정
