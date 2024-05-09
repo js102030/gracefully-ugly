@@ -9,5 +9,5 @@ public interface NewsRepository extends JpaRepository<News, Long> {
 
     void deleteAllByCreatedAtBefore(LocalDateTime expiryDate);
 
-    List<News> findTop5ByOrderByCreatedAtAsc();
+    List<News> findTop5ByOrderByIdAsc();
 }
