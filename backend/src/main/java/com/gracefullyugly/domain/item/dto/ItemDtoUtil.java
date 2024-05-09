@@ -20,7 +20,6 @@ public class ItemDtoUtil {
                 .minGroupBuyWeight(item.getMinGroupBuyWeight())
                 .description(item.getDescription())
                 .build();
-        // TODO 이미지 추가
     }
 
 }

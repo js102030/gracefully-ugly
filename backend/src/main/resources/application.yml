@@ -1,9 +1,9 @@
 spring:
-  devtools:
-    livereload:
-      enabled: true
-    restart:
-      enabled: true
+  #  devtools:
+  #    livereload:
+  #      enabled: true
+  #    restart:
+  #      enabled: true
   thymeleaf:
     cache: false
     prefix: classpath:/templates/
@@ -60,8 +60,8 @@ spring:
 
   servlet:
     multipart:
-      max-file-size: 5MB
-      max-request-size: 10MB
+      max-file-size: 20MB
+      max-request-size: 30MB
       resolve-lazily: true
 
   jwt:
