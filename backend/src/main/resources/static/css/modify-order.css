@@ -272,4 +272,9 @@
     margin-bottom: 50px;
 }
 
+.order-list {
+    list-style: none;
+    padding-left: 0px;
+}
+
 
