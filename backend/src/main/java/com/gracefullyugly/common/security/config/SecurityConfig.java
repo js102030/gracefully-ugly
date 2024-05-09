@@ -82,7 +82,7 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth //"/**", "/api/users", 빼고 실험
-                        .requestMatchers("/log", "/custom-login", "/login", "/logout", "/", "/reissue", "/join", "/join2", "/api/groupbuy/**", "productAsk")
+                        .requestMatchers("/log", "/custom-login", "/login", "/logout", "/", "/reissue", "/join", "/join2", "/api/groupbuy/**")
                         .permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
