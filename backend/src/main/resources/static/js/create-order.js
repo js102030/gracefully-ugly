@@ -38,26 +38,39 @@ document.addEventListener('DOMContentLoaded', function() {
             method: 'post',
             dataType: 'json',
             contentType: 'application/json',
-            data: {
+            xhrFields: {
+                withCredentials: true
+            },
+            data: JSON.stringify({
                 itemIdList: [
                     {itemId: itemId, quantity: quantity}
                 ],
                 address: address,
                 phoneNumber: phoneNumber
-            },
+            }),
             success: function (data) {
+                console.log(data);
+
                 $.ajax({
-                    url: 'http://localhost:8080/payment',
+                    url: 'http://localhost:8080/api/payment',
                     method: 'post',
                     contentType: 'application/json',
-                    data: data,
+                    data: JSON.stringify(data),
+                    xhrFields: {
+                        withCredentials: true
+                    },
                     success: function (data) {
+                        console.log(data);
+
                         window.location.href = data;
                     }
                 })
             },
             error: function (data, status, error) {
-                alert('주문서 생성 중 문제가 발생했습니다. [status: ' + status +', error: ' + error + ']');
+                console.log(data);
+                console.log(status);
+                console.log(error);
+                alert('주문서 생성 중 문제가 발생했습니다.\n[status: ' + data.status +', error: ' + data.response + ']');
             }
         })
     })

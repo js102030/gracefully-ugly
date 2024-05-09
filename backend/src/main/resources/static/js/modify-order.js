@@ -22,14 +22,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+const backButton = document.querySelector('.back-button');
+
+backButton.addEventListener('click', () => {
+    window.history.back();
+})
+
 // 수정 & 저장
 
 // DOM 요소들을 가져오기
 const existingModifyButtons = document.querySelectorAll('.modify-button');
 const saveAddressButton = document.querySelector('.save-address-button');
 const savePhoneNumberButton = document.querySelector('.save-phone-number-button');
-const addressInput = document.querySelector('input[name="받는분 주소"]');
-const numberInput = document.querySelector('input[name="받는분 연락처"]');
 
 // 페이지 로드 후 실행될 함수
 document.addEventListener('DOMContentLoaded', () => {
@@ -63,14 +67,14 @@ saveAddressButton.addEventListener('click', (event) => {
         method: 'put',
         dataType: 'json',
         contentType: 'application/json',
-        data: {
+        data: JSON.stringify({
             address: newAddress
-        },
+        }),
         success: function (data) {
             alert('주소가 성공적으로 변경되었습니다.');
         },
         error: function (data, status, error) {
-            alert('변경 도중 문제가 발생했습니다. (error :' + error + ')');
+            alert('변경 도중 문제가 발생했습니다.\n[status: ' + data.status +', error: ' + data.response + ']');
         }
     });
 });
@@ -90,14 +94,14 @@ savePhoneNumberButton.addEventListener('click', (event) => {
              method: 'put',
              dataType: 'json',
              contentType: 'application/json',
-             data: {
+             data: JSON.stringify({
                  phoneNumber: newPhoneNumber
-             },
+             }),
              success: function (data) {
                  alert('연락처가 성공적으로 변경되었습니다.');
              },
              error: function (data, status, error) {
-                 alert('변경 도중 문제가 발생했습니다. (error :' + error + ')');
+                 alert('변경 도중 문제가 발생했습니다.\n[status: ' + data.status +', error: ' + data.response + ']');
              }
          });
      }

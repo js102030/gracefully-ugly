@@ -1,6 +1,6 @@
 package com.gracefullyugly.domain.payment.controller;
 
-import com.gracefullyugly.domain.payment.dto.KakaoPayApproveResponse;
+import com.gracefullyugly.domain.order.dto.OrderResponse;
 import com.gracefullyugly.domain.payment.dto.PaymentSearchDTO;
 import com.gracefullyugly.domain.payment.dto.PaymentSearchListResponse;
 import com.gracefullyugly.domain.payment.service.PaymentSearchService;
@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +37,12 @@ public class PaymentController {
             @Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
             @PathVariable("orderId") Long orderId) {
         return ResponseEntity.ok(paymentSearchService.getPayment(userId, orderId));
+    }
+
+    @PostMapping("/payment")
+    public ResponseEntity<String> readyKakaoPay(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
+                                @Valid @RequestBody OrderResponse order) {
+        return ResponseEntity.ok(paymentService.readyKakaoPay(order));
     }
 
     @PutMapping("/payment/kakaopay/refund/{orderId}")
