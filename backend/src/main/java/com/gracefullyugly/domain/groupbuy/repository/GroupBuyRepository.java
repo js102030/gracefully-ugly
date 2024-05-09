@@ -33,7 +33,7 @@ public interface GroupBuyRepository extends JpaRepository<GroupBuy, Long> {
 
     @Query(value = "SELECT GB "
             + "FROM GroupBuy AS GB "
-            + "WHERE GB.id = :itemId AND GB.groupBuyStatus = com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus.IN_PROGRESS AND GB.endDate > CURRENT_TIMESTAMP")
+            + "WHERE GB.itemId = :itemId AND GB.groupBuyStatus = com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus.IN_PROGRESS AND GB.endDate > CURRENT_TIMESTAMP")
     Optional<GroupBuy> findProgressGroupBuyByItemId(Long itemId);
 
     @Query("SELECT GB "
@@ -45,19 +45,18 @@ public interface GroupBuyRepository extends JpaRepository<GroupBuy, Long> {
 
     @Modifying
     @Query(value = "UPDATE group_buy "
-            + "SET group_buy_status = 1 "
+            + "SET group_buy_status = 'COMPLETED' "
             + "WHERE group_buy_id IN ("
-            + "SELECT GB.group_buy_id "
+            + "SELECT temp.group_buy_id "
             + "FROM ( "
             + "SELECT GB.group_buy_id "
             + "FROM group_buy AS GB "
             + "LEFT OUTER JOIN item AS I ON GB.item_id = I.item_id "
             + "LEFT OUTER JOIN group_buy_user AS GBU ON GB.group_buy_id = GBU.group_buy_id "
             + "WHERE GB.group_buy_id = :groupId AND "
-            + "I.price * (SELECT SUM(GBU.quantity) FROM group_buy_user AS GBU WHERE GBU.group_buy_id = :groupId) >= I.min_group_buy_weight)"
-            + "AS GB)",
+            + "(SELECT SUM(GBU.quantity) FROM group_buy_user AS GBU WHERE GBU.group_buy_id = :groupId) >= I.min_group_buy_weight) AS temp)",
             nativeQuery = true)
-    void updateGroupBuyStatusByGroupId(Long groupId);
+    Integer updateGroupBuyStatusByGroupId(Long groupId);
 
     @Modifying
     @Query("UPDATE GroupBuy AS GB "
