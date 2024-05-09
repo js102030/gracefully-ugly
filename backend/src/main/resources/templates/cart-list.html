@@ -10,7 +10,10 @@
 <div th:replace="~{fragment/nav :: top}"></div>
 <div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
-<div class="item-box" th:each="cartItem : ${CartList}">
+<div class="item-box empty-box" th:if="${CartList.get(0).getName() == null}">
+    <h2>찜 목록에 상품이 없습니다.</h2>
+</div>
+<div class="item-box" th:if="${CartList.get(0).getName() != null}" th:each="cartItem : ${CartList}">
     <img class="item-image" src="/image/item.png" alt="상품">
     <div class="item-content">
         <div class="title" th:text="${cartItem.getName()}">못난이 감자</div>
