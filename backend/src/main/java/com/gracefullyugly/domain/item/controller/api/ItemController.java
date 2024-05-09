@@ -117,7 +117,7 @@ public class ItemController {
     @GetMapping("/all/items/category/{categoryId}")
     public ResponseEntity<List<ItemWithImageUrlResponse>> showCategory(@PathVariable Category categoryId) {
         return ResponseEntity
-                .ok(itemSearchService.getCategoryItems(categoryId));
+                .ok(itemSearchService.getCategoryItems(categoryId.getValue()));
     }
 
 }

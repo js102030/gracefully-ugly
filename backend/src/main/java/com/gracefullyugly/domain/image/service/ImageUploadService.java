@@ -159,7 +159,7 @@ public class ImageUploadService {
     // 파일 확장자 체크
     private String validateFileExtension(String originalFilename) {
         String fileExtension = originalFilename.substring(originalFilename.lastIndexOf(".") + 1).toLowerCase();
-        List<String> allowedExtensions = Arrays.asList("jpg", "png", "gif", "jpeg");
+        List<String> allowedExtensions = Arrays.asList("jpg", "png", "gif", "jpeg", "webp");
 
         if (!allowedExtensions.contains(fileExtension)) {
             throw new RuntimeException("Invalid file extension");

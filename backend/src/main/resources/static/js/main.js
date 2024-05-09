@@ -202,12 +202,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // 상품 이미지 및 정보 표시
                 itemElement.innerHTML = `
-                    <img src="/image/item.png" alt="제품 사진">
-                    <div>
-                        <div>전체물량 : ${item.totalSalesUnit}Kg</div>
-                        <div style="font-size: 25px">${item.name}</div>
-                        <div style="font-size: 20px">${item.price}원</div>
-                    </div>
+                        <img src="${item.imageUrl ? item.imageUrl : '/image/item.png'}" alt="제품 사진" width="240" height="240">
+                        <div>
+                            <div>전체물량 : ${item.totalSalesUnit}Kg</div>
+                            <div style="font-size: 25px">${item.name}</div>
+                            <div style="font-size: 20px">${item.price}원</div>
+                        </div>
                 `;
 
                 itemsContainer.appendChild(itemElement);

@@ -2,10 +2,10 @@ package com.gracefullyugly.domain.item.repository;
 
 import com.gracefullyugly.domain.item.dto.ItemWithImageUrlResponse;
 import com.gracefullyugly.domain.item.entity.Item;
-import com.gracefullyugly.domain.item.enumtype.Category;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -34,7 +34,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
                     "LEFT JOIN image img ON i.item_id = img.item_id AND img.is_deleted = false " +
                     "WHERE i.category_id = :categoryId " +
                     "ORDER BY i.item_id", nativeQuery = true)
-    List<ItemWithImageUrlResponse> findCategoryItemsWithImageUrl(Category categoryId);
+    List<ItemWithImageUrlResponse> findCategoryItemsWithImageUrl(@Param("categoryId") String categoryId);
 
     @Query("SELECT I FROM Item AS I WHERE I.id = :itemId AND I.isDeleted = false AND I.closedDate >= CURRENT_TIMESTAMP")
     Optional<Item> findValidItemById(Long itemId);
