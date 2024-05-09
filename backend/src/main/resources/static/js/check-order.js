@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 window.location.reload();
             },
             error: function (data, status, error) {
-                alert('환불 도중 문제가 발생했습니다.\n[status: ' + data.status +', error: ' + data.response + ']');
+                alert('환불 도중 문제가 발생했습니다.\n[status: ' + data.status +', error: ' + data.responseText + ']');
             }
         })
     })
