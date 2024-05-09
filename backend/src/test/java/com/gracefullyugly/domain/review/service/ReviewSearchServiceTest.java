@@ -44,7 +44,7 @@ class ReviewSearchServiceTest {
 
     @Test
     @DisplayName("상품 아이디로 리뷰 리스트 조회 테스트")
-    void getReviewsByItemIdTest() {
+    void getReviewsOrEmptyByItemIdTest() {
         Review review1 = Review.builder()
                 .userId(1L)
                 .itemId(1L)
@@ -62,7 +62,7 @@ class ReviewSearchServiceTest {
         reviewRepository.save(review1);
         reviewRepository.save(review2);
 
-        ApiResponse<List<ReviewResponse>> reviewsByItemId = reviewSearchService.getReviewsByItemId(1L);
+        ApiResponse<List<ReviewResponse>> reviewsByItemId = reviewSearchService.getReviewsOrEmptyByItemId(1L);
 
         Assertions.assertThat(reviewsByItemId.getData().size()).isEqualTo(2);
         Assertions.assertThat(reviewsByItemId.getData().get(0).getComments()).isEqualTo(review1.getComments());
@@ -73,7 +73,7 @@ class ReviewSearchServiceTest {
 
     @Test
     @DisplayName("(실패) 상품 아이디로 리뷰 리스트 조회 테스트")
-    void getReviewsByItemIdFailTest() {
+    void getReviewsOrEmptyByItemIdFailTest() {
         Review review1 = Review.builder()
                 .userId(1L)
                 .itemId(1L)
@@ -91,7 +91,7 @@ class ReviewSearchServiceTest {
         reviewRepository.save(review1);
         reviewRepository.save(review2);
 
-        Assertions.assertThatThrownBy(() -> reviewSearchService.getReviewsByItemId(2L))
+        Assertions.assertThatThrownBy(() -> reviewSearchService.getReviewsOrEmptyByItemId(2L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("해당 상품에 대한 리뷰가 존재하지 않습니다.");
     }

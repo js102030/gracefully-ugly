@@ -5,7 +5,6 @@ import com.gracefullyugly.domain.review.dto.ReviewDtoUtil;
 import com.gracefullyugly.domain.review.dto.ReviewResponse;
 import com.gracefullyugly.domain.review.entity.Review;
 import com.gracefullyugly.domain.review.repository.ReviewRepository;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,20 +32,12 @@ public class ReviewSearchService {
         return reviewRepository.countByUserId(userId);
     }
 
-    public ApiResponse<List<ReviewResponse>> getReviewsByItemId(Long itemId) {
+    public List<ReviewResponse> getReviewsOrEmptyByItemId(Long itemId) {
         List<Review> reviews = reviewRepository.findByItemId(itemId);
 
-        if (reviews.isEmpty()) {
-//            throw new IllegalArgumentException("해당 상품에 대한 리뷰가 존재하지 않습니다.");
-            List<ReviewResponse> reviewResponses = new ArrayList<>();
-            return new ApiResponse<>(0, reviewResponses);
-        }
-
-        List<ReviewResponse> reviewResponses = reviews
+        return reviews
                 .stream()
                 .map(ReviewDtoUtil::reviewToReviewResponse)
                 .toList();
-
-        return new ApiResponse<>(reviewResponses.size(), reviewResponses);
     }
 }
