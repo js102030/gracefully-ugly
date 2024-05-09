@@ -103,7 +103,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// ---- username 가져오기
+// ---- nickname 가져오기
+$(document).ready(function() {
+    console.log(userId);
+    var apiUrl = '/api/users/' + userId;
+
+    $.get(apiUrl, function(data) {
+        var nickname = data.nickname;
+
+        $('.nickname').text(nickname);
+    })
+        .fail(function() {
+            // API 호출 실패 시 에러 처리
+            console.error('Failed to fetch user data');
+        });
+});
 
 
 // ------------- 공구 참여 버튼 이벤트 헨들러
@@ -120,48 +134,61 @@ questions.addEventListener('click', event => {
 })
 
 // ------------ 알림 모달창 상태 변경
+document.addEventListener('DOMContentLoaded', function () {
+    console.log(itemId);
+    var apiUrl = '/api/groupbuy/items/' + itemId;
 
-// 페이지 로드 완료 후 실행
-    document.addEventListener('DOMContentLoaded', function () {
-        console.log(itemId);
-        var apiUrl = '/api/groupbuy/items/' + itemId;
+    fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+            var groupBuyStatus = data.groupBuyList[0].groupBuyStatus;
+            console.log(groupBuyStatus);
+            if (groupBuyStatus === 'CANCELLED') {
+                showCancelledModal();
+                hideButtons();
+            } else if (groupBuyStatus === 'COMPLETED') {
+                showCompletedModal();
+                hideButtons();
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching group buy data:', error);
+        });
+});
 
-        // 서버에서 공동 구매 목록 요청
-        fetch(apiUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-                var groupBuyStatus = data.groupBuyList[0].groupBuyStatus;
-                console.log(groupBuyStatus);
-                if (groupBuyStatus === 'CANCELLED') {
-                    showCancelledModal();
-                } else if (groupBuyStatus === 'COMPLETED') {
-                    showCompletedModal();
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching group buy data:', error);
-            });
-    });
+function showCancelledModal() {
+    var modal = document.querySelector('.notice-modal-CANCELLED');
+    if (modal) {
+        modal.style.display = 'block';
+    }
+}
 
-    function showCancelledModal() {
-        var modal = document.querySelector('.notice-modal-CANCELLED');
-        if (modal) {
-            modal.style.display = 'block';
-        }
+function showCompletedModal() {
+    var modal = document.querySelector('.notice-modal-COMPLETED');
+    if (modal) {
+        modal.style.display = 'block';
+    }
+}
+
+function hideButtons() {
+    // 공구 참여 버튼과 찜하기 버튼 숨기기
+    var joinButton = document.querySelector('.join-group-buying');
+    var cartButton = document.querySelector('.join-cart');
+
+    if (joinButton) {
+        joinButton.style.display = 'none';
     }
 
-    function showCompletedModal() {
-        var modal = document.querySelector('.notice-modal-COMPLETED');
-        if (modal) {
-            modal.style.display = 'block';
-        }
+    if (cartButton) {
+        cartButton.style.display = 'none';
     }
+}
 
 
 // ------------- 찜 하기 버튼 이벤트 핸들러
@@ -183,3 +210,48 @@ joinCart.addEventListener('click', event => {
         }
     })
 })
+
+// ---- 글 수정
+function showEditForm() {
+    document.getElementById('editFormContainer').style.display = 'block';
+    var currentDescription = document.querySelector('.description-text').textContent.trim();
+    document.getElementById('editDescription').value = currentDescription;
+}
+
+function submitEdit() {
+    var updatedDescription = document.getElementById('editDescription').value;
+
+    $.ajax({
+        type: 'PUT',
+        url: '/api/items/' + itemId,
+        contentType: 'application/json',
+        data: JSON.stringify({ description: updatedDescription }),
+        success: function(response) {
+            console.log('글 수정 완료:', response);
+            window.location.reload();
+        },
+        error: function(xhr, status, error) {
+            console.error('글 수정 실패:', error);
+        }
+    });
+
+    // 수정 폼을 숨김
+    document.getElementById('editFormContainer').style.display = 'none';
+}
+
+// --- 글 삭제
+function deleteItem() {
+    if (confirm('정말로 삭제하시겠습니까?')) {
+        $.ajax({
+            type: 'DELETE',
+            url: '/api/items/' + itemId,
+            success: function() {
+                alert('글이 삭제되었습니다. 메인 페이지로 이동합니다.');
+                window.location.href = '/';
+            },
+            error: function(xhr, status, error) {
+                console.error('글 삭제 실패:', error);
+            }
+        });
+    }
+}
