@@ -14,7 +14,8 @@
     <img src="/image/item.png" class="item-image" alt="제품사진">
     <div class="item-content">
         <div class="star-review">
-            <div class="point" th:text="${reviews[0].starPoint}"></div>
+            <div class="point" th:if="${#lists.isEmpty(reviews)}">0.0</div>
+            <div class="point" th:if="${not #lists.isEmpty(reviews)}" th:text="${reviews[0].starPoint}"></div>
             <div class="star-review"></div>
         </div>
         <div class="title-price">
@@ -32,7 +33,7 @@
         </div>
         <div class="minimum-purchase-unit">최소 구매 단위는&nbsp;<span th:text="${item.minUnitWeight}" style="color:red">3</span>KG 입니다.</div>
         <div class="buttons">
-            <button class="join-group-buying" onclick="location.href='/create-order'">공구 참여</button>
+            <button class="join-group-buying">공구 참여</button>
             <button class="join-cart">찜하기</button>
             <button class="ask">문의하기</button>
         </div>
