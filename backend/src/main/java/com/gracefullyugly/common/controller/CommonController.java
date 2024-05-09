@@ -126,4 +126,9 @@ public class CommonController {
         return "purchase_history";
     }
 
+    @GetMapping("/productAsk")
+    public String productAsk() {
+        return "productAsk";
+    }
+
 }

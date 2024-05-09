@@ -22,7 +22,9 @@
     <div class="order-content">
         <div class="input-quantity">
             <div class="input">수량</div>
-            <div class="quantity"><input type="text" id="quantity" name="수량"></div>
+            <div class="quantity">
+                <input type="text" id="quantity" name="수량" th:placeholder="${Item.getMinUnitWeight() + '개 이상 ' + Item.getMinGroupBuyWeight() + '개 이하'}">
+            </div>
         </div>
         <div class="input-address">
             <div class="input">받는분 주소</div>

@@ -103,6 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
 //  ??????????????
 
 
+// ------------- 공구 참여 버튼 이벤트 헨들러
+const joinGroupBuy = document.querySelector('.join-group-buying');
+joinGroupBuy.addEventListener('click', event => {
+    window.location.href = ('http://localhost:8080/orders/item/' + itemId);
+})
 
 
 

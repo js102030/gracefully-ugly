@@ -53,7 +53,7 @@ public class OrderService {
                 itemInfoToPaymentDto);
 
         if (orderItemList.isEmpty()) {
-            throw new NotFoundException("주문 가능한 상품이 없습니다.");
+            throw new NotFoundException("주문 가능한 상품이 없습니다.(유효한 상품인지, 올바른 수량인지 확인해주세요.)");
         }
 
         orderItemRepository.saveAll(orderItemList);
@@ -119,7 +119,7 @@ public class OrderService {
 
     /**
      * 주문하고자 하는 상품들 중 유효하지 않은 상품을 걸러낸 뒤, OrderItem 객체의 List를 만드는 메소드 입니다. orderItemInfoDto는 결제 프로세스에 필요한 정보를 저장하기 위한
-     * 파라메터입니다.
+     * 파라메터입니다. (비유효 기준: 상품 존재 여부, 삭제 여부, 마감 기한 여부, 적절한 수량인지)
      */
     private List<OrderItem> makeOrderItemList(Long orderId, List<OrderItemDto> items,
                                               ItemInfoToPaymentDto itemInfoToPaymentDto) {
@@ -132,7 +132,9 @@ public class OrderService {
 
                     Item result = resultOptional.get();
 
-                    if (!result.isDeleted() && !result.getClosedDate().isBefore(LocalDateTime.now())) {
+                    if (!result.isDeleted() && !result.getClosedDate().isBefore(LocalDateTime.now()) && (
+                            result.getMinUnitWeight() <= item.getQuantity()
+                                    && item.getQuantity() <= result.getTotalSalesUnit())) {
                         itemInfoToPaymentDto.setFirstItemName(result.getName())
                                 .addQuantity(item.getQuantity().intValue())
                                 .addTotalAmount(result.getPrice() * item.getQuantity().intValue());

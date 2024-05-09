@@ -247,3 +247,8 @@
 .payment-cancel, .payment-refund, .payment-fail {
     color: #EE402E;
 }
+
+.order-list {
+    list-style: none;
+    padding-left: 0px;
+}
