@@ -133,7 +133,6 @@ questions.addEventListener('click', event => {
             })
             .then(data => {
                 console.log(data);
-
                 var groupBuyStatus = data.groupBuyList[0].groupBuyStatus;
                 console.log(groupBuyStatus);
                 if (groupBuyStatus === 'CANCELLED') {
