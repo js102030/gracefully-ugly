@@ -42,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-
 // ------------ 모달창 js
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -69,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
 // ----------------------- 마감임박 상품 조회
 document.addEventListener('DOMContentLoaded', function() {
     // 페이지 로드가 완료된 후 실행될 코드
@@ -89,7 +89,6 @@ function displayImpendingItems(items) {
         const itemElement = document.createElement('div');
         itemElement.classList.add('item');
         itemElement.dataset.itemId = item.id;
-
 
         itemElement.innerHTML = `
                 <img src="/image/item.png" alt="제품 사진">

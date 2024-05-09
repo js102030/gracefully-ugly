@@ -14,7 +14,7 @@
     <img src="/image/item.png" class="item-image" alt="제품사진">
     <div class="item-content">
         <div class="star-review">
-            <div class="point" th:text="${reviews[0].starPoint}"></div>
+            <div class="point"></div>
             <div class="star-review"></div>
         </div>
         <div class="title-price">
@@ -43,32 +43,14 @@
     <div class="description-text" th:text="${item.description}"></div>
 </div>
 <div class="review-list">
-    <div class="review-count">후기&nbsp;<span th:text="${reviews.size()}" style="color:orange"></span>개</div>
+    <div class="review-count">후기&nbsp;<span class="review-count-get" style="color:orange"></span>개</div>
     <div class="hr-2"></div>
     <div class="review">
 
     </div>
 </div>
 
-<!--목록 모달-->
-<section class="modal">
-    <div class="modal-box">
-        <div class="modal-inner">
-            <div>
-                <p class="ask9">구매자이신가요?</p>
-                <img id="modal-1" onclick="location.href='/cart-list'" src="/image/modal-1.png" alt="찜한 내역">
-                <img id="modal-2" onclick="location.href='/purchase_history'" src="/image/modal-2.png" alt="구매 내역">
-                <img id="modal-3" onclick="location.href='/my-page'" src="/image/modal-3.png" alt="내 정보">
-                <p class="ask8">판매자이신가요?</p>
-                <img id="modal-4" onclick="location.href='/sellerList'" src="/image/modal-4.png" alt="판매 내역">
-                <button class="modal-close">닫기</button>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!--공구 현황 알림 모달-->
-
 <!--1) 공구 모집 기간이 종료되었습니다.-->
 <section class="notice-modal">
     <div class="notice-modal-box">

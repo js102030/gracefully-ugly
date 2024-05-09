@@ -75,9 +75,7 @@ public class CommonController {
 
     @GetMapping("/group-buying")
     public String groupBuying(@RequestParam("itemId") Long itemId, Model model) {
-        ApiResponse<List<ReviewResponse>> reviewResponse = reviewSearchService.getReviewsByItemId(itemId);
         ItemResponse itemResponse = itemSearchService.findOneItem(itemId);
-        model.addAttribute("reviews", reviewResponse.getData()); // 리뷰 데이터를 모델에 추가
         model.addAttribute("item", itemResponse);
         return "group-buying";
     }
