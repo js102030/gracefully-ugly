@@ -11,7 +11,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
@@ -21,10 +20,10 @@ public class OrderViewController {
     private ItemSearchService itemSearchService;
     private OrderService orderService;
 
-    @GetMapping("/orders/{itemId}")
+    @GetMapping("/orders/item/{itemId}")
     public String createOrderView(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
                                   @PathVariable("itemId") Long itemId,
-                                  @ModelAttribute Model model) {
+                                  Model model) {
         Item item = itemSearchService.findById(itemId);
         model.addAttribute("Item", item);
 
@@ -35,7 +34,7 @@ public class OrderViewController {
     public String getOrderInfo(
             @Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
             @PathVariable("ordersId") Long orderId,
-            @ModelAttribute Model model) {
+            Model model) {
         OrderInfoResponse response = orderService.getOrderInfo(userId, orderId);
         model.addAttribute("OrderInfoResponse", response);
 
@@ -45,7 +44,7 @@ public class OrderViewController {
     @GetMapping("/orders/modify/{ordersId}")
     public String modifyOrderView(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
                                   @PathVariable("ordersId") Long orderId,
-                                  @ModelAttribute Model model) {
+                                  Model model) {
         OrderInfoResponse response = orderService.getOrderInfo(userId, orderId);
         model.addAttribute("OrderInfoResponse", response);
 
