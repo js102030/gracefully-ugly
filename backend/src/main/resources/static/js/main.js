@@ -91,7 +91,7 @@ function displayImpendingItems(items) {
         itemElement.dataset.itemId = item.id;
 
         itemElement.innerHTML = `
-                <img src="/image/item.png" alt="제품 사진">
+                <img src="${item.imageUrl ? item.imageUrl : '/image/item.png'}" alt="제품 사진" width="240" height="240">
                 <div>
                     <div>전체물량 : ${item.totalSalesUnit}Kg</div>
                     <div style="font-size: 25px">${item.name}</div>
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // 각 상품 정보를 표시할 방법에 따라 구성
                 itemElement.innerHTML = `
-                    <img src="/image/item.png" alt="제품 사진">
+                    <img src="${item.imageUrl ? item.imageUrl : '/image/item.png'}" alt="제품 사진" width="240" height="240">
                     <div>
                         <div>전체물량 : ${item.totalSalesUnit}Kg</div>
                         <div style="font-size: 25px">${item.name}</div>
