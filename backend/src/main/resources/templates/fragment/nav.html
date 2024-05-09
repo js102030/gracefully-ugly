@@ -9,7 +9,7 @@
 
 <header class="main-header" th:fragment="top">
 
-    <img class="logo" onclick="location.href='/'" src="/image/logo.png" alt="로고">
+    <a href="/"><img class="logo" src="/image/logo.png" alt="로고"></a>
     <button class="notice-button" id="test_btn">알림</button>
     <button class="login-button" onclick="location.href='/log'">로그인</button>
     <button class="logout-btn" id="logout-button">로그아웃</button>
@@ -22,7 +22,7 @@
         <div class="modal-inner">
             <div>
                 <p class="ask9">구매자이신가요?</p>
-                <img id="modal-1" src="/image/modal-1.png" onclick="location.href='/cart-list'" alt="찜한 내역">
+                <img id="modal-1" src="/image/modal-1.png" onclick="location.href='/cart'" alt="찜한 내역">
                 <img id="modal-2" src="/image/modal-2.png" onclick="location.href='/purchase_history'" alt="구매 내역">
                 <img id="modal-3" src="/image/modal-3.png" onclick="location.href='/my-page'" alt="내 정보">
                 <p class="ask8">판매자이신가요?</p>
