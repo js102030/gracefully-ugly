@@ -41,7 +41,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // 로그인 성공 후 특정 URL로 리다이렉트합니다.
                     window.location.href = "/";
-                } else {
+                } /*else if(response.status === 403){
+                    console.log("로그인 하셔야 들어갈수 있는 page입니다");
+                    window.location.href = "/log";
+                }else if((response.status === 401){
+                    console.log("만료된 토큰으로 재로그인 해주세요!");
+                    window.location.href = "/log";
+                }*/ else {
                     // 로그인이 실패했을 때
                     console.log("로그인 실패");
                 }

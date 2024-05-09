@@ -99,7 +99,7 @@ public class CommonController {
 
     @PostMapping("/login")
     public String login() {
-        return "/";
+        return "main";
     }
 
     @GetMapping("/cart-list")

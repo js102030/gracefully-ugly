@@ -87,14 +87,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                               AuthenticationException failed) {
-        logger.info("로그인 실패");
+        logger.info("아이디나 비밀번호 다시 확인해주세요!");
         response.setStatus(401);
     }
 
     private Cookie createCookie(String key, String value) {
 
         Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(24 * 60 * 60);   //쿠키 생명주기
+        cookie.setMaxAge(24 * 60 * 60);   //쿠키 생명주기(재설정해서 사용 가능)
         //cookie.setSecure(true);    //https 통신하면 이 값 넣어줌
         //cookie.setPath("/");       //쿠키 적용될 범위
 //        cookie.setHttpOnly(true);    //js에서 해당 쿠키 접근 불가하게 막음
