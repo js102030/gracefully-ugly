@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     backButton.addEventListener('click', () => {
-        window.history.back();
+        window.location.href = "/";
     })
 
     modifyOrderButton.addEventListener('click', () => {
@@ -39,13 +39,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         $.ajax({
             url: 'http://localhost:8080/api/payment/kakaopay/refund/' + orderId,
-            method: 'post',
+            method: 'put',
             success: function (data) {
                 alert("정상적으로 환불되었습니다.");
                 window.location.reload();
             },
             error: function (data, status, error) {
-                alert("환불 도중 문제가 발생했습니다. (error: " + error + ')');
+                alert('환불 도중 문제가 발생했습니다.\n[status: ' + data.status +', error: ' + data.response + ']');
             }
         })
     })

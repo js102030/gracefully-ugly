@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     viewOrder.addEventListener('click', event => {
-        const orderId = document.querySelector('.order-id');
+        const orderId = document.querySelector('.order-id').value;
 
         window.location.href = ('http://localhost:8080/orders/' + orderId);
     })

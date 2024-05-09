@@ -23,9 +23,10 @@
         <div class="title-text-front">상품명</div>
         <ul class="order-list">
             <li th:each="orderItem : ${OrderInfoResponse.getOrderItemList()}">
-                <div class="title-text"
-                     th:text="${orderItem.getName()} '('${#numbers.formatCurrency(orderItem.getPrice())}'원)' '-' ${orderItem.getQuantity()}'개'">
-                    못난이 아담한 감자 (~~~원) - 1개
+                <div class="title-text">
+                    <span th:text="${orderItem.getName()}">못난이 아담한 감자</span> (<span
+                        th:text="${#numbers.formatCurrency(orderItem.getPrice())}">~~~원</span>) -
+                    <span th:text="${orderItem.getQuantity()}">1</span>개
                 </div>
             </li>
         </ul>
@@ -55,5 +56,7 @@
 </div>
 <script type="text/javascript" src="/js/modify-order.js"></script>
 <script type="text/javascript" src="/fragment/nav.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </body>
 </html>
