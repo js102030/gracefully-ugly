@@ -16,44 +16,93 @@
     <input type="text" id="productName">
     <div class="gray-line"></div> <!-- 회색 라인 -->
     <div class="input-group">
-        <label for="productOrigin" class="input-label">생산지</label>
-        <input type="text" id="productOrigin">
+        <label for="productionPlace" class="input-label">생산지</label>
+        <input type="text" id="productionPlace">
     </div>
     <br>
     <div class="input-group">
         <label for="productType" class="input-label">상품 종류 선택</label>
         <select id="productType">
-            <option value="채소">채소</option>
-            <option value="과일">과일</option>
-            <option value="기타">기타</option>
+            <option value="VEGETABLE">채소</option>
+            <option value="FRUIT">과일</option>
+            <option value="OTHER">기타</option>
         </select>
     </div>
     <br>
     <div class="input-group">
-        <label for="deadline" class="input-label">마감일자</label>
-        <input type="date" id="deadline">
+        <label for="closedDate" class="input-label">마감일자</label>
+        <input type="date" id="closedDate">
     </div>
     <br>
     <div class="input-group">
-        <label for="productOrigin" class="input-label">최소 구매 단위(g)</label>
-        <input type="text" id="atLeastPer">
+        <label for="minUnitWeight" class="input-label">최소 구매 단위(g)</label>
+        <input type="text" id="minUnitWeight">
     </div>
     <br>
     <div class="input-group">
-        <label for="productType" class="input-label">구매 단위 당 가격</label>
-        <input type="text" id="perCost">
+        <label for="price" class="input-label">구매 단위 당 가격</label>
+        <input type="text" id="price">
     </div>
     <br>
     <div class="input-group">
-        <label for="deadline" class="input-label">공동 구매 완료 취소 단위</label>
-        <input type="text" id="goalPer">
+        <label for="totalSalesUnit" class="input-label">총 판매 수량</label>
+        <input type="text" id="totalSalesUnit">
+    </div>
+    <br>
+    <div class="input-group">
+        <label for="minGroupBuyWeight" class="input-label">공동 구매 완료 최소 무게(g)</label>
+        <input type="text" id="minGroupBuyWeight">
     </div>
     <div class="gray-line"></div> <!-- 회색 라인 -->
     <h2>상품에 대한 설명</h2>
     <textarea></textarea>
     <button class="attach">사진 첨부하기</button> <!-- 버튼에 클래스를 추가하여 스타일을 적용 -->
 </div>
-<button>상품 등록</button>
+<button id="submitBtn">상품 등록</button>
 <script type="text/javascript" src="/fragment/nav.js"></script>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const submitButton = document.getElementById('submitBtn');
+        submitButton.addEventListener('click', function(event) {
+            event.preventDefault();
+
+
+            const itemRequest = {
+                name: document.getElementById('productName').value,
+                productionPlace: document.getElementById('productionPlace').value,
+                categoryId: document.getElementById('productType').value,
+                closedDate: document.getElementById('closedDate').value,
+                minUnitWeight: parseInt(document.getElementById('minUnitWeight').value, 10),
+                price: parseInt(document.getElementById('price').value, 10),
+                totalSalesUnit: parseInt(document.getElementById('totalSalesUnit').value, 10),
+                minGroupBuyWeight: parseInt(document.getElementById('minGroupBuyWeight').value, 10),
+                description: document.querySelector('textarea').value
+            };
+
+            fetch('/api/items', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(itemRequest)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('상품이 성공적으로 등록되었습니다!');
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('상품 등록 중 에러 발생:', error);
+                    alert('상품 등록에 실패했습니다: ' + error.message);
+                });
+        });
+    });
+</script>
+
 </html>
