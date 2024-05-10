@@ -58,13 +58,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     .role(Role.GUEST)
                     .build();
 
-            userRepository.save(userEntity);
-            Optional<User> saveUser = userRepository.findByLoginId(username);
+            User saveUser = userRepository.save(userEntity);
 
             UserDTO userDTO = new UserDTO();
             userDTO.setUsername(username);
-            userDTO.setUserId(saveUser.get().getId());
-            userDTO.setRole(Role.ADMIN); // 일단 예시로 ADMIN 해둠
+            userDTO.setUserId(saveUser.getId());
+            userDTO.setRole(saveUser.getRole()); // 일단 예시로 GUEST 해둠
 
             return new CustomOAuth2User(userDTO);
         } else {
