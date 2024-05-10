@@ -14,7 +14,8 @@
     <h2>찜 목록에 상품이 없습니다.</h2>
 </div>
 <div class="item-box" th:if="${CartList.get(0).getName() != null}" th:each="cartItem : ${CartList}">
-    <img class="item-image" src="/image/item.png" alt="상품">
+    <img class="item-image" th:src="${cartItem.getImageUrl() != null ? cartItem.getImageUrl() : '/image/item.png'}"
+         alt="상품">
     <div class="item-content">
         <div class="title" th:text="${cartItem.getName()}">못난이 감자</div>
         <div class="end-time">마감일 <span th:text="${cartItem.getCloseDate()}">2024.05.15</span></div>
@@ -25,6 +26,7 @@
         <button class="payment-button" th:onclick="|orderCartItem('${cartItem.getItemId()}')|">결제하기</button>
     </div>
 </div>
+
 <script type="text/javascript" src="/js/cart-list.js"></script>
 <script type="text/javascript" src="/fragment/nav.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
