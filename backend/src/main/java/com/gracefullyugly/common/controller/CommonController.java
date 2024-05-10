@@ -9,7 +9,6 @@ import com.gracefullyugly.domain.review.service.ReviewSearchService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +26,7 @@ public class CommonController {
     private final GroupBuySearchService groupBuySearchService;
 
     @GetMapping("/")
-    public String mainPage(@AuthenticationPrincipal(expression = "userId") Long userId) {
-        assert userId != null;
+    public String mainPage() {
         return "main";
     }
 
