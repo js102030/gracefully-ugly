@@ -71,12 +71,12 @@ public class GlobalExceptionHandler {
     }
 
     // 임시 핸들러
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
-        log.error(e.getMessage());
-        log.error("IllegalArgumentException ", e);
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(e.getMessage());
-    }
+//    @ExceptionHandler(IllegalArgumentException.class)
+//    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
+//        log.error(e.getMessage());
+//        log.error("IllegalArgumentException ", e);
+//        return ResponseEntity
+//                .status(HttpStatus.BAD_REQUEST)
+//                .body(e.getMessage());
+//    }
 }

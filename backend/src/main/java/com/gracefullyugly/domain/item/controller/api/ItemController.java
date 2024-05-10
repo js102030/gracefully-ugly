@@ -42,7 +42,6 @@ public class ItemController {
     public ResponseEntity<ItemResponse> addItem(@AuthenticationPrincipal(expression = "userId") Long userId,
                                                 @ModelAttribute ItemRequest request,
                                                 @RequestParam("productImage") MultipartFile file) {
-
         ItemResponse response = itemService.save(userId, request);
 
         if (!file.isEmpty()) {
