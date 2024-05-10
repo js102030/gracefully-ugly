@@ -31,6 +31,12 @@ public class CartItemService {
 
         Cart userCart = cartRepository.findCartByUserId(userId).orElseThrow();
 
+        if (cartItemRepository.existsCartItemByCartIdAndItemId(userCart.getId(), itemId)) {
+            return CartItemResponse.builder()
+                    .message("동일한 상품이 찜 목록에 추가되어 있습니다.")
+                    .build();
+        }
+
         String message =
                 cartItemRepository.addCartItem(userCart.getId(), itemId, itemCount) >= 1 ? "해당 상품이 찜 목록에 추가되었습니다."
                         : "찜 목록 추가 중 문제가 발생했습니다.";
