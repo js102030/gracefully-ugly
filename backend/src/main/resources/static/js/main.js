@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const moreItemsContainer = document.querySelector('.more-items');
 
     function handleItemClick(itemId) {
-        window.location.href = `/group-buying?itemId=${itemId}`;
+
+        window.location.href = `http://localhost:8080/group-buying/` + itemId;
     }
 
     // 마감임박 상품 클릭 시
