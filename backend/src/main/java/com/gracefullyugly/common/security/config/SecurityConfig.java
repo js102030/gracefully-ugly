@@ -51,7 +51,7 @@ public class SecurityConfig {
     public WebSecurityCustomizer configure() {      // 스프링 시큐리티 기능 비활성화
         return web -> web.ignoring()  //.requestMatchers(toH2Console())
                 .requestMatchers("/vendor/**", "/api/all/**", "/static/**","/group-buying", "/css/**", "/image/**", "/js/**", "/fragment/**", "/favicon.ico",
-                        "/h2-console/**");
+                        "/h2-console/**", "/api/users/{userId}", "/api/groupbuy/items/{itemId}");
     }
 
     @Bean
@@ -82,7 +82,7 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth //"/**", "/api/users", 빼고 실험
-                        .requestMatchers("/log", "/custom-login", "/login", "/logout", "/", "/reissue", "/join", "/join2", "/api/groupbuy/**")
+                        .requestMatchers("/log", "/custom-login", "/login", "/logout", "/", "/reissue", "/join", "/join2", "/groupbuy/**")
                         .permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());

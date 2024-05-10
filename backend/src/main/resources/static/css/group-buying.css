@@ -226,6 +226,45 @@
     font-size: 25px;
 }
 
+.modify-item-button {
+    margin-right: 20px;
+    border: 3px solid #3a79ff;
+    background-color: #3a79ff;
+    color: white;
+    font-weight: 600;
+    font-size: 20px;
+    border-radius: 15px;
+    padding: 10px;
+    width: 120px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.delete-item-button {
+    border: 3px solid #ff4a45;
+    background-color: #ff4a45;
+    color: white;
+    font-weight: 600;
+    font-size: 20px;
+    border-radius: 15px;
+    padding: 10px;
+    width: 120px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.modify-and-delete-button {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#editDescription {
+    resize: none;
+    font-size: 20px;
+}
+
 .review-list {
     display: flex;
     flex-direction: column;

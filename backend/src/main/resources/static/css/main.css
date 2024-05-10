@@ -7,7 +7,7 @@
 }
 
 .impending-text {
-    margin-right: 400px;
+    margin-right: 360px;
     display: flex;
     font-size: 36px;
     font-weight: 600;
@@ -18,11 +18,14 @@
 .impending-items {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     margin-bottom: 50px;
+    cursor: pointer;
 }
 
 .pick-text {
-    margin-right: 700px;
+    margin-right: 400px;
     font-size: 36px;
     font-weight: 600;
     margin-bottom: 20px;
@@ -31,6 +34,9 @@
 .pick-items {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    cursor: pointer;
 }
 
 .news {
@@ -51,7 +57,7 @@
 
 .pickup-text {
     display: flex;
-    font-size: 15px;
+    font-size: 23px;
     color: #7C7C7C;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -66,22 +72,27 @@
 }
 
 .more-items {
-    margin-top: 10px;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    cursor: pointer;
 }
+
+
 
 .pickup-button {
     margin-top: 10px;
     margin-right: 20px;
-    border: 3px solid green;
+    border: 5px solid green;
     background-color: #FFFFFF;
-    font-size: 15px;
+    font-size: 25px;
+    font-weight: 600;
     color: black;
     border-radius: 15px;
     padding: 10px;
-    width: 100px;
-    height: 50px;
+    width: 120px;
+    height: 70px;
     cursor: pointer;
 }
 

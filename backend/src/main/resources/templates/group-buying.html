@@ -46,6 +46,15 @@
 </div>
 <div class="description">
     <div class="hr-1"></div>
+    <div class="modify-and-delete-button">
+        <button class="modify-item-button" onclick="showEditForm()">수정</button>
+        <button class="delete-item-button" onclick="deleteItem()">삭제</button>
+    </div>
+    <!-- 수정 폼을 보여줄 컨테이너 -->
+    <div id="editFormContainer" style="display: none;">
+        <textarea id="editDescription" rows="10" cols="70"></textarea><br>
+        <button class="modify-item-button" onclick="submitEdit()">수정 완료</button>
+    </div>
     <div class="description-text" th:text="${item.description}"></div>
 </div>
 <div class="review-list">
@@ -53,7 +62,7 @@
     <div class="hr-2"></div>
     <div th:each="review : ${reviews}" class="review">
         <div class="nickname-star">
-            <div class="nickname" th:text="${review.userId}"></div>
+            <div class="nickname" th:with="userId=${review.userId}" th:text="${userId}"></div>
             <div class="point" th:text="${review.starPoint}"></div>
             <div class="star-review"></div>
         </div>
@@ -119,9 +128,12 @@
 <!--        </div>-->
 <!--    </div>-->
 <!--</section>-->
-<script type="text/javascript" src="/js/group-buying.js"></script>
-<script type="text/javascript" src="/fragment/nav.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    var userId = document.querySelector('.nickname').textContent.trim();
+</script>
+<script type="text/javascript" src="/js/group-buying.js"></script>
+<script type="text/javascript" src="/fragment/nav.js"></script>
 </body>
 </html>
