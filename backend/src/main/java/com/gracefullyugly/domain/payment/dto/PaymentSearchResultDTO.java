@@ -1,5 +1,6 @@
 package com.gracefullyugly.domain.payment.dto;
 
+import com.gracefullyugly.domain.orderitem.dto.OrderItemInfoResponse;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PaymentSearchListResponse {
+public class PaymentSearchResultDTO {
 
-    private List<PaymentSearchResultDTO> paymentList;
+    private PaymentSearchDTO paymentInfo;
+
+    private List<OrderItemInfoResponse> orderItemList;
 }
