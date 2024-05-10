@@ -1,6 +1,7 @@
 // 현재 페이지의 URL에서 itemId 가져오기
-const urlParams = new URLSearchParams(window.location.search);
-const itemId = urlParams.get('itemId');
+const pathSegments = window.location.pathname.split('/');
+const itemId = pathSegments[pathSegments.length - 1];
+console.log("테스트"+itemId)
 
 document.addEventListener('DOMContentLoaded', function() {
     const modal = document.querySelector('.modal');
@@ -130,7 +131,7 @@ joinGroupBuy.addEventListener('click', event => {
 
 const questions = document.querySelector('.ask');
 questions.addEventListener('click', event => {
-    window.location.href = (`/productAsk?itemId=${itemId}`);
+    window.location.href = `http://localhost:8080/productAsk/` + itemId;
 })
 
 // ------------ 알림 모달창 상태 변경

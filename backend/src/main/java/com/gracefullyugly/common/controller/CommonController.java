@@ -8,15 +8,17 @@ import com.gracefullyugly.domain.review.dto.ReviewResponse;
 import com.gracefullyugly.domain.review.service.ReviewSearchService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class CommonController {
 
     private final ItemSearchService itemSearchService;
@@ -73,12 +75,15 @@ public class CommonController {
         return "create-review";
     }
 
-    @GetMapping("/group-buying")
-    public String groupBuying(@RequestParam("itemId") Long itemId, Model model) {
+    @GetMapping("/group-buying/{itemId}")
+    public String groupBuying(@PathVariable Long itemId, Model model) {
         List<ReviewResponse> reviewResponse = reviewSearchService.getReviewsOrEmptyByItemId(itemId);
         ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
         GroupBuyListResponse groupByListResponse = groupBuySearchService.getGroupBuyListByItemId(itemId);
 
+        float starPoint = getAvgStarPoint(reviewResponse);
+
+        model.addAttribute("starPoint", starPoint);
         model.addAttribute("reviews", reviewResponse); // 리뷰 데이터를 모델에 추가
         model.addAttribute("item", itemResponse);
         model.addAttribute("groupBy", groupByListResponse);
@@ -123,6 +128,17 @@ public class CommonController {
     @GetMapping("/productAsk")
     public String productAsk() {
         return "productAsk";
+    }
+
+    private float getAvgStarPoint(List<ReviewResponse> reviewResponse) {
+        float starPoint = 0;
+        for (ReviewResponse review : reviewResponse) {
+            starPoint += review.getStarPoint();
+        }
+        if (!reviewResponse.isEmpty()) {
+            starPoint /= reviewResponse.size();
+        }
+        return starPoint;
     }
 
 }

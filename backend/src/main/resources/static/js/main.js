@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const moreItemsContainer = document.querySelector('.more-items');
 
     function handleItemClick(itemId) {
-        window.location.href = `/group-buying?itemId=${itemId}`;
+
+        window.location.href = `http://localhost:8080/group-buying/` + itemId;
     }
 
     // 마감임박 상품 클릭 시
@@ -92,11 +93,11 @@ function displayImpendingItems(items) {
 
         itemElement.innerHTML = `
                 <img src="${item.imageUrl ? item.imageUrl : '/image/item.png'}" alt="제품 사진" width="240" height="240">
-                <div>
-                    <div>전체물량 : ${item.totalSalesUnit}Kg</div>
-                    <div style="font-size: 25px">${item.name}</div>
-                    <div style="font-size: 20px">${item.price}원</div>
-                </div>
+                    <div>
+                        <div>전체물량 : ${(item.totalSalesUnit * item.minUnitWeight).toLocaleString()}g</div>
+                        <div style="font-size: 25px">${item.name}</div>
+                        <div style="font-size: 20px">${item.minUnitWeight}g - ${item.price.toLocaleString()}원</div>
+                    </div>
             `;
 
         impendingItemsContainer.appendChild(itemElement);
@@ -132,9 +133,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 itemElement.innerHTML = `
                     <img src="${item.imageUrl ? item.imageUrl : '/image/item.png'}" alt="제품 사진" width="240" height="240">
                     <div>
-                        <div>전체물량 : ${item.totalSalesUnit}Kg</div>
+                        <div>전체물량 : ${(item.totalSalesUnit * item.minUnitWeight).toLocaleString()}g</div>
                         <div style="font-size: 25px">${item.name}</div>
-                        <div style="font-size: 20px">${item.price}원</div>
+                        <div style="font-size: 20px">${item.minUnitWeight}g - ${item.price.toLocaleString()}원</div>
                     </div>
                 `;
 
@@ -201,13 +202,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // 상품 이미지 및 정보 표시
                 itemElement.innerHTML = `
-                        <img src="${item.imageUrl ? item.imageUrl : '/image/item.png'}" alt="제품 사진" width="240" height="240">
-                        <div>
-                            <div>전체물량 : ${item.totalSalesUnit}Kg</div>
-                            <div style="font-size: 25px">${item.name}</div>
-                            <div style="font-size: 20px">${item.price}원</div>
-                        </div>
+                    <img src="${item.imageUrl ? item.imageUrl : '/image/item.png'}" alt="제품 사진" width="240" height="240">
+                    <div>
+                        <div>전체물량 : ${(item.totalSalesUnit * item.minUnitWeight).toLocaleString()}g</div>
+                        <div style="font-size: 25px">${item.name}</div>
+                        <div style="font-size: 20px">${item.minUnitWeight}g - ${item.price.toLocaleString()}원</div>
+                    </div>
                 `;
+
 
                 itemsContainer.appendChild(itemElement);
             });

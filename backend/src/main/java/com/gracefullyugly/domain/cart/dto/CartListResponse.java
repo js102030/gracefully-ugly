@@ -7,11 +7,18 @@ import java.sql.Timestamp;
 public interface CartListResponse {
 
     Long getCartItemId();
+
     Long getItemCount();
+
     Long getItemId();
+
     String getName();
+
     int getPrice();
+
     Category getCategoryId();
 
     Timestamp getCloseDate();
+
+    String getImageUrl();
 }
