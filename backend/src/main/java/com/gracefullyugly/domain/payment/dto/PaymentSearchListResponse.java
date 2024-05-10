@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PaymentSearchListResponse {
 
-    private List<PaymentSearchDTO> paymentList;
+    private List<PaymentSearchResultDTO> paymentList;
 }
