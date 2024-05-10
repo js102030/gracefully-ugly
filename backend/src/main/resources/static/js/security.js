@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
-//----------------------------사이트 로그인 ----------------------------------------
+//----------------------------사이트 직접 로그인 ----------------------------------------
 document.addEventListener("DOMContentLoaded", function () {
 
     if (document.getElementById("joinForm")) {

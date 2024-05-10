@@ -74,8 +74,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String token = jwtUtil.createJwt(userId, loginId, role, 60 * 10 * 10000L); //10분
 
-        String saveRefresh = userRepository.findRefreshTokenByLoginId(loginId);
-
         logger.info("token 로그인 성공하고 토큰 발급 완료 토큰 = " + token);
 
         //응답 설정
