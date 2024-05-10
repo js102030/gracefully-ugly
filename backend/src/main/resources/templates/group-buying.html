@@ -16,7 +16,7 @@
     <div class="item-content">
         <div class="star-review">
             <div class="point" th:if="${#lists.isEmpty(reviews)}">0.0</div>
-            <div class="point" th:if="${not #lists.isEmpty(reviews)}" th:text="${reviews[0].starPoint}"></div>
+            <div class="point" th:if="${not #lists.isEmpty(reviews)}" th:text="${starPoint}"></div>
             <div class="star-review"></div>
         </div>
         <div class="title-price">
@@ -46,7 +46,7 @@
 </div>
 <div class="description">
     <div class="hr-1"></div>
-    <div class="modify-and-delete-button">
+    <div th:if="${item.userId == #authentication.principal.userId}" class="modify-and-delete-button">
         <button class="modify-item-button" onclick="showEditForm()">수정</button>
         <button class="delete-item-button" onclick="deleteItem()">삭제</button>
     </div>
