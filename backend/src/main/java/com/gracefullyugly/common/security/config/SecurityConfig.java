@@ -7,6 +7,8 @@ import com.gracefullyugly.common.security.jwt.LoginFilter;
 import com.gracefullyugly.common.security.oauth2.OAuth2CustomSuccessHandler;
 import com.gracefullyugly.common.security.oauth2.service.CustomOAuth2UserService;
 import com.gracefullyugly.domain.user.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +23,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 
 /**
@@ -60,6 +64,27 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+        http
+                .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
+
+                    @Override
+                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+
+                        CorsConfiguration configuration = new CorsConfiguration();
+
+                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8080"));
+                        configuration.setAllowedMethods(Collections.singletonList("*"));
+                        configuration.setAllowCredentials(true);
+                        configuration.setAllowedHeaders(Collections.singletonList("*"));
+                        configuration.setMaxAge(3600L);
+
+                        configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
+                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+
+                        return configuration;
+                    }
+                }));
+
         //csrf disable
         http
                 .csrf((auth) -> auth.disable());
@@ -74,19 +99,19 @@ public class SecurityConfig {
         http
                 .httpBasic((auth) -> auth.disable());
 
-       /* //oauth2
+        //oauth2
         http
                 .oauth2Login((oauth2) -> oauth2
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService))
                         .successHandler(oAuth2CustomSuccessHandler)
-                );*/
+                );
 
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth //"/**", "/api/users", 빼고 실험
-                        .requestMatchers("/log", "/custom-login", "/login", "/logout", "/", "/reissue", "/join",
-                                "/join2", "/groupbuy/**")
+                        .requestMatchers("/log", "/oauth2/**", "/login", "/logout", "/", "/join",
+                                "/join2", "/group-buying/**", "/api/all/**")
                         .permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
