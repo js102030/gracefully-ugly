@@ -47,7 +47,9 @@
                 </div>
             </div>
             <div class="buttons-page">
-                <button class="btn btn-review btn-outline-success" type="submit">후기 남기기</button>
+                <button class="btn btn-review btn-outline-success"
+                        th:onclick="|moveToReviewPage('${orderItem.getItemId()}')|">후기 남기기
+                </button>
                 <button class="btn btn-item-page btn-outline-success"
                         th:onclick="|moveToItemPage('${orderItem.getItemId()}')|">상품
                     페이지로 이동
