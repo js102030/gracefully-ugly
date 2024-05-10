@@ -11,12 +11,13 @@
 <div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
 <div class="up-content">
-    <img class="item-image" src="/image/item-review.png" alt="상품-리뷰 아이템">
+    <img class="item-image"
+         th:src="${item.imageUrl != null and item.imageUrl != '' ? item.imageUrl : '/image/item.png'}" alt="상품-리뷰 아이템"
+         width="400">
     <div class="item-content">
         <div class="point-and-star">
-            <div class="point">
-                4
-            </div>
+            <div class="point" th:text="${starPoint != null ? starPoint : 0}"></div>
+
             <div class="star">
                 <img class="star" src="/image/star.png" alt="별점">
                 <img class="star" src="/image/star.png" alt="별점">
@@ -26,7 +27,7 @@
         </div>
         <div class="item-and-name">
             <div class="item-and">상품명 :</div>
-            <div class="name">못난이 감자 3Kg</div>
+            <div class="name" th:text="${item.name}">못난이 감자 3Kg</div>
         </div>
         <div class="add-text">
             상품의 후기를 적어주세요.
@@ -40,28 +41,51 @@
 <div class="review-box">
     <div class="how-was-item-text">상품은 어떠셨나요?</div>
     <div class="help-text">별점 단계를 선택해주세요.</div>
-    <form class="select">
-        <input type="radio" id="star1" name="star" value="1">
+    <form id="reviewForm" class="" enctype="multipart/form-data" th:data-item-id="${item.getId()}">
+        <input type="radio" id="star1" name="starPoint" value="1">
         <label for="star1" data-rating="1"></label>
-        <input type="radio" id="star2" name="star" value="2">
+        <input type="radio" id="star2" name="starPoint" value="2">
         <label for="star2" data-rating="2"></label>
-        <input type="radio" id="star3" name="star" value="3">
+        <input type="radio" id="star3" name="starPoint" value="3">
         <label for="star3" data-rating="3"></label>
-        <input type="radio" id="star4" name="star" value="4">
+        <input type="radio" id="star4" name="starPoint" value="4">
         <label for="star4" data-rating="4"></label>
-        <input type="radio" id="star5" name="star" value="5">
+        <input type="radio" id="star5" name="starPoint" value="5">
         <label for="star5" data-rating="5"></label>
-    </form>
-    <div class="write-and-buttons">
         <div class="write-text">상품에 대한 후기를 자유롭게 작성해주세요.</div>
-        <textarea class="text" placeholder="후기를 작성해주세요." cols="30" rows="10"></textarea>
+        <textarea class="text" name="comments" placeholder="후기를 작성해주세요." cols="30" rows="10"></textarea>
         <div class="buttons">
-            <input type="file" class="image-upload">
-            <button class="upload">후기 등록하기</button>
+            <input type="file" class="image-upload" name="productImage">
+            <button type="button" class="upload">후기 등록하기</button>
         </div>
-    </div>
+    </form>
 </div>
 <script type="text/javascript" src="/js/create-review.js"></script>
 <script type="text/javascript" src="/fragment/nav.js"></script>
+<script>
+    document.querySelector('.upload').addEventListener('click', function () {
+        const form = document.getElementById('reviewForm');
+        const itemId = form.getAttribute('data-item-id');
+        const formData = new FormData(form);
+
+        fetch(`/api/reviews/${itemId}`, {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('리뷰가 성공적으로 등록되었습니다.');
+                    window.location.href = `/group-buying/${itemId}`; // 성공적으로 리뷰가 등록된 후 페이지 리다이렉트
+                } else {
+                    alert('리뷰 등록에 실패했습니다. 다시 시도해주세요.');
+                    return response.json(); // 서버의 에러 메시지를 받아올 수 있습니다.
+                }
+            })
+            .catch(error => {
+                alert('오류가 발생했습니다: ' + error.message);
+            });
+    });
+
+</script>
 </body>
 </html>

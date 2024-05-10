@@ -62,12 +62,14 @@
     <div class="hr-2"></div>
     <div th:each="review : ${reviews}" class="review">
         <div class="nickname-star">
-            <div class="nickname" th:with="userId=${review.userId}" th:text="${userId}"></div>
-            <div class="point" th:text="${review.starPoint}"></div>
+            <div class="nickname" th:text="${review.getUserNickname()}"></div>
+            <div class="point" th:text="${review.getStarPoint()}"></div>
             <div class="star-review"></div>
         </div>
         <div class="image-and-review">
-            <div class="item"><img src="/image/item-review.png" alt="리뷰 사진"></div>
+            <div class="item"><img
+                    th:src="${review.getImageUrl() != null and review.getImageUrl()!= '' ? review.getImageUrl() : '/image/item.png'}"
+                    alt="리뷰 사진" width="240" height="240"></div>
             <div class="review-and-createdDay">
                 <div class="review-content" th:text="${review.comments}"></div>
             </div>
