@@ -24,8 +24,8 @@
         <ul class="order-list">
             <li th:each="orderItem : ${OrderInfoResponse.getOrderItemList()}">
                 <div class="title-text">
-                    <span th:text="${orderItem.getName()}">못난이 아담한 감자</span> (<span
-                        th:text="${#numbers.formatCurrency(orderItem.getPrice())}">~~~원</span>) -
+                    <span th:text="${orderItem.getItemName()}">못난이 아담한 감자</span> (<span
+                        th:text="${#numbers.formatCurrency(orderItem.getItemPrice())}">~~~원</span>) -
                     <span th:text="${orderItem.getQuantity()}">1</span>개
                 </div>
             </li>
