@@ -75,16 +75,17 @@ li{
 }
 
 .history{
+    margin-top: 40px;
+    margin-bottom: 40px;
     display: flex;
     flex-direction: column;
-    margin: auto;
-    width : 50%;
-    height: auto;
+    width : 75%;
 }
 
 .purchase-date{
     display: flex;
     justify-content: left;
+    margin-top: 10px;
     margin-left: 30px;
     width: auto;
     height: 30px;
@@ -92,6 +93,23 @@ li{
 
 .date{
     font-size: 20px;
+}
+
+.item-info {
+    display: flex;
+    flex-direction: row;
+}
+
+.purchase-title, .purchase-quantity, .purchase-price {
+    display: flex;
+    align-items: flex-start;
+}
+
+.purchase-status {
+    display: flex;
+    justify-content: flex-end;
+    font-weight: bold;
+    font-size: x-large;
 }
 
 .purchase-image{
@@ -111,34 +129,69 @@ li{
     margin-left: 150px;
 }
 
+.purchase-list-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 30px 30px 30px 30px;
+}
+
 .purchase-item-title{
-    width: 200px;
-    height: 100px;
-    margin-top: -100px;
-    margin-left: 150px;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 30px 30px 30px 30px;
+}
+
+.purchase-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 30px;
+}
+
+.purchase-info-result {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+}
+
+.total-purchase-price {
+    font-weight: bold;
+    font-size: large;
+}
+
+.buttons-page {
+    display: flex;
+    justify-content: right;
+    margin: 30px;
+}
+
+.button-receipt {
+    display: flex;
+    justify-content: right;
 }
 
 .btn-receipt{
     display: flex;
     justify-content: center;
-    width: 150px;
-    margin-top: -130px;
-    margin-left: 750px;
+    align-items : center;
 }
 .btn-item-page{
     display: flex;
     justify-content: center;
-    width: 150px;
-    margin-top: 20px;
-    margin-left: 750px;
+    align-items : center;
+    margin-top: 20%;
 }
 .btn-review{
     display: flex;
     justify-content: center;
-    width: 130px;
-    margin-top: -37px;
-    margin-left: 570px;
+    align-items : center;
+    margin-top: 20%;
+    margin-right: 10px;
 }
 
 /*모달*/

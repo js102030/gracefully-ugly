@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalCloseButton = document.querySelector('.modal-close');
     const listButton = document.querySelector('.list-button');
     const backButton = document.querySelector('.back-button');
-    const createOrder = document.querySelector('.create-order');
+    const createOrder = document.querySelector('.create-order-btn');
 
     if (listButton) {
         listButton.addEventListener('click', function() {
