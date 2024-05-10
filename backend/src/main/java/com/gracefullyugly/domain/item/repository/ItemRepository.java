@@ -78,7 +78,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
                     "i.description as description, img.url as imageUrl " +
                     "FROM item i " +
                     "LEFT JOIN image img ON i.item_id = img.item_id AND img.is_deleted = false " +
-                    "WHERE i.category_id = :categoryId AND i.is_deleted = false" +
+                    "WHERE i.category_id = :categoryId AND i.is_deleted = false " +
                     "ORDER BY i.item_id", nativeQuery = true)
     List<ItemWithImageUrlResponse> findCategoryItemsWithImageUrl(@Param("categoryId") String categoryId);
 

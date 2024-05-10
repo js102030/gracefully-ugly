@@ -23,20 +23,9 @@ public class CartViewController {
      * 찜 목록을 조회하는 API입니다.
      */
     @GetMapping("/cart")
-    public String getCartList(
-            @Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
-            Model model) {
+    public String getCartList(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
+                              Model model) {
         List<CartListResponse> cartListResponses = cartService.getCartList(userId);
-        for (CartListResponse listResponse : cartListResponses) {
-            log.info("getCartItemId {}", listResponse.getCartItemId());
-            log.info("getItemCount {}", listResponse.getItemCount());
-            log.info("getItemId {}", listResponse.getItemId());
-            log.info("getName {}", listResponse.getName());
-            log.info("getPrice {}", listResponse.getPrice());
-            log.info("getCategoryId {}", listResponse.getCategoryId());
-            log.info("getCloseDate {}", listResponse.getCloseDate());
-            log.info("getImgUrl {}", listResponse.getImageUrl());
-        }
         model.addAttribute("CartList", cartListResponses);
 
         return "/cart-list";
