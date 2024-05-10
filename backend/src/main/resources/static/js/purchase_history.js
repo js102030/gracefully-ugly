@@ -31,7 +31,7 @@ function moveToReview(itemId) {
 }
 
 function moveToItemPage(itemId) {
-    window.location.href = ("http://localhost:8080/group-buying?itemId=" + itemId);
+    window.location.href = ("http://localhost:8080/group-buying/" + itemId);
 }
 
 function moveToReceipt(orderId) {
