@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,72 +14,81 @@
 <div th:replace="~{fragment/nav :: top}"></div>
 <div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
-<div class="history d-flex mt-5 w-75 d-flex border border-success rounded-3">
-    <ul class="purchase-list">
-        <li class="purchase-list-item">
-            <div class=purchase-date>
-                <strong class="date">2024년 05월 04일</strong>
-            </div>
-            <div class="purchase-image">
-                <img class="item img-fluid" src="/image/item.png">
-            </div>
-            <div class="purchase-item-title">
-                <p class="purchase-title"> 싱싱 제철 못난이 감자</p>
-                <p class="purchase-price">10000원</p>
-            </div>
-        </li>
-        <div class="buttons-page">
-            <button class="btn btn-receipt btn-outline-success" type="submit">주문서 보러가기</button>
-            <button class="btn btn-item-page btn-outline-success" type="submit">후기 남기기</button>
-            <button class="btn btn-review btn-outline-success" type="submit">상품 페이지로 이동</button>
-        </div>
-    </ul>
+<div class="history d-flex mt-5 w-75 d-flex border border-success rounded-3"
+     th:if="${#lists.isEmpty(PaymentSearchListResponse)}">
+    <h2>구매 내역이 없습니다.</h2>
 </div>
 
-<div class="history d-flex mt-5 w-75 d-flex border border-success rounded-3">
-    <ul class="purchase-list">
-        <li class="purchase-list-item">
-            <div class=purchase-date>
-                <strong class="date">2024년 05월 04일</strong>
+<div class="history border border-success rounded-3"
+     th:if="${not #lists.isEmpty(PaymentSearchListResponse.getPaymentList())}"
+     th:each="PaymentInfo : ${PaymentSearchListResponse.getPaymentList()}">
+    <div class=purchase-date>
+        <strong class="date"
+                th:text="${#temporals.format(PaymentInfo.getPaymentInfo().getPayment().getPaymentDate(), 'yyyy-MM-dd HH:mm:ss')}">2024년
+            05월 04일</strong>
+    </div>
+    <div class="purchase-list">
+        <div class="purchase-list-item border border-success rounded-3"
+             th:each="orderItem : ${PaymentInfo.getOrderItemList()}">
+            <div class="item-info">
+                <div class="purchase-image">
+                    <img class="item img-fluid" src="/image/item.png">
+                </div>
+                <div class="purchase-item-title">
+                    <div class="purchase-title">
+                        <strong>상품명:</strong>&nbsp;<span th:text="${orderItem.getItemName()}">싱싱 제철 못난이 감자</span></div>
+                    <div class="purchase-quantity">
+                        <strong>구매 수량:</strong>&nbsp;<span th:text="${orderItem.getQuantity()} + '개'">1개</span>
+                    </div>
+                    <div class="purchase-price">
+                        <strong>결제 금액:</strong>&nbsp;<span
+                            th:text="${#numbers.formatCurrency(orderItem.getItemPrice() * orderItem.getQuantity())}">10000원</span>
+                    </div>
+                </div>
             </div>
-            <div class="purchase-image">
-                <img class="item img-fluid" src="/image/item.png">
+            <div class="buttons-page">
+                <button class="btn btn-review btn-outline-success" type="submit">후기 남기기</button>
+                <button class="btn btn-item-page btn-outline-success"
+                        th:onclick="|moveToItemPage('${orderItem.getItemId()}')|">상품
+                    페이지로 이동
+                </button>
             </div>
-            <div class="purchase-item-title">
-                <p class="purchase-title"> 싱싱 제철 못난이 감자</p>
-                <p class="purchase-price">10000원</p>
-            </div>
-        </li>
-        <div class="buttons-page">
-            <button class="btn btn-receipt btn-outline-success" type="submit">주문서 보러가기</button>
-            <button class="btn btn-item-page btn-outline-success" type="submit">후기 남기기</button>
-            <button class="btn btn-review btn-outline-success" type="submit">상품 페이지로 이동</button>
         </div>
-    </ul>
-</div>
-<script type="text/javascript" src="/fragment/nav.js"></script>
-
-<!--목록 모달-->
-<section class="modal">
-    <div class="modal-box">
-        <div class="modal-inner">
-            <div>
-                <p class="ask9">구매자이신가요?</p>
-                <img id="modal-1" onclick="location.href='/cart-list'" src="/image/modal-1.png" alt="찜한 내역">
-                <img id="modal-2" onclick="location.href='/purchase_history'" src="/image/modal-2.png" alt="구매 내역">
-                <img id="modal-3" onclick="location.href='/my-page'" src="/image/modal-3.png" alt="내 정보">
-                <p class="ask8">판매자이신가요?</p>
-                <img id="modal-4" onclick="location.href='/sellerList'" src="/image/modal-4.png" alt="판매 내역">
-                <button class="modal-close">닫기</button>
+        <div class="purchase-info">
+            <div class="purchase-info-result">
+                <div class="total-purchase-price">
+                    <strong>총 결제 금액:</strong>&nbsp;<span
+                        th:text="${#numbers.formatCurrency(PaymentInfo.getPaymentInfo().getPayment().getTotalPrice())}">10000원</span>
+                </div>
+                <div class="purchase-status success"
+                     th:if="${PaymentInfo.getPaymentInfo().getPayment().isPaid() and not PaymentInfo.getPaymentInfo().getPayment().isRefunded()}"
+                     style="color: #00BF08;">
+                    결제 완료
+                </div>
+                <div class="purchase-status cancel"
+                     th:if="${not PaymentInfo.getPaymentInfo().getPayment().isPaid() and not PaymentInfo.getPaymentInfo().getPayment().isRefunded()}"
+                     style="color: #EE402E;">
+                    결제
+                    취소
+                </div>
+                <div class="purchase-status refund"
+                     th:if="${PaymentInfo.getPaymentInfo().getPayment().isRefunded()}" style="color: #EE402E;">
+                    환불
+                </div>
+            </div>
+            <div class="button-receipt">
+                <button class="btn btn-receipt btn-outline-success"
+                        th:onclick="|moveToReceipt('${PaymentInfo.getPaymentInfo().getOrder().getOrderId()}')|">
+                    주문서 보러가기
+                </button>
             </div>
         </div>
     </div>
-</section>
-
-<script type="text/javascript" src="/js/purchase_history.js" ></script>
+</div>
+<script type="text/javascript" src="/fragment/nav.js"></script>
+<script type="text/javascript" src="/js/purchase_history.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 </body>
-
 </html>

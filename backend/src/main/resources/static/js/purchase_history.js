@@ -21,3 +21,19 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+const btnReview = document.querySelector('.btn-review');
+const btnItemPage = document.querySelector('.btn-item-page');
+const btnReceipt = document.querySelector('.btn-receipt');
+
+function moveToReview(itemId) {
+
+}
+
+function moveToItemPage(itemId) {
+    window.location.href = ("http://localhost:8080/group-buying?itemId=" + itemId);
+}
+
+function moveToReceipt(orderId) {
+    window.location.href = ("http://localhost:8080/orders/" + orderId);
+}
