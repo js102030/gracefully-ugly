@@ -79,6 +79,9 @@ public class CommonController {
         ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
         GroupBuyListResponse groupByListResponse = groupBuySearchService.getGroupBuyListByItemId(itemId);
 
+        float starPoint = getAvgStarPoint(reviewResponse);
+
+        model.addAttribute("starPoint", starPoint);
         model.addAttribute("reviews", reviewResponse); // 리뷰 데이터를 모델에 추가
         model.addAttribute("item", itemResponse);
         model.addAttribute("groupBy", groupByListResponse);
@@ -123,6 +126,17 @@ public class CommonController {
     @GetMapping("/productAsk")
     public String productAsk() {
         return "productAsk";
+    }
+
+    private float getAvgStarPoint(List<ReviewResponse> reviewResponse) {
+        float starPoint = 0;
+        for (ReviewResponse review : reviewResponse) {
+            starPoint += review.getStarPoint();
+        }
+        if (!reviewResponse.isEmpty()) {
+            starPoint /= reviewResponse.size();
+        }
+        return starPoint;
     }
 
 }
