@@ -46,7 +46,7 @@
 </div>
 <div class="description">
     <div class="hr-1"></div>
-    <div class="modify-and-delete-button">
+    <div class="modify-and-delete-button" th:if="${isSeller}">
         <button class="modify-item-button" onclick="showEditForm()">수정</button>
         <button class="delete-item-button" onclick="deleteItem()">삭제</button>
     </div>

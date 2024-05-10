@@ -7,7 +7,11 @@ import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.review.dto.ReviewResponse;
 import com.gracefullyugly.domain.review.service.ReviewSearchService;
 import java.util.List;
+
+import com.gracefullyugly.domain.user.dto.UserResponse;
+import com.gracefullyugly.domain.user.service.UserSearchService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +26,7 @@ public class CommonController {
     private final ItemSearchService itemSearchService;
     private final ReviewSearchService reviewSearchService;
     private final GroupBuySearchService groupBuySearchService;
+    private final UserSearchService userSearchService;
 
     @GetMapping("/")
     public String mainPage() {
@@ -74,14 +79,23 @@ public class CommonController {
     }
 
     @GetMapping("/group-buying")
-    public String groupBuying(@RequestParam("itemId") Long itemId, Model model) {
+    public String groupBuying(@AuthenticationPrincipal(expression = "userId") Long userId,
+                              @RequestParam("itemId") Long itemId, Model model) {
         List<ReviewResponse> reviewResponse = reviewSearchService.getReviewsOrEmptyByItemId(itemId);
         ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
         GroupBuyListResponse groupByListResponse = groupBuySearchService.getGroupBuyListByItemId(itemId);
-
-        model.addAttribute("reviews", reviewResponse); // 리뷰 데이터를 모델에 추가
+        System.out.println("userId확인:"+userId);
+        boolean isSeller = false;
+        if (userId == null) {
+        } else {
+            if (itemResponse.getUserId().equals(userId)) {
+                isSeller = true;
+            }
+        }
+        model.addAttribute("reviews", reviewResponse);
         model.addAttribute("item", itemResponse);
         model.addAttribute("groupBy", groupByListResponse);
+        model.addAttribute("isSeller", isSeller);
         return "group-buying";
     }
 
