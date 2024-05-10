@@ -203,7 +203,7 @@ joinCart.addEventListener('click', event => {
             itemCount: 1
         }),
         success: function (data) {
-            alert("상품이 찜 목록에 추가되었습니다.");
+            alert(data.message);
         },
         error: function (data, status, error) {
             alert('찜 목록에 추가 도중 문제가 발생했습니다.\n[status: ' + data.status +']\n[error: ' + data.responseText + ']');
