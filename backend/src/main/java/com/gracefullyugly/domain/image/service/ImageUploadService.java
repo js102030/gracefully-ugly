@@ -36,52 +36,6 @@ public class ImageUploadService {
     @Value("${spring.servlet.multipart.max-file-size}")
     private String maxSizeString;
 
-    // 여러장의 파일 저장
-//    public List<String> saveFiles(List<MultipartFile> multipartFiles) {
-//        List<String> uploadedUrls = new ArrayList<>();
-//
-//        for (MultipartFile multipartFile : multipartFiles) {
-//
-//            if (isDuplicate(multipartFile)) {
-//                throw new RuntimeException("Duplicate file request");
-//            }
-//
-//            String uploadedUrl = saveFile(multipartFile);
-//            uploadedUrls.add(uploadedUrl);
-//        }
-//
-//        clear();
-//        return uploadedUrls;
-//    }
-
-    // 파일 삭제
-    public void deleteFile(String fileUrl) {
-        String[] urlParts = fileUrl.split("/");
-        String fileBucket = urlParts[2].split("\\.")[0];
-
-        if (!fileBucket.equals(bucket)) {
-            throw new RuntimeException("No Image Exist");
-        }
-
-        String objectKey = String.join("/", Arrays.copyOfRange(urlParts, 3, urlParts.length));
-
-        if (!amazonS3.doesObjectExist(bucket, objectKey)) {
-            throw new RuntimeException("No Image Exist");
-        }
-
-        try {
-            amazonS3.deleteObject(bucket, objectKey);
-        } catch (AmazonS3Exception e) {
-            log.error("error : Amazon S3 error while deleting file: {}", e.getMessage());
-            throw new RuntimeException("Fail to delete file");
-        } catch (SdkClientException e) {
-            log.error("error : AWS SDK client error while deleting file: {}", e.getMessage());
-            throw new RuntimeException("Fail to delete file");
-        }
-
-        System.out.println("File delete complete: " + objectKey);
-    }
-
     // 단일 파일 저장
     public ImageUploadResponse saveFile(MultipartFile file, Long itemId, Long reviewId) {
 
@@ -129,24 +83,32 @@ public class ImageUploadService {
 
     }
 
-    // 요청에 중복되는 파일 여부 확인
-    private boolean isDuplicate(MultipartFile multipartFile) {
-        String fileName = multipartFile.getOriginalFilename();
-        Long fileSize = multipartFile.getSize();
+    // 파일 삭제
+    public void deleteFile(String fileUrl) {
+        String[] urlParts = fileUrl.split("/");
+        String fileBucket = urlParts[2].split("\\.")[0];
 
-        if (uploadedFileNames.contains(fileName) && uploadedFileSizes.contains(fileSize)) {
-            return true;
+        if (!fileBucket.equals(bucket)) {
+            throw new RuntimeException("No Image Exist");
         }
 
-        uploadedFileNames.add(fileName);
-        uploadedFileSizes.add(fileSize);
+        String objectKey = String.join("/", Arrays.copyOfRange(urlParts, 3, urlParts.length));
 
-        return false;
-    }
+        if (!amazonS3.doesObjectExist(bucket, objectKey)) {
+            throw new RuntimeException("No Image Exist");
+        }
 
-    private void clear() {
-        uploadedFileNames.clear();
-        uploadedFileSizes.clear();
+        try {
+            amazonS3.deleteObject(bucket, objectKey);
+        } catch (AmazonS3Exception e) {
+            log.error("error : Amazon S3 error while deleting file: {}", e.getMessage());
+            throw new RuntimeException("Fail to delete file");
+        } catch (SdkClientException e) {
+            log.error("error : AWS SDK client error while deleting file: {}", e.getMessage());
+            throw new RuntimeException("Fail to delete file");
+        }
+
+        log.info("File delete complete: {}", objectKey);
     }
 
     // 랜덤파일명 생성 (파일명 중복 방지)
