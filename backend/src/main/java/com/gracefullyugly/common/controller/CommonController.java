@@ -64,6 +64,11 @@ public class CommonController {
         ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
         Float starPoint = reviewSearchService.findAverageStarPointsByItemId(itemId);
 
+    @GetMapping("/create-review/{itemId}")
+    public String createReview(@PathVariable Long itemId, Model model) {
+        ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
+        Float starPoint = reviewSearchService.findAverageStarPointsByItemId(itemId);
+
         model.addAttribute("starPoint", starPoint);
         model.addAttribute("item", itemResponse);
         return "create-review";
