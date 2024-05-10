@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -30,6 +31,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableMethodSecurity
 public class SecurityConfig {
 
     //AuthenticationManager가 인자로 받을 AuthenticationConfiguraion 객체 생성자 주입
@@ -50,7 +52,8 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer configure() {      // 스프링 시큐리티 기능 비활성화
         return web -> web.ignoring()  //.requestMatchers(toH2Console())
-                .requestMatchers("/vendor/**", "/api/all/**", "/static/**","/group-buying", "/css/**", "/image/**", "/js/**", "/fragment/**", "/favicon.ico",
+                .requestMatchers("/vendor/**", "/api/all/**", "/static/**", "/group-buying", "/css/**", "/image/**",
+                        "/js/**", "/fragment/**", "/favicon.ico",
                         "/h2-console/**", "/api/users/{userId}", "/api/groupbuy/items/{itemId}");
     }
 
@@ -82,7 +85,8 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth //"/**", "/api/users", 빼고 실험
-                        .requestMatchers("/log", "/custom-login", "/login", "/logout", "/", "/reissue", "/join", "/join2", "/groupbuy/**")
+                        .requestMatchers("/log", "/custom-login", "/login", "/logout", "/", "/reissue", "/join",
+                                "/join2", "/groupbuy/**")
                         .permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().authenticated());
