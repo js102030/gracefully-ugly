@@ -1,6 +1,5 @@
 package com.gracefullyugly.common.controller;
 
-import com.gracefullyugly.domain.groupbuy.dto.GroupBuyListResponse;
 import com.gracefullyugly.domain.groupbuy.service.GroupBuySearchService;
 import com.gracefullyugly.domain.item.dto.ItemWithImageUrlResponse;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
@@ -60,15 +59,10 @@ public class CommonController {
         return "sellerDetails";
     }
 
-//    @GetMapping("/check-order")
-//    public String checkOrder() {
-//        return "complete-payment";
-//    }
-
-//    @GetMapping("/create-order")
-//    public String createOrder() {
-//        return "create-order";
-//    }
+    @GetMapping("/create-review/{itemId}")
+    public String createReview(@PathVariable Long itemId, Model model) {
+        ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
+        Float starPoint = reviewSearchService.findAverageStarPointsByItemId(itemId);
 
     @GetMapping("/create-review/{itemId}")
     public String createReview(@PathVariable Long itemId, Model model) {
@@ -84,14 +78,12 @@ public class CommonController {
     public String groupBuying(@PathVariable Long itemId, Model model) {
         List<ReviewWithImageResponse> reviews = reviewSearchService.getReviewsWithImagesByItemId(itemId);
         ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
-        GroupBuyListResponse groupByListResponse = groupBuySearchService.getGroupBuyListByItemId(itemId);
 
         Float starPoint = reviewSearchService.findAverageStarPointsByItemId(itemId);
 
         model.addAttribute("starPoint", starPoint);
         model.addAttribute("reviews", reviews); // 리뷰 데이터를 모델에 추가
         model.addAttribute("item", itemResponse);
-        model.addAttribute("groupBy", groupByListResponse);
         return "group-buying";
     }
 
