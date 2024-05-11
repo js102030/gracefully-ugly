@@ -6,9 +6,16 @@ import com.gracefullyugly.domain.item.dto.ItemWithImageUrlResponse;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.review.dto.ReviewResponse;
 import com.gracefullyugly.domain.review.service.ReviewSearchService;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,7 +58,15 @@ public class CommonController {
     }
 
     @GetMapping("/sellerList")
-    public String sellerList() {
+    public String sellerList(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId, Model model) {
+        List<ItemWithImageUrlResponse> items = itemSearchService.findAllItems();
+
+        List<ItemWithImageUrlResponse> filteredItems = items.stream()
+                .filter(item -> item.getUserId().equals(userId))
+                .collect(Collectors.toList());
+
+        model.addAttribute("items", filteredItems);
+
         return "sellerList";
     }
 
@@ -79,14 +94,12 @@ public class CommonController {
     public String groupBuying(@PathVariable Long itemId, Model model) {
         List<ReviewResponse> reviewResponse = reviewSearchService.getReviewsOrEmptyByItemId(itemId);
         ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
-        GroupBuyListResponse groupByListResponse = groupBuySearchService.getGroupBuyListByItemId(itemId);
 
         float starPoint = getAvgStarPoint(reviewResponse);
 
         model.addAttribute("starPoint", starPoint);
-        model.addAttribute("reviews", reviewResponse); // 리뷰 데이터를 모델에 추가
+        model.addAttribute("reviews", reviewResponse);
         model.addAttribute("item", itemResponse);
-        model.addAttribute("groupBy", groupByListResponse);
         return "group-buying";
     }
 
