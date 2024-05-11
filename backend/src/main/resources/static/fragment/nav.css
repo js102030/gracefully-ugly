@@ -40,6 +40,7 @@
 
 .login-button,
 .list-button,
+.logout-kakao-btn,
 .logout-btn {
     margin-top: 10px;
     margin-right: 20px;
@@ -55,6 +56,10 @@
 }
 
 .logout-btn {
+    display: none;
+}
+
+.logout-kakao-btn {
     display: none;
 }
 
