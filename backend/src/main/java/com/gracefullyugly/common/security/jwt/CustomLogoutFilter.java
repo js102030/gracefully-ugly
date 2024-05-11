@@ -47,12 +47,15 @@ public class CustomLogoutFilter extends GenericFilterBean {
 
         //get token
         String token = null;
+        String kakao = null;
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
 
             if (cookie.getName().equals("token")) {
 
                 token = cookie.getValue();
+            } else if (cookie.getName().equals("kakao")) {
+                kakao = cookie.getValue();
             }
         }
 
@@ -75,6 +78,9 @@ public class CustomLogoutFilter extends GenericFilterBean {
 
         //loginId 꺼내옴
         String loginId = jwtUtil.getUsername(token); // 예를 들어서 loginId를 추출하는 방법
+        //accessToken  꺼내옴
+        String accessToken = jwtUtil.getToken(token); // 예를 들어서 loginId를 추출하는 방법
+        logger.info("js로 넘겨준 accessToken=" + accessToken);
 
         //로그아웃 진행
 
@@ -83,7 +89,21 @@ public class CustomLogoutFilter extends GenericFilterBean {
         cookie.setMaxAge(0);
         cookie.setPath("/");
 
+        if (kakao != null) {
+            //토큰 Cookie 값 0
+            Cookie kakao_cookie = new Cookie("kakao", null);
+            kakao_cookie.setMaxAge(0);
+            kakao_cookie.setPath("/");
+
+            response.addCookie(kakao_cookie);
+        }
+
         response.addCookie(cookie);
+
+        // AccessToken을 응답으로 보내줌
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write("{ \"accessToken\": \"" + accessToken + "\" }");
         response.setStatus(HttpServletResponse.SC_OK);
     }
 }
