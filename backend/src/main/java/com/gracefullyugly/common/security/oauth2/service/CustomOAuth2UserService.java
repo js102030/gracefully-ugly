@@ -57,12 +57,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             userDTO.setUsername(username);
             userDTO.setUserId(saveUser.getId());
             userDTO.setRole(saveUser.getRole()); // 일단 예시로 GUEST 해둠
+            //토큰 가져와서 저장 여기가 진짜 중요함
+            userDTO.setAccessToken(userRequest.getAccessToken().getTokenValue());
 
             return new CustomOAuth2User(userDTO);
         } else {
             UserDTO userDTO = new UserDTO();
             userDTO.setUsername(existData.get().getLoginId());
             userDTO.setRole(existData.get().getRole());
+            userDTO.setAccessToken(userRequest.getAccessToken().getTokenValue());
 
             return new CustomOAuth2User(userDTO);
         }
