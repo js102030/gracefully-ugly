@@ -1,12 +1,10 @@
 package com.gracefullyugly.common.controller;
 
-import com.gracefullyugly.domain.groupbuy.service.GroupBuySearchService;
 import com.gracefullyugly.domain.item.dto.ItemWithImageUrlResponse;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.review.dto.ReviewWithImageResponse;
 import com.gracefullyugly.domain.review.service.ReviewSearchService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +27,6 @@ public class CommonController {
 
     private final ItemSearchService itemSearchService;
     private final ReviewSearchService reviewSearchService;
-    private final GroupBuySearchService groupBuySearchService;
 
     @GetMapping("/")
     public String mainPage() {
