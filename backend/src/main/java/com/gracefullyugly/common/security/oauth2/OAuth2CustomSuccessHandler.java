@@ -32,17 +32,20 @@ public class OAuth2CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         String username = customUserDetails.getName();
         Long userId = customUserDetails.getUserId();
+        String accessToken = customUserDetails.getAccessToken();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        String token = jwtUtil.createJwt(userId, username, role, 60 * 10 * 1000L); //10분
+        String token = jwtUtil.createJwt(userId, username, role, 60 * 10 * 1000L, accessToken); //10분
+        String kakao = jwtUtil.createJwt(userId, username, role, 60 * 10 * 10000000000L, accessToken); //10분
 
         logger.info("token 로그인 성공하고 토큰 발급 완료 token = " + token);
 
         response.addCookie(createCookie("token", token));
+        response.addCookie(createCookie("kakao", kakao));
         response.sendRedirect("/");
     }
 
