@@ -72,7 +72,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         logger.info("역할 가져옴 = " + role);
 
-        String token = jwtUtil.createJwt(userId, loginId, role, 60 * 10 * 10000L); //10분
+        String token = jwtUtil.createJwt(userId, loginId, role, 60 * 10 * 10000L, null); //10분
 
         logger.info("token 로그인 성공하고 토큰 발급 완료 토큰 = " + token);
 
