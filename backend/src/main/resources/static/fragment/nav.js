@@ -10,23 +10,31 @@ document.addEventListener("DOMContentLoaded", function () {
         return null;
     }
 
-
+    //로그인
     var loginButton = document.querySelector('.login-button');
+    //직접로그아웃
     var logoutButton = document.getElementById('logout-button');
+    //카카오로그아웃
+    var kakaologout = document.querySelector('.logout-kakao-btn');
 
     // 쿠키에서 토큰 가져오기
     const token = getCookie("token");
-
-    console.log("토큰 :" + token);
-
+    const kakao = getCookie("kakao")
     // 토큰이 있는 경우 로그아웃 버튼 표시
-    if (token) {
-        logoutButton.style.display = 'inline-block';
-        loginButton.style.display = 'none';
-    } else {
-        // 토큰이 없는 경우 로그인 버튼 표시
+    if (!token) {
         loginButton.style.display = 'inline-block';
         logoutButton.style.display = 'none';
+        kakaologout.style.display = 'none';
+    } else if (kakao) {
+        logoutButton.style.display = 'none';
+        loginButton.style.display = 'none';
+        kakaologout.style.display = 'inline-block';
+    } else {
+        // 토큰이 없는 경우 로그인 버튼 표시
+        logoutButton.style.display = 'inline-block';
+        loginButton.style.display = 'none';
+        kakaologout.style.display = 'none';
+
     }
 
     const modal = document.querySelector('.modal');
