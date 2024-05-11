@@ -1,8 +1,8 @@
 package com.gracefullyugly.domain.review.service;
 
-import com.gracefullyugly.common.wrapper.ApiResponse;
 import com.gracefullyugly.domain.review.dto.ReviewDtoUtil;
 import com.gracefullyugly.domain.review.dto.ReviewResponse;
+import com.gracefullyugly.domain.review.dto.ReviewWithImageResponse;
 import com.gracefullyugly.domain.review.entity.Review;
 import com.gracefullyugly.domain.review.repository.ReviewRepository;
 import java.util.List;
@@ -32,12 +32,11 @@ public class ReviewSearchService {
         return reviewRepository.countByUserId(userId);
     }
 
-    public List<ReviewResponse> getReviewsOrEmptyByItemId(Long itemId) {
-        List<Review> reviews = reviewRepository.findByItemId(itemId);
+    public List<ReviewWithImageResponse> getReviewsWithImagesByItemId(Long itemId) {
+        return reviewRepository.getReviewsWithImagesByItemId(itemId);
+    }
 
-        return reviews
-                .stream()
-                .map(ReviewDtoUtil::reviewToReviewResponse)
-                .toList();
+    public Float findAverageStarPointsByItemId(Long itemId) {
+        return reviewRepository.findAverageStarPointsByItemId(itemId);
     }
 }

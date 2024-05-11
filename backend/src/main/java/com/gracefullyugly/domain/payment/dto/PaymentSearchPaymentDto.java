@@ -14,8 +14,6 @@ public class PaymentSearchPaymentDto {
 
     private Long paymentId;
 
-    private String tid;
-
     private int totalPrice;
 
     private LocalDateTime paymentDate;

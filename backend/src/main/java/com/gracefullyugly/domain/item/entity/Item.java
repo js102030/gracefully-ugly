@@ -47,8 +47,6 @@ public class Item extends BaseTimeEntity {
 
     private boolean isDeleted;
 
-    // TODO 이미지 추가
-
     @Builder
     public Item(Long id, Long userId, Category categoryId, String name, String description, int price,
                 int totalSalesUnit,

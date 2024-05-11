@@ -1,10 +1,9 @@
 package com.gracefullyugly.common.controller;
 
-import com.gracefullyugly.domain.groupbuy.dto.GroupBuyListResponse;
 import com.gracefullyugly.domain.groupbuy.service.GroupBuySearchService;
 import com.gracefullyugly.domain.item.dto.ItemWithImageUrlResponse;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
-import com.gracefullyugly.domain.review.dto.ReviewResponse;
+import com.gracefullyugly.domain.review.dto.ReviewWithImageResponse;
 import com.gracefullyugly.domain.review.service.ReviewSearchService;
 
 import java.util.ArrayList;
@@ -75,30 +74,30 @@ public class CommonController {
         return "sellerDetails";
     }
 
-//    @GetMapping("/check-order")
-//    public String checkOrder() {
-//        return "complete-payment";
-//    }
+    @GetMapping("/create-review/{itemId}")
+    public String createReview(@PathVariable Long itemId, Model model) {
+        ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
+        Float starPoint = reviewSearchService.findAverageStarPointsByItemId(itemId);
 
 //    @GetMapping("/create-order")
 //    public String createOrder() {
 //        return "create-order";
 //    }
 
-    @GetMapping("/create-review")
-    public String createReview() {
+        model.addAttribute("starPoint", starPoint);
+        model.addAttribute("item", itemResponse);
         return "create-review";
     }
 
     @GetMapping("/group-buying/{itemId}")
     public String groupBuying(@PathVariable Long itemId, Model model) {
-        List<ReviewResponse> reviewResponse = reviewSearchService.getReviewsOrEmptyByItemId(itemId);
+        List<ReviewWithImageResponse> reviews = reviewSearchService.getReviewsWithImagesByItemId(itemId);
         ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
 
-        float starPoint = getAvgStarPoint(reviewResponse);
+        Float starPoint = reviewSearchService.findAverageStarPointsByItemId(itemId);
 
         model.addAttribute("starPoint", starPoint);
-        model.addAttribute("reviews", reviewResponse);
+        model.addAttribute("reviews", reviews);
         model.addAttribute("item", itemResponse);
         return "group-buying";
     }
@@ -141,17 +140,6 @@ public class CommonController {
     @GetMapping("/productAsk")
     public String productAsk() {
         return "productAsk";
-    }
-
-    private float getAvgStarPoint(List<ReviewResponse> reviewResponse) {
-        float starPoint = 0;
-        for (ReviewResponse review : reviewResponse) {
-            starPoint += review.getStarPoint();
-        }
-        if (!reviewResponse.isEmpty()) {
-            starPoint /= reviewResponse.size();
-        }
-        return starPoint;
     }
 
 }

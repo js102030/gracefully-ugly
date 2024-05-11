@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function moveToGroupBuying(itemId) {
-    window.location.href = `http://localhost:8080/group-buying/` + itemId;
+    window.location.href = ('http://localhost:8080/group-buying/' + itemId);
 }
 
 function deleteCartItem(cartItemId) {

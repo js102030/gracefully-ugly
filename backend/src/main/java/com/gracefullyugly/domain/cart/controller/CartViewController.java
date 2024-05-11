@@ -23,9 +23,8 @@ public class CartViewController {
      * 찜 목록을 조회하는 API입니다.
      */
     @GetMapping("/cart")
-    public String getCartList(
-            @Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
-            Model model) {
+    public String getCartList(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
+                              Model model) {
         List<CartListResponse> cartListResponses = cartService.getCartList(userId);
         model.addAttribute("CartList", cartListResponses);
 

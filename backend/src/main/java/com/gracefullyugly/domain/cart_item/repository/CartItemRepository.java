@@ -23,4 +23,6 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
         nativeQuery = true)
     @Modifying
     Integer deleteCartItem(@Param("cartId") Long cartId, @Param("cartItemId") Long cartItemId);
+
+    Boolean existsCartItemByCartIdAndItemId(Long cartId, Long itemId);
 }

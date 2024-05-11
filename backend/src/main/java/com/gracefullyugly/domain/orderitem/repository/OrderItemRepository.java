@@ -11,11 +11,10 @@ import org.springframework.stereotype.Repository;
 public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
 
     @Query(value =
-        "SELECT OI.item_id AS itemId, I.name AS name, I.price AS price, OI.quantity AS quantity "
-      + "FROM orders_item AS OI "
-      + "LEFT OUTER JOIN item AS I ON OI.item_id = I.item_id "
-      + "WHERE OI.orders_id = :orderId",
-        nativeQuery = true)
+        "SELECT new com.gracefullyugly.domain.orderitem.dto.OrderItemInfoResponse(I.id, I.categoryId, I.name, I.price, OI.quantity) AS item "
+      + "FROM OrderItem AS OI "
+      + "LEFT OUTER JOIN Item AS I ON OI.itemId = I.id "
+      + "WHERE OI.ordersId = :orderId ")
     List<OrderItemInfoResponse> getOrderItemListByOrderId(Long orderId);
 
     List<OrderItem> findAllByOrdersId(Long orderId);
