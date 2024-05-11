@@ -145,7 +145,8 @@ class QnAControllerTest {
     }
 
     private String getToken() {
-        return jwtUtil.createJwt(100L, "loginId", "ROLE_SELLER", 60 * 10 * 1000L);    }
+        return jwtUtil.createJwt(100L, "loginId", "ROLE_SELLER", 60 * 10 * 1000L, null);
+    }
 
 
 }
