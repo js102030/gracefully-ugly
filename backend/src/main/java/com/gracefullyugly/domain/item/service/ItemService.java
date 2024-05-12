@@ -1,5 +1,6 @@
 package com.gracefullyugly.domain.item.service;
 
+import com.gracefullyugly.domain.groupbuy.service.GroupBuyService;
 import com.gracefullyugly.domain.item.dto.ItemDtoUtil;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
 import com.gracefullyugly.domain.item.dto.ItemResponse;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class ItemService {
 
+    private final GroupBuyService groupBuyService;
     private final ItemSearchService itemSearchService;
     private final ItemRepository itemRepository;
 
@@ -46,6 +48,7 @@ public class ItemService {
         }
 
         findItem.delete();
+        groupBuyService.updateGroupBuyStatusToCancelByItemId(itemId);
     }
 
 }
