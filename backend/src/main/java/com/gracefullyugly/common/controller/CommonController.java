@@ -1,13 +1,18 @@
 package com.gracefullyugly.common.controller;
 
-import com.gracefullyugly.domain.groupbuy.service.GroupBuySearchService;
 import com.gracefullyugly.domain.item.dto.ItemWithImageUrlResponse;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.review.dto.ReviewWithImageResponse;
 import com.gracefullyugly.domain.review.service.ReviewSearchService;
+
 import java.util.List;
+import java.util.stream.Collectors;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +27,6 @@ public class CommonController {
 
     private final ItemSearchService itemSearchService;
     private final ReviewSearchService reviewSearchService;
-    private final GroupBuySearchService groupBuySearchService;
 
     @GetMapping("/")
     public String mainPage() {
@@ -50,7 +54,15 @@ public class CommonController {
     }
 
     @GetMapping("/sellerList")
-    public String sellerList() {
+    public String sellerList(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId, Model model) {
+        List<ItemWithImageUrlResponse> items = itemSearchService.findAllItems();
+
+        List<ItemWithImageUrlResponse> filteredItems = items.stream()
+                .filter(item -> item.getUserId().equals(userId))
+                .collect(Collectors.toList());
+
+        model.addAttribute("items", filteredItems);
+
         return "sellerList";
     }
 
@@ -64,10 +76,10 @@ public class CommonController {
         ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
         Float starPoint = reviewSearchService.findAverageStarPointsByItemId(itemId);
 
-    @GetMapping("/create-review/{itemId}")
-    public String createReview(@PathVariable Long itemId, Model model) {
-        ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
-        Float starPoint = reviewSearchService.findAverageStarPointsByItemId(itemId);
+//    @GetMapping("/create-order")
+//    public String createOrder() {
+//        return "create-order";
+//    }
 
         model.addAttribute("starPoint", starPoint);
         model.addAttribute("item", itemResponse);
@@ -82,7 +94,7 @@ public class CommonController {
         Float starPoint = reviewSearchService.findAverageStarPointsByItemId(itemId);
 
         model.addAttribute("starPoint", starPoint);
-        model.addAttribute("reviews", reviews); // 리뷰 데이터를 모델에 추가
+        model.addAttribute("reviews", reviews);
         model.addAttribute("item", itemResponse);
         return "group-buying";
     }
