@@ -15,7 +15,7 @@ public class GroupBuyService {
 
     private GroupBuyRepository groupBuyRepository;
 
-    public boolean updateGroupStatus(Long groupBuyId, GroupBuyStatus status) {
+    public boolean updateGroupStatusByGroupBuyId(Long groupBuyId, GroupBuyStatus status) {
         Optional<GroupBuy> groupBuy = groupBuyRepository.findById(groupBuyId);
 
         if (groupBuy.isEmpty()) {
@@ -24,5 +24,9 @@ public class GroupBuyService {
         groupBuy.get().updateGroupBuyStatus(status);
 
         return true;
+    }
+
+    public void updateGroupBuyStatusToCancelByItemId(Long itemId) {
+        groupBuyRepository.updateGroupBuyStatusToCanceledByItemId(itemId);
     }
 }
