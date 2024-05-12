@@ -3,7 +3,6 @@ package com.gracefullyugly.domain.groupbuy.repository;
 import com.gracefullyugly.domain.groupbuy.dto.GroupBuyInfoResponse;
 import com.gracefullyugly.domain.groupbuy.dto.GroupBuySelectDto;
 import com.gracefullyugly.domain.groupbuy.entity.GroupBuy;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
