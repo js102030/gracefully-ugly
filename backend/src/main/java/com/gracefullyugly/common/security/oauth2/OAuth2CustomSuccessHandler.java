@@ -17,14 +17,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OAuth2CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
-
     private final JWTUtil jwtUtil;
-    private final UserRepository userRepository;
 
     public OAuth2CustomSuccessHandler(JWTUtil jwtUtil, UserRepository userRepository) {
 
         this.jwtUtil = jwtUtil;
-        this.userRepository = userRepository;
     }
 
     @Override
@@ -35,24 +32,21 @@ public class OAuth2CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         String username = customUserDetails.getName();
         Long userId = customUserDetails.getUserId();
+        String accessToken = customUserDetails.getAccessToken();
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        String access = jwtUtil.createJwt(userId, username, role, 60 * 10 * 1000L); //10분
-        String refresh = jwtUtil.createJwt(userId, username, role, 60 * 60 * 24 * 1000L); //24시간
+        String token = jwtUtil.createJwt(userId, username, role, 60 * 10 * 1000L, accessToken); //10분
+        String kakao = jwtUtil.createJwt(userId, username, role, 60 * 10 * 10000000000L, accessToken); //10분
 
-        userRepository.saveRefreshToken(username, refresh);
-        String saveRefresh = userRepository.findRefreshTokenByLoginId(username);
+        logger.info("token 로그인 성공하고 토큰 발급 완료 token = " + token);
 
-        logger.info("token 로그인 성공하고 토큰 발급 완료 access토큰 = " + access);
-        logger.info("token 로그인 성공하고 토큰 발급 완료 refresh토큰 = " + refresh + "/ 저장된 refresh = " + saveRefresh);
-
-        response.setHeader("access", access);
-        response.addCookie(createCookie("refresh", refresh));
-        response.sendRedirect("http://localhost:8080/mainAfter");
+        response.addCookie(createCookie("token", token));
+        response.addCookie(createCookie("kakao", kakao));
+        response.sendRedirect("/");
     }
 
     private Cookie createCookie(String key, String value) {
@@ -61,7 +55,7 @@ public class OAuth2CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         cookie.setMaxAge(60 * 60 * 60);
         //cookie.setSecure(true);
         cookie.setPath("/");
-        cookie.setHttpOnly(true);
+//        cookie.setHttpOnly(true);
 
         return cookie;
     }

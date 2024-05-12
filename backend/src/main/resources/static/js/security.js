@@ -1,6 +1,7 @@
-//----------------------------사이트 로그아웃 ----------------------------------------
+//----------------------------직접 사이트 로그아웃 ----------------------------------------
 document.addEventListener("DOMContentLoaded", function () {
     const logoutButton = document.getElementById('logout-button');
+    const kakaobutton = document.querySelector('.logout-kakao-btn');
 
     if (logoutButton) {
         logoutButton.addEventListener('click', event => {
@@ -8,17 +9,45 @@ document.addEventListener("DOMContentLoaded", function () {
                 method: 'POST',
             })
                 .then(response => {
-                    alert('로그아웃 완료됏습니다');
-                    location.replace(`/`);
+                    if (response.ok) {
+                        // 로그아웃 성공
+                        alert('로그아웃 완료됐습니다');
+                        // 로그아웃 성공 후 리다이렉트
+                        location.replace(`/`);
+                    }
                 })
                 .catch(error => {
-                    console.error('Error logout:', error);
-                    alert('로그아웃중 오류 발생');
+                    // 로그아웃 실패
+                    console.error('로그아웃 중 에러:', error);
+                    alert('로그아웃 중 오류 발생');
+                });
+        });
+    }
+
+    if (kakaobutton) {
+        kakaobutton.addEventListener('click', event => {
+            fetch(`/logout`, {
+                method: 'POST',
+            })
+                .then(response => {
+                    if (response.ok) {
+                        // 로그아웃 성공
+                        // 로그아웃 성공 후 리다이렉트
+                        location.href = `https://kauth.kakao.com/oauth/logout?client_id=48f99478e44507e05c99dfeee8e1a42a&logout_redirect_uri=http://localhost:8080`;
+                    }
+                })
+                .catch(error => {
+                    // 로그아웃 실패
+                    console.error('로그아웃 중 에러:', error);
+                    alert('로그아웃 중 오류 발생');
                 });
         });
     }
 });
-//----------------------------사이트 로그인 ----------------------------------------
+// ----------------------------카카오 로그아웃 -------------------------------------------
+
+
+//----------------------------사이트 직접 로그인 ----------------------------------------
 document.addEventListener("DOMContentLoaded", function () {
 
     if (document.getElementById("joinForm")) {

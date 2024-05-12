@@ -1,6 +1,5 @@
 package com.gracefullyugly.common.security.oauth2.service;
 
-import com.gracefullyugly.common.security.controller.ReissueController;
 import com.gracefullyugly.common.security.oauth2.dto.CustomOAuth2User;
 import com.gracefullyugly.common.security.oauth2.dto.KakaoResponse;
 import com.gracefullyugly.common.security.oauth2.dto.OAuth2Response;
@@ -9,8 +8,6 @@ import com.gracefullyugly.domain.user.entity.User;
 import com.gracefullyugly.domain.user.enumtype.Role;
 import com.gracefullyugly.domain.user.repository.UserRepository;
 import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -19,8 +16,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
-
-    private static final Logger logger = LoggerFactory.getLogger(ReissueController.class); // Logger 선언 추가
 
     private final UserRepository userRepository;
 
@@ -33,8 +28,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
         OAuth2User oAuth2User = super.loadUser(userRequest);
-
-        logger.info(String.valueOf(oAuth2User));
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         OAuth2Response oAuth2Response = null;
@@ -58,19 +51,21 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     .role(Role.GUEST)
                     .build();
 
-            userRepository.save(userEntity);
-            Optional<User> saveUser = userRepository.findByLoginId(username);
+            User saveUser = userRepository.save(userEntity);
 
             UserDTO userDTO = new UserDTO();
             userDTO.setUsername(username);
-            userDTO.setUserId(saveUser.get().getId());
-            userDTO.setRole(Role.ADMIN); // 일단 예시로 ADMIN 해둠
+            userDTO.setUserId(saveUser.getId());
+            userDTO.setRole(saveUser.getRole()); // 일단 예시로 GUEST 해둠
+            //토큰 가져와서 저장 여기가 진짜 중요함
+            userDTO.setAccessToken(userRequest.getAccessToken().getTokenValue());
 
             return new CustomOAuth2User(userDTO);
         } else {
             UserDTO userDTO = new UserDTO();
             userDTO.setUsername(existData.get().getLoginId());
             userDTO.setRole(existData.get().getRole());
+            userDTO.setAccessToken(userRequest.getAccessToken().getTokenValue());
 
             return new CustomOAuth2User(userDTO);
         }

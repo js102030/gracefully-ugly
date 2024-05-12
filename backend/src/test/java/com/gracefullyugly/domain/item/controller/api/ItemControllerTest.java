@@ -207,7 +207,7 @@ class ItemControllerTest {
         ItemResponse expectedResponse = ItemDtoUtil.itemToItemResponse(item1);
 
         // WHEN
-        when(itemSearchService.findOneItem(itemId)).thenReturn(expectedResponse);
+//        when(itemSearchService.findOneItem(itemId)).thenReturn(expectedResponse);
 
         // THEN
         mockMvc.perform(get("/api/items/{itemId}", itemId)
@@ -226,7 +226,7 @@ class ItemControllerTest {
     }
 
     private String getToken() {
-        return jwtUtil.createJwt(100L, "loginId", "ROLE_SELLER", 60 * 10 * 1000L);
+        return jwtUtil.createJwt(100L, "loginId", "ROLE_SELLER", 60 * 10 * 1000L, null);
     }
 }
 
