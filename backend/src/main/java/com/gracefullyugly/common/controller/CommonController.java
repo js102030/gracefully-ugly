@@ -1,7 +1,13 @@
 package com.gracefullyugly.common.controller;
 
+import com.gracefullyugly.common.wrapper.ApiResponse;
+import com.gracefullyugly.domain.groupbuy.dto.GroupBuyListResponse;
+import com.gracefullyugly.domain.groupbuy.service.GroupBuySearchService;
 import com.gracefullyugly.domain.item.dto.ItemWithImageUrlResponse;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
+import com.gracefullyugly.domain.qna.dto.QnADto;
+import com.gracefullyugly.domain.qna.dto.QnADtoUtil;
+import com.gracefullyugly.domain.qna.service.QnASearchService;
 import com.gracefullyugly.domain.review.dto.ReviewWithImageResponse;
 import com.gracefullyugly.domain.review.service.ReviewSearchService;
 import com.gracefullyugly.domain.user.dto.ProfileResponse;
@@ -30,6 +36,7 @@ public class CommonController {
     private final UserSearchService userSearchService;
     private final ItemSearchService itemSearchService;
     private final ReviewSearchService reviewSearchService;
+    private final QnASearchService qnASearchService;
 
     @GetMapping("/")
     public String mainPage() {
@@ -73,8 +80,15 @@ public class CommonController {
         return "sellerList";
     }
 
-    @GetMapping("/sellerDetails")
-    public String sellerDetails() {
+    @GetMapping("/sellerDetails/{itemId}")
+    public String sellerDetails(@PathVariable Long itemId, Model model) {
+        ItemWithImageUrlResponse oneItems = itemSearchService.findOneItem(itemId);
+        List<ReviewWithImageResponse> reviews = reviewSearchService.getReviewsWithImagesByItemId(itemId);
+        ApiResponse<List<QnADto>> QnAs = qnASearchService.getQnAList(itemId);
+
+        model.addAttribute("oneItems", oneItems);
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("QnAs", QnAs);
         return "sellerDetails";
     }
 

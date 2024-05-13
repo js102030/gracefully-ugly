@@ -1,5 +1,6 @@
 package com.gracefullyugly.domain.qna.dto;
 
+import com.gracefullyugly.domain.qna.entity.QnA;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
