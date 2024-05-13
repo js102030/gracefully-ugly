@@ -42,6 +42,11 @@ function deleteCartItem(cartItemId) {
     })
 }
 
-function orderCartItem(itemId) {
-    window.location.href = ('http://localhost:8080/orders/item/' + itemId);
+function orderCartItem(itemId, closedDate) {
+    if (Date.parse(closedDate) <= Date.now()) {
+        alert("마감일이 지난 상품입니다.");
+    }
+    else {
+        window.location.href = ('http://localhost:8080/orders/item/' + itemId);
+    }
 }

@@ -33,6 +33,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const address = document.getElementById('address').value;
         const phoneNumber = document.getElementById('number').value;
 
+        if (!validateQuantity(quantity)) {
+            alert("수량이 올바르지 않습니다.");
+            return;
+        }
+
         $.ajax({
             url: 'http://localhost:8080/api/orders',
             method: 'post',
@@ -75,3 +80,9 @@ document.addEventListener('DOMContentLoaded', function() {
         })
     })
 });
+
+function validateQuantity(quantity) {
+    const totalSalesUnit = document.querySelector('.total-sales-unit').value;
+
+    return (1 <= quantity) && (quantity <= parseInt(totalSalesUnit));
+}
