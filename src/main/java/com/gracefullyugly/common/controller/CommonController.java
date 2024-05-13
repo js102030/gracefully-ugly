@@ -156,4 +156,9 @@ public class CommonController {
         return "productAsk";
     }
 
+    @GetMapping("/verification-email")
+    public String verificationEmail(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId) {
+        return "/verification-email";
+    }
+
 }
