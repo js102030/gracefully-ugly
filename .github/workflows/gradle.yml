@@ -14,7 +14,7 @@ on:
     branches: [ "release" ]
 
 env:
-  S3_BUCKET_NAME: js102030
+  S3_BUCKET_NAME: ugly102030
   AWS_REGION: ap-northeast-2
 #  CODEDEPLOY_NAME: github-actions
 #  CODEDEPLOY_GROUP: js-github-actions-group
