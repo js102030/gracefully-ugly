@@ -15,7 +15,7 @@
 <div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
 <div class="history d-flex mt-5 w-75 d-flex border border-success rounded-3"
-     th:if="${#lists.isEmpty(PaymentSearchListResponse)}">
+     th:if="${#lists.isEmpty(PaymentSearchListResponse.getPaymentList())}">
     <h2>구매 내역이 없습니다.</h2>
 </div>
 
