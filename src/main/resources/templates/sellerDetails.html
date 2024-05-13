@@ -31,7 +31,7 @@
         <h2>리뷰</h2>
         <div class="pink-box">
             <tr class="input_review" th:each="review:${reviews}">
-                <td th:text="${review.getUserNickname()}">총총이</td>
+                <td th:text="${review.getUserId()}">총총이</td>
                 <td th:text="${review.getComments()}">굿굿 맛있어요</td>
                 <br>
             </tr>
@@ -41,8 +41,8 @@
         <h2>문의 사항</h2>
         <div class="pink-box">
             <tr class="input_count" th:each="qna:${QnAs.data}">
-                <td class="qna-user" th:text="${qna.userId}">총총이</td>
-                <td th:text="${qna.question}">세일좀 안되나여?</td>
+                <td th:text="${qna.getUserId()}">총총이</td>
+                <td th:text="${qna.getQuestion()}">세일좀 안되나여?</td>
                 <br>
             </tr>
         </div>
@@ -62,24 +62,16 @@
         </tr>
         </thead>
         <tbody class="table_items">
-<!--        <tr th:each="item : ${items}">-->
-<!--            -->
-<!--        </tr>-->
-        </tbody>
-        <tbody class="table_items">
-        <td>1</td>
-        <td>qwer1234</td>
-        <td>23900</td>
-        <td>배송 완료</td>
-        <td>경기도 성남시 블라블라</td>
-        <td>문앞에 놓아주세요</td>
-        <td>2024-04-25</td>
+        <tr>
+            <td>1</td>
+            <td>qwer1234</td>
+            <td>23900</td>
+            <td>경기도 성남시 블라블라</td>
+            <td>2024-04-25</td>
+        </tr>
         </tbody>
     </table>
 </div>
 <script type="text/javascript" src="/fragment/nav.js"></script>
-<script type="text/javascript">
-    var userId = document.querySelector('.qna-user').textContent.trim();
-</script>
 </body>
 </html>

@@ -82,11 +82,9 @@ public class CommonController {
 
     @GetMapping("/sellerDetails/{itemId}")
     public String sellerDetails(@PathVariable Long itemId, Model model) {
-        ItemWithImageUrlResponse oneItems = itemSearchService.findOneItem(itemId);
         List<ReviewWithImageResponse> reviews = reviewSearchService.getReviewsWithImagesByItemId(itemId);
         ApiResponse<List<QnADto>> QnAs = qnASearchService.getQnAList(itemId);
 
-        model.addAttribute("oneItems", oneItems);
         model.addAttribute("reviews", reviews);
         model.addAttribute("QnAs", QnAs);
         return "sellerDetails";
