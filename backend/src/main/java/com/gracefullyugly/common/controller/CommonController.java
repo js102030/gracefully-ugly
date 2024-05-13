@@ -5,6 +5,8 @@ import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.review.dto.ReviewWithImageResponse;
 import com.gracefullyugly.domain.review.service.ReviewSearchService;
 
+import com.gracefullyugly.domain.user.dto.ProfileResponse;
+import com.gracefullyugly.domain.user.service.UserSearchService;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Slf4j
 public class CommonController {
 
+    private final UserSearchService userSearchService;
     private final ItemSearchService itemSearchService;
     private final ReviewSearchService reviewSearchService;
 
@@ -43,7 +46,10 @@ public class CommonController {
     }
 
     @GetMapping("/my-page")
-    public String myPagePage() {
+    public String myPagePage(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId, Model model) {
+        ProfileResponse response = userSearchService.getProfile(userId);
+        model.addAttribute("Profile", response);
+
         return "my-page";
     }
 
