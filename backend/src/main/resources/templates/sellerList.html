@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>판매자 판매내역 페이지</title>
@@ -12,23 +12,23 @@
 <div class="line-box"></div>
 <h1>판매 현황</h1>
 <div class="current_time">
-    <p>현재시간 : 2024-04-25 18:00</p>
+    현재시간 :<div th:text="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm:ss')}">2024-04-25 18:00</div>
 </div>
 <div class="green-box">
     <div class="green-container">
         <div>
             <p>판매글 업로드 개수</p>
-            <p class="input_data">3</p>
+            <p class="input_data" th:text="${items.size()}">3</p>
         </div>
         <div>
             <p>모집 완료</p>
-            <p class="input_data">2</p>
+            <p class="input_data_completed">0</p>
         </div>
         <div>
             <p>모집중</p>
-            <p class="input_data">1</p>
+            <p class="input_data_ing">0</p>
         </div>
-        <button class="button">판매상품 등록</button>
+        <button class="salesPostButton">판매상품 등록</button>
     </div>
 </div>
 <h1>판매 내역</h1>
@@ -37,56 +37,32 @@
         <thead class="table_title">
         <tr>
             <th>번호</th>
+            <th>상품 아이디</th>
             <th>상품명</th>
             <th>단위당 가격</th>
             <th>목표 무게(g)</th>
-            <th>현재 무게(g)</th>
+            <th>마감 일자</th>
             <th>모집 상태</th>
         </tr>
         </thead>
-        <!--tbody class="table_items">
-        <tr th:each="item : ${items}">
-            <td th:text="${item.name}"></td>
-            <td th:text="${item.perPirce}"></td>
-            <td th:text="${item.goalWeight}"></td>
-            <td th:text="${item.currentWeight}"></td>
-            <td th:text="${item.status}"></td>
-        </tr>
-        </tbody>-->
         <tbody class="table_items">
-        <td>1</td>
-        <td><a href="#somewhere">못난이 수박</a></td>
-        <td>14900</td>
-        <td>30000</td>
-        <td>30200</td>
-        <td>모집 완료</td>
-        </tbody>
-        <tbody class="table_items">
-        <td>2</td>
-        <td><a href="#somewhere">못난이 수박</a></td>
-        <td>14900</td>
-        <td>30000</td>
-        <td>30200</td>
-        <td>모집 완료</td>
-        </tbody>
-        <tbody class="table_items">
-        <td>3</td>
-        <td><a href="#somewhere">못난이 수박</a></td>
-        <td>14900</td>
-        <td>30000</td>
-        <td>30200</td>
-        <td>모집 완료</td>
-        </tbody>
-        <tbody class="table_items">
-        <td>4</td>
-        <td><a href="#somewhere">못난이 수박</a></td>
-        <td>14900</td>
-        <td>30000</td>
-        <td>30200</td>
-        <td>모집 완료</td>
+            <tr th:each="item, itemStat : ${items}">
+                <td th:text="${itemStat.index + 1}"></td>
+                <td class="getItemId" th:text="${item.getId()}"></td>
+                <td>
+                    <a href="#" class="moveToItem" th:text="${item.getName()}" th:attr="data-itemId=${item.getId()}"></a>
+                </td>
+                <td th:text="${item.getPrice()}"></td>
+                <td th:text="${item.getTotalSalesUnit()}"></td>
+                <td th:text="${item.closedDate}"></td>
+                <td></td>
+            </tr>
         </tbody>
     </table>
 </div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/sellerList.js"></script>
 <script type="text/javascript" src="/fragment/nav.js"></script>
 </body>
 </html>
