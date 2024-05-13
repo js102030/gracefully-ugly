@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>주문 완료 확인 페이지</title>
+    <link rel="stylesheet" href="/fragment/nav.css">
     <link rel="stylesheet" href="/css/complete-payment.css">
 </head>
 <body class="body">
-<header class="main-header">
-    <img class="logo" src="/image/logo.png" alt="로고">
-    <button class="notice-button">알림</button>
-    <button class="login-button">로그아웃</button>
-    <button class="list-button">목록</button>
-</header>
+<div th:replace="~{fragment/nav :: top}"></div>
+<div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
 <input class="order-id" th:value="${KakaoPayApproveResponse.getPartner_order_id()}" style="display: none">
 <img class = "check" src="/image/check.png" alt="체크">
@@ -23,5 +20,7 @@
 <button class="view-order">주문내역 상세보기</button>
 <button class="go-to-main">메인으로 돌아가기</button>
 <script type="text/javascript" src="/js/complete-payment.js"></script>
+<script type="text/javascript" src="/fragment/nav.js"></script>
+<script type="text/javascript" src="/js/security.js"></script>
 </body>
 </html>

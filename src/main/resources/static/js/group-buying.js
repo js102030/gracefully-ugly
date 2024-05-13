@@ -1,7 +1,7 @@
 // 현재 페이지의 URL에서 itemId 가져오기
 const pathSegments = window.location.pathname.split('/');
 const itemId = pathSegments[pathSegments.length - 1];
-console.log("테스트"+itemId)
+
 
 document.addEventListener('DOMContentLoaded', function() {
     const modal = document.querySelector('.modal');
@@ -139,6 +139,8 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log(itemId);
     var apiUrl = '/api/groupbuy/items/' + itemId;
 
+    const endTime = document.querySelector('.end-time').innerText;
+
     fetch(apiUrl)
         .then(response => {
             if (!response.ok) {
@@ -150,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log(data);
             var groupBuyStatus = data.groupBuyList[0].groupBuyStatus;
             console.log(groupBuyStatus);
-            if (groupBuyStatus === 'CANCELLED') {
+            if (groupBuyStatus === 'CANCELLED' || Date.parse(endTime) <= Date.now()) {
                 showCancelledModal();
                 hideButtons();
             } else if (groupBuyStatus === 'COMPLETED') {
@@ -160,6 +162,11 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => {
             console.error('Error fetching group buy data:', error);
+
+            if (Date.parse(endTime) <= Date.now()) {
+                showCancelledModal();
+                hideButtons();
+            }
         });
 });
 

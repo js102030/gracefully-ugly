@@ -36,7 +36,7 @@ public class UserDtoUtil {
                 .build();
     }
 
-    public static ProfileResponse toProfileResponse(User user, int reviewCount) {
+    public static ProfileResponse toProfileResponse(User user, int reviewCount, int buyCount) {
         return ProfileResponse.builder()
                 .userId(user.getId())
                 .loginId(user.getLoginId())
@@ -45,7 +45,7 @@ public class UserDtoUtil {
                 .email(user.getEmail())
                 .role(user.getRole())
                 .isVerified(user.isVerified())
-                .buyCount(0) //TODO 임시 값
+                .buyCount(buyCount)
                 .reviewCount(reviewCount)
                 .build();
     }

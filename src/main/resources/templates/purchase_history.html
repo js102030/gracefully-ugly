@@ -15,7 +15,7 @@
 <div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
 <div class="history d-flex mt-5 w-75 d-flex border border-success rounded-3"
-     th:if="${#lists.isEmpty(PaymentSearchListResponse)}">
+     th:if="${#lists.isEmpty(PaymentSearchListResponse.getPaymentList())}">
     <h2>구매 내역이 없습니다.</h2>
 </div>
 
@@ -89,6 +89,7 @@
 </div>
 <script type="text/javascript" src="/fragment/nav.js"></script>
 <script type="text/javascript" src="/js/purchase_history.js"></script>
+<script type="text/javascript" src="/js/security.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>

@@ -21,9 +21,11 @@ import com.gracefullyugly.domain.payment.repository.PaymentRepository;
 import com.gracefullyugly.domain.user.entity.User;
 import com.gracefullyugly.domain.user.enumtype.Role;
 import com.gracefullyugly.domain.user.repository.UserRepository;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -132,9 +134,8 @@ public class OrderService {
 
                     Item result = resultOptional.get();
 
-                    if (!result.isDeleted() && !result.getClosedDate().isBefore(LocalDateTime.now()) && (
-                            result.getMinUnitWeight() <= item.getQuantity()
-                                    && item.getQuantity() <= result.getTotalSalesUnit())) {
+                    if (!result.isDeleted() && !result.getClosedDate().isBefore(LocalDateTime.now()) &&
+                            (1 <= item.getQuantity() && item.getQuantity() <= result.getTotalSalesUnit())) {
                         itemInfoToPaymentDto.setFirstItemName(result.getName())
                                 .addQuantity(item.getQuantity().intValue())
                                 .addTotalAmount(result.getPrice() * item.getQuantity().intValue());

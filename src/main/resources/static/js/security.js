@@ -44,8 +44,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
-// ----------------------------카카오 로그아웃 -------------------------------------------
-
 
 //----------------------------사이트 직접 로그인 ----------------------------------------
 document.addEventListener("DOMContentLoaded", function () {

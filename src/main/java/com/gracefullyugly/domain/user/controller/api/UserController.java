@@ -12,12 +12,12 @@ import com.gracefullyugly.domain.user.dto.UpdateNicknameDto;
 import com.gracefullyugly.domain.user.dto.UpdatePasswordRequest;
 import com.gracefullyugly.domain.user.dto.UserResponse;
 import com.gracefullyugly.domain.user.dto.ValidEmail;
-import com.gracefullyugly.domain.user.dto.ValidLoginId;
-import com.gracefullyugly.domain.user.dto.ValidNickname;
+import com.gracefullyugly.domain.user.entity.User;
 import com.gracefullyugly.domain.user.service.UserSearchService;
 import com.gracefullyugly.domain.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -37,8 +38,8 @@ public class UserController {
     private final UserService userService;
     private final UserSearchService userSearchService;
 
-    @PostMapping("/users")
-    public ResponseEntity<BasicRegResponse> createBasicAccount(@RequestBody BasicRegRequest request) {
+    @PostMapping(value = "/all/users", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<BasicRegResponse> createBasicAccount(@RequestBody @Valid BasicRegRequest request) {
         BasicRegResponse basicRegResponse = userService.createBasicAccount(request);
 
         return ResponseEntity
@@ -46,10 +47,10 @@ public class UserController {
                 .body(basicRegResponse);
     }
 
-    @PatchMapping("/users/registration")
-    public ResponseEntity<FinalRegResponse> completeRegistration(@RequestBody @Valid AdditionalRegRequest request,
-                                                                 @AuthenticationPrincipal(expression = "userId") Long userId) {
-        FinalRegResponse finalRegResponse = userService.completeRegistration(userId, request);
+    @PatchMapping(value = "/all/users/registration", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FinalRegResponse> completeRegistration(@RequestBody @Valid AdditionalRegRequest request) {
+        User user = userSearchService.findByloginId(request.getLoginId());
+        FinalRegResponse finalRegResponse = userService.completeRegistration(user.getId(), request);
 
         return ResponseEntity
                 .ok(finalRegResponse);
@@ -108,16 +109,16 @@ public class UserController {
                 .build();
     }
 
-    @GetMapping("/loginId-availability")
-    public ResponseEntity<Boolean> checkLoginIdAvailability(@Valid @RequestBody ValidLoginId validLoginId) {
+    @GetMapping(value = "/all/loginId-availability", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> checkLoginIdAvailability(@RequestParam String loginId) {
         return ResponseEntity
-                .ok(userSearchService.existsByLoginId(validLoginId.getLoginId()));
+                .ok(userSearchService.existsByLoginId(loginId));
     }
 
-    @GetMapping("/nickname-availability")
-    public ResponseEntity<Boolean> checkNicknameAvailability(@Valid @RequestBody ValidNickname validNickname) {
+    @GetMapping(value = "/all/nickname-availability", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> checkNicknameAvailability(@RequestParam String nickname) {
         return ResponseEntity
-                .ok(userSearchService.existsByNickName(validNickname.getNickname()));
+                .ok(userSearchService.existsByNickName(nickname));
     }
 
     @GetMapping("/email-availability")

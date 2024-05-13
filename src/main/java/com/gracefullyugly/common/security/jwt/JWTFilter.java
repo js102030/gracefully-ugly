@@ -90,6 +90,12 @@ public class JWTFilter extends OncePerRequestFilter {
 
         logger.info(loginId + "의 역할 = " + role);
 
+        if (roleName == Role.GUEST || roleName == null) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.sendRedirect("/join2?loginId=" + loginId);
+            return;
+        }
+
         // userEntity를 빌더를 사용하여 생성하여 값 설정
         User userEntity = User.builder()
                 .userId(userId)
