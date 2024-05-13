@@ -21,4 +21,7 @@ public class AdditionalRegRequest {
     @NotBlank(message = "주소 입력은 필수입니다.")
     private String address;
 
+    @NotBlank(message = "로그인 아이디 입력은 필수입니다.")
+    private String loginId;
+
 }
