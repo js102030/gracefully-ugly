@@ -2,6 +2,7 @@ package com.gracefullyugly.common.exception;
 
 import com.gracefullyugly.common.exception.custom.AuthenticationException;
 import com.gracefullyugly.common.exception.custom.ExistException;
+import com.gracefullyugly.common.exception.custom.ExpiredException;
 import com.gracefullyugly.common.exception.custom.ForbiddenException;
 import com.gracefullyugly.common.exception.custom.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -67,6 +68,15 @@ public class GlobalExceptionHandler {
         log.error("ForbiddenException ", e);
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
+                .body(e.getMessage());
+    }
+
+    @ExceptionHandler(ExpiredException.class)
+    public ResponseEntity<String> handleExpiredException(ExpiredException e) {
+        log.error(e.getMessage());
+        log.error("ExpiredException ", e);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
                 .body(e.getMessage());
     }
 
