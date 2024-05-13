@@ -4,14 +4,14 @@ import com.gracefullyugly.domain.item.dto.ItemWithImageUrlResponse;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.review.dto.ReviewWithImageResponse;
 import com.gracefullyugly.domain.review.service.ReviewSearchService;
-
 import com.gracefullyugly.domain.user.dto.ProfileResponse;
 import com.gracefullyugly.domain.user.service.UserSearchService;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -35,14 +36,15 @@ public class CommonController {
         return "main";
     }
 
+    @GetMapping("/join2")
+    public String join2Page(@RequestParam String loginId, Model model) {
+        model.addAttribute("loginId", loginId);
+        return "join2";
+    }
+
     @GetMapping("/join")
     public String joinPage() {
         return "join";
-    }
-
-    @GetMapping("/join2")
-    public String join2Page() {
-        return "join2";
     }
 
     @GetMapping("/my-page")
