@@ -72,22 +72,42 @@ jobs:
       #          name: test-application.yml
       #          path: ./src/test/resources/application.yml
 
-      - name: Make application yml
+      #      - name: Make application yml
+      #        run: |
+      #          touch ./src/main/resources/application.yml
+      #          echo "${{secrets.YML_MAIN}}" > ./src/main/resources/application.yml
+      #      - uses: actions/upload-artifact@v2
+      #        with:
+      #          name: application.yml
+      #          path: ./src/main/resources/application.yml
+      #
+      #      - name: Make test application yml
+      #        run: |
+      #          touch ./src/test/resources/application.yml
+      #          echo "${{secrets.YML_TEST}}" > ./src/test/resources/application.yml
+      #      - uses: actions/upload-artifact@v2
+      #        with:
+      #          name: application.yml
+      #          path: ./src/test/resources/application.yml
+
+      - name: Make application.yml for main resources
         run: |
-          touch ./src/main/resources/application.yml
-          echo "${{secrets.YML_MAIN}}" > ./src/main/resources/application.yml
+          mkdir -p ./src/main/resources
+          echo "${{ secrets.YML_MAIN }}" > ./src/main/resources/application.yml
+
+      - name: Make application.yml for test resources
+        run: |
+          mkdir -p ./src/test/resources
+          echo "${{ secrets.YML_TEST }}" > ./src/test/resources/application.yml
+
       - uses: actions/upload-artifact@v2
         with:
-          name: application.yml
+          name: main-application.yml
           path: ./src/main/resources/application.yml
 
-      - name: Make test application yml
-        run: |
-          touch ./src/test/resources/application.yml
-          echo "${{secrets.YML_TEST}}" > ./src/test/resources/application.yml
       - uses: actions/upload-artifact@v2
         with:
-          name: application.yml
+          name: test-application.yml
           path: ./src/test/resources/application.yml
 
       # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
