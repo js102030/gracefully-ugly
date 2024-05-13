@@ -13,6 +13,13 @@ on:
   pull_request:
     branches: [ "release" ]
 
+env:
+  S3_BUCKET_NAME: js102030
+  AWS_REGION: ap-northeast-2
+  CODEDEPLOY_NAME: github-actions
+  CODEDEPLOY_GROUP: js-github-actions-group
+
+
 jobs:
   build:
 
@@ -84,16 +91,42 @@ jobs:
           name: application.yml
           path: ./src/test/resources/application.yml
 
-    # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
-    # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
-    #
-    # - name: Setup Gradle
-    #   uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
-    #   with:
-    #     gradle-version: '8.5'
-    #
-    # - name: Build with Gradle 8.5
-    #   run: gradle build
+      # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
+      # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
+      #
+      # - name: Setup Gradle
+      #   uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
+      #   with:
+      #     gradle-version: '8.5'
+      #
+      # - name: Build with Gradle 8.5
+      #   run: gradle build
+
+
+
+      - name: Make zip file
+        run: zip -r ./$GITHUB_SHA.zip .
+        shell: bash
+
+      #      - name: Configure AWS credentials
+      #        uses: aws-actions/configure-aws-credentials@v1
+      #        with:
+      #          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
+      - name: Code Deploy
+        run: aws deploy create-deployment --application-name $CODEDEPLOY_NAME --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name $CODEDEPLOY_GROUP --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip
+
+
+
+
+
+
+
+
 
   dependency-submission:
 
