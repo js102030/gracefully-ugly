@@ -135,7 +135,7 @@ public class OrderService {
                     Item result = resultOptional.get();
 
                     if (!result.isDeleted() && !result.getClosedDate().isBefore(LocalDateTime.now()) &&
-                            (1 <= item.getQuantity() && item.getQuantity() <= result.getTotalSalesUnit() / result.getMinUnitWeight())) {
+                            (1 <= item.getQuantity() && item.getQuantity() <= result.getTotalSalesUnit())) {
                         itemInfoToPaymentDto.setFirstItemName(result.getName())
                                 .addQuantity(item.getQuantity().intValue())
                                 .addTotalAmount(result.getPrice() * item.getQuantity().intValue());
