@@ -80,11 +80,11 @@ public class CommonController {
 //    public String createOrder() {
 //        return "create-order";
 //    }
-
-        model.addAttribute("starPoint", starPoint);
-        model.addAttribute("item", itemResponse);
-        return "create-review";
-    }
+//
+//        model.addAttribute("starPoint", starPoint);
+//        model.addAttribute("item", itemResponse);
+//        return "create-review";
+//    }
 
     @GetMapping("/group-buying/{itemId}")
     public String groupBuying(@PathVariable Long itemId, Model model) {
