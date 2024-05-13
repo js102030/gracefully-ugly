@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>이메일 인증</title>
+    <link rel="stylesheet" href="/fragment/nav.css">
+</head>
+<body>
+<div th:replace="~{fragment/nav :: top}"></div>
+<div th:replace="~{fragment/nav :: modal}"></div>
+<main>
+    <section>
+        <h2>이메일 인증</h2>
+        <div class="input-email-section">
+            <h3>이메일을 입력해주세요</h3>
+            <input type="email">
+            <button class="input-email-btn">인증</button>
+        </div>
+    </section>
+</main>
+<script type="text/javascript" src="/fragment/nav.js"></script>
+<script type="text/javascript" src="/js/security.js"></script>
+</body>
+</html>

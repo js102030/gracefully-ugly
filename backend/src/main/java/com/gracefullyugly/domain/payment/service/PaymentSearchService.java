@@ -42,4 +42,8 @@ public class PaymentSearchService {
 
         return new PaymentSearchResultDTO(paymentSearchDTO, orderItemInfo);
     }
+
+    public int getBuyCount(Long userId) {
+        return paymentRepository.getBuyCountByUserId(userId);
+    }
 }
