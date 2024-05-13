@@ -5,8 +5,10 @@ import com.gracefullyugly.domain.payment.dto.PaymentSearchListResponse;
 import com.gracefullyugly.domain.payment.dto.PaymentSearchResultDTO;
 import com.gracefullyugly.domain.payment.service.PaymentSearchService;
 import com.gracefullyugly.domain.payment.service.PaymentService;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import java.io.UnsupportedEncodingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,7 +30,7 @@ public class PaymentController {
 
     @GetMapping("/payment")
     public ResponseEntity<PaymentSearchListResponse> getPaymentList(
-            @Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId){
+            @Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId) {
         return ResponseEntity.ok(paymentSearchService.getPaymentList(userId));
     }
 
@@ -40,15 +42,16 @@ public class PaymentController {
     }
 
     @PostMapping("/payment")
-    public ResponseEntity<String> readyKakaoPay(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
-                                @Valid @RequestBody OrderResponse order) {
+    public ResponseEntity<String> readyKakaoPay(
+            @Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
+            @Valid @RequestBody OrderResponse order) {
         return ResponseEntity.ok(paymentService.readyKakaoPay(order));
     }
 
     @PutMapping("/payment/kakaopay/refund/{orderId}")
     public ResponseEntity<Void> refundKakaoPay(
             @Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
-            @PathVariable("orderId") Long orderId) {
+            @PathVariable("orderId") Long orderId) throws MessagingException, UnsupportedEncodingException {
         paymentService.refundKakaoPay(userId, orderId);
         return ResponseEntity.ok().build();
     }
