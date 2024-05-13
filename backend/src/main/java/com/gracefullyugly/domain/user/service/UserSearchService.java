@@ -28,6 +28,11 @@ public class UserSearchService {
                 .orElseThrow(() -> new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다."));
     }
 
+    public User findByloginId(String loginId) {
+        return userRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new IllegalArgumentException(loginId + "에 해당하는 사용자가 없습니다."));
+    }
+
     // TODO 총 구매 횟수 추가해야함.
     public ProfileResponse getProfile(Long userId) {
         User findUser = findById(userId);
