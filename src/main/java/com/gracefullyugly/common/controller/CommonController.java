@@ -1,6 +1,7 @@
 package com.gracefullyugly.common.controller;
 
 import com.gracefullyugly.common.wrapper.ApiResponse;
+import com.gracefullyugly.domain.item.dto.ItemResponse;
 import com.gracefullyugly.domain.item.dto.ItemWithImageUrlResponse;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.qna.dto.QnADto;
@@ -18,6 +19,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -118,6 +120,19 @@ public class CommonController {
         model.addAttribute("reviews", reviews);
         model.addAttribute("item", itemResponse);
         return "group-buying";
+    }
+
+    @GetMapping("/question/{itemId}")
+    public String question(@PathVariable Long itemId, Model model) {
+        ApiResponse<List<QnADto>> qnaResponse = qnASearchService.getQnAList(itemId);
+        List<QnADto> qnaList = qnaResponse.getData();
+
+        ItemResponse item = (ItemResponse) itemSearchService.findOneItem(itemId);
+        //아이템 아이디로 리뷰 question, answer 불러오는거
+
+        model.addAttribute("qnaList", qnaList);
+        model.addAttribute("item", item);
+        return "productAsk";
     }
 
     @GetMapping("/admin")
