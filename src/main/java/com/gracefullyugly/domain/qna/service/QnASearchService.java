@@ -29,7 +29,7 @@ public class QnASearchService {
     }
 
     public ApiResponse<List<QnADto>> getQnAList(Long itemId) {
-        List<QnA> findQnAs = qnARepository.findByItemId(itemId);
+        List<QnA> findQnAs = qnARepository.findByItemIdOrderByCreatedDateDesc(itemId);
 
         List<QnADto> qnADtos = findQnAs.stream()
                 .map(QnADtoUtil::qnAToQnADto)
