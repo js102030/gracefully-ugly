@@ -58,7 +58,7 @@ public class SecurityConfig {
         return web -> web.ignoring()  //.requestMatchers(toH2Console())
                 .requestMatchers("/vendor/**", "/api/all/**", "/static/**", "/group-buying", "/css/**", "/image/**",
                         "/js/**", "/fragment/**", "/favicon.ico",
-                        "/h2-console/**", "/api/users/{userId}", "/api/groupbuy/items/{itemId}");
+                        "/h2-console/**", "/api/users/{userId}", "/api/groupbuy/items/{itemId}", "/join2/**", "/");
     }
 
     @Bean
