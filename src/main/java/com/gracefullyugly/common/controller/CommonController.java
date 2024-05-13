@@ -8,7 +8,9 @@ import com.gracefullyugly.domain.qna.service.QnASearchService;
 import com.gracefullyugly.domain.review.dto.ReviewWithImageResponse;
 import com.gracefullyugly.domain.review.service.ReviewSearchService;
 import com.gracefullyugly.domain.user.dto.ProfileResponse;
+import com.gracefullyugly.domain.user.dto.SellerDetailsResponse;
 import com.gracefullyugly.domain.user.entity.User;
+import com.gracefullyugly.domain.user.service.SellerDetailsService;
 import com.gracefullyugly.domain.user.service.UserSearchService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +35,7 @@ public class CommonController {
     private final ItemSearchService itemSearchService;
     private final ReviewSearchService reviewSearchService;
     private final QnASearchService qnASearchService;
+    private final SellerDetailsService sellerDetailsService;
 
     @GetMapping("/")
     public String mainPage() {
@@ -80,9 +83,11 @@ public class CommonController {
     public String sellerDetails(@PathVariable Long itemId, Model model) {
         List<ReviewWithImageResponse> reviews = reviewSearchService.getReviewsWithImagesByItemId(itemId);
         ApiResponse<List<QnADto>> QnAs = qnASearchService.getQnAList(itemId);
+        List<SellerDetailsResponse> sellerDetails = sellerDetailsService.getSellerDetails(itemId);
 
         model.addAttribute("reviews", reviews);
         model.addAttribute("QnAs", QnAs);
+        model.addAttribute("sellerDetails",sellerDetails);
         return "sellerDetails";
     }
 
