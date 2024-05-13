@@ -52,9 +52,7 @@ $(document).ready(function() {
 
         // 클릭한 상품의 itemId 가져오기
         var itemId = $(this).attr('data-itemId');
-
-        var url = 'http://localhost:8080/group-buying/' + itemId;
-        window.location.href = url;
+        window.location.href = '/sellerDetails/' + itemId;
     });
 
 
