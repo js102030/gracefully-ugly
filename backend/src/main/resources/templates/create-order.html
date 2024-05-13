@@ -23,7 +23,8 @@
         <div class="input-quantity">
             <div class="input">수량</div>
             <div class="quantity">
-                <input type="text" id="quantity" name="수량" th:placeholder="'1개 이상 ' + ${Item.getTotalSalesUnit() / Item.getMinUnitWeight()} + '개 이하'">
+                <input type="text" id="quantity" name="수량" th:placeholder="'1개 이상 ' + ${Item.getTotalSalesUnit()} + '개 이하'">
+                <input class="total-sales-unit" th:value="${Item.getTotalSalesUnit()}" style="display: none">
             </div>
         </div>
         <div class="input-address">
