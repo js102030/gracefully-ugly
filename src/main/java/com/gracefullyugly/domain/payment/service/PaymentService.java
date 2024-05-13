@@ -2,6 +2,7 @@ package com.gracefullyugly.domain.payment.service;
 
 import com.gracefullyugly.common.exception.custom.ExistException;
 import com.gracefullyugly.common.exception.custom.NotFoundException;
+import com.gracefullyugly.common.mail.service.MailService;
 import com.gracefullyugly.domain.groupbuy.repository.GroupBuyRepository;
 import com.gracefullyugly.domain.groupbuyuser.repository.GroupBuyUserRepository;
 import com.gracefullyugly.domain.groupbuyuser.service.GroupBuyUserService;
@@ -12,6 +13,8 @@ import com.gracefullyugly.domain.payment.dto.KakaoPayApproveResponse;
 import com.gracefullyugly.domain.payment.dto.KakaoPayReadyResponse;
 import com.gracefullyugly.domain.payment.entity.Payment;
 import com.gracefullyugly.domain.payment.repository.PaymentRepository;
+import jakarta.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +43,7 @@ public class PaymentService {
     private GroupBuyRepository groupBuyRepository;
     private GroupBuyUserRepository groupBuyUserRepository;
     private GroupBuyUserService groupBuyUserService;
+    private MailService mailService;
 
     public String readyKakaoPay(OrderResponse paymentRequest) {
         KakaoPayReadyResponse response = postKakaoPayReady(paymentRequest);
@@ -59,13 +63,13 @@ public class PaymentService {
         KakaoPayApproveResponse response = postKakaoPayApprove(userId, payment, pgToken);
         payment.updateIsPaid(true);
 
-        List<OrderItem> orderItemList =  orderItemRepository.findAllByOrdersId(orderId);
+        List<OrderItem> orderItemList = orderItemRepository.findAllByOrdersId(orderId);
         groupBuyUserService.joinGroupBuy(userId, orderItemList);
 
         return response;
     }
 
-    public void refundKakaoPay(Long userId, Long orderId) {
+    public void refundKakaoPay(Long userId, Long orderId) throws MessagingException, UnsupportedEncodingException {
         Payment payment = paymentRepository.findPaymentByOrderId(orderId)
                 .orElseThrow(() -> new NotFoundException("결제 정보가 없습니다."));
 
@@ -74,7 +78,7 @@ public class PaymentService {
         }
 
         postKakaoPayRefund(payment);
-
+        mailService.sendRefundMessage(userId, orderId);
         payment.updateIsPaid(false);
         payment.updateIsRefunded(true);
 
@@ -82,8 +86,7 @@ public class PaymentService {
     }
 
     /**
-     * 카카오 결제 준비 단계 API를 호출해 Response를 받아오는 메소드 입니다.
-     * 결제 준비 단계 도중 문제 발생 시 RestClientResponseException을 던집니다.
+     * 카카오 결제 준비 단계 API를 호출해 Response를 받아오는 메소드 입니다. 결제 준비 단계 도중 문제 발생 시 RestClientResponseException을 던집니다.
      */
     private KakaoPayReadyResponse postKakaoPayReady(OrderResponse paymentRequest) throws RestClientResponseException {
         RestTemplate restTemplate = new RestTemplate();
@@ -100,8 +103,7 @@ public class PaymentService {
     }
 
     /**
-     * 카카오 결제 승인 단계 API를 호출해 Response를 받아오는 메소드 입니다.
-     * 결제 승인 단계 도중 문제 발생 시 RestClientResponseException을 던집니다.
+     * 카카오 결제 승인 단계 API를 호출해 Response를 받아오는 메소드 입니다. 결제 승인 단계 도중 문제 발생 시 RestClientResponseException을 던집니다.
      */
     private KakaoPayApproveResponse postKakaoPayApprove(Long userId, Payment payment, String pgToken)
             throws RestClientResponseException {
@@ -119,8 +121,7 @@ public class PaymentService {
     }
 
     /**
-     * 카카오 결제 환불 단계 API를 호출해 Response를 받아오는 메소드 입니다.
-     * 결제 환불 단계 도중 문제 발생 시 RestClientResponseException을 던집니다.
+     * 카카오 결제 환불 단계 API를 호출해 Response를 받아오는 메소드 입니다. 결제 환불 단계 도중 문제 발생 시 RestClientResponseException을 던집니다.
      */
     private void postKakaoPayRefund(Payment payment) throws RestClientResponseException {
         RestTemplate restTemplate = new RestTemplate();
