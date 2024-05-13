@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface QnARepository extends JpaRepository<QnA, Long> {
 
     List<QnA> findByItemId(Long itemId);
+
+    List<QnA> findByItemIdOrderByCreatedDateDesc(Long itemId);
 }
