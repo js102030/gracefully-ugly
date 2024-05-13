@@ -3,7 +3,6 @@ package com.gracefullyugly.domain.groupbuy.repository;
 import com.gracefullyugly.domain.groupbuy.dto.GroupBuyInfoResponse;
 import com.gracefullyugly.domain.groupbuy.dto.GroupBuySelectDto;
 import com.gracefullyugly.domain.groupbuy.entity.GroupBuy;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -38,9 +37,8 @@ public interface GroupBuyRepository extends JpaRepository<GroupBuy, Long> {
 
     @Query("SELECT GB "
             + "FROM GroupBuy AS GB "
-            + "LEFT OUTER JOIN Item AS I ON GB.itemId = I.id "
-            + "LEFT OUTER JOIN OrderItem AS OI ON I.id = OI.itemId "
-            + "WHERE OI.ordersId = :orderId AND GB.groupBuyStatus = com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus.COMPLETED")
+            + "LEFT OUTER JOIN GroupBuyUser AS GBU ON GB.id = GBU.groupBuyId "
+            + "WHERE GBU.orderId = :orderId AND GB.groupBuyStatus = com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus.COMPLETED")
     List<GroupBuy> findCompletedGroupBuyByOrderId(Long orderId);
 
     @Modifying
@@ -54,7 +52,7 @@ public interface GroupBuyRepository extends JpaRepository<GroupBuy, Long> {
             + "LEFT OUTER JOIN item AS I ON GB.item_id = I.item_id "
             + "LEFT OUTER JOIN group_buy_user AS GBU ON GB.group_buy_id = GBU.group_buy_id "
             + "WHERE GB.group_buy_id = :groupId AND "
-            + "(SELECT SUM(GBU.quantity) FROM group_buy_user AS GBU WHERE GBU.group_buy_id = :groupId) >= I.min_group_buy_weight) AS temp)",
+            + "(SELECT SUM(GBU.quantity) FROM group_buy_user AS GBU WHERE GBU.group_buy_id = :groupId) >= (I.min_group_buy_weight / I.min_unit_weight)) AS temp)",
             nativeQuery = true)
     Integer updateGroupBuyStatusByGroupId(Long groupId);
 
@@ -63,4 +61,10 @@ public interface GroupBuyRepository extends JpaRepository<GroupBuy, Long> {
             + "SET GB.groupBuyStatus = com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus.CANCELLED "
             + "WHERE GB.groupBuyStatus = com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus.IN_PROGRESS AND GB.endDate <= CURRENT_TIMESTAMP")
     void updateExpiredGroupBuyToCanceled();
+
+    @Modifying
+    @Query("UPDATE GroupBuy AS GB " +
+            "SET GB.groupBuyStatus = com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus.CANCELLED " +
+            "WHERE GB.itemId = :itemId AND GB.groupBuyStatus = com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus.IN_PROGRESS")
+    void updateGroupBuyStatusToCanceledByItemId(Long itemId);
 }

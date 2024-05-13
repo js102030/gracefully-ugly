@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="white">
+<html lang="en" data-theme="white" xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.green.min.css"/>
     <meta charset="UTF-8">
@@ -116,23 +116,24 @@
         <div class="container">
             <div class="container">
                 <ul id="info1">
-                    <li><h4>닉네임 : <span>Orumi</span></h4></li>
-                    <li>아이디 : <span>ID1234</span></li>
-                    <li>주소 : <span>한국</span></li>
-                    <li>이메일 인증 : <span></span></li>
+                    <li><h4>닉네임 : <span th:text="${Profile.getNickname()}">Orumi</span></h4></li>
+                    <li>아이디 : <span th:text="${Profile.getLoginId()}">ID1234</span></li>
+                    <li>주소 : <span th:text="${Profile.getAddress()}">한국</span></li>
+                    <li>이메일 인증 : <span th:if="${Profile.isVerified()}">인증 완료</span><span
+                            th:if="${not Profile.isVerified()}">미 인증</span></li>
                 </ul>
             </div>
             <div class="vline" style="line{border-left: thick solid #EE402E;height:100px;left: 1000px;}"></div>
             <div class="container">
                 <ul id="info2">
                     <li id="info2_1">구매</li>
-                    <li id="info2_2"><h2>30</h2></li>
+                    <li id="info2_2"><h2 th:text="${Profile.getBuyCount()}">30</h2></li>
                 </ul>
             </div>
             <div class="container">
                 <ul id="info3">
                     <li id="info3_1">리뷰</li>
-                    <li id="info3_2"><h2>0</h2></li>
+                    <li id="info3_2"><h2 th:text="${Profile.getReviewCount()}">0</h2></li>
                 </ul>
             </div>
         </div>
@@ -149,6 +150,10 @@
 </footer>
 <script type="text/javascript" src="/js/my-page.js"></script>
 <script type="text/javascript" src="/fragment/nav.js"></script>
+<script type="text/javascript" src="/js/security.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

@@ -4,6 +4,10 @@ import com.gracefullyugly.domain.item.dto.ItemWithImageUrlResponse;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.review.dto.ReviewWithImageResponse;
 import com.gracefullyugly.domain.review.service.ReviewSearchService;
+import com.gracefullyugly.domain.user.dto.ProfileResponse;
+import com.gracefullyugly.domain.user.service.UserSearchService;
+import java.util.List;
+import java.util.stream.Collectors;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Slf4j
 public class CommonController {
 
+    private final UserSearchService userSearchService;
     private final ItemSearchService itemSearchService;
     private final ReviewSearchService reviewSearchService;
 
@@ -43,7 +48,10 @@ public class CommonController {
     }
 
     @GetMapping("/my-page")
-    public String myPagePage() {
+    public String myPagePage(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId, Model model) {
+        ProfileResponse response = userSearchService.getProfile(userId);
+        model.addAttribute("Profile", response);
+
         return "my-page";
     }
 
@@ -70,20 +78,21 @@ public class CommonController {
         return "sellerDetails";
     }
 
-    @GetMapping("/create-review/{itemId}")
-    public String createReview(@PathVariable Long itemId, Model model) {
-        ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
-        Float starPoint = reviewSearchService.findAverageStarPointsByItemId(itemId);
+//    @GetMapping("/create-review/{itemId}")
+//    public String createReview(@PathVariable Long itemId, Model model) {
+//        ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
+//        Float starPoint = reviewSearchService.findAverageStarPointsByItemId(itemId);
+//    }
 
 //    @GetMapping("/create-order")
 //    public String createOrder() {
 //        return "create-order";
 //    }
-
-        model.addAttribute("starPoint", starPoint);
-        model.addAttribute("item", itemResponse);
-        return "create-review";
-    }
+//
+//        model.addAttribute("starPoint", starPoint);
+//        model.addAttribute("item", itemResponse);
+//        return "create-review";
+//    }
 
     @GetMapping("/group-buying/{itemId}")
     public String groupBuying(@PathVariable Long itemId, Model model) {

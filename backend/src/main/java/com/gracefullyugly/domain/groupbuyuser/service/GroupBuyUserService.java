@@ -34,7 +34,7 @@ public class GroupBuyUserService {
             Long groupId = getGroupBuyId(orderItem.getItemId());
 
             groupBuyUserRepository.save(
-                    new GroupBuyUser(groupId, userId, LocalDateTime.now(), orderItem.getQuantity()));
+                    new GroupBuyUser(groupId, userId, orderItem.getOrdersId(), LocalDateTime.now(), orderItem.getQuantity()));
 
             groupBuyRepository.updateGroupBuyStatusByGroupId(groupId);
 
