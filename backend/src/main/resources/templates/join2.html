@@ -23,33 +23,6 @@
 
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('#joinForm2').submit(function (e) {
-            e.preventDefault(); // 폼 기본 제출 동작 방지
-
-            // 폼 데이터 -> JSON
-            var formData = {};
-            $(this).serializeArray().forEach(function (item) {
-                formData[item.name] = item.value;
-            });
-
-            $.ajax({
-                type: "POST",
-                url: "/api/users",
-                contentType: "application/json",
-                data: JSON.stringify(formData),
-                success: function (response) {
-                    window.location.href = "/login";
-                },
-                error: function (response) {
-                    alert("회원가입 실패");
-                }
-            });
-        });
-    });
-</script>
-
 <body>
 <main class="container" style="width: 700px;">
     <br>
@@ -59,16 +32,16 @@
     <div style="border-radius: 10px; border: 5px solid green; padding: 20px; ">
 
         <h1>회원 가입 2단계</h1>
-
+        <input type="hidden" id="loginId" th:value="${loginId}">
         <form id="joinForm2">
 
             <br>
             <div>
                 <label>
-                    <input type="radio" name="role" value="ROLE_SELLER" checked> 판매자
+                    <input type="radio" name="role" value="SELLER" checked> 판매자
                 </label>
                 <label>
-                    <input type="radio" name="role" value="ROLE_BUYER"> 구매자
+                    <input type="radio" name="role" value="BUYER"> 구매자
                 </label>
             </div>
 
@@ -78,7 +51,7 @@
                 <div>
                     <input type="text" id="nickname" name="nickname" placeholder="닉네임을 입력해주세요.">
                 </div>
-                <button class="button" style="width: 150px; height: 60px;">중복 확인</button>
+                <button class="button" id="duplicateCheckButton" style="width: 150px; height: 60px;">중복 확인</button>
             </div>
 
             <div class="grid">
@@ -94,7 +67,7 @@
     </div>
 
 </main>
-<script type="text/javascript" src="/fragment/nav.js"></script>
+<script type="text/javascript" src="/js/join2.js"></script>
 </body>
 
 </html>

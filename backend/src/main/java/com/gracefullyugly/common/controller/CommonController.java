@@ -10,12 +10,14 @@ import com.gracefullyugly.domain.qna.dto.QnADtoUtil;
 import com.gracefullyugly.domain.qna.service.QnASearchService;
 import com.gracefullyugly.domain.review.dto.ReviewWithImageResponse;
 import com.gracefullyugly.domain.review.service.ReviewSearchService;
-
+import com.gracefullyugly.domain.user.dto.ProfileResponse;
+import com.gracefullyugly.domain.user.service.UserSearchService;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -30,6 +33,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Slf4j
 public class CommonController {
 
+    private final UserSearchService userSearchService;
     private final ItemSearchService itemSearchService;
     private final ReviewSearchService reviewSearchService;
     private final QnASearchService qnASearchService;
@@ -39,18 +43,22 @@ public class CommonController {
         return "main";
     }
 
+    @GetMapping("/join2")
+    public String join2Page(@RequestParam String loginId, Model model) {
+        model.addAttribute("loginId", loginId);
+        return "join2";
+    }
+
     @GetMapping("/join")
     public String joinPage() {
         return "join";
     }
 
-    @GetMapping("/join2")
-    public String join2Page() {
-        return "join2";
-    }
-
     @GetMapping("/my-page")
-    public String myPagePage() {
+    public String myPagePage(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId, Model model) {
+        ProfileResponse response = userSearchService.getProfile(userId);
+        model.addAttribute("Profile", response);
+
         return "my-page";
     }
 
