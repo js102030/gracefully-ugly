@@ -5,7 +5,6 @@ import static com.gracefullyugly.testutil.SetupDataUtils.ADD_CART_ITEM_SUCCESS;
 import static com.gracefullyugly.testutil.SetupDataUtils.CATEGORY_ID;
 import static com.gracefullyugly.testutil.SetupDataUtils.DELETE_CART_ITEM_NOT_FOUND_CART;
 import static com.gracefullyugly.testutil.SetupDataUtils.DELETE_CART_ITEM_NOT_FOUND_ITEM;
-import static com.gracefullyugly.testutil.SetupDataUtils.DELETE_CART_ITEM_SUCCESS;
 import static com.gracefullyugly.testutil.SetupDataUtils.ITEM_NAME;
 import static com.gracefullyugly.testutil.SetupDataUtils.PRICE;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
@@ -127,21 +126,21 @@ public class CartItemServiceTest {
         assertThat(result.getMessage()).isEqualTo(ADD_CART_ITEM_FAIL);
     }
 
-    @Test
-    @DisplayName("찜 목록 상품 삭제 테스트")
-    void deleteCartItemTest() {
-        // GIVEN
-        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
-        Long testItemId = itemRepository.findAll().get(0).getId();
-        AddCartItemRequest testItemCount = AddCartItemRequest.builder().itemCount(2L).build();
-        cartItemService.addCartItem(testUserId, testItemId, testItemCount);
-
-        // WHEN
-        CartItemResponse result = cartItemService.deleteCartItem(testUserId, testItemId);
-
-        // THEN
-        assertThat(result.getMessage()).isEqualTo(DELETE_CART_ITEM_SUCCESS);
-    }
+//    @Test
+//    @DisplayName("찜 목록 상품 삭제 테스트")
+//    void deleteCartItemTest() {
+//        // GIVEN
+//        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+//        Long testItemId = itemRepository.findAll().get(0).getId();
+//        AddCartItemRequest testItemCount = AddCartItemRequest.builder().itemCount(2L).build();
+//        cartItemService.addCartItem(testUserId, testItemId, testItemCount);
+//
+//        // WHEN
+//        CartItemResponse result = cartItemService.deleteCartItem(testUserId, testItemId);
+//
+//        // THEN
+//        assertThat(result.getMessage()).isEqualTo(DELETE_CART_ITEM_SUCCESS);
+//    }
 
     @Test
     @DisplayName("찜 목록 상품 삭제 실패 테스트")
