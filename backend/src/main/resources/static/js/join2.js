@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             .then(response => {
                                 if (response.ok) {
                                     alert("회원가입에 성공했습니다")
-                                    window.location.href = "/"; //
+                                    window.location.href = "/";
                                 } else {
                                     console.log("회원가입 실패");
                                     // 실패 시 사용자에게 알림을 표시하거나 다른 처리를 수행할 수 있습니다.
