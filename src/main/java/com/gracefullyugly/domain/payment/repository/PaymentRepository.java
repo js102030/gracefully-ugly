@@ -31,9 +31,10 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
     @Query(value =
             "SELECT COUNT(*) "
-          + "FROM payment AS P "
+                    + "FROM payment AS P "
                     + "LEFT OUTER JOIN orders AS O ON P.order_id = O.order_id "
                     + "WHERE O.user_id = :userId AND P.is_paid = true AND P.is_refunded = false ",
-    nativeQuery = true)
+            nativeQuery = true)
     Integer getBuyCountByUserId(Long userId);
+
 }
