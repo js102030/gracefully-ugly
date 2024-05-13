@@ -59,10 +59,11 @@ public class CommonController {
         return "sellerDetails";
     }
 
-    @GetMapping("/create-review/{itemId}")
-    public String createReview(@PathVariable Long itemId, Model model) {
-        ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
-        Float starPoint = reviewSearchService.findAverageStarPointsByItemId(itemId);
+//    @GetMapping("/create-review/{itemId}")
+//    public String createReview(@PathVariable Long itemId, Model model) {
+//        ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
+//        Float starPoint = reviewSearchService.findAverageStarPointsByItemId(itemId);
+//    }
 
     @GetMapping("/create-review/{itemId}")
     public String createReview(@PathVariable Long itemId, Model model) {
