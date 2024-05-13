@@ -1,8 +1,11 @@
 package com.gracefullyugly.domain.user.repository;
 
+import com.gracefullyugly.domain.user.dto.SellerDetailsResponse;
 import com.gracefullyugly.domain.user.entity.User;
 import com.gracefullyugly.domain.user.enumtype.SignUpType;
+import java.util.List;
 import java.util.Optional;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -26,5 +29,19 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByNickname(String nickname);
 
     boolean existsByEmail(String email);
+
+    @Query(value = "SELECT u.nickname AS userNickname, " +
+            "p.total_price AS totalPrice, " +
+            "p.is_paid AS isPaid, " +
+            "p.is_refunded AS isRefunded, " +
+            "o.address AS address, " +
+            "o.created_date AS orderDate " +
+            "FROM orders o " +
+            "LEFT JOIN orders_item oi ON o.order_id = oi.orders_id " +
+            "LEFT JOIN payment p ON o.order_id = p.order_id " +
+            "LEFT JOIN users u ON o.user_id = u.user_id " +
+            "WHERE oi.item_id = :itemId", nativeQuery = true)
+    List<SellerDetailsResponse> findSellerDetails(@Param("itemId") Long itemId);
+
 
 }
