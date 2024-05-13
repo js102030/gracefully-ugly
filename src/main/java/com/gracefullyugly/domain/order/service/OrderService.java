@@ -6,8 +6,8 @@ import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
 import com.gracefullyugly.domain.order.dto.CreateOrderRequest;
 import com.gracefullyugly.domain.order.dto.OrderInfoResponse;
-import com.gracefullyugly.domain.order.dto.OrderResponse;
 import com.gracefullyugly.domain.order.dto.OrderItemDto;
+import com.gracefullyugly.domain.order.dto.OrderResponse;
 import com.gracefullyugly.domain.order.dto.UpdateOrderAddressRequest;
 import com.gracefullyugly.domain.order.dto.UpdateOrderPhoneNumberRequest;
 import com.gracefullyugly.domain.order.entity.Order;
@@ -21,11 +21,9 @@ import com.gracefullyugly.domain.payment.repository.PaymentRepository;
 import com.gracefullyugly.domain.user.entity.User;
 import com.gracefullyugly.domain.user.enumtype.Role;
 import com.gracefullyugly.domain.user.repository.UserRepository;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

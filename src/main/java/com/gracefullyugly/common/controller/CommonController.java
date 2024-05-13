@@ -1,23 +1,19 @@
 package com.gracefullyugly.common.controller;
 
 import com.gracefullyugly.common.wrapper.ApiResponse;
-import com.gracefullyugly.domain.groupbuy.dto.GroupBuyListResponse;
-import com.gracefullyugly.domain.groupbuy.service.GroupBuySearchService;
 import com.gracefullyugly.domain.item.dto.ItemWithImageUrlResponse;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.qna.dto.QnADto;
-import com.gracefullyugly.domain.qna.dto.QnADtoUtil;
 import com.gracefullyugly.domain.qna.service.QnASearchService;
 import com.gracefullyugly.domain.review.dto.ReviewWithImageResponse;
 import com.gracefullyugly.domain.review.service.ReviewSearchService;
 import com.gracefullyugly.domain.user.dto.ProfileResponse;
+import com.gracefullyugly.domain.user.entity.User;
 import com.gracefullyugly.domain.user.service.UserSearchService;
 import java.util.List;
 import java.util.stream.Collectors;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -152,6 +148,19 @@ public class CommonController {
     @GetMapping("/productAsk")
     public String productAsk() {
         return "productAsk";
+    }
+
+    @GetMapping("/verification-email")
+    public String verificationEmail(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId) {
+        return "/verification-email";
+    }
+
+    @GetMapping("/update-user-info")
+    public String updateUserInfo(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId, Model model) {
+        User user = userSearchService.findById(userId);
+        model.addAttribute("User", user);
+
+        return "/update-user-info";
     }
 
 }

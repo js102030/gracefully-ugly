@@ -1,5 +1,8 @@
 package com.gracefullyugly.domain.verification.service;
 
+import com.gracefullyugly.common.exception.custom.ExistException;
+import com.gracefullyugly.common.exception.custom.ExpiredException;
+import com.gracefullyugly.common.exception.custom.NotFoundException;
 import com.gracefullyugly.domain.user.service.UserSearchService;
 import com.gracefullyugly.domain.user.service.UserService;
 import com.gracefullyugly.domain.verification.dto.VerifyRequest;
@@ -14,6 +17,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class VerificationService {
 
     private final UserSearchService userSearchService;
@@ -30,7 +35,7 @@ public class VerificationService {
 
     public String sendMessageAndSaveCode(Long userId, String email) throws Exception {
         if (userSearchService.existsByEmail(email)) {
-            throw new IllegalArgumentException("이미 가입된 이메일입니다.");
+            throw new ExistException("이미 가입된 이메일입니다.");
         }
 
         String code = createKey();
@@ -54,12 +59,12 @@ public class VerificationService {
 
     private Verification findVerificationByCodeAndUserId(String code, Long userId) {
         return verificationRepository.findByVerificationCodeAndUserId(code, userId)
-                .orElseThrow(() -> new IllegalArgumentException("인증코드가 일치하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException("인증코드가 일치하지 않습니다."));
     }
 
     private void ensureVerificationNotExpired(Verification verification) {
         if (verification.getExpiryDate().before(new Date())) {
-            throw new IllegalArgumentException("인증코드가 만료되었습니다.");
+            throw new ExpiredException("인증코드가 만료되었습니다.");
         }
     }
 

@@ -1,0 +1,17 @@
+.input-email-section {
+    margin-bottom: 1rem;
+}
+
+.input-email-btn .verification-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: darkgrey;
+}

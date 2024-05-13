@@ -18,15 +18,6 @@
             padding: 8px;
         }
 
-        .date-column {
-            width: 32%;
-        }
-
-        .title-column {
-            width: 68%;
-        }
-
-
         ul li {
             list-style: none;
         }
@@ -34,12 +25,6 @@
         article div {
             display: inline-flex;
             justify-content: space-evenly
-        }
-
-        .flex-container {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between
         }
 
         #info1 {
@@ -89,10 +74,6 @@
             margin-left: 50px
         }
 
-        section {
-            margin-top: 50px
-        }
-
         #info2_2 {
             display: flex;
             justify-content: center
@@ -140,9 +121,12 @@
     </article>
 </main>
 <footer class="grid" style="display:flex; justify-content: center">
-    <button onclick="window.location.href = '/profile/update'">회원정보수정</button>
-    <button style="background-color: #5d2d28; border-color: #5d2d28"
-            onclick="window.location.href = '/mail'">이메일 인증
+    <button onclick="window.location.href = '/update-user-info'">회원정보수정</button>
+    <button style="background-color: #5d2d28; border-color: #5d2d28" th:if="${not Profile.isVerified()}"
+            onclick="window.location.href = '/verification-email'">이메일 인증
+    </button>
+    <button style="background-color: #5d2d28; border-color: #5d2d28" th:if="${Profile.isVerified()}" disabled>
+        이메일 인증 완료
     </button>
     <button id="deleteUserBtn"
             style="background-color: #EE402E; border-color: #EE402E">회원탈퇴
@@ -151,9 +135,8 @@
 <script type="text/javascript" src="/js/my-page.js"></script>
 <script type="text/javascript" src="/fragment/nav.js"></script>
 <script type="text/javascript" src="/js/security.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </body>
 
 </html>
