@@ -23,7 +23,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 
 @Controller
@@ -85,21 +84,21 @@ public class CommonController {
         return "sellerDetails";
     }
 
-    @GetMapping("/create-review/{itemId}")
-    public String createReview(@PathVariable Long itemId, Model model) {
-        ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
-
-        Float starPoint = reviewSearchService.findAverageStarPointsByItemId(itemId);
+//    @GetMapping("/create-review/{itemId}")
+//    public String createReview(@PathVariable Long itemId, Model model) {
+//        ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
+//        Float starPoint = reviewSearchService.findAverageStarPointsByItemId(itemId);
+//    }
 
 //    @GetMapping("/create-order")
 //    public String createOrder() {
 //        return "create-order";
 //    }
-
-        model.addAttribute("starPoint", starPoint);
-        model.addAttribute("item", itemResponse);
-        return "create-review";
-    }
+//
+//        model.addAttribute("starPoint", starPoint);
+//        model.addAttribute("item", itemResponse);
+//        return "create-review";
+//    }
 
     @GetMapping("/group-buying/{itemId}")
     public String groupBuying(@PathVariable Long itemId, Model model) {
@@ -127,11 +126,6 @@ public class CommonController {
     @GetMapping("/log")
     public String log() {
         return "login";
-    }
-
-    @PostMapping("/login")
-    public String login() {
-        return "main";
     }
 
     @GetMapping("/cart-list")

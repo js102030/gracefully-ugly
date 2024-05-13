@@ -23,7 +23,9 @@
     </div>
     <div class="delete-and-payment">
         <button class="delete-button" th:onclick="|deleteCartItem('${cartItem.getCartItemId()}')|">삭제</button>
-        <button class="payment-button" th:onclick="|orderCartItem('${cartItem.getItemId()}')|">결제하기</button>
+        <button class="payment-button" th:itemId="${cartItem.getItemId()}" th:closedDate="${cartItem.getCloseDate()}"
+                th:onclick="orderCartItem(this.getAttribute('itemId'), this.getAttribute('closedDate'))">결제하기
+        </button>
     </div>
 </div>
 

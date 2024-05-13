@@ -47,6 +47,14 @@ public class JWTFilter extends OncePerRequestFilter {
                 token = cookie.getValue();
             }
         }
+
+        //oauth2 하면서 자동으로 쿠키 갖고잇어서 이 로직 추가함
+        if (token == null) {
+            logger.info("토큰 없으니 아직 로그인 x");
+            filterChain.doFilter(request, response);
+
+            return;
+        }
         logger.info("token = " + token);
 
         // 토큰 만료 여부 확인, 만료시 다음 필터로 넘기지 않음
