@@ -10,6 +10,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface UserRepository extends JpaRepository<User, Long> {
+
+    @Query("SELECT U "
+            + "FROM User AS U "
+            + "WHERE U.loginId = :userLoginId AND U.isDeleted = false")
     Optional<User> findByLoginId(String userLoginId);
 
     /**

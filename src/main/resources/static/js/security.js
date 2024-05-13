@@ -78,6 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }*/ else {
                         // 로그인이 실패했을 때
                         console.log("로그인 실패");
+                        alert("아이디나 비밀번호를 확인해주세요");
                     }
                 })
                 .catch(error => {
