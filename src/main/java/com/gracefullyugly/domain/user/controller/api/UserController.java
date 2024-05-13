@@ -72,8 +72,8 @@ public class UserController {
                 .ok(profileResponse);
     }
 
-    @PatchMapping("/users/nickname")
-    public ResponseEntity<UserResponse> updateNickname(@AuthenticationPrincipal(expression = "userId") Long userId,
+    @PatchMapping("/users/nickname/{userId}")
+    public ResponseEntity<UserResponse> updateNickname(@PathVariable("userId") Long userId,
                                                        @Valid @RequestBody UpdateNicknameDto request) {
         UserResponse userResponse = userService.updateNickname(userId, request.getNickname());
 
@@ -81,8 +81,8 @@ public class UserController {
                 .ok(userResponse);
     }
 
-    @PatchMapping("/users/password")
-    public ResponseEntity<Void> updatePassword(@AuthenticationPrincipal(expression = "userId") Long userId,
+    @PatchMapping("/users/password/{userId}")
+    public ResponseEntity<Void> updatePassword(@PathVariable("userId") Long userId,
                                                @Valid @RequestBody UpdatePasswordRequest request) {
         userService.updatePassword(userId, request.getPassword());
 
@@ -91,8 +91,8 @@ public class UserController {
                 .build();
     }
 
-    @PatchMapping("/users/address")
-    public ResponseEntity<UserResponse> updateAddress(@AuthenticationPrincipal(expression = "userId") Long userId,
+    @PatchMapping("/users/address/{userId}")
+    public ResponseEntity<UserResponse> updateAddress(@PathVariable("userId") Long userId,
                                                       @Valid @RequestBody UpdateAddressDto request) {
         UserResponse userResponse = userService.updateAddress(userId, request.getAddress());
 
