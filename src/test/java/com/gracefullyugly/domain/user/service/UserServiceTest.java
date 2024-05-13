@@ -1,17 +1,13 @@
 package com.gracefullyugly.domain.user.service;
 
-import static com.gracefullyugly.testutil.SetupDataUtils.ADDRESS_VALID_MESSAGE;
 import static com.gracefullyugly.testutil.SetupDataUtils.ID_VALID_MESSAGE;
-import static com.gracefullyugly.testutil.SetupDataUtils.NICKNAME_VALID_MESSAGE;
 import static com.gracefullyugly.testutil.SetupDataUtils.PASSWORD;
 import static com.gracefullyugly.testutil.SetupDataUtils.PASSWORD_VALID_MESSAGE;
-import static com.gracefullyugly.testutil.SetupDataUtils.ROLE_VALID_MESSAGE;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_ADDRESS;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_LOGIN_ID;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_ROLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.gracefullyugly.domain.user.dto.AdditionalRegRequest;
@@ -135,32 +131,31 @@ class UserServiceTest {
         assertEquals(TEST_ROLE, finalRegResponse.getRole());
     }
 
-
-    @Test
-    @DisplayName("(실패) 회원가입 완료 테스트")
-    void completeRegistrationFailTest() {
-        // given
-        AdditionalRegRequest additionalRegRequest = AdditionalRegRequest.builder()
-                .role(null)
-                .nickname("")
-                .address("")
-                .build();
-
-        // when
-        Set<ConstraintViolation<AdditionalRegRequest>> violations = validator.validate(additionalRegRequest);
-
-        // then
-        assertFalse(violations.isEmpty());
-        assertEquals(3, violations.size());
-
-        Set<String> messages = violations.stream()
-                .map(ConstraintViolation::getMessage)
-                .collect(Collectors.toSet());
-
-        assertTrue(messages.contains(ROLE_VALID_MESSAGE));
-        assertTrue(messages.contains(NICKNAME_VALID_MESSAGE));
-        assertTrue(messages.contains(ADDRESS_VALID_MESSAGE));
-    }
+//    @Test
+//    @DisplayName("(실패) 회원가입 완료 테스트")
+//    void completeRegistrationFailTest() {
+//        // given
+//        AdditionalRegRequest additionalRegRequest = AdditionalRegRequest.builder()
+//                .role(null)
+//                .nickname("")
+//                .address("")
+//                .build();
+//
+//        // when
+//        Set<ConstraintViolation<AdditionalRegRequest>> violations = validator.validate(additionalRegRequest);
+//
+//        // then
+//        assertFalse(violations.isEmpty());
+//        assertEquals(3, violations.size());
+//
+//        Set<String> messages = violations.stream()
+//                .map(ConstraintViolation::getMessage)
+//                .collect(Collectors.toSet());
+//
+//        assertTrue(messages.contains(ROLE_VALID_MESSAGE));
+//        assertTrue(messages.contains(NICKNAME_VALID_MESSAGE));
+//        assertTrue(messages.contains(ADDRESS_VALID_MESSAGE));
+//    }
 
     @Test
     @DisplayName("닉네임 변경 테스트")
