@@ -37,9 +37,8 @@ public interface GroupBuyRepository extends JpaRepository<GroupBuy, Long> {
 
     @Query("SELECT GB "
             + "FROM GroupBuy AS GB "
-            + "LEFT OUTER JOIN Item AS I ON GB.itemId = I.id "
-            + "LEFT OUTER JOIN OrderItem AS OI ON I.id = OI.itemId "
-            + "WHERE OI.ordersId = :orderId AND GB.groupBuyStatus = com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus.COMPLETED")
+            + "LEFT OUTER JOIN GroupBuyUser AS GBU ON GB.id = GBU.groupBuyId "
+            + "WHERE GBU.orderId = :orderId AND GB.groupBuyStatus = com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus.COMPLETED")
     List<GroupBuy> findCompletedGroupBuyByOrderId(Long orderId);
 
     @Modifying
