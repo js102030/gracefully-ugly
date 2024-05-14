@@ -59,7 +59,7 @@ public class SecurityConfig {
                 .requestMatchers("/vendor/**", "/api/all/**", "/static/**", "/css/**", "/image/**",
                         "/api/sellerDetails/**",
                         "/js/**", "/fragment/**", "/favicon.ico",
-                        "/h2-console/**", "/api/users/{userId}", "/api/groupbuy/items/{itemId}", "api/groupbuy/**", "/join2/**", "/");
+                        "/h2-console/**", "/api/users/{userId}", "/api/groupbuy/items/{itemId}", "/api/groupbuy/**", "/join2/**");
     }
 
     @Bean
@@ -112,7 +112,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth //"/**", "/api/users", 빼고 실험
                         .requestMatchers("/log", "/oauth2/**", "/login", "/logout", "/", "/join/**",
-                                "/join2/**", "/group-buying/**", "/api/all/**", "/")
+                                "/join2/**", "/group-buying/**", "/api/all/**")
                         .permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/admin-report").hasRole("ADMIN")
