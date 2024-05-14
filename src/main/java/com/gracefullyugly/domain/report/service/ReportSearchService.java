@@ -1,5 +1,6 @@
 package com.gracefullyugly.domain.report.service;
 
+import com.gracefullyugly.common.exception.custom.NotFoundException;
 import com.gracefullyugly.common.wrapper.ApiResponse;
 import com.gracefullyugly.domain.report.dto.ReportDtoUtil;
 import com.gracefullyugly.domain.report.dto.ReportResponse;
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class ReportSearchService {
 
     private final ReportRepository reportRepository;
@@ -75,4 +76,16 @@ public class ReportSearchService {
                 .orElseThrow(() -> new IllegalArgumentException("itemId : " + itemId + "에 해당하는 신고가 없습니다."));
     }
 
+    public List<ReportResponse> getReports() {
+        List<Report> reports = reportRepository.findByIsAcceptedFalseAndIsDeletedFalse();
+
+        if (reports.isEmpty()) {
+            throw new NotFoundException("신고된 내용이 없습니다.");
+        }
+
+        return reports
+                .stream()
+                .map(ReportDtoUtil::reportToReportResponse)
+                .toList();
+    }
 }

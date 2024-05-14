@@ -1,9 +1,10 @@
 package com.gracefullyugly.domain.image.controller;
 
 import com.gracefullyugly.domain.image.service.ImageUploadService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-
+@Tag(name="이미지 업로드")
 @Controller
 public class ImageUploadController {
 

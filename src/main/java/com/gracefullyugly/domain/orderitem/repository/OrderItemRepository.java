@@ -1,5 +1,6 @@
 package com.gracefullyugly.domain.orderitem.repository;
 
+import com.gracefullyugly.domain.orderitem.dto.ItemOrderDetails;
 import com.gracefullyugly.domain.orderitem.dto.OrderItemInfo;
 import com.gracefullyugly.domain.orderitem.dto.OrderItemInfoResponse;
 import com.gracefullyugly.domain.orderitem.entity.OrderItem;
@@ -33,4 +34,10 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
                     "LEFT JOIN orders O ON OI.orders_id = O.order_id " +
                     "WHERE O.order_id = :orderId", nativeQuery = true)
     OrderItemInfo findOrderItemInfo(@Param("orderId") Long orderId);
+
+    @Query("SELECT new com.gracefullyugly.domain.orderitem.dto.ItemOrderDetails(i, oi.quantity) " +
+            "FROM OrderItem oi " +
+            "JOIN Item i ON oi.itemId = i.id " +
+            "WHERE oi.ordersId = :orderId")
+    List<ItemOrderDetails> findItemsAndQuantityByOrderId(@Param("orderId") Long orderId);
 }
