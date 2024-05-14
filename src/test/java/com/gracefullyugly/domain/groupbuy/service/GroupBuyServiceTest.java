@@ -94,7 +94,7 @@ public class GroupBuyServiceTest {
         GroupBuyStatus changeStatus = GroupBuyStatus.COMPLETED;
 
         // WHEN
-        boolean result = groupBuyService.updateGroupStatus(groupBuyId, changeStatus);
+        boolean result = groupBuyService.updateGroupStatusByGroupBuyId(groupBuyId, changeStatus);
 
         // THEN
         assertThat(result).isTrue();
@@ -111,7 +111,7 @@ public class GroupBuyServiceTest {
         GroupBuyStatus changeStatus = GroupBuyStatus.COMPLETED;
 
         // WHEN
-        boolean result = groupBuyService.updateGroupStatus(testFailGroupBuyId, changeStatus);
+        boolean result = groupBuyService.updateGroupStatusByGroupBuyId(testFailGroupBuyId, changeStatus);
 
         // THEN
         assertThat(result).isFalse();

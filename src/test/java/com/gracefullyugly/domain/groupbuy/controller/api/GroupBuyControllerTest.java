@@ -109,34 +109,34 @@ public class GroupBuyControllerTest {
         groupBuyRepository.deleteAll();
     }
 
-//    @Test
-//    @DisplayName("공동 구매 단건 조회 API 테스트")
-//    void getGroupBuyInfoTest() throws Exception {
-//        // WHEN
-//        ResultActions result = mockMvc.perform(get("/api/groupbuy/" + groupBuyId));
-//
-//        // THEN
-//        result.andExpect(status().isOk())
-//                .andExpect(jsonPath("groupBuyId").value(groupBuyId))
-//                .andExpect(jsonPath("itemId").value(firstItem.getId()))
-//                .andExpect(jsonPath("itemName").value(firstItem.getName()))
-//                .andExpect(jsonPath("groupBuyStatus").value(GroupBuyStatus.IN_PROGRESS.toString()))
-//                .andExpect(jsonPath("participantCount").value(0));
-//    }
+    @Test
+    @DisplayName("공동 구매 단건 조회 API 테스트")
+    void getGroupBuyInfoTest() throws Exception {
+        // WHEN
+        ResultActions result = mockMvc.perform(get("/api/groupbuy/" + groupBuyId));
 
-//    @Test
-//    @DisplayName("공동 구매 단건 조회 API 실패 테스트")
-//    void getGroupBuyInfoFailTest() throws Exception {
-//        // GIVEN
-//        // 없는 공동 구매 정보
-//        Long testFailGroupBuyId = 100L;
-//
-//        // WHEN
-//        ResultActions result = mockMvc.perform(get("/api/groupbuy/" + testFailGroupBuyId));
-//
-//        // THEN
-//        result.andExpect(status().isNotFound());
-//    }
+        // THEN
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("groupBuyId").value(groupBuyId))
+                .andExpect(jsonPath("itemId").value(firstItem.getId()))
+                .andExpect(jsonPath("itemName").value(firstItem.getName()))
+                .andExpect(jsonPath("groupBuyStatus").value(GroupBuyStatus.IN_PROGRESS.toString()))
+                .andExpect(jsonPath("participantCount").value(0));
+    }
+
+    @Test
+    @DisplayName("공동 구매 단건 조회 API 실패 테스트")
+    void getGroupBuyInfoFailTest() throws Exception {
+        // GIVEN
+        // 없는 공동 구매 정보
+        Long testFailGroupBuyId = 100L;
+
+        // WHEN
+        ResultActions result = mockMvc.perform(get("/api/groupbuy/" + testFailGroupBuyId));
+
+        // THEN
+        result.andExpect(status().isNotFound());
+    }
 
     @Test
     @DisplayName("공동 구매 조회 API 테스트")
