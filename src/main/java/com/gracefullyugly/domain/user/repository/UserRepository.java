@@ -43,5 +43,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "WHERE oi.item_id = :itemId", nativeQuery = true)
     List<SellerDetailsResponse> findSellerDetails(@Param("itemId") Long itemId);
 
-
+    @Query("SELECT u.nickname FROM User u WHERE u.id = :userId")
+    String findNicknameById(Long userId);
 }
