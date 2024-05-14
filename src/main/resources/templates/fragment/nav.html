@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -7,14 +7,15 @@
 </head>
 <body>
 
-<header class="main-header" th:fragment="top">
-
+<header class="main-header" th:fragment="top" style="padding: 0px">
     <a href="/"><img class="logo" src="/image/logo.png" alt="로고"></a>
-    <button class="notice-button" id="test_btn">알림</button>
-    <button class="login-button" onclick="location.href='/log'">로그인</button>
-    <button class="logout-btn" id="logout-button">로그아웃</button>
-    <button class="logout-kakao-btn">로그아웃</button>
-    <button class="list-button">목차</button>
+    <div class="header-buttons">
+        <button class="notice-button" id="test_btn">알림</button>
+        <button class="login-button" onclick="location.href='/log'">로그인</button>
+        <button class="logout-btn" id="logout-button">로그아웃</button>
+        <button class="logout-kakao-btn">로그아웃</button>
+        <button class="list-button">목차</button>
+    </div>
 </header>
 <!--목록 모달-->
 
@@ -22,12 +23,14 @@
     <div class="modal-box">
         <div class="modal-inner">
             <div>
-                <p class="ask9">구매자이신가요?</p>
                 <img id="modal-1" src="/image/modal-1.png" onclick="location.href='/cart'" alt="찜한 내역">
                 <img id="modal-2" src="/image/modal-2.png" onclick="location.href='/payment'" alt="구매 내역">
                 <img id="modal-3" src="/image/modal-3.png" onclick="location.href='/my-page'" alt="내 정보">
-                <p class="ask8">판매자이신가요?</p>
-                <img id="modal-4" src="/image/modal-4.png" onclick="location.href='/sellerList'" alt="판매 내역">
+                <div class="show-only-buyer" sec:authorize="hasRole('ROLE_SELLER')">
+                    <img id="modal-4" src="/image/modal-4.png" onclick="location.href='/sellerList'" alt="판매 내역">
+                </div>
+            </div>
+            <div class="modal-close-btn-area">
                 <button class="modal-close">닫기</button>
             </div>
         </div>
