@@ -1,65 +1,114 @@
-//package com.gracefullyugly.domain.item.controller.api;
-//
-//import static org.mockito.ArgumentMatchers.any;
-//import static org.mockito.BDDMockito.given;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-//import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-//
-//import com.google.gson.Gson;
-//import com.google.gson.GsonBuilder;
-//import com.google.gson.TypeAdapter;
-//import com.google.gson.stream.JsonReader;
-//import com.google.gson.stream.JsonWriter;
-//import com.gracefullyugly.common.security.jwt.JWTUtil;
-//import com.gracefullyugly.domain.item.dto.ItemDtoUtil;
-//import com.gracefullyugly.domain.item.dto.ItemRequest;
-//import com.gracefullyugly.domain.item.dto.ItemResponse;
-//import com.gracefullyugly.domain.item.entity.Item;
-//import com.gracefullyugly.domain.item.enumtype.Category;
-//import com.gracefullyugly.domain.item.service.ItemSearchService;
-//import com.gracefullyugly.domain.item.service.ItemService;
-//import java.io.IOException;
-//import java.time.LocalDateTime;
-//import java.time.format.DateTimeFormatter;
-//import lombok.extern.slf4j.Slf4j;
-//import org.junit.jupiter.api.DisplayName;
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.boot.test.mock.mockito.MockBean;
-//import org.springframework.http.MediaType;
-//import org.springframework.test.web.servlet.MockMvc;
-//
-//
-//@SpringBootTest
-//@AutoConfigureMockMvc
-//@Slf4j
-//class ItemControllerTest {
-//
-//    @Autowired
-//    private JWTUtil jwtUtil;
-//
-//    @Autowired
-//    private MockMvc mockMvc;
-//
-//    @MockBean
-//    private ItemSearchService itemSearchService;
-//
-//    @MockBean
-//    private ItemService itemService;
-//
+package com.gracefullyugly.domain.item.controller.api;
+
+import static com.gracefullyugly.testutil.SetupDataUtils.CATEGORY_ID;
+import static com.gracefullyugly.testutil.SetupDataUtils.DESCRIPTION;
+import static com.gracefullyugly.testutil.SetupDataUtils.ITEM_NAME;
+import static com.gracefullyugly.testutil.SetupDataUtils.MIN_GROUP_BUY_WEIGHT;
+import static com.gracefullyugly.testutil.SetupDataUtils.MIN_UNIT_WEIGHT;
+import static com.gracefullyugly.testutil.SetupDataUtils.PRICE;
+import static com.gracefullyugly.testutil.SetupDataUtils.PRODUCTION_PLACE;
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_LOGIN_ID;
+import static com.gracefullyugly.testutil.SetupDataUtils.TEST_NICKNAME;
+import static com.gracefullyugly.testutil.SetupDataUtils.TOTAL_SALES_UNIT;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import com.gracefullyugly.common.security.CustomUserDetails;
+import com.gracefullyugly.common.security.jwt.JWTUtil;
+import com.gracefullyugly.domain.groupbuy.service.GroupBuyService;
+import com.gracefullyugly.domain.item.dto.ItemRequest;
+import com.gracefullyugly.domain.item.dto.ItemResponse;
+import com.gracefullyugly.domain.item.entity.Item;
+import com.gracefullyugly.domain.item.enumtype.Category;
+import com.gracefullyugly.domain.item.repository.ItemRepository;
+import com.gracefullyugly.domain.item.service.ItemSearchService;
+import com.gracefullyugly.domain.item.service.ItemService;
+import com.gracefullyugly.domain.user.repository.UserRepository;
+import com.gracefullyugly.testuserdetails.TestUserDetailsService;
+import com.gracefullyugly.testutil.SetupDataUtils;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.test.web.servlet.MockMvc;
+
+
+@SpringBootTest
+@AutoConfigureMockMvc
+@Slf4j
+class ItemControllerTest {
+
+    @Autowired
+    private JWTUtil jwtUtil;
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    ItemRepository itemRepository;
+
+    @Autowired
+    private ItemService itemService;
+
+    private TestUserDetailsService testUserDetailsService;
+    private CustomUserDetails customUserDetails;
+
+    @BeforeEach
+    void setupTestData() {
+        // 회원 정보 세팅
+        userRepository.save(SetupDataUtils.makeTestSellerUser((passwordEncoder)));
+
+        // 상품 정보 세팅
+        List<ItemRequest> testItemData = SetupDataUtils.makeTestItemRequest();
+
+        itemService.save(userRepository.findByNickname(TEST_NICKNAME).get().getId(), testItemData.get(0));
+        itemService.save(userRepository.findByNickname(TEST_NICKNAME).get().getId(), testItemData.get(1));
+
+        // UserDetails 세팅
+        testUserDetailsService = new TestUserDetailsService(userRepository);
+        customUserDetails = (CustomUserDetails) testUserDetailsService.loadUserByUsername(TEST_LOGIN_ID);
+    }
+
+    @AfterEach
+    void deleteTestData() {
+        userRepository.deleteAll();
+        itemRepository.deleteAll();
+    }
+
 //    @Test
 //    @DisplayName("판매글 생성 테스트")
 //    void addItemTest() throws Exception {
 //        // GIVEN
-//        Long testItemId = 1L;
-//        Long testUserId = 1L;
-//
 //        ItemRequest itemRequest = ItemRequest.builder()
 //                .categoryId(Category.VEGETABLE)
 //                .name("감자")
@@ -72,39 +121,17 @@
 //                .description("맛 좋은 감자")
 //                .build();
 //
-//        ItemResponse itemResponse = ItemResponse.builder()
-//                .id(testItemId)
-//                .userId(testUserId)
-//                .name("감자")
-//                .productionPlace("강원도")
-//                .createdDate(LocalDateTime.now())
-//                .closedDate(LocalDateTime.now().plusDays(1))
-//                .lastModifiedDate(LocalDateTime.now())
-//                .categoryId(Category.VEGETABLE)
-//                .minUnitWeight(3)
-//                .price(7900)
-//                .totalSalesUnit(20)
-//                .minGroupBuyWeight(15)
-//                .description("맛 좋은 감자")
-//                .build();
-//
-//        given(itemService.save(any(), any())).willReturn(itemResponse);
-//
 //        Gson gson = new GsonBuilder()
 //                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
 //                .create();
 //        String json = gson.toJson(itemRequest);
 //
-//        String access = getToken();
-//
 //        // THEN
 //        mockMvc.perform(post("/api/items")
-//                        .header("access", access)
 //                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(json))
+//                        .content(json)
+//                        .with(user(customUserDetails)))
 //                .andExpect(status().isCreated())
-//                .andExpect(jsonPath("$.id").value(testItemId))
-//                .andExpect(jsonPath("$.userId").value(testUserId))
 //                .andExpect(jsonPath("$.name").value("감자"))
 //                .andExpect(jsonPath("$.productionPlace").value("강원도"))
 //                .andExpect(jsonPath("$.categoryId").value(Category.VEGETABLE.toString()))
@@ -118,125 +145,89 @@
 //                .andExpect(jsonPath("$.closedDate").exists())
 //                .andDo(print());
 //    }
-//
-////    @Test
-////    @DisplayName("상품 목록 조회 테스트")
-////    void ShowItemsTest() throws Exception {
-////        // GIVEN
-////        Item item1 = Item.builder()
-////                .name("감자")
-////                .productionPlace("강원도")
-////                .categoryId(Category.VEGETABLE)
-////                .closedDate(LocalDateTime.now().plusDays(3))
-////                .minUnitWeight(3)
-////                .price(7900)
-////                .totalSalesUnit(20)
-////                .minGroupBuyWeight(15)
-////                .description("맛 좋은 감자")
-////                .build();
-////
-////        Item item2 = Item.builder()
-////                .name("고구마")
-////                .productionPlace("전라남도")
-////                .categoryId(Category.VEGETABLE)
-////                .closedDate(LocalDateTime.now().plusDays(7))
-////                .minUnitWeight(1)
-////                .price(5000)
-////                .totalSalesUnit(50)
-////                .minGroupBuyWeight(20)
-////                .description("맛있는 고구마 ~ ")
-////                .build();
-////
-////        List<Item> itemList = Arrays.asList(item1, item2);
-////
-////        List<ItemResponse> expectedResponses = itemList.stream()
-////                .map(ItemDtoUtil::itemToItemResponse)
-////                .toList();
-////
-////        // WHEN
-////        when(itemSearchService.findAllItems()).thenReturn(expectedResponses);
-////
-////        // THEN (상품 목록 조회 검증)
-////        mockMvc.perform(get("/api/items")
-////                        .contentType(MediaType.APPLICATION_JSON))
-////                .andExpect(status().isOk())
-////                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-////                .andExpect(jsonPath("$.length()").value(expectedResponses.size()))
-////                .andExpect(jsonPath("$[0].id").value(expectedResponses.get(0).getId()))
-////                .andExpect(jsonPath("$[0].name").value(expectedResponses.get(0).getName()))
-////                .andExpect(jsonPath("$[0].productionPlace").value(expectedResponses.get(0).getProductionPlace()))
-////                .andExpect(jsonPath("$[0].categoryId").value(expectedResponses.get(0).getCategoryId().toString()))
-////                .andExpect(jsonPath("$[0].minUnitWeight").value(expectedResponses.get(0).getMinUnitWeight()))
-////                .andExpect(jsonPath("$[0].price").value(expectedResponses.get(0).getPrice()))
-////                .andExpect(jsonPath("$[0].totalSalesUnit").value(expectedResponses.get(0).getTotalSalesUnit()))
-////                .andExpect(jsonPath("$[0].minGroupBuyWeight").value(expectedResponses.get(0).getMinGroupBuyWeight()))
-////                .andExpect(jsonPath("$[0].description").value(expectedResponses.get(0).getDescription()))
-////
-////                .andExpect(jsonPath("$[1].id").value(expectedResponses.get(1).getId()))
-////                .andExpect(jsonPath("$[1].name").value(expectedResponses.get(1).getName()))
-////                .andExpect(jsonPath("$[1].productionPlace").value(expectedResponses.get(1).getProductionPlace()))
-////                .andExpect(jsonPath("$[1].categoryId").value(expectedResponses.get(1).getCategoryId().toString()))
-////                .andExpect(jsonPath("$[1].minUnitWeight").value(expectedResponses.get(1).getMinUnitWeight()))
-////                .andExpect(jsonPath("$[1].price").value(expectedResponses.get(1).getPrice()))
-////                .andExpect(jsonPath("$[1].totalSalesUnit").value(expectedResponses.get(1).getTotalSalesUnit()))
-////                .andExpect(jsonPath("$[1].minGroupBuyWeight").value(expectedResponses.get(1).getMinGroupBuyWeight()))
-////                .andExpect(jsonPath("$[1].description").value(expectedResponses.get(1).getDescription()));
-////    }
-//
-//    @Test
-//    @DisplayName("판매글 상세 조회 테스트")
-//    void showOneItemTest() throws Exception {
-//        // GIVEN
-//        Long itemId = 1L;
-//        Item item1 = Item.builder()
-//                .id(itemId)
-//                .name("감자")
-//                .productionPlace("강원도")
-//                .categoryId(Category.VEGETABLE)
-//                .closedDate(LocalDateTime.now().plusDays(3))
-//                .minUnitWeight(3)
-//                .price(7900)
-//                .totalSalesUnit(20)
-//                .minGroupBuyWeight(15)
-//                .description("맛 좋은 감자")
-//                .build();
-//
-//        ItemResponse expectedResponse = ItemDtoUtil.itemToItemResponse(item1);
-//
-//        // WHEN
-////        when(itemSearchService.findOneItem(itemId)).thenReturn(expectedResponse);
-//
-//        // THEN
-//        mockMvc.perform(get("/api/items/{itemId}", itemId)
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(jsonPath("$.id").value(expectedResponse.getId()))
-//                .andExpect(jsonPath("$.name").value(expectedResponse.getName()))
-//                .andExpect(jsonPath("$.productionPlace").value(expectedResponse.getProductionPlace()))
-//                .andExpect(jsonPath("$.categoryId").value(expectedResponse.getCategoryId().toString()))
-//                .andExpect(jsonPath("$.minUnitWeight").value(expectedResponse.getMinUnitWeight()))
-//                .andExpect(jsonPath("$.price").value(expectedResponse.getPrice()))
-//                .andExpect(jsonPath("$.totalSalesUnit").value(expectedResponse.getTotalSalesUnit()))
-//                .andExpect(jsonPath("$.minGroupBuyWeight").value(expectedResponse.getMinGroupBuyWeight()))
-//                .andExpect(jsonPath("$.description").value(expectedResponse.getDescription()));
-//    }
-//
-//    private String getToken() {
-//        return jwtUtil.createJwt(100L, "loginId", "ROLE_SELLER", 60 * 10 * 1000L, null);
-//    }
-//}
-//
-//class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
-//    private final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-//
-//    @Override
-//    public void write(JsonWriter out, LocalDateTime value) throws IOException {
-//        out.value(value.format(formatter));
-//    }
-//
-//    @Override
-//    public LocalDateTime read(JsonReader in) throws IOException {
-//        return LocalDateTime.parse(in.nextString(), formatter);
-//    }
-//}
+
+    @Test
+    @DisplayName("상품 목록 조회 테스트")
+    void ShowItemsTest() throws Exception {
+        // WHEN & THEN (상품 목록 조회 검증)
+        mockMvc.perform(get("/api/all/items")
+                        .with(user(customUserDetails)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].name").value(ITEM_NAME))
+                .andExpect(jsonPath("$[0].productionPlace").value(PRODUCTION_PLACE))
+                .andExpect(jsonPath("$[0].minUnitWeight").value(MIN_UNIT_WEIGHT))
+                .andExpect(jsonPath("$[0].price").value(PRICE))
+                .andExpect(jsonPath("$[0].totalSalesUnit").value(TOTAL_SALES_UNIT))
+                .andExpect(jsonPath("$[0].minGroupBuyWeight").value(MIN_GROUP_BUY_WEIGHT))
+                .andExpect(jsonPath("$[0].description").value(DESCRIPTION))
+
+                .andExpect(jsonPath("$[1].name").value(ITEM_NAME + 2))
+                .andExpect(jsonPath("$[1].productionPlace").value(PRODUCTION_PLACE + 2))
+                .andExpect(jsonPath("$[1].minUnitWeight").value(MIN_UNIT_WEIGHT + 1000))
+                .andExpect(jsonPath("$[1].price").value(PRICE + 10000))
+                .andExpect(jsonPath("$[1].totalSalesUnit").value(TOTAL_SALES_UNIT + 5))
+                .andExpect(jsonPath("$[1].minGroupBuyWeight").value(MIN_GROUP_BUY_WEIGHT + 5000))
+                .andExpect(jsonPath("$[1].description").value(DESCRIPTION + 2));
+    }
+
+    @Test
+    @DisplayName("판매글 상세 조회 테스트")
+    void showOneItemTest() throws Exception {
+        // GIVEN
+        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+
+        Long itemId = 1L;
+        Item item1 = Item.builder()
+                .id(itemId)
+                .name("감자")
+                .productionPlace("강원도")
+                .categoryId(Category.VEGETABLE)
+                .closedDate(LocalDateTime.now().plusDays(3))
+                .minUnitWeight(3)
+                .price(7900)
+                .totalSalesUnit(20)
+                .minGroupBuyWeight(15)
+                .description("맛 좋은 감자")
+                .build();
+
+        ItemRequest request = new ItemRequest(item1.getName(), item1.getProductionPlace(), item1.getCategoryId(),
+                item1.getClosedDate(), item1.getMinUnitWeight(), item1.getPrice(), item1.getTotalSalesUnit(),
+                item1.getMinUnitWeight(), item1.getDescription());
+
+        ItemResponse expectedResponse = itemService.save(testUserId, request);
+
+        // WHEN & THEN
+        mockMvc.perform(get("/api/all/items/{itemId}", expectedResponse.getId())
+                        .with(user(customUserDetails)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(expectedResponse.getId()))
+                .andExpect(jsonPath("$.name").value(expectedResponse.getName()))
+                .andExpect(jsonPath("$.productionPlace").value(expectedResponse.getProductionPlace()))
+                .andExpect(jsonPath("$.minUnitWeight").value(expectedResponse.getMinUnitWeight()))
+                .andExpect(jsonPath("$.price").value(expectedResponse.getPrice()))
+                .andExpect(jsonPath("$.totalSalesUnit").value(expectedResponse.getTotalSalesUnit()))
+                .andExpect(jsonPath("$.minGroupBuyWeight").value(expectedResponse.getMinGroupBuyWeight()))
+                .andExpect(jsonPath("$.description").value(expectedResponse.getDescription()));
+    }
+
+    private String getToken() {
+        return jwtUtil.createJwt(100L, "loginId", "ROLE_SELLER", 60 * 10 * 1000L, null);
+    }
+}
+
+class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
+    private final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+    @Override
+    public void write(JsonWriter out, LocalDateTime value) throws IOException {
+        out.value(value.format(formatter));
+    }
+
+    @Override
+    public LocalDateTime read(JsonReader in) throws IOException {
+        return LocalDateTime.parse(in.nextString(), formatter);
+    }
+}

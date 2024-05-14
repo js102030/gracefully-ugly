@@ -151,7 +151,7 @@ class UserServiceTest {
 
         // then
         assertFalse(violations.isEmpty());
-        assertEquals(3, violations.size());
+        assertEquals(4, violations.size());
 
         Set<String> messages = violations.stream()
                 .map(ConstraintViolation::getMessage)

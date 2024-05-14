@@ -56,9 +56,9 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer configure() {      // 스프링 시큐리티 기능 비활성화
         return web -> web.ignoring()  //.requestMatchers(toH2Console())
-                .requestMatchers("/vendor/**", "/api/all/**", "/static/**", "/group-buying", "/css/**", "/image/**",
+                .requestMatchers("/vendor/**", "/api/all/**", "/static/**", "/css/**", "/image/**",
                         "/api/sellerDetails/**",
-                        "/js/**", "/fragment/**", "/favicon.ico","/h2-console/**", "/api/users/{userId}", "/api/groupbuy/items/{itemId}", "/join2/**", "/", "/swagger-ui/**", "/v3/api-docs/**");
+                        "/js/**", "/fragment/**", "/favicon.ico","/h2-console/**", "/api/users/{userId}", "/api/groupbuy/items/{itemId}", "/join2/**", "/swagger-ui/**", "/v3/api-docs/**");
 
     }
 
@@ -90,11 +90,11 @@ public class SecurityConfig {
         http
                 .csrf((auth) -> auth.disable());
 
-        //From 로그인 방식 disable
+        //From 로그인 방식
         http
                 .formLogin((auth) -> auth
-                        .usernameParameter("loginId") // 변경된 부분
-                        .disable());
+                        .loginPage("/log")
+                        .defaultSuccessUrl("/"));
 
         //HTTP Basic 인증 방식 disable
         http
