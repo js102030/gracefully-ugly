@@ -59,4 +59,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    //---------------------------------알림 예외----------------------------------
+    const alert_button = document.getElementById('test_btn')
+
+    if(alert_button){
+        alert_button.addEventListener('click', function(){
+            alert("추후에 알림 기능이 업데이트 될 예정이에요!")
+            window.location.reload();
+        })
+    }
 });
