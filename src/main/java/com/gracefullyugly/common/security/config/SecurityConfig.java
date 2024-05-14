@@ -56,10 +56,10 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer configure() {      // 스프링 시큐리티 기능 비활성화
         return web -> web.ignoring()  //.requestMatchers(toH2Console())
-                .requestMatchers("/vendor/**", "/api/all/**", "/static/**", "/group-buying", "/css/**", "/image/**",
+                .requestMatchers("/vendor/**", "/api/all/**", "/static/**", "/css/**", "/image/**",
                         "/api/sellerDetails/**",
                         "/js/**", "/fragment/**", "/favicon.ico",
-                        "/h2-console/**", "/api/users/{userId}", "/api/groupbuy/items/{itemId}", "/join2/**", "/");
+                        "/h2-console/**", "/api/users/{userId}", "/api/groupbuy/items/{itemId}", "api/groupbuy/**", "/join2/**", "/");
     }
 
     @Bean
@@ -90,23 +90,23 @@ public class SecurityConfig {
         http
                 .csrf((auth) -> auth.disable());
 
-        //From 로그인 방식 disable
+        //From 로그인 방식
         http
                 .formLogin((auth) -> auth
-                        .usernameParameter("loginId") // 변경된 부분
-                        .disable());
+                        .loginPage("/log")
+                        .defaultSuccessUrl("/"));
 
         //HTTP Basic 인증 방식 disable
         http
                 .httpBasic((auth) -> auth.disable());
 
         //oauth2
-        http
-                .oauth2Login((oauth2) -> oauth2
-                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
-                                .userService(customOAuth2UserService))
-                        .successHandler(oAuth2CustomSuccessHandler)
-                );
+//        http
+//                .oauth2Login((oauth2) -> oauth2
+//                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+//                                .userService(customOAuth2UserService))
+//                        .successHandler(oAuth2CustomSuccessHandler)
+//                );
 
         //경로별 인가 작업
         http
