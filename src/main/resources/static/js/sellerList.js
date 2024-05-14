@@ -54,4 +54,10 @@ $(document).ready(function() {
     });
 });
 
+const salesPostButton = document.getElementById("salesPostButton");
+
+salesPostButton.addEventListener("click", event => {
+    window.location.href = "/salesPost";
+})
+
 
