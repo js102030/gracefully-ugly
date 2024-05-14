@@ -65,7 +65,7 @@
 ![Ry8D7FKy5oLp4nBSd](https://github.com/gracefully-ugly/gracefully-ugly/assets/121748946/618e839e-4caa-4b57-8785-b84bf0860494)
 
 ## api 명세
-링크 : 
-개발 다 되면 swagger 뽑아서 넣을 예정
+링크 : http://localhost:8080/swagger-ui/index.html
+![image](https://github.com/gracefully-ugly/gracefully-ugly/assets/138424719/251d706a-5ba9-4a55-93bf-c5df7979f767)
 
 ## 시연 영상
