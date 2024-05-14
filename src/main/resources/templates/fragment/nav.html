@@ -14,7 +14,7 @@
         <button class="login-button" onclick="location.href='/log'">로그인</button>
         <button class="logout-btn" id="logout-button">로그아웃</button>
         <button class="logout-kakao-btn">로그아웃</button>
-        <button class="list-button">목차</button>
+        <button id="list-button" class="list-button">목차</button>
     </div>
 </header>
 <!--목록 모달-->
@@ -26,7 +26,7 @@
                 <img id="modal-1" src="/image/modal-1.png" onclick="location.href='/cart'" alt="찜한 내역">
                 <img id="modal-2" src="/image/modal-2.png" onclick="location.href='/payment'" alt="구매 내역">
                 <img id="modal-3" src="/image/modal-3.png" onclick="location.href='/my-page'" alt="내 정보">
-                <div class="show-only-buyer" sec:authorize="hasRole('ROLE_SELLER')">
+                <div class="show-only-buyer">
                     <img id="modal-4" src="/image/modal-4.png" onclick="location.href='/sellerList'" alt="판매 내역">
                 </div>
             </div>
