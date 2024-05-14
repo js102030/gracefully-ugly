@@ -103,7 +103,3 @@ h1 {
     padding: 15px; /* 내부 여백 추가 */
     resize: none; /* 사이즈 조절 불가능하게 설정 */
 }
-
-#answer_input{
-    display: none;
-}
