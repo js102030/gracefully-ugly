@@ -134,7 +134,7 @@ public class CommonController {
             nicknames.add(nickname);
         }
 
-        ItemResponse item = (ItemResponse) itemSearchService.findOneItem(itemId);
+        ItemWithImageUrlResponse item = itemSearchService.findOneItem(itemId);
 
         model.addAttribute("qnaList", qnaList);
         model.addAttribute("nicknames", nicknames);
