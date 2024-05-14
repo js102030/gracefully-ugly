@@ -20,15 +20,6 @@
     flex-grow: 1; /* 나머지 공간을 균일하게 확장 */
 }
 
-.button {
-    border: none; /* 테두리 없앰 */
-    background-color: #29902C; /* 배경색 설정 */
-    color: white; /* 텍스트 색상 설정 */
-    padding: 10px 20px; /* 내부 여백 설정 */
-    border-radius: 5px; /* 모서리를 둥글게 만듦 */
-    cursor: pointer; /* 포인터 커서 설정 */
-}
-
 .middle_wrapper {
     display: flex;
     gap: 20px; /* 상자 간격 설정 */
@@ -94,4 +85,26 @@ h1 {
 
 .table_items:nth-child(even) {
     background-color: #E0E0E0; /* 변경: 짝수 행 배경색 설정 */
+}
+
+.goToReview-button {
+    border: none; /* 테두리 없앰 */
+    font-weight: 600;
+    background-color: #29902C; /* 배경색 설정 */
+    color: white; /* 텍스트 색상 설정 */
+    padding: 10px 20px; /* 내부 여백 설정 */
+    border-radius: 5px; /* 모서리를 둥글게 만듦 */
+    cursor: pointer; /* 포인터 커서 설정 */
+    margin-bottom: 15px;
+}
+
+.goToAsk-button {
+    border: none; /* 테두리 없앰 */
+    font-weight: 600;
+    background-color: #29902C; /* 배경색 설정 */
+    color: white; /* 텍스트 색상 설정 */
+    padding: 10px 20px; /* 내부 여백 설정 */
+    border-radius: 5px; /* 모서리를 둥글게 만듦 */
+    cursor: pointer; /* 포인터 커서 설정 */
+    margin-bottom: 15px;
 }

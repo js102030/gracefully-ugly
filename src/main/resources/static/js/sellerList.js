@@ -5,6 +5,15 @@ $(document).ready(function() {
     $(".table_items .getItemId").each(function() {
         var $this = $(this);
         var itemId = $this.text().trim(); // 각 행의 itemId 가져오기
+        document.getElementById('moveDetails').addEventListener('click', function() {
+            window.location.href = '/sellerDetails/' + itemId;
+        });
+        document.getElementById('moveItems').addEventListener('click', function() {
+            window.location.href = '/group-buying/' + itemId;
+        });
+        document.getElementById('salesPostButton').addEventListener('click', function() {
+            window.location.href = '/salesPost';
+        });
         var apiUrl = "/api/groupbuy/items/" + itemId;
 
         fetch(apiUrl)
@@ -45,18 +54,4 @@ $(document).ready(function() {
     });
 });
 
-//--- 해당 상품 페이지로 이동 & 상품 등록 페이지로 이동
-$(document).ready(function() {
-    $('.moveToItem').click(function(event) {
-        event.preventDefault(); // 기본 링크 이벤트 방지
 
-        // 클릭한 상품의 itemId 가져오기
-        var itemId = $(this).attr('data-itemId');
-        window.location.href = '/sellerDetails/' + itemId;
-    });
-
-
-    $('.salesPostButton').click(function() {
-        window.location.href = 'http://localhost:8080/salesPost';
-    });
-});

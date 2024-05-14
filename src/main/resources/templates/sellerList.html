@@ -28,7 +28,7 @@
             <p>모집중</p>
             <p class="input_data_ing">0</p>
         </div>
-        <button class="salesPostButton">판매상품 등록</button>
+        <button id="salesPostButton">판매상품 등록</button>
     </div>
 </div>
 <h1>판매 내역</h1>
@@ -42,6 +42,8 @@
             <th>단위당 가격</th>
             <th>목표 무게(g)</th>
             <th>마감 일자</th>
+            <th>관리</th>
+            <th>판매글</th>
             <th>모집 상태</th>
         </tr>
         </thead>
@@ -49,12 +51,12 @@
             <tr th:each="item, itemStat : ${items}">
                 <td th:text="${itemStat.index + 1}"></td>
                 <td class="getItemId" th:text="${item.getId()}"></td>
-                <td>
-                    <a href="#" class="moveToItem" th:text="${item.getName()}" th:attr="data-itemId=${item.getId()}"></a>
-                </td>
+                <td th:text="${item.getName()}" th:attr="data-itemId=${item.getId()}"></td>
                 <td th:text="${item.getPrice()}"></td>
                 <td th:text="${item.getTotalSalesUnit()}"></td>
                 <td th:text="${item.closedDate}"></td>
+                <td id="moveDetails" class="sellerControllerButton">관리 하러가기</td>
+                <td id="moveItems" class="sellerControllerButton">글 보러가기</td>
                 <td></td>
             </tr>
         </tbody>

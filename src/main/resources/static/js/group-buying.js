@@ -131,7 +131,7 @@ joinGroupBuy.addEventListener('click', event => {
 
 const questions = document.querySelector('.ask');
 questions.addEventListener('click', event => {
-    window.location.href = `http://localhost:8080/productAsk/` + itemId;
+    window.location.href = `/productAsk/` + itemId;
 })
 
 // ------------ 알림 모달창 상태 변경
