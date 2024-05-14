@@ -13,13 +13,13 @@ import com.gracefullyugly.domain.user.dto.SellerDetailsResponse;
 import com.gracefullyugly.domain.user.entity.User;
 import com.gracefullyugly.domain.user.service.SellerDetailsService;
 import com.gracefullyugly.domain.user.service.UserSearchService;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -127,10 +127,17 @@ public class CommonController {
         ApiResponse<List<QnADto>> qnaResponse = qnASearchService.getQnAList(itemId);
         List<QnADto> qnaList = qnaResponse.getData();
 
+        // 각 QnADto의 userId를 이용하여 닉네임을 가져와서 리스트로 만듭니다.
+        List<String> nicknames = new ArrayList<>();
+        for (QnADto qnaDto : qnaList) {
+            String nickname = userSearchService.findNicknameById(qnaDto.getUserId());
+            nicknames.add(nickname);
+        }
+
         ItemResponse item = (ItemResponse) itemSearchService.findOneItem(itemId);
-        //아이템 아이디로 리뷰 question, answer 불러오는거
 
         model.addAttribute("qnaList", qnaList);
+        model.addAttribute("nicknames", nicknames);
         model.addAttribute("item", item);
         return "productAsk";
     }
