@@ -62,7 +62,7 @@
 
 ## erd 
 링크 : https://www.erdcloud.com/d/Ry8D7FKy5oLp4nBSd
-![image](https://github.com/gracefully-ugly/gracefully-ugly/assets/138424719/153e334f-fa0e-47c5-84a2-0295e424e5b5)
+![Ry8D7FKy5oLp4nBSd](https://github.com/gracefully-ugly/gracefully-ugly/assets/121748946/618e839e-4caa-4b57-8785-b84bf0860494)
 
 ## api 명세
 링크 : 
