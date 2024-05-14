@@ -41,7 +41,10 @@
             <div class="buttons">
                 <button class="join-group-buying">공구 참여</button>
                 <button class="join-cart">찜하기</button>
-                <button class="ask" th:onclick="'window.location.href=\'/question/' + ${item.getId()} + '\''">문의하기</button>
+                <button class="ask" th:onclick="'window.location.href=\'/question/' + ${item.getId()} + '\''">문의하기
+                </button>
+                <button class="report" th:onclick="'location.href=\'/create-item-report/' + ${item.id} + '\''">상품 신고
+                </button>
             </div>
         </div>
     </div>
@@ -53,93 +56,89 @@
         </div>
 
         <div class="buttons">
-            <button class="join-group-buying">공구 참여</button>
-            <button class="join-cart">찜하기</button>
-            <button class="ask" onclick="location.href='/productAsk'">문의하기</button>
-            <button class="report" th:onclick="'location.href=\'/create-item-report/' + ${item.id} + '\''">상품 신고
-            </button>
 
-        <!-- 수정 폼을 보여줄 컨테이너 -->
-        <div id="editFormContainer" style="display: none;">
-            <textarea id="editDescription" rows="10" cols="70"></textarea><br>
-            <button class="modify-item-button" onclick="submitEdit()">수정 완료</button>
+            <!-- 수정 폼을 보여줄 컨테이너 -->
+            <div id="editFormContainer" style="display: none;">
+                <textarea id="editDescription" rows="10" cols="70"></textarea><br>
+                <button class="modify-item-button" onclick="submitEdit()">수정 완료</button>
 
+            </div>
+            <div class="description-text" th:text="${item.description}"></div>
         </div>
-        <div class="description-text" th:text="${item.description}"></div>
-    </div>
-    <div class="review-list">
-        <div class="review-count">후기&nbsp;<span th:text="${reviews.size()}" style="color:orange"></span>개</div>
-        <div class="hr-2"></div>
-        <div th:each="review : ${reviews}" class="review">
-            <div class="nickname-star">
-                <div class="nickname" th:text="${review.getUserNickname()}"></div>
-                <div class="point" th:text="${review.getStarPoint()}"></div>
-                <div class="star-review"></div>
-            </div>
-            <div class="image-and-review">
-                <div class="item"><img
-                        th:src="${review.getImageUrl() != null and review.getImageUrl()!= '' ? review.getImageUrl() : '/image/item.png'}"
-                        alt="리뷰 사진" width="240" height="240"></div>
-                <div class="review-and-createdDay">
-                    <div class="review-content" th:text="${review.comments}"></div>
-                </div>
-            </div>
+        <div class="review-list">
+            <div class="review-count">후기&nbsp;<span th:text="${reviews.size()}" style="color:orange"></span>개</div>
             <div class="hr-2"></div>
+            <div th:each="review : ${reviews}" class="review">
+                <div class="nickname-star">
+                    <div class="nickname" th:text="${review.getUserNickname()}"></div>
+                    <div class="point" th:text="${review.getStarPoint()}"></div>
+                    <div class="star-review"></div>
+                </div>
+                <div class="image-and-review">
+                    <div class="item"><img
+                            th:src="${review.getImageUrl() != null and review.getImageUrl()!= '' ? review.getImageUrl() : '/image/item.png'}"
+                            alt="리뷰 사진" width="240" height="240"></div>
+                    <div class="review-and-createdDay">
+                        <div class="review-content" th:text="${review.comments}"></div>
+                    </div>
+                </div>
+                <div class="hr-2"></div>
+            </div>
         </div>
+
+        <!--공구 현황 알림 모달-->
+        <!--1) 공구 모집 기간이 종료되었습니다.-->
+        <section class="notice-modal-CANCELLED">
+            <div class="notice-modal-box">
+                <div class="notice-modal-inner">
+                    <div class="notice-content">
+                        <div class="notice">
+                            <div class="notice-title">
+                                공구 모집 기간이 종료되었습니다.
+                            </div>
+                            <div class="notice-text">
+                                인원 모집에 실패하여 공구가 자동 취소되었습니다. <br>
+                                근무일 2~3일안으로 자동 환불 예정입니다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--2) 공구가 완료되었습니다.-->
+        <section class="notice-modal-COMPLETED">
+            <div class="notice-modal-box">
+                <div class="notice-modal-inner">
+                    <div class="notice-content">
+                        <div class="notice">
+                            <div class="notice-title">
+                                공구가 완료되었습니다.
+                            </div>
+                            <div class="notice-text">
+                                상품이 정상적으로 배송 진행될 예정입니다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--3) 마감일 안내-->
+        <!--<section class="notice-modal">-->
+        <!--    <div class="notice-modal-close-box">-->
+        <!--        <div class="notice-modal-inner">-->
+        <!--            <div class="notice-content">-->
+        <!--                <div class="notice">-->
+        <!--                    <div class="notice-title">-->
+        <!--                        마감<span style="color:red">4</span>일 전-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--    </div>-->
+        <!--</section>-->
     </div>
-
-    <!--공구 현황 알림 모달-->
-    <!--1) 공구 모집 기간이 종료되었습니다.-->
-    <section class="notice-modal-CANCELLED">
-        <div class="notice-modal-box">
-            <div class="notice-modal-inner">
-                <div class="notice-content">
-                    <div class="notice">
-                        <div class="notice-title">
-                            공구 모집 기간이 종료되었습니다.
-                        </div>
-                        <div class="notice-text">
-                            인원 모집에 실패하여 공구가 자동 취소되었습니다. <br>
-                            근무일 2~3일안으로 자동 환불 예정입니다.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-  
-    <!--2) 공구가 완료되었습니다.-->
-    <section class="notice-modal-COMPLETED">
-        <div class="notice-modal-box">
-            <div class="notice-modal-inner">
-                <div class="notice-content">
-                    <div class="notice">
-                        <div class="notice-title">
-                            공구가 완료되었습니다.
-                        </div>
-                        <div class="notice-text">
-                            상품이 정상적으로 배송 진행될 예정입니다.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!--3) 마감일 안내-->
-    <!--<section class="notice-modal">-->
-    <!--    <div class="notice-modal-close-box">-->
-    <!--        <div class="notice-modal-inner">-->
-    <!--            <div class="notice-content">-->
-    <!--                <div class="notice">-->
-    <!--                    <div class="notice-title">-->
-    <!--                        마감<span style="color:red">4</span>일 전-->
-    <!--                    </div>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
-    <!--</section>-->
 </main>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
