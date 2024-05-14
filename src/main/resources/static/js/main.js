@@ -43,33 +43,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-// ------------ 모달창 js
-
-document.addEventListener('DOMContentLoaded', function () {
-    const modal = document.querySelector('.modal');
-    const modalCloseButton = document.querySelector('.modal-close');
-    const listButton = document.querySelector('.list-button');
-
-    if (listButton) {
-        listButton.addEventListener('click', function () {
-            modal.style.display = 'block';
-        });
-    }
-
-    if (modalCloseButton) {
-        modalCloseButton.addEventListener('click', function () {
-            modal.style.display = 'none';
-        });
-    }
-
-    window.addEventListener('click', function (event) {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
-});
-
-
 // ----------------------- 마감임박 상품 조회
 document.addEventListener('DOMContentLoaded', function () {
     // 페이지 로드가 완료된 후 실행될 코드
@@ -277,3 +250,4 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error('Error fetching news:', error);
         });
 });
+
