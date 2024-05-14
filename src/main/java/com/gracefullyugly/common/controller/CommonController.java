@@ -12,10 +12,10 @@ import com.gracefullyugly.domain.user.dto.SellerDetailsResponse;
 import com.gracefullyugly.domain.user.entity.User;
 import com.gracefullyugly.domain.user.service.SellerDetailsService;
 import com.gracefullyugly.domain.user.service.UserSearchService;
-import java.util.List;
-import java.util.stream.Collectors;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -87,25 +87,19 @@ public class CommonController {
 
         model.addAttribute("reviews", reviews);
         model.addAttribute("QnAs", QnAs);
-        model.addAttribute("sellerDetails",sellerDetails);
+        model.addAttribute("sellerDetails", sellerDetails);
         return "sellerDetails";
     }
 
-//    @GetMapping("/create-review/{itemId}")
-//    public String createReview(@PathVariable Long itemId, Model model) {
-//        ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
-//        Float starPoint = reviewSearchService.findAverageStarPointsByItemId(itemId);
-//    }
+    @GetMapping("/create-review/{itemId}")
+    public String createReview(@PathVariable Long itemId, Model model) {
+        ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
+        Float starPoint = reviewSearchService.findAverageStarPointsByItemId(itemId);
 
-//    @GetMapping("/create-order")
-//    public String createOrder() {
-//        return "create-order";
-//    }
-//
-//        model.addAttribute("starPoint", starPoint);
-//        model.addAttribute("item", itemResponse);
-//        return "create-review";
-//    }
+        model.addAttribute("starPoint", starPoint);
+        model.addAttribute("item", itemResponse);
+        return "create-review";
+    }
 
     @GetMapping("/group-buying/{itemId}")
     public String groupBuying(@PathVariable Long itemId, Model model) {
@@ -161,7 +155,8 @@ public class CommonController {
     }
 
     @GetMapping("/update-user-info")
-    public String updateUserInfo(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId, Model model) {
+    public String updateUserInfo(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
+                                 Model model) {
         User user = userSearchService.findById(userId);
         model.addAttribute("User", user);
 

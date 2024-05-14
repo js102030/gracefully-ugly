@@ -33,7 +33,7 @@ public class PerformanceAndSuccessLoggingAspect {
 
     private final LogService logService;
 
-    @Pointcut("within(com.gracefullyugly..*) && !within(com.gracefullyugly.domain.log..*) && !within(com.gracefullyugly.aop..*)")
+    @Pointcut("within(com.gracefullyugly..*) && !within(com.gracefullyugly.domain.log..*) && !within(com.gracefullyugly.aop..*) && !within(com.gracefullyugly.common.security..*)")
     public void applicationPackagePointcut() {
     }
 
