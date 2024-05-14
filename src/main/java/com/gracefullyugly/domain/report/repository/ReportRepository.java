@@ -15,4 +15,6 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
 
     List<Report> findByItemIdIsNull();
 
+    List<Report> findByIsAcceptedFalseAndIsDeletedFalse();
+
 }

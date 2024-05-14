@@ -6,54 +6,56 @@
     <link rel="stylesheet" href="/fragment/nav.css">
     <link rel="stylesheet" href="/css/modify-order.css">
 </head>
-<body class="body">
+<body>
 <div th:replace="~{fragment/nav :: top}"></div>
 <div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
-<div class="back-and-order-text">
-    <button class="back-button">뒤로가기</button>
-    <div class="up-text">
-        <div class="notice">Notice!</div>
-        <div class="order-text">공동구매가 확정된 후 주소를 변경하시면 배송 착오가 있을 수 있습니다.</div>
-    </div>
-</div>
-<div class="order-content-box">
-    <input class="order-id" th:value="${OrderInfoResponse.getOrder().getId()}" style="display: none">
-    <div class="title">
-        <div class="title-text-front">상품명</div>
-        <ul class="order-list">
-            <li th:each="orderItem : ${OrderInfoResponse.getOrderItemList()}">
-                <div class="title-text">
-                    <span th:text="${orderItem.getItemName()}">못난이 아담한 감자</span> (<span
-                        th:text="${#numbers.formatCurrency(orderItem.getItemPrice())}">~~~원</span>) -
-                    <span th:text="${orderItem.getQuantity()}">1</span>개
-                </div>
-            </li>
-        </ul>
-    </div>
-    <div class="order-content">
-        <div class="input-address">
-            <div class="input">받는분 주소</div>
-            <div class="address"><input type="text" id="address" name="받는분 주소"
-                                        th:value="${OrderInfoResponse.getOrder().getAddress()}"></div>
-            <button class="modify-button">수정</button>
-            <button class="save-button save-address-button">저장</button>
-        </div>
-        <div class="input-number">
-            <div class="input">받는분 연락처</div>
-            <div class="number"><input type="tel" id="number" name="받는분 연락처" placeholder="숫자만 적어주세요"
-                                       th:value="${OrderInfoResponse.getOrder().getPhoneNumber()}"></div>
-            <button class="modify-button">수정</button>
-            <button class="save-button save-phone-number-button">저장</button>
+<main class="body">
+    <div class="back-and-order-text">
+        <button class="back-button">뒤로가기</button>
+        <div class="up-text">
+            <div class="notice">Notice!</div>
+            <div class="order-text">공동구매가 확정된 후 주소를 변경하시면 배송 착오가 있을 수 있습니다.</div>
         </div>
     </div>
-    <div class="sum-item-and-result">
-        <div class="sum-item">총 결제 금액</div>
-        <div class="result">
-            <span th:text="${#numbers.formatCurrency(OrderInfoResponse.getPayment().getTotalPrice())}" style="color:orange">20,000원</span>
+    <div class="order-content-box">
+        <input class="order-id" th:value="${OrderInfoResponse.getOrder().getId()}" style="display: none">
+        <div class="title">
+            <div class="title-text-front">상품명</div>
+            <ul class="order-list">
+                <li th:each="orderItem : ${OrderInfoResponse.getOrderItemList()}">
+                    <div class="title-text">
+                        <span th:text="${orderItem.getItemName()}">못난이 아담한 감자</span> (<span
+                            th:text="${#numbers.formatCurrency(orderItem.getItemPrice())}">~~~원</span>) -
+                        <span th:text="${orderItem.getQuantity()}">1</span>개
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="order-content">
+            <div class="input-address">
+                <div class="input">받는분 주소</div>
+                <div class="address"><input type="text" id="address" name="받는분 주소"
+                                            th:value="${OrderInfoResponse.getOrder().getAddress()}"></div>
+                <button class="modify-button">수정</button>
+                <button class="save-button save-address-button">저장</button>
+            </div>
+            <div class="input-number">
+                <div class="input">받는분 연락처</div>
+                <div class="number"><input type="tel" id="number" name="받는분 연락처" placeholder="숫자만 적어주세요"
+                                           th:value="${OrderInfoResponse.getOrder().getPhoneNumber()}"></div>
+                <button class="modify-button">수정</button>
+                <button class="save-button save-phone-number-button">저장</button>
+            </div>
+        </div>
+        <div class="sum-item-and-result">
+            <div class="sum-item">총 결제 금액</div>
+            <div class="result">
+                <span th:text="${#numbers.formatCurrency(OrderInfoResponse.getPayment().getTotalPrice())}" style="color:orange">20,000원</span>
+            </div>
         </div>
     </div>
-</div>
+</main>
 <script type="text/javascript" src="/js/modify-order.js"></script>
 <script type="text/javascript" src="/js/security.js"></script>
 <script type="text/javascript" src="/fragment/nav.js"></script>

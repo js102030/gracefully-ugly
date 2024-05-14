@@ -10,83 +10,85 @@
     <link rel="stylesheet" href="/fragment/nav.css">
     <link rel="stylesheet" href="/css/purchase_history.css">
 </head>
-<body class="body">
+<body>
 <div th:replace="~{fragment/nav :: top}"></div>
 <div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
-<div class="history d-flex mt-5 w-75 d-flex border border-success rounded-3"
-     th:if="${#lists.isEmpty(PaymentSearchListResponse.getPaymentList())}">
-    <h2>구매 내역이 없습니다.</h2>
-</div>
+<main class="body">
+    <div class="history d-flex mt-5 w-75 d-flex border border-success rounded-3"
+         th:if="${#lists.isEmpty(PaymentSearchListResponse.getPaymentList())}">
+        <h2>구매 내역이 없습니다.</h2>
+    </div>
 
-<div class="history border border-success rounded-3"
-     th:if="${not #lists.isEmpty(PaymentSearchListResponse.getPaymentList())}"
-     th:each="PaymentInfo : ${PaymentSearchListResponse.getPaymentList()}">
-    <div class=purchase-date>
-        <strong class="date"
-                th:text="${#temporals.format(PaymentInfo.getPaymentInfo().getPayment().getPaymentDate(), 'yyyy-MM-dd HH:mm:ss')}">2024년
-            05월 04일</strong>
-    </div>
-    <div class="purchase-list">
-        <div class="purchase-list-item border border-success rounded-3"
-             th:each="orderItem : ${PaymentInfo.getOrderItemList()}">
-            <div class="item-info">
-                <div class="purchase-image">
-                    <img class="item img-fluid" src="/image/logo.png">
+    <div class="history border border-success rounded-3"
+         th:if="${not #lists.isEmpty(PaymentSearchListResponse.getPaymentList())}"
+         th:each="PaymentInfo : ${PaymentSearchListResponse.getPaymentList()}">
+        <div class=purchase-date>
+            <strong class="date"
+                    th:text="${#temporals.format(PaymentInfo.getPaymentInfo().getPayment().getPaymentDate(), 'yyyy-MM-dd HH:mm:ss')}">2024년
+                05월 04일</strong>
+        </div>
+        <div class="purchase-list">
+            <div class="purchase-list-item border border-success rounded-3"
+                 th:each="orderItem : ${PaymentInfo.getOrderItemList()}">
+                <div class="item-info">
+                    <div class="purchase-image">
+                        <img class="item img-fluid" src="/image/logo.png">
+                    </div>
+                    <div class="purchase-item-title">
+                        <div class="purchase-title">
+                            <strong>상품명:</strong>&nbsp;<span th:text="${orderItem.getItemName()}">싱싱 제철 못난이 감자</span></div>
+                        <div class="purchase-quantity">
+                            <strong>구매 수량:</strong>&nbsp;<span th:text="${orderItem.getQuantity()} + '개'">1개</span>
+                        </div>
+                        <div class="purchase-price">
+                            <strong>결제 금액:</strong>&nbsp;<span
+                                th:text="${#numbers.formatCurrency(orderItem.getItemPrice() * orderItem.getQuantity())}">10000원</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="purchase-item-title">
-                    <div class="purchase-title">
-                        <strong>상품명:</strong>&nbsp;<span th:text="${orderItem.getItemName()}">싱싱 제철 못난이 감자</span></div>
-                    <div class="purchase-quantity">
-                        <strong>구매 수량:</strong>&nbsp;<span th:text="${orderItem.getQuantity()} + '개'">1개</span>
-                    </div>
-                    <div class="purchase-price">
-                        <strong>결제 금액:</strong>&nbsp;<span
-                            th:text="${#numbers.formatCurrency(orderItem.getItemPrice() * orderItem.getQuantity())}">10000원</span>
-                    </div>
+                <div class="buttons-page">
+                    <button class="btn btn-review btn-outline-success"
+                            th:onclick="|moveToReviewPage('${orderItem.getItemId()}')|">후기 남기기
+                    </button>
+                    <button class="btn btn-item-page btn-outline-success"
+                            th:onclick="|moveToItemPage('${orderItem.getItemId()}')|">상품
+                        페이지로 이동
+                    </button>
                 </div>
             </div>
-            <div class="buttons-page">
-                <button class="btn btn-review btn-outline-success"
-                        th:onclick="|moveToReviewPage('${orderItem.getItemId()}')|">후기 남기기
-                </button>
-                <button class="btn btn-item-page btn-outline-success"
-                        th:onclick="|moveToItemPage('${orderItem.getItemId()}')|">상품
-                    페이지로 이동
-                </button>
+            <div class="purchase-info">
+                <div class="purchase-info-result">
+                    <div class="total-purchase-price">
+                        <strong>총 결제 금액:</strong>&nbsp;<span
+                            th:text="${#numbers.formatCurrency(PaymentInfo.getPaymentInfo().getPayment().getTotalPrice())}">10000원</span>
+                    </div>
+                    <div class="purchase-status success"
+                         th:if="${PaymentInfo.getPaymentInfo().getPayment().isPaid() and not PaymentInfo.getPaymentInfo().getPayment().isRefunded()}"
+                         style="color: #00BF08;">
+                        결제 완료
+                    </div>
+                    <div class="purchase-status cancel"
+                         th:if="${not PaymentInfo.getPaymentInfo().getPayment().isPaid() and not PaymentInfo.getPaymentInfo().getPayment().isRefunded()}"
+                         style="color: #EE402E;">
+                        결제
+                        취소
+                    </div>
+                    <div class="purchase-status refund"
+                         th:if="${PaymentInfo.getPaymentInfo().getPayment().isRefunded()}" style="color: #EE402E;">
+                        환불
+                    </div>
+                </div>
+                <div class="button-receipt">
+                    <button class="btn btn-receipt btn-outline-success"
+                            th:onclick="|moveToReceipt('${PaymentInfo.getPaymentInfo().getOrder().getOrderId()}')|">
+                        주문서 보러가기
+                    </button>
+                </div>
             </div>
         </div>
-        <div class="purchase-info">
-            <div class="purchase-info-result">
-                <div class="total-purchase-price">
-                    <strong>총 결제 금액:</strong>&nbsp;<span
-                        th:text="${#numbers.formatCurrency(PaymentInfo.getPaymentInfo().getPayment().getTotalPrice())}">10000원</span>
-                </div>
-                <div class="purchase-status success"
-                     th:if="${PaymentInfo.getPaymentInfo().getPayment().isPaid() and not PaymentInfo.getPaymentInfo().getPayment().isRefunded()}"
-                     style="color: #00BF08;">
-                    결제 완료
-                </div>
-                <div class="purchase-status cancel"
-                     th:if="${not PaymentInfo.getPaymentInfo().getPayment().isPaid() and not PaymentInfo.getPaymentInfo().getPayment().isRefunded()}"
-                     style="color: #EE402E;">
-                    결제
-                    취소
-                </div>
-                <div class="purchase-status refund"
-                     th:if="${PaymentInfo.getPaymentInfo().getPayment().isRefunded()}" style="color: #EE402E;">
-                    환불
-                </div>
-            </div>
-            <div class="button-receipt">
-                <button class="btn btn-receipt btn-outline-success"
-                        th:onclick="|moveToReceipt('${PaymentInfo.getPaymentInfo().getOrder().getOrderId()}')|">
-                    주문서 보러가기
-                </button>
-            </div>
-        </div>
     </div>
-</div>
+</main>
 <script type="text/javascript" src="/fragment/nav.js"></script>
 <script type="text/javascript" src="/js/purchase_history.js"></script>
 <script type="text/javascript" src="/js/security.js"></script>
