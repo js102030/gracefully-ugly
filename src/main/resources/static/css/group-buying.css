@@ -142,6 +142,20 @@
     cursor: pointer;
 }
 
+.report {
+    margin-right: 20px;
+    border: 3px solid #4ECF72;
+    background-color: #4ECF72;
+    color: white;
+    font-weight: 600;
+    font-size: 20px;
+    border-radius: 15px;
+    padding: 10px;
+    width: 120px;
+    height: 50px;
+    cursor: pointer;
+}
+
 .description {
     display: flex;
     align-items: center;
@@ -267,12 +281,12 @@
 }
 
 .modal-box {
-    border : 5px #29902C solid;
+    border: 5px #29902C solid;
     background: #FFFFFF;
     border-radius: 50px;
-    width : 500px;
-    height : 500px;
-    padding : 12px 23px 0 0;
+    width: 500px;
+    height: 500px;
+    padding: 12px 23px 0 0;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -325,6 +339,7 @@
     cursor: pointer;
     margin-right: -180px;
 }
+
 /*모달 모집 기간 관리*/
 .notice-modal-CANCELLED {
     display: none;
@@ -348,12 +363,12 @@
 }
 
 .notice-modal-box {
-    border : 5px #29902C solid;
+    border: 5px #29902C solid;
     background: #FFFFFF;
     border-radius: 15px;
-    width : 500px;
-    height : 100px;
-    padding : 12px 23px 0 0;
+    width: 500px;
+    height: 100px;
+    padding: 12px 23px 0 0;
 }
 
 .notice-title {

@@ -5,6 +5,8 @@ import com.gracefullyugly.domain.item.dto.ItemWithImageUrlResponse;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.qna.dto.QnADto;
 import com.gracefullyugly.domain.qna.service.QnASearchService;
+import com.gracefullyugly.domain.report.dto.ReportResponse;
+import com.gracefullyugly.domain.report.service.ReportSearchService;
 import com.gracefullyugly.domain.review.dto.ReviewWithImageResponse;
 import com.gracefullyugly.domain.review.service.ReviewSearchService;
 import com.gracefullyugly.domain.user.dto.ProfileResponse;
@@ -36,6 +38,7 @@ public class CommonController {
     private final ReviewSearchService reviewSearchService;
     private final QnASearchService qnASearchService;
     private final SellerDetailsService sellerDetailsService;
+    private final ReportSearchService reportSearchService;
 
     @GetMapping("/")
     public String mainPage() {
@@ -101,6 +104,16 @@ public class CommonController {
         return "create-review";
     }
 
+    @GetMapping("/create-item-report/{itemId}")
+    public String createItemReport(@PathVariable Long itemId, Model model) {
+        ItemWithImageUrlResponse itemResponse = itemSearchService.findOneItem(itemId);
+        Float starPoint = reviewSearchService.findAverageStarPointsByItemId(itemId);
+
+        model.addAttribute("starPoint", starPoint);
+        model.addAttribute("item", itemResponse);
+        return "create-item-report";
+    }
+
     @GetMapping("/group-buying/{itemId}")
     public String groupBuying(@PathVariable Long itemId, Model model) {
         List<ReviewWithImageResponse> reviews = reviewSearchService.getReviewsWithImagesByItemId(itemId);
@@ -120,7 +133,10 @@ public class CommonController {
     }
 
     @GetMapping("/admin-report")
-    public String adminReport() {
+    public String adminReport(Model model) {
+        List<ReportResponse> reports = reportSearchService.getReports();
+
+        model.addAttribute("reports", reports);
         return "admin-report";
     }
 

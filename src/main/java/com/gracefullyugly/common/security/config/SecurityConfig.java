@@ -115,6 +115,7 @@ public class SecurityConfig {
                                 "/join2/**", "/group-buying/**", "/api/all/**", "/")
                         .permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/admin-report").hasRole("ADMIN")
                         .anyRequest().authenticated());
 
         //JWTFilter 등록

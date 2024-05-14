@@ -52,6 +52,14 @@ public class ReportController {
                 .body(response);
     }
 
+    @GetMapping("/report")
+    public ResponseEntity<List<ReportResponse>> getReports() {
+        List<ReportResponse> response = reportSearchService.getReports();
+
+        return ResponseEntity
+                .ok(response);
+    }
+
     @GetMapping("/report/items/{itemId}")
     public ResponseEntity<ReportResponse> getItemReport(@PathVariable Long itemId) {
         ReportResponse response = reportSearchService.getItemReport(itemId);

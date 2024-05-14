@@ -51,10 +51,19 @@
             <button class="modify-item-button" onclick="showEditForm()">수정</button>
             <button class="delete-item-button" onclick="deleteItem()">삭제</button>
         </div>
+
+        <div class="buttons">
+            <button class="join-group-buying">공구 참여</button>
+            <button class="join-cart">찜하기</button>
+            <button class="ask" onclick="location.href='/productAsk'">문의하기</button>
+            <button class="report" th:onclick="'location.href=\'/create-item-report/' + ${item.id} + '\''">상품 신고
+            </button>
+
         <!-- 수정 폼을 보여줄 컨테이너 -->
         <div id="editFormContainer" style="display: none;">
             <textarea id="editDescription" rows="10" cols="70"></textarea><br>
             <button class="modify-item-button" onclick="submitEdit()">수정 완료</button>
+
         </div>
         <div class="description-text" th:text="${item.description}"></div>
     </div>
