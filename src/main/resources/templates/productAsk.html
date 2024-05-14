@@ -26,7 +26,7 @@ oneRoute가 한 qna 객체이고, answer_data, answer_input 처음에 display=no
 -->
 <div class="oneRoute" th:each="qna, index : ${qnaList}">
     <div class="ask_tab">
-        <p class="nickname" th:text="${qna.userId}"></p>
+        <p class="nickname" th:text="${nicknames[__${index}__]}"></p>
         <div id="question">
             <p class="content" th:text="${qna.question}"></p>
             <!-- 답변 버튼 -->
