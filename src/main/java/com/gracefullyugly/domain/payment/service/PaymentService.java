@@ -7,6 +7,7 @@ import com.gracefullyugly.domain.groupbuy.repository.GroupBuyRepository;
 import com.gracefullyugly.domain.groupbuyuser.repository.GroupBuyUserRepository;
 import com.gracefullyugly.domain.groupbuyuser.service.GroupBuyUserService;
 import com.gracefullyugly.domain.order.dto.OrderResponse;
+import com.gracefullyugly.domain.orderitem.dto.ItemOrderDetails;
 import com.gracefullyugly.domain.orderitem.entity.OrderItem;
 import com.gracefullyugly.domain.orderitem.repository.OrderItemRepository;
 import com.gracefullyugly.domain.payment.dto.KakaoPayApproveResponse;
@@ -63,6 +64,10 @@ public class PaymentService {
         KakaoPayApproveResponse response = postKakaoPayApprove(userId, payment, pgToken);
         payment.updateIsPaid(true);
 
+        List<ItemOrderDetails> itemOrderDetails = orderItemRepository.findItemsAndQuantityByOrderId(orderId);
+        itemOrderDetails.forEach(
+                itemOrderDetail -> itemOrderDetail.getItem().decreaseStock(itemOrderDetail.getQuantity()));
+
         List<OrderItem> orderItemList = orderItemRepository.findAllByOrdersId(orderId);
         groupBuyUserService.joinGroupBuy(userId, orderItemList);
 
@@ -81,6 +86,10 @@ public class PaymentService {
         mailService.sendRefundMessage(userId, orderId);
         payment.updateIsPaid(false);
         payment.updateIsRefunded(true);
+
+        List<ItemOrderDetails> itemOrderDetails = orderItemRepository.findItemsAndQuantityByOrderId(orderId);
+        itemOrderDetails.forEach(
+                itemOrderDetail -> itemOrderDetail.getItem().increaseStock(itemOrderDetail.getQuantity()));
 
         groupBuyUserRepository.deleteAllByUserIdAndOrderId(userId, orderId);
     }

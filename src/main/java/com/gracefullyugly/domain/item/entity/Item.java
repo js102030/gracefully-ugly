@@ -88,5 +88,11 @@ public class Item extends BaseTimeEntity {
         this.isDeleted = true;
     }
 
+    public void decreaseStock(int quantity) {
+        this.totalSalesUnit -= quantity;
+    }
 
+    public void increaseStock(int quantity) {
+        this.totalSalesUnit += quantity;
+    }
 }

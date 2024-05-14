@@ -53,7 +53,6 @@ public class ItemController {
                 .body(response); //TODO 이미지 URL 추가
     }
 
-
     // 판매글 목록 조회
     @GetMapping("/all/items")
     public ResponseEntity<List<ItemWithImageUrlResponse>> showItems() {
