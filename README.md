@@ -66,6 +66,7 @@
 
 ## api 명세
 링크 : http://localhost:8080/swagger-ui/index.html
-![image](https://github.com/gracefully-ugly/gracefully-ugly/assets/138424719/251d706a-5ba9-4a55-93bf-c5df7979f767)
+![image](https://github.com/gracefully-ugly/gracefully-ugly/assets/138424719/727bc9dd-16ba-42f4-9eed-be69ad41d153)
+
 
 ## 시연 영상
