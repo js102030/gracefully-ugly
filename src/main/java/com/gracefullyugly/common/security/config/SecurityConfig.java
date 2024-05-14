@@ -59,7 +59,7 @@ public class SecurityConfig {
                 .requestMatchers("/vendor/**", "/api/all/**", "/static/**", "/group-buying", "/css/**", "/image/**",
                         "/api/sellerDetails/**",
                         "/js/**", "/fragment/**", "/favicon.ico",
-                        "/h2-console/**", "/api/users/{userId}", "/api/groupbuy/items/{itemId}", "/join2/**", "/");
+                        "/h2-console/**", "/api/users/{userId}", "/api/groupbuy/items/{itemId}", "/join2/**", "/", "/swagger-ui/**", "/v3/api-docs/**");
     }
 
     @Bean
