@@ -10,7 +10,7 @@
 <div th:replace="~{fragment/nav :: top}"></div>
 <div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
-<main class="body"> 
+<main class="body">
   <div class="menu">
       <img th:src="${item.imageUrl != null and item.imageUrl != '' ? item.imageUrl : '/image/item.png'}"
            class="item-image" alt="제품사진">
@@ -47,11 +47,13 @@
   </div>
   <div class="description">
       <div class="hr-1"></div>
-      <div th:if="${item.userId == #authentication.principal.userId}" class="modify-and-delete-button">
-  <!--    <div  class="modify-and-delete-button">-->
+      <div th:if="${
+             #authentication.principal != 'anonymousUser' and
+             item.userId == #authentication.principal.userId}" class="modify-and-delete-button">
           <button class="modify-item-button" onclick="showEditForm()">수정</button>
           <button class="delete-item-button" onclick="deleteItem()">삭제</button>
       </div>
+
       <!-- 수정 폼을 보여줄 컨테이너 -->
       <div id="editFormContainer" style="display: none;">
           <textarea id="editDescription" rows="10" cols="70"></textarea><br>
