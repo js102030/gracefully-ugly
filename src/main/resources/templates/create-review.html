@@ -13,29 +13,24 @@
 <main class="body">
     <div class="up-content">
         <img class="item-image"
-             th:src="${item.imageUrl != null and item.imageUrl != '' ? item.imageUrl : '/image/item.png'}" alt="상품-리뷰 아이템"
+             th:src="${item.imageUrl != null and item.imageUrl != '' ? item.imageUrl : '/image/item.png'}"
+             alt="상품-리뷰 아이템"
              width="400">
         <div class="item-content">
             <div class="point-and-star">
-                <div class="point" th:text="${starPoint != null ? starPoint : 0}"></div>
+                <div class="point" th:text="${starPoint != null ? starPoint : ''}"></div>
 
-                <div class="star">
-                    <img class="star" src="/image/star.png" alt="별점">
-                    <img class="star" src="/image/star.png" alt="별점">
-                    <img class="star" src="/image/star.png" alt="별점">
-                    <img class="star" src="/image/star.png" alt="별점">
+                <div class="star" th:if="${starPoint != null}">
+                    <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                        <img th:if="${i <= starPoint}" class="star" src="/image/star.png" alt="별점">
+                    </th:block>
                 </div>
             </div>
             <div class="item-and-name">
                 <div class="item-and">상품명 :</div>
                 <div class="name" th:text="${item.name}">못난이 감자 3Kg</div>
             </div>
-            <div class="add-text">
-                상품의 후기를 적어주세요.
-            </div>
-            <div class="buttons-1">
-                <button class="back-button">뒤로가기</button>
-                <button class="move-to-item-button">상품 보러가기</button>
+            <div class="add-text" th:text="${item.getDescription()}">
             </div>
         </div>
     </div>
