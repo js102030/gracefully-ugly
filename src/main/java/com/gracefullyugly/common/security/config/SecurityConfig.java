@@ -58,8 +58,8 @@ public class SecurityConfig {
         return web -> web.ignoring()  //.requestMatchers(toH2Console())
                 .requestMatchers("/vendor/**", "/api/all/**", "/static/**", "/css/**", "/image/**",
                         "/api/sellerDetails/**",
-                        "/js/**", "/fragment/**", "/favicon.ico",
-                        "/h2-console/**", "/api/users/{userId}", "/api/groupbuy/items/{itemId}", "/api/groupbuy/**", "/join2/**");
+                        "/js/**", "/fragment/**", "/favicon.ico","/h2-console/**", "/api/users/{userId}", "/api/groupbuy/items/{itemId}", "/join2/**", "/swagger-ui/**", "/v3/api-docs/**");
+
     }
 
     @Bean
@@ -100,19 +100,19 @@ public class SecurityConfig {
         http
                 .httpBasic((auth) -> auth.disable());
 
-        //oauth2
-//        http
-//                .oauth2Login((oauth2) -> oauth2
-//                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
-//                                .userService(customOAuth2UserService))
-//                        .successHandler(oAuth2CustomSuccessHandler)
-//                );
-
+        /*//oauth2
+        http
+                .oauth2Login((oauth2) -> oauth2
+                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+                                .userService(customOAuth2UserService))
+                        .successHandler(oAuth2CustomSuccessHandler)
+                );
+*/
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth //"/**", "/api/users", 빼고 실험
                         .requestMatchers("/log", "/oauth2/**", "/login", "/logout", "/", "/join/**",
-                                "/join2/**", "/group-buying/**", "/api/all/**")
+                                "/join2/**", "/group-buying/**", "/api/all/**", "/")
                         .permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/admin-report").hasRole("ADMIN")

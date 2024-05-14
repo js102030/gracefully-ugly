@@ -128,10 +128,10 @@ joinGroupBuy.addEventListener('click', event => {
 
 // -------------  문의하기 버튼 이벤트 헨들러
 
-const questions = document.querySelector('.ask');
+/*const questions = document.querySelector('.ask');
 questions.addEventListener('click', event => {
     window.location.href = `/productAsk/` + itemId;
-})
+})*/
 
 // ------------ 알림 모달창 상태 변경
 // document.addEventListener('DOMContentLoaded', function () {

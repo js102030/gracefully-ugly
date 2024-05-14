@@ -62,4 +62,8 @@ public class UserSearchService {
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
+
+    public String findNicknameById(Long userId) {
+        return userRepository.findNicknameById(userId);
+    }
 }

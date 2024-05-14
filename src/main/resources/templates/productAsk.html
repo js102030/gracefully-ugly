@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
     <title>상품문의 페이지</title>
@@ -24,49 +24,29 @@ oneRoute가 한 qna 객체이고, answer_data, answer_input 처음에 display=no
 1. 만일 qna객체에 answer이 없다면 버튼 눌럿을때 answer_input 박스 살아나게하고
 2. 만일 qna객체에 answer이 있다면 answer_btn display=none, answer_data disply=보이게 설정하고 데이터 뿌려줌
 -->
-<div class="oneRoute">
+<input type="hidden" id="itemId" th:value="${item.getId()}">
+<div class="oneRoute" th:each="qna, index : ${qnaList}">
+    <input type="hidden" id="qnaId" th:value="${qna.qnaId}">
     <div class="ask_tab">
-        <p class="nickname">호롤로</p>
+        <p class="nickname" th:text="${nicknames[__${index.index}__]}"></p>
         <div id="question">
-            <p class="content">이거 맛있는거 맞아?</p>
-            <button class="answer_btn">답변하기</button>
+            <p class="content" th:text="${qna.question}"></p>
+            <!-- 답변 버튼 -->
+            <button class="answer_btn" th:if="${#strings.isEmpty(qna.answer)}" onclick="showAddAnswer(event)">답변하기</button>
         </div>
     </div>
-    <div class="answer_box" id="answer_data">
-        <p class="content">네 완전 맛있어여. 제가 지극정성으로 진짜 힘들게 키웠습니다!</p>
+    <!-- 답변란 -->
+    <div class="answer_box" th:if="${not #strings.isEmpty(qna.answer)}" th:id="'answer_data_' + ${qna.qnaId}">
+        <p class="content" th:text="${qna.answer}"></p>
     </div>
-    <div class="answer_box" id="answer_input">
-        <textarea class="content" placeholder="답변을 입력하세요"></textarea>
-        <button class="answer_send">등록</button>
-    </div>
-</div>
-<div class="oneRoute">
-    <div class="ask_tab">
-        <p class="nickname">큰손30대형님</p>
-        <div>
-            <p class="content">이거 맛있는거 맞아?</p>
-            <button class="answer">답변하기</button>
-        </div>
+<!--    <div class="answer_box" th:if="${#strings.isEmpty(qna.answer)}" th:id="'answer_input_' + ${index}">-->
+    <div class="answer_box" th:if="${#strings.isEmpty(qna.answer)}" th:id="'answer_input_' + ${qna.qnaId}" style="display: none;">
+        <textarea id="answer_text" class="content" placeholder="답변을 입력하세요"></textarea>
+        <button class="answer_send" onclick="addAnswer(event)">등록</button>
     </div>
 </div>
-<div class="oneRoute">
-    <div class="ask_tab">
-        <p class="nickname">막가파고라파덕한입줘</p>
-        <div>
-            <p class="content">이거 맛있는거 맞아?이거 맛있는거 맞아이거 맛있는거 맞아?이거 맛있는거 맞아?</p>
-            <button class="answer">답변하기</button>
-        </div>
-    </div>
-</div>
-<div class="oneRoute">
-    <div class="ask_tab">
-        <p class="nickname">내눈에캔디니코니</p>
-        <div>
-            <p class="content">이거 맛있는거 맞아?이거 맛있는거 맞아?이거 맛있는거 맞아?</p>
-            <button class="answer">답변하기</button>
-        </div>
-    </div>
-</div>
+
 <script type="text/javascript" src="/fragment/nav.js"></script>
+<script type="text/javascript" src="/js/productAsk.js"></script>
 </body>
 </html>
