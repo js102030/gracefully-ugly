@@ -94,7 +94,6 @@ public class JWTFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_OK);
             response.sendRedirect("/log"); // 재로그인 페이지로 리다이렉트
             //response status code 만료가 되면 그다음 필터로 안넘김
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
