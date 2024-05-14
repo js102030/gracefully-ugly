@@ -25,9 +25,3 @@ const reviewButton = document.querySelector('.goToReview-button');
 reviewButton.addEventListener('click', event => {
     window.location.href = '/group-buying/' + itemId;
 })
-
-const askButton = document.querySelector('.goToAsk-button');
-askButton.addEventListener('click', event => {
-    window.location.href = `/productAsk/` + itemId;
-})
-

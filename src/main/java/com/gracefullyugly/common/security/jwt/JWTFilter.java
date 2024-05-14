@@ -52,7 +52,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
             logger.info("쿠기값 null");
             filterChain.doFilter(request, response);
-
             return;
         }
 
@@ -70,7 +69,6 @@ public class JWTFilter extends OncePerRequestFilter {
         if (token == null) {
             logger.info("토큰 없으니 아직 로그인 x");
             filterChain.doFilter(request, response);
-
             return;
         }
         logger.info("token = " + token);
