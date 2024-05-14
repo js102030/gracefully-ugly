@@ -43,5 +43,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "WHERE oi.item_id = :itemId", nativeQuery = true)
     List<SellerDetailsResponse> findSellerDetails(@Param("itemId") Long itemId);
 
-
+    String findNicknameById(Long userId);
 }
