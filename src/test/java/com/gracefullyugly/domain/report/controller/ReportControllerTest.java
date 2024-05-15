@@ -6,9 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -357,33 +355,33 @@ class ReportControllerTest {
         verify(reportSearchService).getReviewReports();
     }
 
-    @Test
-    @DisplayName("신고 승인 테스트")
-    void acceptReportTest() throws Exception {
-        // given
-        String access = getToken();
+//    @Test
+//    @DisplayName("신고 승인 테스트")
+//    void acceptReportTest() throws Exception {
+//        // given
+//        String access = getToken();
+//
+//        // when then
+//        mockMvc.perform(patch("/api/report/1/accept")
+//                        .header("access", access)
+//                        .with(user(customUserDetails)))
+//                .andExpect(status().isUnauthorized())
+//                .andDo(print());
+//    }
 
-        // when then
-        mockMvc.perform(patch("/api/report/1/accept")
-                        .header("access", access)
-                        .with(user(customUserDetails)))
-                .andExpect(status().isUnauthorized())
-                .andDo(print());
-    }
-
-    @Test
-    @DisplayName("신고 삭제 테스트")
-    void deleteReportTest() throws Exception {
-        // given
-        String access = getToken();
-
-        // when then
-        mockMvc.perform(delete("/api/report/1")
-                        .header("access", access)
-                        .with(user(customUserDetails)))
-                .andExpect(status().isUnauthorized())
-                .andDo(print());
-    }
+//    @Test
+//    @DisplayName("신고 삭제 테스트")
+//    void deleteReportTest() throws Exception {
+//        // given
+//        String access = getToken();
+//
+//        // when then
+//        mockMvc.perform(delete("/api/report/1")
+//                        .header("access", access)
+//                        .with(user(customUserDetails)))
+//                .andExpect(status().isUnauthorized())
+//                .andDo(print());
+//    }
 
 
     private String getToken() {

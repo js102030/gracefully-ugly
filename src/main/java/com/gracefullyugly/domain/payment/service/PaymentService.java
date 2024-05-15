@@ -171,7 +171,7 @@ public class PaymentService {
         params.put("total_amount", String.valueOf(paymentRequest.getItemInfoToPayment().getTotalAmount()));
         params.put("tax_free_amount", String.valueOf(paymentRequest.getItemInfoToPayment().getTaxFreeAmount()));
         params.put("approval_url",
-                "http://15.164.14.204:8080/" + paymentRequest.getUserId() + "/"
+                "http://15.164.14.204:8080/payment/kakaopay/success/" + paymentRequest.getUserId() + "/"
                         + paymentRequest.getOrderId());
         params.put("cancel_url", "http://15.164.14.204:8080/payment/cancel?orderId=" + paymentRequest.getOrderId());
         params.put("fail_url", "http://15.164.14.204:8080/payment/fail?orderId=" + paymentRequest.getOrderId());

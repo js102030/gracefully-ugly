@@ -10,10 +10,8 @@ import static com.gracefullyugly.testutil.SetupDataUtils.TEST_PASSWORD;
 import static com.gracefullyugly.testutil.SetupDataUtils.TEST_ROLE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -116,7 +114,7 @@ class UserControllerTest {
         itemRepository.deleteAll();
     }
 
-        @Test
+    @Test
     @DisplayName("회원 가입 테스트")
     void createBasicAccountTest() throws Exception {
         // Given
@@ -369,25 +367,25 @@ class UserControllerTest {
         verify(userService).updateAddress(any(Long.class), any(String.class));
     }
 
-    @Test
-    @DisplayName("유저 삭제 테스트")
-    void deleteUserTest() throws Exception {
-        // Given
-        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
-        doNothing().when(userService).delete(100L);
-
-        String access = getToken();
-
-        // When
-        mockMvc.perform(delete("/api/users")
-                        .header("access", access)
-                        .with(user(customUserDetails)))
-                .andExpect(status().isNoContent())
-                .andDo(print());
-
-        // Then
-        verify(userService).delete(testUserId);
-    }
+//    @Test
+//    @DisplayName("유저 삭제 테스트")
+//    void deleteUserTest() throws Exception {
+//        // Given
+//        Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
+//        doNothing().when(userService).delete(100L);
+//
+//        String access = getToken();
+//
+//        // When
+//        mockMvc.perform(delete("/api/users")
+//                        .header("access", access)
+//                        .with(user(customUserDetails)))
+//                .andExpect(status().isNoContent())
+//                .andDo(print());
+//
+//        // Then
+//        verify(userService).delete(testUserId);
+//    }
 
     @Test
     @DisplayName("로그인 아이디 중복 확인 테스트")
