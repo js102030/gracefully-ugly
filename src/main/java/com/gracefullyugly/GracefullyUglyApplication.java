@@ -22,4 +22,5 @@ public class GracefullyUglyApplication {
         return new SpringSecurityAuditorAware();
     }
 
+    //test
 }
