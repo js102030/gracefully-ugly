@@ -42,6 +42,8 @@
               <button class="join-group-buying">공구 참여</button>
               <button class="join-cart">찜하기</button>
               <button class="ask" th:onclick="'window.location.href=\'/question/' + ${item.getId()} + '\''">문의하기</button>
+              <button class="report" th:onclick="'location.href=\'/create-item-report/' + ${item.id} + '\''">상품 신고
+              </button>
           </div>
       </div>
   </div>
