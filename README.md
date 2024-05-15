@@ -22,7 +22,7 @@
     </tr>
     <tr>
 	    <td>역할</td>
-	    <td>역할</td>
+	    <td>찜 목록,주문/결제/공동구매 프로세스 개발 및 카카오 페이 API 연동</td>
 	    <td>역할</td>
 	    <td>역할</td>
 	    <td>역할</td>
@@ -59,7 +59,7 @@
 페이지 다 완성되면 여기에 기능 명세에 있는 페이지 각각 캡쳐해서 보여주기
 
 ## 시스템 구조도
-
+![system_architecture.jpg](readme_img%2Fsystem_architecture.jpg)
 ## erd 
 링크 : https://www.erdcloud.com/d/Ry8D7FKy5oLp4nBSd
 ![Ry8D7FKy5oLp4nBSd](https://github.com/gracefully-ugly/gracefully-ugly/assets/121748946/618e839e-4caa-4b57-8785-b84bf0860494)
