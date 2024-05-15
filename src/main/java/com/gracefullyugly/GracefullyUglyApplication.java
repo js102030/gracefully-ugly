@@ -21,4 +21,6 @@ public class GracefullyUglyApplication {
     public AuditorAware<String> auditorProvider() {
         return new SpringSecurityAuditorAware();
     }
+
+    //테스트
 }
