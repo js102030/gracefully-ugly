@@ -213,7 +213,7 @@ joinCart.addEventListener('click', event => {
             alert(data.message);
         },
         error: function (data, status, error) {
-            alert('찜 목록에 추가 도중 문제가 발생했습니다.\n[status: ' + data.status + ']\n[error: ' + data.responseText + ']');
+            window.location.href = "/log";
         }
     })
 })
