@@ -1,21 +1,21 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const modal = document.querySelector('.modal');
     const modalCloseButton = document.querySelector('.modal-close');
     const listButton = document.querySelector('.list-button');
 
     if (listButton) {
-        listButton.addEventListener('click', function() {
+        listButton.addEventListener('click', function () {
             modal.style.display = 'block';
         });
     }
 
     if (modalCloseButton) {
-        modalCloseButton.addEventListener('click', function() {
+        modalCloseButton.addEventListener('click', function () {
             modal.style.display = 'none';
         });
     }
 
-    window.addEventListener('click', function(event) {
+    window.addEventListener('click', function (event) {
         if (event.target === modal) {
             modal.style.display = 'none';
         }
@@ -23,12 +23,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function moveToGroupBuying(itemId) {
-    window.location.href = ('http://localhost:8080/group-buying/' + itemId);
+    window.location.href = ('/group-buying/' + itemId);
 }
 
 function deleteCartItem(cartItemId) {
     $.ajax({
-        url: "http://localhost:8080/api/cart/" + cartItemId,
+        url: "/api/cart/" + cartItemId,
         method: 'delete',
         dataType: 'json',
         contentType: 'application/json',
@@ -37,7 +37,7 @@ function deleteCartItem(cartItemId) {
             window.location.reload();
         },
         error: function (data, status, error) {
-            alert('삭제 도중 문제가 발생했습니다.\n[status: ' + data.status +']\n[error: ' + data.responseText + ']');
+            alert('삭제 도중 문제가 발생했습니다.\n[status: ' + data.status + ']\n[error: ' + data.responseText + ']');
         }
     })
 }
@@ -45,8 +45,7 @@ function deleteCartItem(cartItemId) {
 function orderCartItem(itemId, closedDate) {
     if (Date.parse(closedDate) <= Date.now()) {
         alert("마감일이 지난 상품입니다.");
-    }
-    else {
-        window.location.href = ('http://localhost:8080/orders/item/' + itemId);
+    } else {
+        window.location.href = ('/orders/item/' + itemId);
     }
 }

@@ -1,5 +1,6 @@
 package com.gracefullyugly.domain.user.service;
 
+import com.gracefullyugly.common.exception.custom.NotFoundException;
 import com.gracefullyugly.domain.payment.service.PaymentSearchService;
 import com.gracefullyugly.domain.review.service.ReviewSearchService;
 import com.gracefullyugly.domain.user.dto.ProfileResponse;
@@ -22,20 +23,18 @@ public class UserSearchService {
 
     public User findById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException(userId + "에 해당하는 사용자가 없습니다."));
+                .orElseThrow(() -> new NotFoundException(userId + "에 해당하는 사용자가 없습니다."));
     }
 
     public User findByNickname(String nickname) {
         return userRepository.findByNickname(nickname)
-                .orElseThrow(() -> new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다."));
+                .orElseThrow(() -> new NotFoundException(nickname + "에 해당하는 사용자가 없습니다."));
     }
 
     public User findByloginId(String loginId) {
         return userRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new IllegalArgumentException(loginId + "에 해당하는 사용자가 없습니다."));
+                .orElseThrow(() -> new NotFoundException(loginId + "에 해당하는 사용자가 없습니다."));
     }
-
-    // TODO 총 구매 횟수 추가해야함.
 
     public ProfileResponse getProfile(Long userId) {
         User findUser = findById(userId);
@@ -62,5 +61,9 @@ public class UserSearchService {
 
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    public String findNicknameById(Long userId) {
+        return userRepository.findNicknameById(userId);
     }
 }

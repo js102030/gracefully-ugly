@@ -1,6 +1,5 @@
 package com.gracefullyugly.domain.qna.service;
 
-import com.gracefullyugly.common.wrapper.ApiResponse;
 import com.gracefullyugly.domain.qna.dto.QnADto;
 import com.gracefullyugly.domain.qna.dto.QnADtoUtil;
 import com.gracefullyugly.domain.qna.entity.QnA;
@@ -28,13 +27,7 @@ public class QnASearchService {
         return QnADtoUtil.qnAToQnADto(findQnA);
     }
 
-    public ApiResponse<List<QnADto>> getQnAList(Long itemId) {
-        List<QnA> findQnAs = qnARepository.findByItemId(itemId);
-
-        List<QnADto> qnADtos = findQnAs.stream()
-                .map(QnADtoUtil::qnAToQnADto)
-                .toList();
-
-        return new ApiResponse<>(qnADtos.size(), qnADtos);
+    public List<QnADto> getQnAList(Long itemId) {
+        return qnARepository.findByItemIdOrderByCreatedDateDesc(itemId);
     }
 }

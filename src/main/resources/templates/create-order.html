@@ -6,50 +6,52 @@
     <link rel="stylesheet" href="/fragment/nav.css">
     <link rel="stylesheet" href="/css/create-order.css">
 </head>
-<body class="body">
+<body>
 <div th:replace="~{fragment/nav :: top}"></div>
 <div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
-<div class="back-and-order-text">
-    <div class="order-text">주문서를 작성해주세요.</div>
-</div>
-<div class="order-content-box">
-    <input class="item-id" th:value="${Item.getId()}" style="display: none">
-    <div class="title">
-        <div class="title-text-front">상품명</div>
-        <div class="title-text" th:text="${Item.getName()}">못난이 아담한 감자</div>
+<main class="body">
+    <div class="back-and-order-text">
+        <div class="order-text">주문서를 작성해주세요.</div>
     </div>
-    <div class="order-content">
-        <div class="input-quantity">
-            <div class="input">수량</div>
-            <div class="quantity">
-                <input type="text" id="quantity" name="수량" th:placeholder="'1개 이상 ' + ${Item.getTotalSalesUnit()} + '개 이하'">
-                <input class="total-sales-unit" th:value="${Item.getTotalSalesUnit()}" style="display: none">
+    <div class="order-content-box">
+        <input class="item-id" th:value="${Item.getId()}" style="display: none">
+        <div class="title">
+            <div class="title-text-front">상품명</div>
+            <div class="title-text" th:text="${Item.getName()}">못난이 아담한 감자</div>
+        </div>
+        <div class="order-content">
+            <div class="input-quantity">
+                <div class="input">수량</div>
+                <div class="quantity">
+                    <input type="text" id="quantity" name="수량" th:placeholder="'1개 이상 ' + ${Item.getTotalSalesUnit()} + '개 이하'">
+                    <input class="total-sales-unit" th:value="${Item.getTotalSalesUnit()}" style="display: none">
+                </div>
+            </div>
+            <div class="input-address">
+                <div class="input">받는분 주소</div>
+                <div class="address"><input type="text" id="address" name="받는분 주소"></div>
+            </div>
+            <div class="input-number">
+                <div class="input">받는분 연락처</div>
+                <div class="number"><input type="tel" id="number" name="받는분 연락처" placeholder="숫자만 입력해주세요"></div>
             </div>
         </div>
-        <div class="input-address">
-            <div class="input">받는분 주소</div>
-            <div class="address"><input type="text" id="address" name="받는분 주소"></div>
+        <div class="create-order-content">
+            <div class="create-order">
+                <button class="back-button">뒤로가기</button>
+                <button class="create-order-btn">주문하기</button>
+            </div>
         </div>
-        <div class="input-number">
-            <div class="input">받는분 연락처</div>
-            <div class="number"><input type="tel" id="number" name="받는분 연락처" placeholder="숫자만 입력해주세요"></div>
-        </div>
+        <!--    <div class="payment-content">-->
+        <!--        <div class="sum-item-and-result">-->
+        <!--            <div class="sum-item">총 결제 금액</div>-->
+        <!--            <div class="result"><span style="color:orange">20,000</span>원</div>-->
+        <!--        </div>-->
+        <!--        <a href="/" class="kakao-pay"><img src="/static/image/kakao-pay.png" alt="카카오페이 결제"></a>-->
+        <!--    </div>-->
     </div>
-    <div class="create-order-content">
-        <div class="create-order">
-            <button class="back-button">뒤로가기</button>
-            <button class="create-order-btn">주문하기</button>
-        </div>
-    </div>
-    <!--    <div class="payment-content">-->
-    <!--        <div class="sum-item-and-result">-->
-    <!--            <div class="sum-item">총 결제 금액</div>-->
-    <!--            <div class="result"><span style="color:orange">20,000</span>원</div>-->
-    <!--        </div>-->
-    <!--        <a href="/" class="kakao-pay"><img src="/static/image/kakao-pay.png" alt="카카오페이 결제"></a>-->
-    <!--    </div>-->
-</div>
+</main>
 <script type="text/javascript" src="/fragment/nav.js"></script>
 <script type="text/javascript" src="/js/create-order.js"></script>
 <script type="text/javascript" src="/js/security.js"></script>

@@ -11,6 +11,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,6 +23,22 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String[] excludePath = {"/swagger-ui/index.html",
+                "/swagger-ui/swagger-ui-standalone-preset.js",
+                "/swagger-ui/swagger-initializer.js",
+                "/swagger-ui/swagger-ui-bundle.js",
+                "/swagger-ui/swagger-ui.css",
+                "/swagger-ui/index.css",
+                "/swagger-ui/favicon-32x32.png",
+                "/swagger-ui/favicon-16x16.png",
+                "/api-docs/json/swagger-config",
+                "/api-docs/json"};
+        String path = request.getRequestURI();
+        return Arrays.stream(excludePath).anyMatch(path::startsWith);
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -34,7 +52,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
             logger.info("쿠기값 null");
             filterChain.doFilter(request, response);
-
             return;
         }
 
@@ -52,7 +69,6 @@ public class JWTFilter extends OncePerRequestFilter {
         if (token == null) {
             logger.info("토큰 없으니 아직 로그인 x");
             filterChain.doFilter(request, response);
-
             return;
         }
         logger.info("token = " + token);
@@ -76,7 +92,6 @@ public class JWTFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_OK);
             response.sendRedirect("/log"); // 재로그인 페이지로 리다이렉트
             //response status code 만료가 되면 그다음 필터로 안넘김
-//            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
@@ -119,4 +134,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
+
 }

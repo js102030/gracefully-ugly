@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="white" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 정보 수정</title>
+    <link rel="stylesheet" href="/fragment/nav.css">
+    <link rel="stylesheet" href="/css/update-user-info.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.green.min.css"/>
+</head>
+<body>
+<div th:replace="~{fragment/nav :: top}"></div>
+<div th:replace="~{fragment/nav :: modal}"></div>
+<div class="line-box"></div>
+<main class="container">
+    <input class="user-id" th:value="${User.getId()}" style="display:none">
+    <h2>회원 정보 변경</h2>
+    <div class="user-content">
+        <div class="input-nickname" style="margin-bottom: 1rem;">
+            <div class="input">닉네임 변경</div>
+            <div class="nickname"><input type="text" id="nickname" name="닉네임"></div>
+            <button class="modify-nickname-button">수정</button>
+        </div>
+        <div class="input-password" style="margin-bottom: 1rem;">
+            <div class="input">비밀번호 변경</div>
+            <div class="password"><input type="password" id="password" name="비밀번호"></div>
+            <button class="modify-password-button">수정</button>
+        </div>
+        <div class="input-address" style="margin-bottom: 1rem;">
+            <div class="input">주소</div>
+            <div class="address"><input type="text" id="address" name="주소"></div>
+            <button class="modify-address-button">수정</button>
+        </div>
+    </div>
+
+    <div class="back-button-section">
+        <button class="back-button">뒤로가기</button>
+    </div>
+</main>
+
+<script type="text/javascript" src="/js/security.js"></script>
+<script type="text/javascript" src="/fragment/nav.js"></script>
+<script type="text/javascript" src="/js/update-user-info.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</body>
+</html>

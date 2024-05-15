@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="white" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>이메일 인증</title>
+    <link rel="stylesheet" href="/fragment/nav.css">
+    <link rel="stylesheet" href="/css/verification-email.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.green.min.css"/>
+</head>
+<body>
+<div th:replace="~{fragment/nav :: top}"></div>
+<div th:replace="~{fragment/nav :: modal}"></div>
+<div class="line-box"></div>
+<main class="container">
+    <section>
+        <h2>이메일 인증</h2>
+        <div class="input-email-section">
+            <h3>이메일을 입력해주세요</h3>
+            <input class="input-email" type="email" required>
+            <button class="input-email-btn" style="background-color: green;">인증번호 받기</button>
+        </div>
+        <div class="verification-email-section">
+            <input class="verification-code" placeholder="인증번호" disabled>
+            <button class="verification-btn" disabled style="background-color: green;">인증</button>
+            <span class="target-time">
+                <span id="remaining-sec">60초</span>
+            </span>
+        </div>
+    </section>
+</main>
+<script type="text/javascript" src="/fragment/nav.js"></script>
+<script type="text/javascript" src="/js/security.js"></script>
+<script type="text/javascript" src="/js/verification-email.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</body>
+</html>

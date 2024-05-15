@@ -18,3 +18,4 @@ deleteUserBtn.addEventListener("click", event => {
         })
     }
 })
+

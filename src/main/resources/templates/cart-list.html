@@ -6,29 +6,30 @@
     <link rel="stylesheet" href="/fragment/nav.css">
     <link rel="stylesheet" href="/css/cart-list.css">
 </head>
-<body class="body">
+<body>
 <div th:replace="~{fragment/nav :: top}"></div>
 <div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
-<div class="item-box empty-box" th:if="${CartList.get(0).getName() == null}">
-    <h2>찜 목록에 상품이 없습니다.</h2>
-</div>
-<div class="item-box" th:if="${CartList.get(0).getName() != null}" th:each="cartItem : ${CartList}">
-    <img class="item-image" th:src="${cartItem.getImageUrl() != null ? cartItem.getImageUrl() : '/image/item.png'}"
-         alt="상품">
-    <div class="item-content">
-        <div class="title" th:text="${cartItem.getName()}">못난이 감자</div>
-        <div class="end-time">마감일 <span th:text="${cartItem.getCloseDate()}">2024.05.15</span></div>
-        <div class="button" th:onclick="|moveToGroupBuying('${cartItem.getItemId()}')|">상품 페이지로 이동</div>
+<main class="body">
+    <div class="item-box empty-box" th:if="${#lists.isEmpty(CartList) || CartList.get(0).getName() == null}">
+        <h2>찜 목록에 상품이 없습니다.</h2>
     </div>
-    <div class="delete-and-payment">
-        <button class="delete-button" th:onclick="|deleteCartItem('${cartItem.getCartItemId()}')|">삭제</button>
-        <button class="payment-button" th:itemId="${cartItem.getItemId()}" th:closedDate="${cartItem.getCloseDate()}"
-                th:onclick="orderCartItem(this.getAttribute('itemId'), this.getAttribute('closedDate'))">결제하기
-        </button>
+    <div class="item-box" th:if="${not #lists.isEmpty(CartList) && CartList.get(0).getName() != null}" th:each="cartItem : ${CartList}">
+        <img class="item-image" th:src="${cartItem.getImageUrl() != null ? cartItem.getImageUrl() : '/image/item.png'}"
+             alt="상품">
+        <div class="item-content">
+            <div class="title" th:text="${cartItem.getName()}">못난이 감자</div>
+            <div class="end-time">마감일 <span th:text="${cartItem.getCloseDate()}">2024.05.15</span></div>
+            <div class="button" th:onclick="|moveToGroupBuying('${cartItem.getItemId()}')|">상품 페이지로 이동</div>
+        </div>
+        <div class="delete-and-payment">
+            <button class="delete-button" th:onclick="|deleteCartItem('${cartItem.getCartItemId()}')|">삭제</button>
+            <button class="payment-button" th:itemId="${cartItem.getItemId()}" th:closedDate="${cartItem.getCloseDate()}"
+                    th:onclick="orderCartItem(this.getAttribute('itemId'), this.getAttribute('closedDate'))">결제하기
+            </button>
+        </div>
     </div>
-</div>
-
+</main>
 <script type="text/javascript" src="/js/cart-list.js"></script>
 <script type="text/javascript" src="/fragment/nav.js"></script>
 <script type="text/javascript" src="/js/security.js"></script>

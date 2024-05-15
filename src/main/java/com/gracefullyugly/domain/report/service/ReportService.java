@@ -37,6 +37,13 @@ public class ReportService {
         Report findReport = reportSearchService.findById(reportId);
 
         findReport.accept();
+
+        if (findReport.isItemReport()) {
+            Long itemId = findReport.getItemId();
+            reportRepository.deleteCartItemByItemId(itemId);
+        } else {
+            //TODO 후기 신고 처리
+        }
     }
 
     public void deleteReport(Long reportId) {

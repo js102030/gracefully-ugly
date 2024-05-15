@@ -8,6 +8,8 @@ import com.gracefullyugly.domain.item.dto.UpdateDescriptionRequest;
 import com.gracefullyugly.domain.item.enumtype.Category;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.item.service.ItemService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+@Tag(name = "상품 관리")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -36,7 +39,7 @@ public class ItemController {
     private final ItemSearchService itemSearchService;
     private final ImageUploadService imageUploadService;
 
-    // 판매글 생성
+    @Operation(summary = "상품 생성", description = "상품 판매글 생성하기")
     @PostMapping("/items")
     @PreAuthorize("hasAnyRole('SELLER', 'ADMIN')")
     public ResponseEntity<ItemResponse> addItem(@AuthenticationPrincipal(expression = "userId") Long userId,
@@ -53,22 +56,21 @@ public class ItemController {
                 .body(response); //TODO 이미지 URL 추가
     }
 
-
-    // 판매글 목록 조회
+    @Operation(summary = "상품 목록 조회", description = "상품 판매글 목록 조회하기")
     @GetMapping("/all/items")
     public ResponseEntity<List<ItemWithImageUrlResponse>> showItems() {
         return ResponseEntity
                 .ok(itemSearchService.findAllItems());
     }
 
-    // 판매글 상세 조회
+    @Operation(summary = "상품 상세 페이지", description = "상품 판매글 상세 페이지 조회하기")
     @GetMapping("/all/items/{itemId}")
     public ResponseEntity<ItemWithImageUrlResponse> showOneItem(@PathVariable Long itemId) {
         return ResponseEntity
                 .ok(itemSearchService.findOneItem(itemId));
     }
 
-    // 판매글 수정
+    @Operation(summary = "상품 수정", description = "상품 판매글 설명 수정하기")
     @PutMapping("/items/{itemId}")
     public ResponseEntity<ItemResponse> updateDescription(@AuthenticationPrincipal(expression = "userId") Long userId,
                                                           @PathVariable Long itemId,
@@ -80,7 +82,7 @@ public class ItemController {
                 .ok(response);
     }
 
-    // 판매글 삭제
+    @Operation(summary = "상품 삭제", description = "상품 판매글 삭제하기")
     @DeleteMapping("/items/{itemId}")
     public ResponseEntity<Void> deleteOneItem(@AuthenticationPrincipal(expression = "userId") Long userId,
                                               @PathVariable Long itemId) {
@@ -91,7 +93,7 @@ public class ItemController {
                 .build();
     }
 
-    // 72시간 이내 마감임박 상품 목록 조회
+    @Operation(summary = "마감임박 상품 목록 조회", description = "마감이 72시간 이내인 상품 목록 조회하기")
     @GetMapping("/all/items/impending")
     public ResponseEntity<List<ItemWithImageUrlResponse>> showImpendingItems() {
         return ResponseEntity
@@ -99,18 +101,26 @@ public class ItemController {
 
     }
 
-    // 인기 상품 목록 조회
+    @Operation(summary = "인기 상품 목록 조회", description = "찜 itemCount 개수 기준 상위 3개 상품만 조회하기")
     @GetMapping("/all/items/popularity")
     public ResponseEntity<List<ItemWithImageUrlResponse>> showPopularity() {
         return ResponseEntity
                 .ok(itemSearchService.findMostAddedToCartItems());
     }
 
-    // 상품 종류별 검색 목록 조회
+    @Operation(summary = "상품 종류별 검색 목록 조회", description = "채소, 과일, 기타 별로 목록 조회하기")
     @GetMapping("/all/items/category/{categoryId}")
     public ResponseEntity<List<ItemWithImageUrlResponse>> showCategory(@PathVariable Category categoryId) {
         return ResponseEntity
                 .ok(itemSearchService.getCategoryItems(categoryId.getValue()));
+    }
+
+    // 상품명으로 검색
+    @Operation(summary = "상품 검색", description = "상품명으로 검색하기")
+    @GetMapping("/all/items/search")
+    public ResponseEntity<List<ItemWithImageUrlResponse>> searchItems(@RequestParam String keyword) {
+        return ResponseEntity
+                .ok(itemSearchService.searchItemsByItemName(keyword));
     }
 
 }

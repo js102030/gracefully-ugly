@@ -31,21 +31,21 @@ document.addEventListener('DOMContentLoaded', function () {
     modifyOrderButton.addEventListener('click', () => {
         const orderId = document.querySelector('.order-id').value;
 
-        window.location.href = ('http://localhost:8080/orders/modify/' + orderId);
+        window.location.href = ('/orders/modify/' + orderId);
     })
 
     refundButton.addEventListener('click', () => {
         const orderId = document.querySelector('.order-id').value;
 
         $.ajax({
-            url: 'http://localhost:8080/api/payment/kakaopay/refund/' + orderId,
+            url: '/api/payment/kakaopay/refund/' + orderId,
             method: 'put',
             success: function (data) {
                 alert("정상적으로 환불되었습니다.");
                 window.location.reload();
             },
             error: function (data, status, error) {
-                alert('환불 도중 문제가 발생했습니다.\n[status: ' + data.status +']\n[error: ' + data.responseText + ']');
+                alert('환불 도중 문제가 발생했습니다.\n[status: ' + data.status + ']\n[error: ' + data.responseText + ']');
             }
         })
     })

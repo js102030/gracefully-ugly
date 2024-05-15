@@ -6,19 +6,21 @@
     <link rel="stylesheet" href="/fragment/nav.css">
     <link rel="stylesheet" href="/css/complete-payment.css">
 </head>
-<body class="body">
+<body>
 <div th:replace="~{fragment/nav :: top}"></div>
 <div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
-<input class="order-id" th:value="${KakaoPayApproveResponse.getPartner_order_id()}" style="display: none">
-<img class = "check" src="/image/check.png" alt="체크">
-<p class="order-text">주문이 완료되었습니다.</p>
-<p class="payment-sum-text">결제 항목</p>
-<p class="payment-sum" th:text="${KakaoPayApproveResponse.getItem_name()}">결제 항목 이름</p>
-<p class="payment-sum-text">결제금액</p>
-<p class="payment-sum" th:text="${#numbers.formatCurrency(KakaoPayApproveResponse.getAmount().getTotal())}">(결제 금액)원</p>
-<button class="view-order">주문내역 상세보기</button>
-<button class="go-to-main">메인으로 돌아가기</button>
+<main class="body">
+    <input class="order-id" th:value="${KakaoPayApproveResponse.getPartner_order_id()}" style="display: none">
+    <img class = "check" src="/image/check.png" alt="체크">
+    <p class="order-text">주문이 완료되었습니다.</p>
+    <p class="payment-sum-text">결제 항목</p>
+    <p class="payment-sum" th:text="${KakaoPayApproveResponse.getItem_name()}">결제 항목 이름</p>
+    <p class="payment-sum-text">결제금액</p>
+    <p class="payment-sum" th:text="${#numbers.formatCurrency(KakaoPayApproveResponse.getAmount().getTotal())}">(결제 금액)원</p>
+    <button class="view-order">주문내역 상세보기</button>
+    <button class="go-to-main">메인으로 돌아가기</button>
+</main>
 <script type="text/javascript" src="/js/complete-payment.js"></script>
 <script type="text/javascript" src="/fragment/nav.js"></script>
 <script type="text/javascript" src="/js/security.js"></script>

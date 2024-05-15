@@ -63,11 +63,11 @@ public class SetupDataUtils {
     public final static String DELETE_CART_ITEM_NOT_FOUND_ITEM = "해당 상품이 찜 목록에 존재하지 않습니다.";
     public final static String CREATE_ORDER_SUCCESS = "주문이 정상적으로 저장되었습니다.";
     public final static String NOT_FOUND_USER = "회원 정보가 존재하지 않습니다.";
-    public final static String ORDER_NO_ITEM = "주문 가능한 상품이 없습니다.";
+    public final static String ORDER_NO_ITEM = "주문 가능한 상품이 없습니다.(유효한 상품인지, 올바른 수량인지 확인해주세요.)";
     public final static String NOT_FOUND_ORDER = "주문 정보가 없습니다.";
     public final static String FORBIDDEN = "접근 권한이 없습니다.";
     public final static String NOT_FOUND_GROUP_BUY = "공동 구매 정보가 없습니다.";
-    public final static String NOT_FOUND_GROUP_BUY_USER= "공동 구매 참여 정보가 없습니다.";
+    public final static String NOT_FOUND_GROUP_BUY_USER = "공동 구매 참여 정보가 없습니다.";
 
     private SetupDataUtils() {
     }
@@ -81,6 +81,40 @@ public class SetupDataUtils {
                 passwordEncoder.encode(PASSWORD),
                 TEST_NICKNAME,
                 TEST_EMAIL,
+                TEST_ADDRESS,
+                null,
+                null,
+                false,
+                false,
+                false);
+    }
+
+    public static User makeTestSellerUser(BCryptPasswordEncoder passwordEncoder) {
+        return new User(
+                null,
+                SignUpType.GENERAL,
+                Role.SELLER,
+                TEST_LOGIN_ID,
+                passwordEncoder.encode(PASSWORD),
+                TEST_NICKNAME,
+                TEST_EMAIL,
+                TEST_ADDRESS,
+                null,
+                null,
+                false,
+                false,
+                false);
+    }
+
+    public static User makeTestSellerUser2(BCryptPasswordEncoder passwordEncoder) {
+        return new User(
+                null,
+                SignUpType.GENERAL,
+                Role.SELLER,
+                TEST_LOGIN_ID + 1,
+                passwordEncoder.encode(PASSWORD),
+                TEST_NICKNAME + 1,
+                TEST_EMAIL + 1,
                 TEST_ADDRESS,
                 null,
                 null,

@@ -5,69 +5,6 @@
     text-align: center;
 }
 
-.line-box {
-    width: 1920px;
-    height: 3px;
-    background-color: #29902C;
-}
-
-.line-use {
-    margin-bottom: 10px;
-    width: 1300px;
-    height: 2px;
-    background-color: gray;
-}
-
-.logo {
-    margin-right: 1000px;
-}
-
-.main-header {
-    display: flex;
-    flex-direction: row;
-}
-
-.notice-button {
-    margin-top: 10px;
-    margin-right: 20px;
-    border: 3px solid darkgreen;
-    background-color: #29902C;
-    color: darkgreen;
-    border-radius: 15px;
-    padding: 10px;
-    width: 100px;
-    height: 50px;
-    cursor: pointer;
-}
-
-.login-button {
-    margin-top: 10px;
-    margin-right: 20px;
-    border: 3px solid green;
-    background-color: #FFFFFF;
-    font-size: 15px;
-    color: black;
-    border-radius: 15px;
-    padding: 10px;
-    width: 100px;
-    height: 50px;
-    cursor: pointer;
-}
-
-.list-button {
-    margin-top: 10px;
-    margin-right: 20px;
-    border: 3px solid green;
-    background-color: #FFFFFF;
-    font-size: 15px;
-    color: black;
-    border-radius: 15px;
-    padding: 10px;
-    width: 100px;
-    height: 50px;
-    cursor: pointer;
-}
-
 .menu {
     display: flex;
     justify-content: center;
@@ -205,6 +142,20 @@
     cursor: pointer;
 }
 
+.report {
+    margin-right: 20px;
+    border: 3px solid #4ECF72;
+    background-color: #4ECF72;
+    color: white;
+    font-weight: 600;
+    font-size: 20px;
+    border-radius: 15px;
+    padding: 10px;
+    width: 120px;
+    height: 50px;
+    cursor: pointer;
+}
+
 .description {
     display: flex;
     align-items: center;
@@ -316,78 +267,6 @@
     color: #969393;
 }
 
-/*모달*/
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.modal-box {
-    border : 5px #29902C solid;
-    background: #FFFFFF;
-    border-radius: 50px;
-    width : 500px;
-    height : 500px;
-    padding : 12px 23px 0 0;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.modal-inner {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.ask9 {
-    font-size: 20px;
-    font-weight: 600;
-}
-
-.ask8 {
-    margin-top: 60px;
-    font-size: 20px;
-    font-weight: 600;
-}
-
-#modal-1 {
-    cursor: pointer;
-}
-
-#modal-2 {
-    cursor: pointer;
-}
-
-#modal-3 {
-    cursor: pointer;
-}
-
-#modal-4 {
-    margin-right: 70px;
-    cursor: pointer;
-}
-
-.modal-close {
-    border: 3px solid green;
-    background-color: #FFFFFF;
-    font-size: 15px;
-    color: black;
-    border-radius: 15px;
-    padding: 10px;
-    width: 100px;
-    height: 50px;
-    cursor: pointer;
-    margin-right: -180px;
-}
 /*모달 모집 기간 관리*/
 .notice-modal-CANCELLED {
     display: none;
@@ -411,12 +290,12 @@
 }
 
 .notice-modal-box {
-    border : 5px #29902C solid;
+    border: 5px #29902C solid;
     background: #FFFFFF;
     border-radius: 15px;
-    width : 500px;
-    height : 100px;
-    padding : 12px 23px 0 0;
+    width: 500px;
+    height: 100px;
+    padding: 12px 23px 0 0;
 }
 
 .notice-title {

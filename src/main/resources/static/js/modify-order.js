@@ -63,7 +63,7 @@ saveAddressButton.addEventListener('click', (event) => {
     enableModifyButton(saveAddressButton, event);
 
     $.ajax({
-        url: "http://localhost:8080/api/orders/address/" + orderId,
+        url: "/api/orders/address/" + orderId,
         method: 'put',
         dataType: 'json',
         contentType: 'application/json',
@@ -74,7 +74,7 @@ saveAddressButton.addEventListener('click', (event) => {
             alert('주소가 성공적으로 변경되었습니다.');
         },
         error: function (data, status, error) {
-            alert('변경 도중 문제가 발생했습니다.\n[status: ' + data.status +']\n[error: ' + data.responseText + ']');
+            alert('변경 도중 문제가 발생했습니다.\n[status: ' + data.status + ']\n[error: ' + data.responseText + ']');
         }
     });
 });
@@ -85,26 +85,25 @@ savePhoneNumberButton.addEventListener('click', (event) => {
 
     enableModifyButton(savePhoneNumberButton, event);
 
-     if (!validatePhoneNumber(newPhoneNumber)) {
-         alert('올바른 연락처를 입력해주세요 (010[숫자8개])');
-     }
-     else {
-         $.ajax({
-             url: "http://localhost:8080/api/orders/phone_number/" + orderId,
-             method: 'put',
-             dataType: 'json',
-             contentType: 'application/json',
-             data: JSON.stringify({
-                 phoneNumber: newPhoneNumber
-             }),
-             success: function (data) {
-                 alert('연락처가 성공적으로 변경되었습니다.');
-             },
-             error: function (data, status, error) {
-                 alert('변경 도중 문제가 발생했습니다.\n[status: ' + data.status +']\n[error: ' + data.responseText + ']');
-             }
-         });
-     }
+    if (!validatePhoneNumber(newPhoneNumber)) {
+        alert('올바른 연락처를 입력해주세요 (010[숫자8개])');
+    } else {
+        $.ajax({
+            url: "/api/orders/phone_number/" + orderId,
+            method: 'put',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                phoneNumber: newPhoneNumber
+            }),
+            success: function (data) {
+                alert('연락처가 성공적으로 변경되었습니다.');
+            },
+            error: function (data, status, error) {
+                alert('변경 도중 문제가 발생했습니다.\n[status: ' + data.status + ']\n[error: ' + data.responseText + ']');
+            }
+        });
+    }
 });
 
 function enableSaveButton(button, event) {

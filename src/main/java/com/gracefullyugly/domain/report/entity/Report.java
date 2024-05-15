@@ -53,4 +53,12 @@ public class Report extends BaseTimeEntity {
     public void delete() {
         this.isDeleted = true;
     }
+
+    public boolean isItemReport() {
+        return itemId != null;
+    }
+
+    public boolean isReviewReport() {
+        return reviewId != null;
+    }
 }

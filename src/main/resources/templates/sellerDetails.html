@@ -12,39 +12,54 @@
 <div class="line-box"></div>
 <h1>세부 판매현황</h1>
 <div class="current_time">
-    현재시간 :<div th:text="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm:ss')}">2024-04-25 18:00</div>
+    현재시간 :
+    <div th:text="${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd HH:mm:ss')}">2024-04-25 18:00</div>
 </div>
 <div class="green-box">
     <div class="green-container">
         <div>
-            <p>리뷰 글 수</p>
-            <p class="input_data" th:text="${reviews.size()}">32</p>
+            <p>주문 개수</p>
+            <p class="input_data" th:text="${sellerDetails.size()}"></p>
         </div>
         <div>
+            <p>리뷰 글 수</p>
+            <p class="input_data" th:text="${reviews.size()}"></p>
+        </div>
+
+        <div>
             <p>문의 글 수</p>
-            <p class="input_data" th:text="${QnAs.getCount()}">17</p>
+            <p class="input_data" th:text="${QnAs.size()}"></p>
         </div>
     </div>
 </div>
 <div class="middle_wrapper">
     <div>
         <h2>리뷰</h2>
+        <button class="goToReview-button">리뷰 보러가기</button>
         <div class="pink-box">
-            <tr class="input_review" th:each="review:${reviews}">
-                <td th:text="${review.getUserNickname()}">총총이</td>
-                <td th:text="${review.getComments()}">굿굿 맛있어요</td>
-                <br>
-            </tr>
+            <table>
+                <tbody>
+                <tr th:each="review:${reviews}">
+                    <td class="review-userId" th:text="${review.getUserNickname()}+ ' :'"></td>
+                    <td th:text="${review.getComments()}"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <div>
         <h2>문의 사항</h2>
+        <button class="goToAsk-button" th:onclick="'window.location.href=\'/question/' + ${itemId} + '\''">문의 사항 보러가기
+        </button>
         <div class="pink-box">
-            <tr class="input_count" th:each="qna:${QnAs.data}">
-                <td class="qna-user" th:text="${qna.userId}">총총이</td>
-                <td th:text="${qna.question}">세일좀 안되나여?</td>
-                <br>
-            </tr>
+            <table>
+                <tbody>
+                <tr th:each="qna:${QnAs}">
+                    <td class="qna-userId" th:text="${qna.getUserNickname()}+' :'"></td>
+                    <td th:text="${qna.getQuestion()}"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -55,31 +70,36 @@
         <thead class="table_title">
         <tr>
             <th>번호</th>
-            <th>회원 아이디</th>
-            <th>주문 가격</th>
+            <th>회원 닉네임</th>
+            <th>총 주문 가격</th>
+            <th>결제 상태</th>
+            <th>환불 여부</th>
             <th>주소</th>
             <th>주문 날짜</th>
         </tr>
         </thead>
         <tbody class="table_items">
-<!--        <tr th:each="item : ${items}">-->
-<!--            -->
-<!--        </tr>-->
-        </tbody>
-        <tbody class="table_items">
-        <td>1</td>
-        <td>qwer1234</td>
-        <td>23900</td>
-        <td>배송 완료</td>
-        <td>경기도 성남시 블라블라</td>
-        <td>문앞에 놓아주세요</td>
-        <td>2024-04-25</td>
+        <tr th:each="sellerDetail, sellerNumber : ${sellerDetails}">
+            <td th:text="${sellerNumber.index}"></td>
+            <td th:text="${sellerDetail.getUserNickname()}"></td>
+            <td th:text="${sellerDetail.getTotalPrice()}"></td>
+            <td>
+                <span th:if="${sellerDetail.getIsPaid()}">결제 완료</span>
+                <span th:unless="${sellerDetail.getIsPaid()}">결제 미완료</span>
+            </td>
+            <td>
+                <span th:if="${sellerDetail.getIsRefunded()}">환불 완료</span>
+                <span th:unless="${sellerDetail.getIsRefunded()}">환불 미완료</span>
+            </td>
+            <td th:text="${sellerDetail.getAddress()}"></td>
+            <td th:text="${sellerDetail.getOrderDate()}"></td>
+        </tr>
         </tbody>
     </table>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript" src="/fragment/nav.js"></script>
-<script type="text/javascript">
-    var userId = document.querySelector('.qna-user').textContent.trim();
-</script>
+<script type="text/javascript" src="/js/sellerDetails.js"></script>
+<script type="text/javascript" src="/js/security.js"></script>
 </body>
 </html>

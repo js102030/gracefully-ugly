@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>상품 신고 페이지</title>
+    <link rel="stylesheet" href="/fragment/nav.css">
+    <link rel="stylesheet" href="/css/create-review.css">
+</head>
+<body class="body">
+<div th:replace="~{fragment/nav :: top}"></div>
+<div th:replace="~{fragment/nav :: modal}"></div>
+<div class="line-box"></div>
+<div class="up-content">
+    <img class="item-image"
+         th:src="${item.imageUrl != null and item.imageUrl != '' ? item.imageUrl : '/image/item.png'}" alt="상품-리뷰 아이템"
+         width="400">
+    <div class="item-content">
+        <div class="point-and-star">
+            <div class="point" th:text="${starPoint != null ? starPoint : ''}"></div>
+
+            <div class="star" th:if="${starPoint != null}">
+                <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                    <img th:if="${i <= starPoint}" class="star" src="/image/star.png" alt="별점">
+                </th:block>
+            </div>
+        </div>
+        <div class="item-and-name">
+            <div class="item-and">상품명 :</div>
+            <div class="name" th:text="${item.name}">못난이 감자 3Kg</div>
+        </div>
+        <div class="add-text" th:text="${item.getDescription()}">
+        </div>
+    </div>
+</div>
+<div class="review-box">
+    <form id="reportForm" th:data-item-id="${item.getId()}">
+        <div class="write-text">상품 신고 사유를 작성해주세요</div>
+        <textarea class="text" name="contents" placeholder="신고 사유" cols="30" rows="10"></textarea>
+        <button type="submit" class="upload">신고 등록하기</button>
+    </form>
+</div>
+<script type="text/javascript" src="/js/create-review.js"></script>
+<script type="text/javascript" src="/js/security.js"></script>
+<script type="text/javascript" src="/fragment/nav.js"></script>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const reportForm = document.getElementById('reportForm');
+        reportForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const itemId = this.getAttribute('data-item-id');
+            const url = `/api/report/items/${itemId}`;
+            const contents = this.elements['contents'].value;
+
+            const requestData = JSON.stringify({contents: contents});
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: requestData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Something went wrong on API server!');
+                    }
+                })
+                .then(responseData => {
+                    alert('신고가 정상적으로 접수되었습니다.');
+                    window.location.href = '/';
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert('신고 접수에 실패했습니다.');
+                });
+        });
+    });
+</script>
+
+
+</html>

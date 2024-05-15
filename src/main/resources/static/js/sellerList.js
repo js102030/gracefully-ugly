@@ -43,20 +43,25 @@ $(document).ready(function() {
                 console.error("API 요청이 실패하였습니다.", error);
             });
     });
-});
-
-//--- 해당 상품 페이지로 이동 & 상품 등록 페이지로 이동
-$(document).ready(function() {
-    $('.moveToItem').click(function(event) {
-        event.preventDefault(); // 기본 링크 이벤트 방지
-
-        // 클릭한 상품의 itemId 가져오기
-        var itemId = $(this).attr('data-itemId');
+    $('.table_items').on('click', '.moveDetails', function() {
+        var itemId = $(this).closest('tr').find('.getItemId').text().trim();
+        console.log(itemId);
         window.location.href = '/sellerDetails/' + itemId;
     });
 
+    $('.table_items').on('click', '.moveItems', function() {
+        var itemId = $(this).closest('tr').find('.getItemId').text().trim();
+        console.log(itemId);
+        window.location.href = '/group-buying/' + itemId;
+    });
 
-    $('.salesPostButton').click(function() {
-        window.location.href = 'http://localhost:8080/salesPost';
+    const salesPostButton = document.getElementById("salesPostButton");
+
+    salesPostButton.addEventListener("click", event => {
+        window.location.href = "/salesPost";
     });
 });
+
+
+
+
