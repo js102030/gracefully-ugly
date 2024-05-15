@@ -18,7 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class NewsService {
 
     private static final String BASE_URL = "https://kdt-api-function.azurewebsites.net/api/v1/question";
-    private static final String CLIENT_ID = "62f951f4-38be-45ee-9d9c-16885b4a098a";
+    private static final String CLIENT_ID = "d4ee2bfb-6870-43c1-b630-33e50ff05ca0";
     private static final String REQUEST_CONTENT =
             """
                     오늘의 농산물 뉴스 5개를 알려주세요.
