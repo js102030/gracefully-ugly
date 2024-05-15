@@ -17,7 +17,9 @@
 	    <td>사진</td>
 	    <td>사진</td>
 	    <td>사진</td>
-	    <td>사진</td>
+	    <td>
+		    <img src="https://github.com/gracefully-ugly/gracefully-ugly/assets/138424719/91e7f984-c187-4161-a0c5-83ebbf276570">
+	    </td>
 	    <td>사진</td>
     </tr>
     <tr>
