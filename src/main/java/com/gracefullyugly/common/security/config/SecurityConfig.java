@@ -46,7 +46,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer configure() {      // 스프링 시큐리티 기능 비활성화
         return web -> web.ignoring()  //.requestMatchers(toH2Console())
-                .requestMatchers("/vendor/**", "/api/all/**", "/static/**", "/css/**", "/image/**", "/api/**",
+                .requestMatchers("/vendor/**", "/api/all/**", "/static/**", "/css/**", "/image/**",
                         "/api/sellerDetails/**",
                         "/js/**", "/fragment/**", "/favicon.ico", "/h2-console/**", "/api/users/{userId}",
                         "/api/groupbuy/items/{itemId}", "/join2/**", "/swagger-ui/**", "/v3/api-docs/**");
