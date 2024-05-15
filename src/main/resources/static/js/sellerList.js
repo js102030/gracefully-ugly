@@ -5,15 +5,6 @@ $(document).ready(function() {
     $(".table_items .getItemId").each(function() {
         var $this = $(this);
         var itemId = $this.text().trim(); // 각 행의 itemId 가져오기
-        document.getElementById('moveDetails').addEventListener('click', function() {
-            window.location.href = '/sellerDetails/' + itemId;
-        });
-        document.getElementById('moveItems').addEventListener('click', function() {
-            window.location.href = '/group-buying/' + itemId;
-        });
-        document.getElementById('salesPostButton').addEventListener('click', function() {
-            window.location.href = '/salesPost';
-        });
         var apiUrl = "/api/groupbuy/items/" + itemId;
 
         fetch(apiUrl)
@@ -52,12 +43,25 @@ $(document).ready(function() {
                 console.error("API 요청이 실패하였습니다.", error);
             });
     });
+    $('.table_items').on('click', '.moveDetails', function() {
+        var itemId = $(this).closest('tr').find('.getItemId').text().trim();
+        console.log(itemId);
+        window.location.href = '/sellerDetails/' + itemId;
+    });
+
+    $('.table_items').on('click', '.moveItems', function() {
+        var itemId = $(this).closest('tr').find('.getItemId').text().trim();
+        console.log(itemId);
+        window.location.href = '/group-buying/' + itemId;
+    });
+
+    const salesPostButton = document.getElementById("salesPostButton");
+
+    salesPostButton.addEventListener("click", event => {
+        window.location.href = "/salesPost";
+    });
 });
 
-const salesPostButton = document.getElementById("salesPostButton");
 
-salesPostButton.addEventListener("click", event => {
-    window.location.href = "/salesPost";
-})
 
 
