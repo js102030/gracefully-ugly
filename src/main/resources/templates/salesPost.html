@@ -12,55 +12,55 @@
 <div class="line-box"></div>
 <h1>판매글을 작성해주세요.</h1>
 <form id="productForm" enctype="multipart/form-data">
-<div class="product-box">
-    <label for="productName" class="input-label">상품명</label>
-    <input type="text" id="productName">
-    <div class="gray-line"></div> <!-- 회색 라인 -->
-    <div class="input-group">
-        <label for="productionPlace" class="input-label">생산지</label>
-        <input type="text" id="productionPlace">
+    <div class="product-box">
+        <label for="productName" class="input-label">상품명</label>
+        <input type="text" id="productName">
+        <div class="gray-line"></div> <!-- 회색 라인 -->
+        <div class="input-group">
+            <label for="productionPlace" class="input-label">생산지</label>
+            <input type="text" id="productionPlace">
+        </div>
+        <br>
+        <div class="input-group">
+            <label for="productType" class="input-label">상품 종류 선택</label>
+            <select id="productType">
+                <option value="VEGETABLE">채소</option>
+                <option value="FRUIT">과일</option>
+                <option value="OTHER">기타</option>
+            </select>
+        </div>
+        <br>
+        <div class="input-group">
+            <label for="closedDate" class="input-label">마감일자</label>
+            <input type="datetime-local" id="closedDate">
+        </div>
+        <br>
+        <div class="input-group">
+            <label for="minUnitWeight" class="input-label">최소 구매 단위(g)</label>
+            <input type="text" id="minUnitWeight">
+        </div>
+        <br>
+        <div class="input-group">
+            <label for="price" class="input-label">구매 단위 당 가격</label>
+            <input type="text" id="price">
+        </div>
+        <br>
+        <div class="input-group">
+            <label for="totalSalesUnit" class="input-label">총 판매 수량</label>
+            <input type="text" id="totalSalesUnit">
+        </div>
+        <br>
+        <div class="input-group">
+            <label for="minGroupBuyWeight" class="input-label">공동 구매 완료 최소 무게(g)</label>
+            <input type="text" id="minGroupBuyWeight">
+        </div>
+        <div class="gray-line"></div> <!-- 회색 라인 -->
+        <h2>상품에 대한 설명</h2>
+        <textarea></textarea>
+        <label for="productImage">사진 첨부하기</label>
+        <input type="file" id="productImage" name="productImage" accept="image/*">
     </div>
-    <br>
-    <div class="input-group">
-        <label for="productType" class="input-label">상품 종류 선택</label>
-        <select id="productType">
-            <option value="VEGETABLE">채소</option>
-            <option value="FRUIT">과일</option>
-            <option value="OTHER">기타</option>
-        </select>
-    </div>
-    <br>
-    <div class="input-group">
-        <label for="closedDate" class="input-label">마감일자</label>
-        <input type="datetime-local" id="closedDate">
-    </div>
-    <br>
-    <div class="input-group">
-        <label for="minUnitWeight" class="input-label">최소 구매 단위(g)</label>
-        <input type="text" id="minUnitWeight">
-    </div>
-    <br>
-    <div class="input-group">
-        <label for="price" class="input-label">구매 단위 당 가격</label>
-        <input type="text" id="price">
-    </div>
-    <br>
-    <div class="input-group">
-        <label for="totalSalesUnit" class="input-label">총 판매 수량</label>
-        <input type="text" id="totalSalesUnit">
-    </div>
-    <br>
-    <div class="input-group">
-        <label for="minGroupBuyWeight" class="input-label">공동 구매 완료 최소 무게(g)</label>
-        <input type="text" id="minGroupBuyWeight">
-    </div>
-    <div class="gray-line"></div> <!-- 회색 라인 -->
-    <h2>상품에 대한 설명</h2>
-    <textarea></textarea>
-    <label for="productImage">사진 첨부하기</label>
-    <input type="file" id="productImage" name="productImage" accept="image/*">
-</div>
-<button id="submitBtn">상품 등록</button>
+    <button id="submitBtn">상품 등록</button>
 </form>
 <script type="text/javascript" src="/fragment/nav.js"></script>
 <script type="text/javascript" src="/js/security.js"></script>
@@ -102,6 +102,8 @@
                 .then(data => {
                     alert('상품이 성공적으로 등록되었습니다!');
                     console.log(data);
+                    // 데이터에서 받은 id를 사용하여 리다이렉트
+                    window.location.href = '/group-buying/' + data.id;
                 })
                 .catch(error => {
                     console.error('상품 등록 중 에러 발생:', error);
