@@ -27,7 +27,7 @@ public class OrderViewController {
         Item item = itemSearchService.findById(itemId);
         model.addAttribute("Item", item);
 
-        return "/create-order";
+        return "create-order";
     }
 
     @GetMapping("/orders/{ordersId}")
@@ -38,7 +38,7 @@ public class OrderViewController {
         OrderInfoResponse response = orderService.getOrderInfo(userId, orderId);
         model.addAttribute("OrderInfoResponse", response);
 
-        return "/check-order";
+        return "check-order";
     }
 
     @GetMapping("/orders/modify/{ordersId}")
@@ -48,6 +48,6 @@ public class OrderViewController {
         OrderInfoResponse response = orderService.getOrderInfo(userId, orderId);
         model.addAttribute("OrderInfoResponse", response);
 
-        return "/modify-order";
+        return "modify-order";
     }
 }

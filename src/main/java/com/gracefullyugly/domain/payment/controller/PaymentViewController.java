@@ -28,7 +28,7 @@ public class PaymentViewController {
         PaymentSearchListResponse response = paymentSearchService.getPaymentList(userId);
         model.addAttribute("PaymentSearchListResponse", response);
 
-        return "/purchase_history";
+        return "purchase_history";
     }
 
     @GetMapping("/payment/kakaopay/success/{userId}/{orderId}")
@@ -39,18 +39,18 @@ public class PaymentViewController {
         KakaoPayApproveResponse response = paymentService.approveKakaoPay(userId, orderId, pgToken);
         model.addAttribute("KakaoPayApproveResponse", response);
 
-        return "/complete-payment";
+        return "complete-payment";
     }
 
     @GetMapping("/payment/cancel")
     public String cancelKakaoPay() {
 
-        return "/payment-cancel";
+        return "payment-cancel";
     }
 
     @GetMapping("/payment/fail")
     public String failKakaoPay() {
 
-        return "/payment-fail";
+        return "payment-fail";
     }
 }

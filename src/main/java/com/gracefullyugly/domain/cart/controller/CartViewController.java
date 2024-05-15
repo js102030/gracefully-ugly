@@ -28,6 +28,6 @@ public class CartViewController {
         List<CartListResponse> cartListResponses = cartService.getCartList(userId);
         model.addAttribute("CartList", cartListResponses);
 
-        return "/cart-list";
+        return "cart-list";
     }
 }
