@@ -63,7 +63,8 @@
             <td>
                 <button type="button" style="background-color: rgb(196, 94, 116); border-color: rgb(196, 94, 116);"
                         th:if="${!report.isAccepted}"
-                        th:onclick="'acceptReport(' + ${report.reportId} + ');'">
+                        th:data-report-id="${report.reportId}"
+                        onclick="acceptReport(this.getAttribute('data-report-id'));">
                     신고 승인
                 </button>
             </td>
@@ -95,7 +96,10 @@
             } else {
                 alert('신고 승인에 실패했습니다.');
             }
-        }).catch(error => console.error('Error:', error));
+        }).catch(error => {
+            console.error('Error:', error);
+            alert('신고 승인 처리 중 오류가 발생했습니다.');
+        });
     }
 
     function deleteReport(reportId) {
@@ -118,5 +122,5 @@
 </script>
 
 <script type="text/javascript" src="/fragment/nav.js"></script>
-
+<script type="text/javascript" src="/js/security.js"></script>
 </html>
