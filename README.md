@@ -10,14 +10,14 @@
         <th>박준석</th>
         <th>정진환</th>
         <th>류석현</th>
-        <th>권현수</th>
         <th>이현진</th>
+	<th>권현수</th>    
     </tr>
     <tr>
 	    <td>사진</td>
 	    <td>사진</td>
 	    <td>사진</td>
-	    <td>사진</td>
+	    <td>![image](https://github.com/gracefully-ugly/gracefully-ugly/assets/138424719/96272d15-47fc-45e9-8363-eb0e4a29a796)</td>
 	    <td>사진</td>
     </tr>
     <tr>
