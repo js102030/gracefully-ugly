@@ -95,6 +95,7 @@ public class CommonController {
         model.addAttribute("reviews", reviews);
         model.addAttribute("QnAs", QnAs);
         model.addAttribute("sellerDetails", sellerDetails);
+        model.addAttribute("itemId", itemId);
         return "sellerDetails";
     }
 

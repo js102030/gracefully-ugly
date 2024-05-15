@@ -35,8 +35,8 @@ modifyPasswordButton.addEventListener("click", event => {
             password: password
         }),
         success: function (data) {
-            alert("비밀번호가 성공적으로 변경되었습니다.");
-            window.location.reload();
+            alert("비밀번호가 성공적으로 변경되었습니다. 로그아웃 되오니 다시 로그인 해주세요");
+            window.location.href = '/logout'
         },
         error: function (data, status, err) {
             alert('비밀번호 변경 도중 문제가 발생했습니다.\n[status: ' + data.status +']\n[error: ' + data.responseText + ']');
