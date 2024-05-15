@@ -1,17 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="white">
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.green.min.css"/>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="#">
     <title>메인 페이지</title>
     <link rel="stylesheet" href="/fragment/nav.css">
     <link rel="stylesheet" href="/css/main.css">
+    <style>
+        .img {
+            width: 250px;
+            height: 250px;
+            border-radius: 15px;
+        }
+
+    </style>
 </head>
 <body class="body">
 <div th:replace="~{fragment/nav :: top}"></div>
 <div th:replace="~{fragment/nav :: modal}"></div>
 <div class="line-box"></div>
 <div class="body_wrapper">
+    <br>
+    <div class="grid" style="width: 1100px; grid-template-columns: 1.2fr 7fr 1.2fr;
+            gap: 10px;">
+        <select id="searchType">
+            <option value="item_name">상품명</option>
+        </select>
+        <label>
+            <input type="search" id="searchInput" placeholder="검색">
+        </label>
+        <button id="searchButton">검색</button>
+    </div>
+    <div class="pickup-text">원하시는 상품의 카테고리를 선택해보세요.</div>
+    <div>
+        <button class="pickup-button">채소</button>
+        <button class="pickup-button">과일</button>
+        <button class="pickup-button">기타</button>
+    </div>
+    <br>
+    <div class="line-use"></div>
+
+    <div class="more-items" onclick="location.href='/group-buying'" id="items-container">
+    </div>
+    <div class="line-use"></div>
+
     <div class="impending-text">마감까지 얼마 남지않았어요. 서둘러 참여하세요!</div>
     <div class="impending-items" onclick="location.href='/group-buying'">
     </div>
@@ -21,31 +54,14 @@
     </div>
     <div class="pick-items" onclick="location.href='/group-buying'" id="popular-items-container">
     </div>
+    <div class="line-use"></div>
+    <br>
     <div class="news">
         <div class="news-content">
         </div>
     </div>
     <div class="line-use"></div>
-    <div class="pickup-text">원하시는 상품의 카테고리를 선택해보세요.</div>
-    <div>
-        <button class="pickup-button">채소</button>
-        <button class="pickup-button">과일</button>
-        <button class="pickup-button">기타</button>
-    </div>
-    <div class="more-text">더 많은 상품들!</div>
-    <div>
-        <label for="searchType"></label>
-        <select id="searchType">
-            <option value="item_name">상품명</option>
-        </select>
-        <label>
-            <input type="search" id="searchInput" placeholder="검색">
-        </label>
-        <button id="searchButton">검색</button>
-    </div>
 
-    <div class="more-items" onclick="location.href='/group-buying'" id="items-container">
-    </div>
 </div>
 <script type="text/javascript" src="/js/main.js"></script>
 <script type="text/javascript" src="/fragment/nav.js"></script>

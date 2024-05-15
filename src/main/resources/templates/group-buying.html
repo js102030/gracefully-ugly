@@ -5,6 +5,11 @@
     <title>공동 구매 페이지</title>
     <link rel="stylesheet" href="/fragment/nav.css">
     <link rel="stylesheet" href="/css/group-buying.css">
+    <style>
+        .img {
+            border-radius: 15px;
+        }
+    </style>
 </head>
 <body>
 <div th:replace="~{fragment/nav :: top}"></div>
@@ -13,7 +18,7 @@
 <main class="body">
   <div class="menu">
       <img th:src="${item.imageUrl != null and item.imageUrl != '' ? item.imageUrl : '/image/item.png'}"
-           class="item-image" alt="제품사진">
+           class="item-image img" alt="제품사진">
       <div class="item-content">
           <div class="star-review">
               <div class="point" th:if="${#lists.isEmpty(reviews)}">0.0</div>
@@ -73,7 +78,7 @@
           </div>
           <div class="image-and-review">
             <div class="item">
-              <img th:src="${review.getImageUrl() != null and review.getImageUrl()!= '' ? review.getImageUrl() : '/image/item.png'}"
+              <img class="img" th:src="${review.getImageUrl() != null and review.getImageUrl()!= '' ? review.getImageUrl() : '/image/item.png'}"
                               alt="리뷰 사진" width="240" height="240">
             </div>
             <div class="review-and-createdDay">
