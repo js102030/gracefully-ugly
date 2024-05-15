@@ -7,8 +7,6 @@ import com.gracefullyugly.common.security.jwt.LoginFilter;
 import com.gracefullyugly.common.security.oauth2.OAuth2CustomSuccessHandler;
 import com.gracefullyugly.common.security.oauth2.service.CustomOAuth2UserService;
 import com.gracefullyugly.domain.user.repository.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,8 +21,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -52,7 +48,8 @@ public class SecurityConfig {
         return web -> web.ignoring()  //.requestMatchers(toH2Console())
                 .requestMatchers("/vendor/**", "/api/all/**", "/static/**", "/css/**", "/image/**",
                         "/api/sellerDetails/**",
-                        "/js/**", "/fragment/**", "/favicon.ico","/h2-console/**", "/api/users/{userId}", "/api/groupbuy/items/{itemId}", "/join2/**", "/swagger-ui/**", "/v3/api-docs/**");
+                        "/js/**", "/fragment/**", "/favicon.ico", "/h2-console/**", "/api/users/{userId}",
+                        "/api/groupbuy/items/{itemId}", "/join2/**", "/swagger-ui/**", "/v3/api-docs/**");
 
     }
 
@@ -84,7 +81,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth //"/**", "/api/users", 빼고 실험
                         .requestMatchers("/log", "/oauth2/**", "/login", "/logout", "/", "/join/**",
-                                "/join2/**", "/group-buying/**", "/api/all/**", "/")
+                                "/join2/**", "/group-buying/**", "/api/all/**", "/cart", "/cart-list", "/payment/**")
                         .permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/admin-report").hasRole("ADMIN")
