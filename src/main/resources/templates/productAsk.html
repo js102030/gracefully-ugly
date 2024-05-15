@@ -18,12 +18,6 @@
     <textarea class="ask" placeholder="문의사항을 입력해주세요"></textarea>
     <button class="askAdd">등록하기</button>
 </div>
-<!--댓글, 대댓글-->
-<!--
-oneRoute가 한 qna 객체이고, answer_data, answer_input 처음에 display=none 으로 설정.
-1. 만일 qna객체에 answer이 없다면 버튼 눌럿을때 answer_input 박스 살아나게하고
-2. 만일 qna객체에 answer이 있다면 answer_btn display=none, answer_data disply=보이게 설정하고 데이터 뿌려줌
--->
 <input type="hidden" id="itemId" th:value="${item.getId()}">
 <div class="oneRoute" th:each="qna, index : ${qnaList}">
     <input type="hidden" id="qnaId" th:value="${qna.qnaId}">
@@ -39,7 +33,6 @@ oneRoute가 한 qna 객체이고, answer_data, answer_input 처음에 display=no
     <div class="answer_box" th:if="${not #strings.isEmpty(qna.answer)}" th:id="'answer_data_' + ${qna.qnaId}">
         <p class="content" th:text="${qna.answer}"></p>
     </div>
-<!--    <div class="answer_box" th:if="${#strings.isEmpty(qna.answer)}" th:id="'answer_input_' + ${index}">-->
     <div class="answer_box" th:if="${#strings.isEmpty(qna.answer)}" th:id="'answer_input_' + ${qna.qnaId}" style="display: none;">
         <textarea id="answer_text" class="content" placeholder="답변을 입력하세요"></textarea>
         <button class="answer_send" onclick="addAnswer(event)">등록</button>
