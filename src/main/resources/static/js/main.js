@@ -234,12 +234,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 // 뉴스 제목과 내용을 추가
                 const titleElement = document.createElement('p');
                 titleElement.textContent = newsItem.contents;
+                titleElement.style.fontSize = '17px';
                 newsElement.appendChild(titleElement);
 
                 // 뉴스 생성일 추가 (예시: 날짜 형식을 변환하여 표시)
                 const createdAt = new Date(newsItem.createdAt);
                 const dateElement = document.createElement('p');
                 dateElement.textContent = `게시일: ${createdAt.toLocaleDateString()}`;
+                dateElement.style.fontSize = '15px';
                 newsElement.appendChild(dateElement);
 
                 // newsContainer에 뉴스 요소 추가

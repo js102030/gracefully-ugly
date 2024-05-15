@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         // 로그아웃 성공
                         // 로그아웃 성공 후 리다이렉트
                         alert("더 안전한 보안을 위해서 카카오톡 계정과 함께 로그아웃을 눌러주셔야 정상 로그아웃 됩니다! ")
-                        location.href = `https://kauth.kakao.com/oauth/logout?client_id=48f99478e44507e05c99dfeee8e1a42a&logout_redirect_uri=http://localhost:8080`;
+                        location.href = `https://kauth.kakao.com/oauth/logout?client_id=48f99478e44507e05c99dfeee8e1a42a&logout_redirect_uri=http://15.164.14.204:8080/`;
                     }
                 })
                 .catch(error => {
