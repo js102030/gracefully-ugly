@@ -31,13 +31,13 @@ function moveToReview(itemId) {
 }
 
 function moveToItemPage(itemId) {
-    window.location.href = ("http://localhost:8080/group-buying/" + itemId);
+    window.location.href = ("/group-buying/" + itemId);
 }
 
 function moveToReceipt(orderId) {
-    window.location.href = ("http://localhost:8080/orders/" + orderId);
+    window.location.href = ("/orders/" + orderId);
 }
 
 function moveToReviewPage(itemId) {
-    window.location.href = ("http://localhost:8080/create-review/" + itemId);
+    window.location.href = ("/create-review/" + itemId);
 }

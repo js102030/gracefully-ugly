@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function handleItemClick(itemId) {
 
-        window.location.href = `http://localhost:8080/group-buying/` + itemId;
+        window.location.href = `/group-buying/` + itemId;
     }
 
     // 마감임박 상품 클릭 시

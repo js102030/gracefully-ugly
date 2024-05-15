@@ -1,6 +1,5 @@
-
 //----- 상품 클릭 시 itemId에 따라서 다른 페이지 띄워주기
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const impendingItemsContainer = document.querySelector('.impending-items');
     const popularItemsContainer = document.getElementById('popular-items-container');
     const moreItemsContainer = document.querySelector('.more-items');
@@ -10,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 마감임박 상품 클릭 시
-    impendingItemsContainer.addEventListener('click', function(event) {
+    impendingItemsContainer.addEventListener('click', function (event) {
         const itemElement = event.target.closest('.item');
         if (itemElement) {
             const itemId = itemElement.dataset.itemId;
@@ -21,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 인기 상품 클릭 시
-    popularItemsContainer.addEventListener('click', function(event) {
+    popularItemsContainer.addEventListener('click', function (event) {
         const itemElement = event.target.closest('.item');
         if (itemElement) {
             const itemId = itemElement.dataset.itemId;
@@ -32,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 더보기 상품 클릭 시
-    moreItemsContainer.addEventListener('click', function(event) {
+    moreItemsContainer.addEventListener('click', function (event) {
         const itemElement = event.target.closest('.item');
         if (itemElement) {
             const itemId = itemElement.dataset.itemId;
@@ -46,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ------------ 모달창 js
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const modal = document.querySelector('.modal');
     const modalCloseButton = document.querySelector('.modal-close');
     const listButton = document.querySelector('.list-button');
@@ -54,18 +53,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const goToMain = document.querySelector(".go-to-main");
 
     if (listButton) {
-        listButton.addEventListener('click', function() {
+        listButton.addEventListener('click', function () {
             modal.style.display = 'block';
         });
     }
 
     if (modalCloseButton) {
-        modalCloseButton.addEventListener('click', function() {
+        modalCloseButton.addEventListener('click', function () {
             modal.style.display = 'none';
         });
     }
 
-    window.addEventListener('click', function(event) {
+    window.addEventListener('click', function (event) {
         if (event.target === modal) {
             modal.style.display = 'none';
         }
@@ -74,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
     viewOrder.addEventListener('click', event => {
         const orderId = document.querySelector('.order-id').value;
 
-        window.location.href = ('http://localhost:8080/orders/' + orderId);
+        window.location.href = ('/orders/' + orderId);
     })
 
     goToMain.addEventListener('click', event => {
@@ -83,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ----------------------- 마감임박 상품 조회
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // 페이지 로드가 완료된 후 실행될 코드
     fetchImpendingItems();
 });
@@ -119,7 +118,7 @@ function displayImpendingItems(items) {
 
 // ----------------------- 인기 상품 조회
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // API 엔드포인트 URL
     const apiUrl = '/api/items/popularity';
 
@@ -162,9 +161,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-
 // ----------------------- 판매글 목록 조회
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // DOM이 로드된 후 실행되는 부분
 
     // 모든 상품 목록을 가져오는 함수
@@ -233,22 +231,22 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchAllItems();
 
     // 채소 버튼 클릭 시
-    document.querySelector('.pickup-button:nth-child(1)').addEventListener('click', function() {
+    document.querySelector('.pickup-button:nth-child(1)').addEventListener('click', function () {
         fetchItemsByCategory('VEGETABLE');
     });
 
     // 과일 버튼 클릭 시
-    document.querySelector('.pickup-button:nth-child(2)').addEventListener('click', function() {
+    document.querySelector('.pickup-button:nth-child(2)').addEventListener('click', function () {
         fetchItemsByCategory('FRUIT');
     });
 
     // 기타 버튼 클릭 시
-    document.querySelector('.pickup-button:nth-child(3)').addEventListener('click', function() {
+    document.querySelector('.pickup-button:nth-child(3)').addEventListener('click', function () {
         fetchItemsByCategory('OTHER');
     });
 });
 // ----------------------- 뉴스 조회
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     // DOM이 로드된 후 실행되는 부분
 
     // API 호출 및 데이터 가져오기

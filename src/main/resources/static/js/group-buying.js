@@ -123,7 +123,7 @@ $(document).ready(function () {
 // ------------- 공구 참여 버튼 이벤트 헨들러
 const joinGroupBuy = document.querySelector('.join-group-buying');
 joinGroupBuy.addEventListener('click', event => {
-    window.location.href = ('http://localhost:8080/orders/item/' + itemId);
+    window.location.href = ('/orders/item/' + itemId);
 })
 
 // -------------  문의하기 버튼 이벤트 헨들러
@@ -202,7 +202,7 @@ function showCompletedModal() {
 const joinCart = document.querySelector('.join-cart');
 joinCart.addEventListener('click', event => {
     $.ajax({
-        url: "http://localhost:8080/api/cart/" + itemId,
+        url: "/api/cart/" + itemId,
         method: 'post',
         dataType: 'json',
         contentType: 'application/json',

@@ -110,4 +110,20 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             ")")
     Optional<Item> findValidItemById(Long itemId);
 
+    @Query(value =
+            "SELECT i.item_id as id, i.user_id as userId, i.name as name, i.production_place as productionPlace, " +
+                    "i.closed_date as closedDate, i.created_date as createdDate, i.last_modified_date as last_modified_date, "
+                    +
+                    "i.min_unit_weight as minUnitWeight, i.price as price, i.total_sales_unit as totalSalesUnit, " +
+                    "i.min_group_buy_weight as minGroupBuyWeight, i.description as description, img.url as imageUrl " +
+                    "FROM item i " +
+                    "LEFT JOIN image img ON i.item_id = img.item_id AND img.is_deleted = false " +
+                    "WHERE i.name LIKE %:keyword% AND i.is_deleted = false AND i.total_sales_unit > 0 " +
+                    "AND NOT EXISTS ( " +
+                    "    SELECT 1 FROM report r " +
+                    "    WHERE r.item_id = i.item_id AND r.is_accepted = true AND r.is_deleted = false " +
+                    ") " +
+                    "ORDER BY i.item_id", nativeQuery = true)
+    List<ItemWithImageUrlResponse> searchItemsByItemName(@Param("keyword") String keyword);
+
 }

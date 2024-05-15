@@ -49,4 +49,7 @@ public class ItemSearchService {
                 categoryId);
     }
 
+    public List<ItemWithImageUrlResponse> searchItemsByItemName(String itemName) {
+        return itemRepository.searchItemsByItemName(itemName);
+    }
 }
