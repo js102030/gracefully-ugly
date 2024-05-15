@@ -81,7 +81,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth //"/**", "/api/users", 빼고 실험
                         .requestMatchers("/log", "/oauth2/**", "/login", "/logout", "/", "/join/**",
-                                "/join2/**", "/group-buying/**", "/api/all/**", "/cart", "/cart-list", "/payment/**")
+                                "/join2/**", "/group-buying/**", "/api/all/**", "/")
                         .permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/admin-report").hasRole("ADMIN")
