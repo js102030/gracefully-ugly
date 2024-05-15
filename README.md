@@ -16,7 +16,7 @@
     <tr>
 	    <td>사진</td>
 	    <td>사진</td>
-	    <td>사진</td>
+	    <td>![류석현](https://github.com/gracefully-ugly/gracefully-ugly/assets/141889885/ede4a93c-ff95-4075-b35e-d70f9857d52a)</td>
 	    <td>사진</td>
 	    <td>사진</td>
     </tr>
