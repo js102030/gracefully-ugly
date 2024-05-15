@@ -26,12 +26,6 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
-
-/**
- * 인증은 CustomJsonUsernamePasswordAuthenticationFilter에서 authenticate()로 인증된 사용자로 처리 JwtAuthenticationProcessingFilter는
- * AccessToken, RefreshToken 재발급
- */
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -65,27 +59,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http
-                .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {
-
-                    @Override
-                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-
-                        CorsConfiguration configuration = new CorsConfiguration();
-
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:8080"));
-                        configuration.setAllowedMethods(Collections.singletonList("*"));
-                        configuration.setAllowCredentials(true);
-                        configuration.setAllowedHeaders(Collections.singletonList("*"));
-                        configuration.setMaxAge(3600L);
-
-                        configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
-                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
-
-                        return configuration;
-                    }
-                }));
-
         //csrf disable
         http
                 .csrf((auth) -> auth.disable());
@@ -106,8 +79,7 @@ public class SecurityConfig {
                         .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
                                 .userService(customOAuth2UserService))
                         .successHandler(oAuth2CustomSuccessHandler)
-                );
-*/
+                );*/
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth //"/**", "/api/users", 빼고 실험
