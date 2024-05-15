@@ -232,7 +232,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 newsElement.classList.add('news-item');
 
                 // 뉴스 제목과 내용을 추가
-                const titleElement = document.createElement('h3');
+                const titleElement = document.createElement('p');
                 titleElement.textContent = newsItem.contents;
                 newsElement.appendChild(titleElement);
 
