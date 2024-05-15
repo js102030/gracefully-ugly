@@ -14,7 +14,8 @@
     <div class="item-box empty-box" th:if="${#lists.isEmpty(CartList) || CartList.get(0).getName() == null}">
         <h2>찜 목록에 상품이 없습니다.</h2>
     </div>
-    <div class="item-box" th:if="${not #lists.isEmpty(CartList) && CartList.get(0).getName() != null}" th:each="cartItem : ${CartList}">
+    <div class="item-box" th:if="${not #lists.isEmpty(CartList) && CartList.get(0).getName() != null}"
+         th:each="cartItem : ${CartList}">
         <img class="item-image" th:src="${cartItem.getImageUrl() != null ? cartItem.getImageUrl() : '/image/item.png'}"
              alt="상품">
         <div class="item-content">
@@ -24,7 +25,8 @@
         </div>
         <div class="delete-and-payment">
             <button class="delete-button" th:onclick="|deleteCartItem('${cartItem.getCartItemId()}')|">삭제</button>
-            <button class="payment-button" th:itemId="${cartItem.getItemId()}" th:closedDate="${cartItem.getCloseDate()}"
+            <button class="payment-button" th:itemId="${cartItem.getItemId()}"
+                    th:closedDate="${cartItem.getCloseDate()}"
                     th:onclick="orderCartItem(this.getAttribute('itemId'), this.getAttribute('closedDate'))">결제하기
             </button>
         </div>
