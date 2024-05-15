@@ -67,7 +67,7 @@ public class SetupDataUtils {
     public final static String NOT_FOUND_ORDER = "주문 정보가 없습니다.";
     public final static String FORBIDDEN = "접근 권한이 없습니다.";
     public final static String NOT_FOUND_GROUP_BUY = "공동 구매 정보가 없습니다.";
-    public final static String NOT_FOUND_GROUP_BUY_USER= "공동 구매 참여 정보가 없습니다.";
+    public final static String NOT_FOUND_GROUP_BUY_USER = "공동 구매 참여 정보가 없습니다.";
 
     private SetupDataUtils() {
     }
@@ -98,6 +98,23 @@ public class SetupDataUtils {
                 passwordEncoder.encode(PASSWORD),
                 TEST_NICKNAME,
                 TEST_EMAIL,
+                TEST_ADDRESS,
+                null,
+                null,
+                false,
+                false,
+                false);
+    }
+
+    public static User makeTestSellerUser2(BCryptPasswordEncoder passwordEncoder) {
+        return new User(
+                null,
+                SignUpType.GENERAL,
+                Role.SELLER,
+                TEST_LOGIN_ID + 1,
+                passwordEncoder.encode(PASSWORD),
+                TEST_NICKNAME + 1,
+                TEST_EMAIL + 1,
                 TEST_ADDRESS,
                 null,
                 null,

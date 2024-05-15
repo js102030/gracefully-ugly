@@ -2,7 +2,6 @@ package com.gracefullyugly.domain.qna.controller;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
-import com.gracefullyugly.common.wrapper.ApiResponse;
 import com.gracefullyugly.domain.qna.dto.AnswerDto;
 import com.gracefullyugly.domain.qna.dto.QnADto;
 import com.gracefullyugly.domain.qna.dto.QuestionDto;
@@ -22,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name="상품 문의 관리")
+@Tag(name = "상품 문의 관리")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -64,8 +63,8 @@ public class QnAController {
 
     @Operation(summary = "상품 문의 + 답글 목록 조회", description = "상품 문의와 답글 목록 조회")
     @GetMapping("/questions/items/{itemId}")
-    public ResponseEntity<ApiResponse<List<QnADto>>> readQnAs(@PathVariable Long itemId) {
-        ApiResponse<List<QnADto>> response = qnASearchService.getQnAList(itemId);
+    public ResponseEntity<List<QnADto>> readQnAs(@PathVariable Long itemId) {
+        List<QnADto> response = qnASearchService.getQnAList(itemId);
 
         return ResponseEntity
                 .ok(response);

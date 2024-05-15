@@ -19,21 +19,24 @@
     <button class="askAdd">등록하기</button>
 </div>
 <input type="hidden" id="itemId" th:value="${item.getId()}">
-<div class="oneRoute" th:each="qna, index : ${qnaList}">
+<div class="oneRoute" th:each="qna : ${qnaList}">
     <input type="hidden" id="qnaId" th:value="${qna.qnaId}">
     <div class="ask_tab">
-        <p class="nickname" th:text="${nicknames[__${index.index}__]}"></p>
+        <p class="nickname" th:text="${qna.getUserNickname()}"></p>
         <div id="question">
-            <p class="content" th:text="${qna.question}"></p>
+            <p class="content" th:text="${qna.getQuestion()}"></p>
             <!-- 답변 버튼 -->
-            <button class="answer_btn" th:if="${#strings.isEmpty(qna.answer)}" onclick="showAddAnswer(event)">답변하기</button>
+            <button class="answer_btn" th:if="${#strings.isEmpty(qna.getAnswer())}" onclick="showAddAnswer(event)">
+                답변하기
+            </button>
         </div>
     </div>
     <!-- 답변란 -->
-    <div class="answer_box" th:if="${not #strings.isEmpty(qna.answer)}" th:id="'answer_data_' + ${qna.qnaId}">
+    <div class="answer_box" th:if="${not #strings.isEmpty(qna.getAnswer())}" th:id="'answer_data_' + ${qna.qnaId}">
         <p class="content" th:text="${qna.answer}"></p>
     </div>
-    <div class="answer_box" th:if="${#strings.isEmpty(qna.answer)}" th:id="'answer_input_' + ${qna.qnaId}" style="display: none;">
+    <div class="answer_box" th:if="${#strings.isEmpty(qna.getAnswer())}" th:id="'answer_input_' + ${qna.qnaId}"
+         style="display: none;">
         <textarea id="answer_text" class="content" placeholder="답변을 입력하세요"></textarea>
         <button class="answer_send" onclick="addAnswer(event)">등록</button>
     </div>

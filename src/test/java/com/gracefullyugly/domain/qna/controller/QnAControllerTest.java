@@ -15,7 +15,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.google.gson.Gson;
 import com.gracefullyugly.common.security.CustomUserDetails;
 import com.gracefullyugly.common.security.jwt.JWTUtil;
-import com.gracefullyugly.common.wrapper.ApiResponse;
 import com.gracefullyugly.domain.item.dto.ItemRequest;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
 import com.gracefullyugly.domain.item.service.ItemService;
@@ -101,7 +100,7 @@ class QnAControllerTest {
         // given
         given(qnAService.createQnA(any(), any(), any()))
                 .willReturn(
-                        new QnADto(100L, 100L, 100L, "질문", "답변")
+                        new QnADto(100L, 100L, "xxx", 100L, "질문", "답변")
                 );
 
         Gson gson = new Gson();
@@ -128,7 +127,7 @@ class QnAControllerTest {
         // given
         given(qnAService.createAnswer(any(), any(), any()))
                 .willReturn(
-                        new QnADto(100L, 100L, 100L, "질문", "답변")
+                        new QnADto(100L, 100L, "xxx", 100L, "질문", "답변")
                 );
 
         Gson gson = new Gson();
@@ -154,7 +153,7 @@ class QnAControllerTest {
     void readQnATest() throws Exception {
         // given
         given(qnASearchService.getQnA(any()))
-                .willReturn(new QnADto(100L, 100L, 100L, "질문", "답변"));
+                .willReturn(new QnADto(100L, 100L, "xxx", 100L, "질문", "답변"));
 
         String access = getToken();
 
@@ -176,11 +175,13 @@ class QnAControllerTest {
         // given
         List<QnADto> list = List
                 .of(
-                        new QnADto(100L, 100L, 100L, "질문", "답변"),
-                        new QnADto(101L, 101L, 101L, "질문2", "답변2")
+                        new QnADto(100L, 100L, "xxx", 100L, "질문", "답변"),
+                        new QnADto(101L, 101L, "xxx2", 101L, "질문2", "답변2")
                 );
         given(qnASearchService.getQnAList(any()))
-                .willReturn(new ApiResponse<>(list.size(), list));
+                .willReturn(
+                        list
+                );
 
         String access = getToken();
 
@@ -189,10 +190,10 @@ class QnAControllerTest {
                         .header("access", access)
                         .with(user(customUserDetails)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data[0].question").value("질문"))
-                .andExpect(jsonPath("$.data[0].answer").value("답변"))
-                .andExpect(jsonPath("$.data[1].question").value("질문2"))
-                .andExpect(jsonPath("$.data[1].answer").value("답변2"))
+                .andExpect(jsonPath("$[0].question").value("질문"))
+                .andExpect(jsonPath("$[0].answer").value("답변"))
+                .andExpect(jsonPath("$[1].question").value("질문2"))
+                .andExpect(jsonPath("$[1].answer").value("답변2"))
                 .andDo(print());
 
         verify(qnASearchService).getQnAList(any());
