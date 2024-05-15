@@ -19,8 +19,11 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             FROM item i
             LEFT JOIN image img ON i.item_id = img.item_id AND img.is_deleted = false
             LEFT JOIN report r ON i.item_id = r.item_id AND r.is_deleted = false
-            WHERE i.item_id = :itemId AND i.is_deleted = false AND i.total_sales_unit > 0
-            AND (r.is_accepted IS NULL OR r.is_accepted = false)
+            WHERE i.item_id = :itemId 
+              AND i.is_deleted = false 
+              AND i.total_sales_unit > 0
+              AND (r.is_accepted IS NULL OR r.is_accepted = false)
+              AND i.closed_date > CURDATE()
             """, nativeQuery = true)
     ItemWithImageUrlResponse findOneItemWithImage(@Param("itemId") Long itemId);
 
@@ -35,6 +38,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             LEFT JOIN image img ON i.item_id = img.item_id AND img.is_deleted = false
             LEFT JOIN report r ON i.item_id = r.item_id AND r.is_deleted = false
             WHERE i.is_deleted = false AND i.total_sales_unit > 0
+              AND i.closed_date > CURDATE()
               AND NOT EXISTS (
                   SELECT 1 FROM report r2
                   WHERE r2.item_id = i.item_id AND r2.is_accepted = true AND r2.is_deleted = false
@@ -59,7 +63,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
                   )
             ORDER BY RAND()
             """, nativeQuery = true)
-    List<ItemWithImageUrlResponse> findRandomImpendingItems(LocalDateTime endTime);
+    List<ItemWithImageUrlResponse> findRandomImpendingItems(@Param("endTime") LocalDateTime endTime);
 
 
     @Query(value = """
@@ -71,7 +75,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             FROM item i
             JOIN cart_item ci ON i.item_id = ci.item_id
             LEFT JOIN image img ON i.item_id = img.item_id AND img.is_deleted = false
-            WHERE i.is_deleted = false AND i.total_sales_unit > 0
+            WHERE i.is_deleted = false AND i.total_sales_unit > 0 AND i.closed_date > CURRENT_DATE()
               AND NOT EXISTS (
                   SELECT 1 FROM report r
                   WHERE r.item_id = i.item_id AND r.is_accepted = true AND r.is_deleted = false
@@ -95,6 +99,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
                     "FROM item i " +
                     "LEFT JOIN image img ON i.item_id = img.item_id AND img.is_deleted = false " +
                     "WHERE i.category_id = :categoryId AND i.is_deleted = false AND i.total_sales_unit > 0 " +
+                    "AND i.closed_date > CURRENT_DATE() " +  // 추가된 조건
                     "AND NOT EXISTS ( " +
                     "    SELECT 1 FROM report r " +
                     "    WHERE r.item_id = i.item_id AND r.is_accepted = true AND r.is_deleted = false " +
@@ -110,20 +115,22 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             ")")
     Optional<Item> findValidItemById(Long itemId);
 
-    @Query(value =
-            "SELECT i.item_id as id, i.user_id as userId, i.name as name, i.production_place as productionPlace, " +
-                    "i.closed_date as closedDate, i.created_date as createdDate, i.last_modified_date as last_modified_date, "
-                    +
-                    "i.min_unit_weight as minUnitWeight, i.price as price, i.total_sales_unit as totalSalesUnit, " +
-                    "i.min_group_buy_weight as minGroupBuyWeight, i.description as description, img.url as imageUrl " +
-                    "FROM item i " +
-                    "LEFT JOIN image img ON i.item_id = img.item_id AND img.is_deleted = false " +
-                    "WHERE i.name LIKE %:keyword% AND i.is_deleted = false AND i.total_sales_unit > 0 " +
-                    "AND NOT EXISTS ( " +
-                    "    SELECT 1 FROM report r " +
-                    "    WHERE r.item_id = i.item_id AND r.is_accepted = true AND r.is_deleted = false " +
-                    ") " +
-                    "ORDER BY i.item_id", nativeQuery = true)
+    @Query(value = """
+            SELECT i.item_id as id, i.user_id as userId, i.name as name, i.production_place as productionPlace, 
+                    i.closed_date as closedDate, i.created_date as createdDate, i.last_modified_date as last_modified_date,
+                    i.min_unit_weight as minUnitWeight, i.price as price, i.total_sales_unit as totalSalesUnit, 
+                    i.min_group_buy_weight as minGroupBuyWeight, i.description as description, img.url as imageUrl 
+            FROM item i 
+            LEFT JOIN image img ON i.item_id = img.item_id AND img.is_deleted = false 
+            WHERE i.name LIKE %:keyword% AND i.is_deleted = false AND i.total_sales_unit > 0 
+            AND i.closed_date > CURDATE() 
+            AND NOT EXISTS ( 
+                SELECT 1 FROM report r 
+                WHERE r.item_id = i.item_id AND r.is_accepted = true AND r.is_deleted = false 
+            ) 
+            ORDER BY i.item_id
+            """, nativeQuery = true)
     List<ItemWithImageUrlResponse> searchItemsByItemName(@Param("keyword") String keyword);
+
 
 }

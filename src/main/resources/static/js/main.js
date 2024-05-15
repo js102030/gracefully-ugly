@@ -65,7 +65,7 @@ function displayImpendingItems(items) {
         itemElement.dataset.itemId = item.id;
 
         itemElement.innerHTML = `
-                <img src="${item.imageUrl ? item.imageUrl : '/image/item.png'}" alt="제품 사진" width="240" height="240">
+                <img class="img" src="${item.imageUrl ? item.imageUrl : '/image/item.png'}" alt="제품 사진" width="240" height="240">
                     <div>
                         <div>전체물량 : ${(item.totalSalesUnit * item.minUnitWeight).toLocaleString()}g</div>
                         <div style="font-size: 25px">${item.name}</div>
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // 각 상품 정보를 표시할 방법에 따라 구성
                 itemElement.innerHTML = `
-                    <img src="${item.imageUrl ? item.imageUrl : '/image/item.png'}" alt="제품 사진" width="240" height="240">
+                    <img class="img" src="${item.imageUrl ? item.imageUrl : '/image/item.png'}" alt="제품 사진" width="240" height="240">
                     <div>
                         <div>전체물량 : ${(item.totalSalesUnit * item.minUnitWeight).toLocaleString()}g</div>
                         <div style="font-size: 25px">${item.name}</div>
@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // 상품 이미지 및 정보 표시
                 itemElement.innerHTML = `
-                    <img src="${item.imageUrl ? item.imageUrl : '/image/item.png'}" alt="제품 사진" width="240" height="240">
+                    <img class="img" src="${item.imageUrl ? item.imageUrl : '/image/item.png'}" alt="제품 사진" width="240" height="240">
                     <div>
                         <div>전체물량 : ${(item.totalSalesUnit * item.minUnitWeight).toLocaleString()}g</div>
                         <div style="font-size: 25px">${item.name}</div>
@@ -251,3 +251,58 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 });
 
+
+document.addEventListener("DOMContentLoaded", function () {
+    const searchButton = document.getElementById('searchButton');
+    const searchInput = document.getElementById('searchInput');
+
+    searchButton.addEventListener('click', function () {
+        const keyword = searchInput.value;
+        if (keyword.trim() !== '') {
+            fetchItemsByName(keyword);
+        } else {
+            alert('검색어를 입력해주세요.');
+        }
+    });
+});
+
+function fetchItemsByName(keyword) {
+    fetch(`/api/all/items/search?keyword=${encodeURIComponent(keyword)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('상품 검색 중 오류가 발생했습니다.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            displayItems(data);  // 검색 결과를 화면에 표시하는 함수
+        })
+        .catch(error => {
+            console.error('상품 검색 중 오류가 발생했습니다:', error);
+            alert('상품 검색에 실패했습니다: ' + error.message);
+        });
+}
+
+function displayItems(items) {
+    const itemsContainer = document.getElementById('items-container');
+    itemsContainer.innerHTML = '';  // 기존 내용을 초기화
+
+    items.forEach(item => {
+        const itemElement = document.createElement('div');
+        itemElement.classList.add('item');
+        itemElement.dataset.itemId = item.id;
+        itemElement.innerHTML = `
+            <img class="img" src="${item.imageUrl ? item.imageUrl : '/image/item.png'}" alt="${item.name}" width="240" height="240">
+            <div>
+                <div>전체물량: ${(item.totalSalesUnit * item.minUnitWeight).toLocaleString()}g</div>
+                <div style="font-size: 25px">${item.name}</div>
+                <div style="font-size: 20px">${item.minUnitWeight}g - ${item.price.toLocaleString()}원</div>
+            </div>
+        `;
+        itemsContainer.appendChild(itemElement);
+    });
+
+    if (items.length === 0) {
+        itemsContainer.innerHTML = '<p>검색 결과가 없습니다.</p>';
+    }
+}
