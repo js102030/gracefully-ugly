@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const modal = document.querySelector('.modal');
     const modalCloseButton = document.querySelector('.modal-close');
     const listButton = document.querySelector('.list-button');
@@ -6,18 +6,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const createOrder = document.querySelector('.create-order-btn');
 
     if (listButton) {
-        listButton.addEventListener('click', function() {
+        listButton.addEventListener('click', function () {
             modal.style.display = 'block';
         });
     }
 
     if (modalCloseButton) {
-        modalCloseButton.addEventListener('click', function() {
+        modalCloseButton.addEventListener('click', function () {
             modal.style.display = 'none';
         });
     }
 
-    window.addEventListener('click', function(event) {
+    window.addEventListener('click', function (event) {
         if (event.target === modal) {
             modal.style.display = 'none';
         }
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         $.ajax({
-            url: 'http://localhost:8080/api/orders',
+            url: '/api/orders',
             method: 'post',
             dataType: 'json',
             contentType: 'application/json',
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log(data);
 
                 $.ajax({
-                    url: 'http://localhost:8080/api/payment',
+                    url: '/api/payment',
                     method: 'post',
                     contentType: 'application/json',
                     data: JSON.stringify(data),
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log(data);
                 console.log(status);
                 console.log(error);
-                alert('주문서 생성 중 문제가 발생했습니다.\n[status: ' + data.status +']\n[error: ' + data.responseText + ']');
+                alert('주문서 생성 중 문제가 발생했습니다.\n[status: ' + data.status + ']\n[error: ' + data.responseText + ']');
             }
         })
     })
