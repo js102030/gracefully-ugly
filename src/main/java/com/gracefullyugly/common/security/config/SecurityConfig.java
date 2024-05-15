@@ -61,10 +61,10 @@ public class SecurityConfig {
                 .csrf((auth) -> auth.disable());
 
         //From 로그인 방식
-        http
-                .formLogin((auth) -> auth
-                        .loginPage("/log")
-                        .defaultSuccessUrl("/"));
+//        http
+//                .formLogin((auth) -> auth
+//                        .loginPage("/log")
+//                        .defaultSuccessUrl("/"));
 
         //HTTP Basic 인증 방식 disable
         http
