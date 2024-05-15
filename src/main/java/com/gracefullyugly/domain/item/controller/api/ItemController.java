@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name="상품 관리")
+@Tag(name = "상품 관리")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -113,6 +113,14 @@ public class ItemController {
     public ResponseEntity<List<ItemWithImageUrlResponse>> showCategory(@PathVariable Category categoryId) {
         return ResponseEntity
                 .ok(itemSearchService.getCategoryItems(categoryId.getValue()));
+    }
+
+    // 상품명으로 검색
+    @Operation(summary = "상품 검색", description = "상품명으로 검색하기")
+    @GetMapping("/all/items/search")
+    public ResponseEntity<List<ItemWithImageUrlResponse>> searchItems(@RequestParam String keyword) {
+        return ResponseEntity
+                .ok(itemSearchService.searchItemsByItemName(keyword));
     }
 
 }
