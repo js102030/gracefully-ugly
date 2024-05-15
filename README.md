@@ -17,9 +17,7 @@
 	    <td>사진</td>
 	    <td>사진</td>
 	    <td>사진</td>
-	    <td>
-
-	    </td>
+	    <td>사진</td>
 	    <td>사진</td>
     </tr>
     <tr>
