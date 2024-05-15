@@ -21,9 +21,9 @@ public class OrderViewController {
     private OrderService orderService;
 
     @GetMapping("/orders/item/{itemId}")
-    public String createOrderView(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
-                                  @PathVariable("itemId") Long itemId,
-                                  Model model) {
+    public String createOrderView(
+            @PathVariable("itemId") Long itemId,
+            Model model) {
         Item item = itemSearchService.findById(itemId);
         model.addAttribute("Item", item);
 
