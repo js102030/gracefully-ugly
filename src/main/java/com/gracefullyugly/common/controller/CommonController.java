@@ -1,7 +1,5 @@
 package com.gracefullyugly.common.controller;
 
-import com.gracefullyugly.common.wrapper.ApiResponse;
-import com.gracefullyugly.domain.item.dto.ItemResponse;
 import com.gracefullyugly.domain.item.dto.ItemWithImageUrlResponse;
 import com.gracefullyugly.domain.item.service.ItemSearchService;
 import com.gracefullyugly.domain.qna.dto.QnADto;
@@ -15,9 +13,6 @@ import com.gracefullyugly.domain.user.dto.SellerDetailsResponse;
 import com.gracefullyugly.domain.user.entity.User;
 import com.gracefullyugly.domain.user.service.SellerDetailsService;
 import com.gracefullyugly.domain.user.service.UserSearchService;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import java.util.List;
@@ -89,11 +84,11 @@ public class CommonController {
     @GetMapping("/sellerDetails/{itemId}")
     public String sellerDetails(@PathVariable Long itemId, Model model) {
         List<ReviewWithImageResponse> reviews = reviewSearchService.getReviewsWithImagesByItemId(itemId);
-        ApiResponse<List<QnADto>> QnAs = qnASearchService.getQnAList(itemId);
+        List<QnADto> qnaList = qnASearchService.getQnAList(itemId);
         List<SellerDetailsResponse> sellerDetails = sellerDetailsService.getSellerDetails(itemId);
 
         model.addAttribute("reviews", reviews);
-        model.addAttribute("QnAs", QnAs);
+        model.addAttribute("QnAs", qnaList);
         model.addAttribute("sellerDetails", sellerDetails);
         model.addAttribute("itemId", itemId);
         return "sellerDetails";
@@ -134,20 +129,11 @@ public class CommonController {
 
     @GetMapping("/question/{itemId}")
     public String question(@PathVariable Long itemId, Model model) {
-        ApiResponse<List<QnADto>> qnaResponse = qnASearchService.getQnAList(itemId);
-        List<QnADto> qnaList = qnaResponse.getData();
-
-        // 각 QnADto의 userId를 이용하여 닉네임을 가져와서 리스트로 만듭니다.
-        List<String> nicknames = new ArrayList<>();
-        for (QnADto qnaDto : qnaList) {
-            String nickname = userSearchService.findNicknameById(qnaDto.getUserId());
-            nicknames.add(nickname);
-        }
+        List<QnADto> qnaList = qnASearchService.getQnAList(itemId);
 
         ItemWithImageUrlResponse item = itemSearchService.findOneItem(itemId);
 
         model.addAttribute("qnaList", qnaList);
-        model.addAttribute("nicknames", nicknames);
         model.addAttribute("item", item);
         return "productAsk";
     }

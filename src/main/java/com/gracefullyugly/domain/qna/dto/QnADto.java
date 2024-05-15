@@ -1,6 +1,5 @@
 package com.gracefullyugly.domain.qna.dto;
 
-import com.gracefullyugly.domain.qna.entity.QnA;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +13,7 @@ public class QnADto {
 
     private Long qnaId;
     private Long userId;
+    private String userNickname;
     private Long itemId;
     private String question;
     private String answer;
