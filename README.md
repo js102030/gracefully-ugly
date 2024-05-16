@@ -66,7 +66,8 @@
 - [x] 로그 아웃
 - [x] 회원 탈퇴
 - [x] 회원 등급
-  	- [x] SELLER, BUYER, ADMIN
+  	- [x] SELLER, BUYER, ADMIN, GUEST
+  	- [x] GUEST : 처음 회원가입시 GUEST부여한 후 2차 회원가입 진행
    	- [x] ADMIN : /admin-report 페이지에서 신고된 상품이나 리뷰를 관리함.
    	- [ ] ADMIN : /admin 페이지에서 회원 등급 변경 가능
 - [x] 회원 정보
