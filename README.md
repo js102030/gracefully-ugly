@@ -14,21 +14,23 @@
 	<th>권현수</th>    
     </tr>
     <tr>
-	    <td>사진</td>
+	    <td><img src="readme_img/jj.jpg" style="width: 500px" alt="박준석"></td>
 	    <td><img src="readme_img/Jung_Jinhwan.jpg" style="width: 500px" alt="정진환"></td>
 	    <td><img src="readme_img/seokhyun.jpg" style="width: 500px" alt="류석현"></td>
 	    <td><img src="readme_img/Lee_Hyunjin.jpg" style="width: 500px" alt="이현진진"></td>
 	    <td>사진</td>
     </tr>
     <tr>
-	    <td>음......거의 모든 api, log관리, 엘런... GOAT</td>
+	    <td>ERD설계/프로젝트 관리/앨런 뉴스/로그/인증/신고/리뷰/QnA/유저/상품/이미지 등의 API 개발</td>
 	    <td>찜 목록,주문/결제/공동구매 프로세스 개발 및 카카오 페이 API 연동</td>
 	    <td>JWT, OAuth2 활용한 회원가입/로그인/로그아웃 개발, 코드 리팩토링, 버그 관리</td>
-	    <td>메인 화면 CRUD 개발</td>
+	    <td>메인 화면 CRUD 개발, 버그 관리, 프로젝트 산출물 작업</td>
 	    <td>구매내역 페이지 제작</td>
     </tr>
 </table>    
     
+## 개발 일정
+![image](https://github.com/gracefully-ugly/gracefully-ugly/assets/141889885/ef78e070-455a-40ee-8ef5-7214c1d0b327)
 
 ## 사용 스택
 ### Back-end
@@ -110,6 +112,6 @@
 ![image](https://github.com/gracefully-ugly/gracefully-ugly/assets/138424719/727bc9dd-16ba-42f4-9eed-be69ad41d153)
 
 ## 시연 영상
-[![Video Label](http://img.youtube.com/vi/9vSYWfruOlk/0.jpg)](https://youtu.be/9vSYWfruOlk)
+[![Video Label](http://img.youtube.com/vi/A6OFAHPrE4s/0.jpg)](https://youtu.be/A6OFAHPrE4s)
 <br>
-https://youtu.be/9vSYWfruOlk
+https://youtu.be/A6OFAHPrE4s
