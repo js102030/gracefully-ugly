@@ -142,7 +142,7 @@
 
 
 ### 공동 구매 프로세스 (왼쪽 - 결제 프로세스 / 오른쪽 - 공구 진행 프로세스)
-![image](https://github.com/gracefully-ugly/gracefully-ugly/assets/138424719/2bebdbce-e866-4161-82f0-e8fb0c863a00)
+<img src="readme_img/process.jpg"  alt="공동구매 프로세스">
 
 
 ## 화면 설계서
