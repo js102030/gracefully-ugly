@@ -206,7 +206,7 @@
 ![system_architecture.jpg](readme_img%2Fsystem_architecture.jpg)
 ## erd 
 링크 : https://www.erdcloud.com/d/Ry8D7FKy5oLp4nBSd
-![Ry8D7FKy5oLp4nBSd](https://github.com/gracefully-ugly/gracefully-ugly/assets/121748946/618e839e-4caa-4b57-8785-b84bf0860494)
+<img src="readme_img/ERD.jpg" alt="ERD">
 
 ## api 명세
 링크 : http://15.164.14.204:8080/swagger-ui/index.html
