@@ -69,8 +69,6 @@
 ![image](https://github.com/gracefully-ugly/gracefully-ugly/assets/138424719/727bc9dd-16ba-42f4-9eed-be69ad41d153)
 
 ## 시연 영상
-<video src="https://youtu.be/9vSYWfruOlk" controls>
-https://youtu.be/9vSYWfruOlk
-</video>
+[![Video Label](http://img.youtube.com/vi/9vSYWfruOlk/0.jpg)](https://youtu.be/9vSYWfruOlk)
 <br>
 https://youtu.be/9vSYWfruOlk
