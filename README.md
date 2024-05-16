@@ -56,8 +56,48 @@
 
 
 ## 화면 설계서
+### 구매자 화면
+|                               메인 페이지                                |                                공동 구매 페이지                                 |
+|:-------------------------------------------------------------------:|:------------------------------------------------------------------------:|
+| <img src="readme_img/front_img/main_page.jpg" style="width: 700px"> | <img src="readme_img/front_img/group_buy_page.jpg" style="width: 700px"> |
 
-페이지 다 완성되면 여기에 기능 명세에 있는 페이지 각각 캡쳐해서 보여주기
+|                              주문서 작성 페이지                              |                                주문 완료 페이지                                 |
+|:--------------------------------------------------------------------:|:------------------------------------------------------------------------:|
+| <img src="readme_img/front_img/order_page.jpg" style="width: 700px"> | <img src="readme_img/front_img/order_complete.jpg" style="width: 700px"> |
+
+|                              주문서 조회 페이지                              |                               주문서 수정 페이지                               |
+|:--------------------------------------------------------------------:|:----------------------------------------------------------------------:|
+| <img src="readme_img/front_img/order_view.jpg" style="width: 700px"> | <img src="readme_img/front_img/order_modify.jpg" style="width: 700px"> |
+
+|                            찜 목록 페이지                            |                                 주문 내역 페이지                                  |
+|:--------------------------------------------------------------:|:--------------------------------------------------------------------------:|
+| <img src="readme_img/front_img/cart.jpg" style="width: 700px"> | <img src="readme_img/front_img/purchase_history.jpg" style="width: 700px"> |
+
+|                              리뷰 페이지                              |                              신고 페이지                              |
+|:----------------------------------------------------------------:|:----------------------------------------------------------------:|
+| <img src="readme_img/front_img/review.jpg" style="width: 700px"> | <img src="readme_img/front_img/report.jpg" style="width: 700px"> |
+
+|                             내 정보 페이지                              |                                회원 정보 수정 페이지                                |
+|:-----------------------------------------------------------------:|:--------------------------------------------------------------------------:|
+| <img src="readme_img/front_img/my_page.jpg" style="width: 700px"> | <img src="readme_img/front_img/user_info_modify.jpg" style="width: 700px"> |
+
+|                               이메일 인증 페이지                               |
+|:----------------------------------------------------------------------:|
+| <img src="readme_img/front_img/verify_email.jpg" style="width: 700px"> |
+
+### 판매자 화면
+|                              판매 리스트 페이지                               |                              상세 판매 내역 페이지                               |
+|:---------------------------------------------------------------------:|:-----------------------------------------------------------------------:|
+| <img src="readme_img/front_img/seller_list.jpg" style="width: 700px"> | <img src="readme_img/front_img/seller_detail.jpg" style="width: 700px"> |
+
+|                               판매글 작성 페이지                                |                                    판매글 수정 페이지                                     |
+|:-----------------------------------------------------------------------:|:---------------------------------------------------------------------------------:|
+| <img src="readme_img/front_img/sales_product.jpg" style="width: 700px"> | <img src="readme_img/front_img/modify_product_describe.jpg" style="width: 700px"> |
+
+### 관리자 화면
+|                                  관리자 회원 관리 페이지                                  |                             관리자 신고 관리 페이지                              |
+|:-------------------------------------------------------------------------------:|:----------------------------------------------------------------------:|
+| <img src="readme_img/front_img/admin_user_management.jpg" style="width: 700px"> | <img src="readme_img/front_img/admin_report.jpg" style="width: 700px"> |
 
 ## 시스템 구조도
 ![system_architecture.jpg](readme_img%2Fsystem_architecture.jpg)
