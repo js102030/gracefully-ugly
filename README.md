@@ -15,17 +15,17 @@
     </tr>
     <tr>
 	    <td>사진</td>
-	    <td>사진</td>
+	    <td><img src="readme_img/Jung_Jinhwan.jpg"></td>
 	    <td>![류석현](https://github.com/gracefully-ugly/gracefully-ugly/assets/141889885/ede4a93c-ff95-4075-b35e-d70f9857d52a)</td>
 	    <td>사진</td>
 	    <td>사진</td>
     </tr>
     <tr>
-	    <td>역할</td>
+	    <td>음......거의 모든 api, log관리, 엘런... GOAT</td>
 	    <td>찜 목록,주문/결제/공동구매 프로세스 개발 및 카카오 페이 API 연동</td>
-	    <td>역할</td>
-	    <td>역할</td>
-	    <td>역할</td>
+	    <td>JWT, OAuth2 활용한 회원가입/로그인/로그아웃 개발, 코드 리팩토링, 버그 관리</td>
+	    <td>메인 화면 CRUD 개발</td>
+	    <td>구매내역 페이지 제작</td>
     </tr>
 </table>    
     
@@ -65,8 +65,7 @@
 ![Ry8D7FKy5oLp4nBSd](https://github.com/gracefully-ugly/gracefully-ugly/assets/121748946/618e839e-4caa-4b57-8785-b84bf0860494)
 
 ## api 명세
-링크 : http://localhost:8080/swagger-ui/index.html
+링크 : http://15.164.14.204:8080/swagger-ui/index.html
 ![image](https://github.com/gracefully-ugly/gracefully-ugly/assets/138424719/727bc9dd-16ba-42f4-9eed-be69ad41d153)
-
 
 ## 시연 영상
