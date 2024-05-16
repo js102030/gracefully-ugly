@@ -206,7 +206,7 @@
 ![system_architecture.jpg](readme_img%2Fsystem_architecture.jpg)
 ## erd 
 링크 : https://www.erdcloud.com/d/Ry8D7FKy5oLp4nBSd
-<img src="readme_img/ERD.jpg" alt="ERD">
+<img src="readme_img/ERD.png" alt="ERD">
 
 ## api 명세
 링크 : http://15.164.14.204:8080/swagger-ui/index.html
