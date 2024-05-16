@@ -15,8 +15,8 @@
     </tr>
     <tr>
 	    <td>사진</td>
-	    <td><img src="readme_img/Jung_Jinhwan.jpg" alt="정진환"></td>
-	    <td>![류석현](https://github.com/gracefully-ugly/gracefully-ugly/assets/141889885/ede4a93c-ff95-4075-b35e-d70f9857d52a)</td>
+	    <td><img src="readme_img/Jung_Jinhwan.jpg" style="width: 500px" alt="정진환"></td>
+	    <td><img src="readme_img/seokhyun.jpg" style="width: 500px" alt="류석현"> </td>
 	    <td>사진</td>
 	    <td>사진</td>
     </tr>
