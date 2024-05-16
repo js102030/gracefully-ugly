@@ -178,7 +178,7 @@ public class CommonController {
 
     @GetMapping("/verification-email")
     public String verificationEmail(@Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId) {
-        return "/verification-email";
+        return "verification-email";
     }
 
     @GetMapping("/update-user-info")
@@ -187,7 +187,7 @@ public class CommonController {
         User user = userSearchService.findById(userId);
         model.addAttribute("User", user);
 
-        return "/update-user-info";
+        return "update-user-info";
     }
 
 }
