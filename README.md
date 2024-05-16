@@ -5,8 +5,10 @@
 - 이스트소프트의 앨런 AI 기능을 사용해 메인 페이지에서 농산물 관련 최신 뉴스를 확인할 수 있습니다.
 
 - http://15.164.14.204:8080/
-- 관리자 계정 admin/admin 
+- 관리자 계정 admin/admin
 - 상품 신고 관리 http://15.164.14.204:8080/admin-report
+- 판매자 계정 seller/seller , seller100/seller100 , seller200/seller200 , hello/hello    ...
+
 
 ## 팀 소개
 <table>
