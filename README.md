@@ -29,6 +29,8 @@
     </tr>
 </table>    
     
+## 개발 일정
+![image](https://github.com/gracefully-ugly/gracefully-ugly/assets/141889885/ef78e070-455a-40ee-8ef5-7214c1d0b327)
 
 ## 사용 스택
 ### Back-end
