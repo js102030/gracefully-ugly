@@ -147,13 +147,18 @@
 
 ## 화면 설계서
 ### 구매자 화면
-|                             로그인 페이지                              |                          회원가입(1차) 페이지                           |
+|                             로그인 페이지                              |                          소셜 로그인 페이지                           |
 |:----------------------------------------------------------------:|:---------------------------------------------------------------:|
-| <img src="readme_img/front_img/login.jpg" style="width: 1000px"> | <img src="readme_img/front_img/join.jpg" style="width: 1000px"> |
+| <img src="readme_img/front_img/login.jpg" style="width: 1000px"> | <img src="readme_img/front_img/social_login.png" style="width: 500px"> |
 
-|                           회원가입(2차) 페이지                           |
+|                             회원가입(1차) 페이지                              |                          회원가입(2차) 페이지(집접 회원가입 및 소셜 첫 로그인시)                           |
+|:----------------------------------------------------------------:|:---------------------------------------------------------------:|
+| <img src="readme_img/front_img/join.jpg" style="width: 1000px"> | <img src="readme_img/front_img/join2.jpg" style="width: 1000px"> |
+
+
+|                           소셜 로그아웃 페이지                           |
 |:----------------------------------------------------------------:|
-| <img src="readme_img/front_img/join2.jpg" style="width: 1000px"> |
+| <img src="readme_img/front_img/social_logout.png" style="width: 300px"> |
 
 |                                메인 페이지                                |                                 공동 구매 페이지                                 |
 |:--------------------------------------------------------------------:|:-------------------------------------------------------------------------:|
