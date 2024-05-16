@@ -48,7 +48,8 @@
 
 ## 기능 명세
 ### 요구사항 기능 정리
-![image](https://github.com/gracefully-ugly/gracefully-ugly/assets/138424719/b5d6a1c6-496e-46d3-81d2-59421e8b36e8)
+![image](https://github.com/gracefully-ugly/gracefully-ugly/assets/138424719/bc98996b-9695-497f-b75b-ecc97352103d)
+
 
 ### 공동 구매 프로세스 (왼쪽 - 결제 프로세스 / 오른쪽 - 공구 진행 프로세스)
 ![image](https://github.com/gracefully-ugly/gracefully-ugly/assets/138424719/2bebdbce-e866-4161-82f0-e8fb0c863a00)
