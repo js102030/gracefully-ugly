@@ -16,7 +16,7 @@
     <tr>
 	    <td><img src="readme_img/jj.jpg" style="width: 500px" alt="박준석"></td>
 	    <td><img src="readme_img/Jung_Jinhwan.jpg" style="width: 600px" alt="정진환"></td>
-	    <td><img src="readme_img/seokhyun.jpg" style="width: 200px" alt="류석현"></td>
+	    <td><img src="readme_img/seokhyun.jpg" style="width:190px" alt="류석현"></td>
 	    <td><img src="readme_img/Lee_Hyunjin.jpg" style="width: 600px" alt="이현진진"></td>
 	    <td>사진</td>
     </tr>
