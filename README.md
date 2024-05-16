@@ -15,7 +15,7 @@
     </tr>
     <tr>
 	    <td>사진</td>
-	    <td><img src="readme_img/Jung_Jinhwan.jpg"></td>
+	    <td><img src="readme_img/Jung_Jinhwan.jpg" alt="정진환"></td>
 	    <td>![류석현](https://github.com/gracefully-ugly/gracefully-ugly/assets/141889885/ede4a93c-ff95-4075-b35e-d70f9857d52a)</td>
 	    <td>사진</td>
 	    <td>사진</td>
@@ -69,3 +69,8 @@
 ![image](https://github.com/gracefully-ugly/gracefully-ugly/assets/138424719/727bc9dd-16ba-42f4-9eed-be69ad41d153)
 
 ## 시연 영상
+<video src="https://youtu.be/9vSYWfruOlk" controls>
+https://youtu.be/9vSYWfruOlk
+</video>
+<br>
+https://youtu.be/9vSYWfruOlk
