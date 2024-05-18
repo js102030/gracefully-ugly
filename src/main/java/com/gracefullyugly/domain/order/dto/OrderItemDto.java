@@ -18,5 +18,5 @@ public class OrderItemDto {
 
     @NotNull
     @Min(1)
-    private Long quantity;
+    private int quantity;
 }

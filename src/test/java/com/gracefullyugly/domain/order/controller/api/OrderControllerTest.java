@@ -165,7 +165,7 @@ public class OrderControllerTest {
         CreateOrderRequest testNoItemRequest = CreateOrderRequest.builder()
                 .address(TEST_ADDRESS)
                 .phoneNumber(TEST_PHONE_NUMBER)
-                .itemIdList(List.of(OrderItemDto.builder().itemId(111L).quantity(1L).build(),
+                .orderItems(List.of(OrderItemDto.builder().itemId(111L).quantity(1L).build(),
                         OrderItemDto.builder().itemId(131L).quantity(12L).build())).build();
 
         // 주소가 공란
@@ -335,7 +335,7 @@ public class OrderControllerTest {
 
     @Test
     @DisplayName("주문 정보 연락처 수정 API 테스트")
-    void updateOrderPhoneNumberTest() throws Exception {
+    void updatePhoneNumberTest() throws Exception {
         // GIVEN
         // 기본 주문 정보 세팅
         Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
@@ -369,7 +369,7 @@ public class OrderControllerTest {
 
     @Test
     @DisplayName("주문 정보 연락처 수정 API 실패 테스트")
-    void updateOrderPhoneNumberFailTest() throws Exception {
+    void updatePhoneNumberFailTest() throws Exception {
         // GIVEN
         // 기본 주문 정보 세팅
         Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
@@ -387,10 +387,11 @@ public class OrderControllerTest {
         UpdateOrderPhoneNumberRequest requestFail = UpdateOrderPhoneNumberRequest.builder().phoneNumber("-1").build();
 
         // WHEN
-        ResultActions resultForbiddenUser = mockMvc.perform(put("/api/orders/phone_number/" + orderResponse.getOrderId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .with(user(customAnotherUserDetails))
-                .content(objectMapper.writeValueAsString(request)));
+        ResultActions resultForbiddenUser = mockMvc.perform(
+                put("/api/orders/phone_number/" + orderResponse.getOrderId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(user(customAnotherUserDetails))
+                        .content(objectMapper.writeValueAsString(request)));
         ResultActions resultNoOrder = mockMvc.perform(put("/api/orders/phone_number/" + testFailOrderId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(user(customUserDetails))

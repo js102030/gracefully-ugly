@@ -1,5 +1,7 @@
 package com.gracefullyugly.domain.item.service;
 
+import com.gracefullyugly.domain.item.dto.ItemDtoUtil;
+import com.gracefullyugly.domain.item.dto.ItemResponse;
 import com.gracefullyugly.domain.item.dto.ItemWithImageUrlResponse;
 import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
@@ -19,6 +21,11 @@ public class ItemSearchService {
     public Item findById(Long itemId) {
         return itemRepository.findById(itemId)
                 .orElseThrow(() -> new IllegalArgumentException(itemId + "에 해당하는 상품이 없습니다."));
+    }
+
+    public ItemResponse getItemResponse(Long itemId) {
+        Item findItem = findById(itemId);
+        return ItemDtoUtil.itemToItemResponse(findItem);
     }
 
     public ItemWithImageUrlResponse findOneItem(Long itemId) {

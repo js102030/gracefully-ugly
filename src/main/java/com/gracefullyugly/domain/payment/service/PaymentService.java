@@ -50,7 +50,7 @@ public class PaymentService {
         KakaoPayReadyResponse response = postKakaoPayReady(paymentRequest);
 
         paymentRepository.save(new Payment(paymentRequest.getOrderId(), response.getTid(),
-                paymentRequest.getItemInfoToPayment().getTotalAmount()));
+                paymentRequest.getTotalPrice()));
 
         log.error("{}", response.getNext_redirect_pc_url());
 
@@ -68,7 +68,7 @@ public class PaymentService {
         itemOrderDetails.forEach(
                 itemOrderDetail -> itemOrderDetail.getItem().decreaseStock(itemOrderDetail.getQuantity()));
 
-        List<OrderItem> orderItemList = orderItemRepository.findAllByOrdersId(orderId);
+        List<OrderItem> orderItemList = orderItemRepository.findAllByOrderId(orderId);
         groupBuyUserService.joinGroupBuy(userId, orderItemList);
 
         return response;
@@ -166,15 +166,15 @@ public class PaymentService {
         params.put("cid", "TC0ONETIME");
         params.put("partner_order_id", paymentRequest.getOrderId().toString());
         params.put("partner_user_id", paymentRequest.getUserId().toString());
-        params.put("item_name", paymentRequest.getItemInfoToPayment().getItemName());
-        params.put("quantity", String.valueOf(paymentRequest.getItemInfoToPayment().getQuantity()));
-        params.put("total_amount", String.valueOf(paymentRequest.getItemInfoToPayment().getTotalAmount()));
-        params.put("tax_free_amount", String.valueOf(paymentRequest.getItemInfoToPayment().getTaxFreeAmount()));
+        params.put("item_name", "임시 상품명");
+//        params.put("quantity", String.valueOf(paymentRequest.getItemInfoToPayment().getQuantity()));
+        params.put("total_amount", String.valueOf(paymentRequest.getTotalPrice()));
+//        params.put("tax_free_amount", String.valueOf(paymentRequest.getItemInfoToPayment().getTaxFreeAmount()));
         params.put("approval_url",
-                "http://localhost:8080/payment/kakaopay/success/" + paymentRequest.getUserId() + "/"
+                "http://15.164.14.204:8080/payment/kakaopay/success/" + paymentRequest.getUserId() + "/"
                         + paymentRequest.getOrderId());
-        params.put("cancel_url", "http://localhost:8080/payment/cancel?orderId=" + paymentRequest.getOrderId());
-        params.put("fail_url", "http://localhost:8080/payment/fail?orderId=" + paymentRequest.getOrderId());
+        params.put("cancel_url", "http://15.164.14.204:8080/payment/cancel?orderId=" + paymentRequest.getOrderId());
+        params.put("fail_url", "http://15.164.14.204:8080/payment/fail?orderId=" + paymentRequest.getOrderId());
 
         return params;
     }

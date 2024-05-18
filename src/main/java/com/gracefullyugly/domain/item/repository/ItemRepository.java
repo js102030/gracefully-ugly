@@ -23,7 +23,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
               AND i.is_deleted = false 
               AND i.total_sales_unit > 0
               AND (r.is_accepted IS NULL OR r.is_accepted = false)
-              AND i.closed_date > CURDATE()
+              AND i.closed_date > now()
             """, nativeQuery = true)
     ItemWithImageUrlResponse findOneItemWithImage(@Param("itemId") Long itemId);
 
@@ -38,7 +38,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             LEFT JOIN image img ON i.item_id = img.item_id AND img.is_deleted = false
             LEFT JOIN report r ON i.item_id = r.item_id AND r.is_deleted = false
             WHERE i.is_deleted = false AND i.total_sales_unit > 0
-              AND i.closed_date > CURDATE()
+              AND i.closed_date > NOW()
               AND NOT EXISTS (
                   SELECT 1 FROM report r2
                   WHERE r2.item_id = i.item_id AND r2.is_accepted = true AND r2.is_deleted = false
@@ -99,7 +99,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
                     "FROM item i " +
                     "LEFT JOIN image img ON i.item_id = img.item_id AND img.is_deleted = false " +
                     "WHERE i.category_id = :categoryId AND i.is_deleted = false AND i.total_sales_unit > 0 " +
-                    "AND i.closed_date > CURRENT_DATE() " +  // 추가된 조건
+                    "AND i.closed_date > now() " +
                     "AND NOT EXISTS ( " +
                     "    SELECT 1 FROM report r " +
                     "    WHERE r.item_id = i.item_id AND r.is_accepted = true AND r.is_deleted = false " +
@@ -123,7 +123,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             FROM item i 
             LEFT JOIN image img ON i.item_id = img.item_id AND img.is_deleted = false 
             WHERE i.name LIKE %:keyword% AND i.is_deleted = false AND i.total_sales_unit > 0 
-            AND i.closed_date > CURDATE() 
+            AND i.closed_date > now()
             AND NOT EXISTS ( 
                 SELECT 1 FROM report r 
                 WHERE r.item_id = i.item_id AND r.is_accepted = true AND r.is_deleted = false 
@@ -132,5 +132,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
             """, nativeQuery = true)
     List<ItemWithImageUrlResponse> searchItemsByItemName(@Param("keyword") String keyword);
 
-
+    @Query("SELECT i FROM Item i WHERE i.id IN :itemIds AND i.isDeleted = false AND i.closedDate > CURRENT_TIMESTAMP AND i.totalSalesUnit > 0")
+    List<Item> findValidItemsByIds(List<Long> itemIds);
 }

@@ -2,7 +2,7 @@ package com.gracefullyugly.domain.order.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -17,8 +17,8 @@ import lombok.NoArgsConstructor;
 public class CreateOrderRequest {
 
     @Valid
-    @NotNull
-    private List<OrderItemDto> itemIdList;
+    @NotEmpty
+    private List<OrderItemDto> orderItems;
 
     @NotBlank
     private String address;

@@ -13,23 +13,23 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @Getter
-@Table(name = "orders_item")
+@Table(name = "order_item")
 public class OrderItem extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "orders_item_id")
+    @Column(name = "order_item_id")
     private Long id;
 
     private Long itemId;
 
-    private Long ordersId;
+    private Long orderId;
 
     private int quantity;
 
     public OrderItem(Long itemId, Long orderId, int quantity) {
         this.itemId = itemId;
-        this.ordersId = orderId;
+        this.orderId = orderId;
         this.quantity = quantity;
     }
 }
