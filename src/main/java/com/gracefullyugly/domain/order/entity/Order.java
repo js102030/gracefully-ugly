@@ -35,13 +35,11 @@ public class Order extends BaseTimeEntity {
         this.phoneNumber = phoneNumber;
     }
 
-    public Order updateAddress(String address) {
+    public void updateAddress(String address) {
         this.address = address;
-        return this;
     }
 
-    public Order updatePhoneNumber(String phoneNumber) {
+    public void updatePhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-        return this;
     }
 }
