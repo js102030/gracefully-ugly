@@ -6,7 +6,6 @@ import com.gracefullyugly.domain.order.dto.OrderResponse;
 import com.gracefullyugly.domain.order.dto.UpdateOrderAddressRequest;
 import com.gracefullyugly.domain.order.dto.UpdateOrderPhoneNumberRequest;
 import com.gracefullyugly.domain.order.service.OrderService;
-import com.gracefullyugly.domain.user.enumtype.Role;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -54,10 +53,9 @@ public class OrderController {
     @Operation(summary = "상품 주문 주소 수정", description = "구매자가 주문할 때 주문서에 입력한 주소를 수정함")
     @PutMapping("/orders/address/{orderId}")
     public ResponseEntity<OrderResponse> updateOrderAddress(@AuthenticationPrincipal(expression = "userId") Long userId,
-                                                            @AuthenticationPrincipal(expression = "role") Role role,
                                                             @PathVariable("orderId") Long orderId,
                                                             @Valid @RequestBody UpdateOrderAddressRequest request) {
-        OrderResponse response = orderService.updateOrderAddress(userId, role, orderId, request);
+        OrderResponse response = orderService.updateAddress(userId, orderId, request);
 
         return ResponseEntity
                 .ok(response);
@@ -66,10 +64,9 @@ public class OrderController {
     @Operation(summary = "상품 주문 연락처 수정", description = "구매자가 주문할 때 주문서에 입력한 연락처를 수정함")
     @PutMapping("/orders/phone_number/{orderId}")
     public ResponseEntity<OrderResponse> updatePhoneNumber(@AuthenticationPrincipal(expression = "userId") Long userId,
-                                                           @AuthenticationPrincipal(expression = "role") Role role,
                                                            @Valid @RequestBody UpdateOrderPhoneNumberRequest request,
                                                            @PathVariable("orderId") Long orderId) {
-        OrderResponse response = orderService.updateOrderPhoneNumber(userId, role, orderId, request);
+        OrderResponse response = orderService.updatePhoneNumber(userId, orderId, request);
 
         return ResponseEntity
                 .ok(response);
