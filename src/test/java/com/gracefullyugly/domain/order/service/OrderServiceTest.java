@@ -113,8 +113,8 @@ public class OrderServiceTest {
         // 존재하지 않는 상품 정보만 있음
         Long testUserId = userRepository.findByNickname(TEST_NICKNAME).get().getId();
         List<OrderItemDto> testFailOrderItemDtoList = new ArrayList<>();
-        testFailOrderItemDtoList.add(new OrderItemDto(121L, 2L));
-        testFailOrderItemDtoList.add(new OrderItemDto(111L, 5L));
+        testFailOrderItemDtoList.add(new OrderItemDto(121L, 2));
+        testFailOrderItemDtoList.add(new OrderItemDto(111L, 5));
 
         CreateOrderRequest testNoItemRequest = CreateOrderRequest.builder()
                 .address(TEST_ADDRESS)
@@ -179,7 +179,7 @@ public class OrderServiceTest {
 
     @Test
     @DisplayName("주문 정보 주소 변경 테스트")
-    void updateOrderAddressTest() {
+    void updateAddressTest() {
         // GIVEN
         // 기본 주문 정보 세팅
         User testUser = userRepository.findByNickname(TEST_NICKNAME).get();
@@ -192,9 +192,9 @@ public class OrderServiceTest {
         UpdateOrderAddressRequest requestAdmin = UpdateOrderAddressRequest.builder().address("AdminAddress").build();
 
         // WHEN
-        OrderResponse result = orderService.updateOrderAddress(testUser.getId(), testUser.getRole(),
+        OrderResponse result = orderService.updateAddress(testUser.getId(),
                 orderResponse.getOrderId(), request);
-        OrderResponse resultAdmin = orderService.updateOrderAddress(admin.getId(), admin.getRole(),
+        OrderResponse resultAdmin = orderService.updateAddress(admin.getId(),
                 orderResponse.getOrderId(), requestAdmin);
 
         // THEN
@@ -206,7 +206,7 @@ public class OrderServiceTest {
 
     @Test
     @DisplayName("주문 정보 주소 변경 실패 테스트")
-    void updateOrderAddressFailTest() {
+    void updateAddressFailTest() {
         // GIVEN
         // 기본 주문 정보 세팅
         User testUser = userRepository.findByNickname(TEST_NICKNAME).get();
@@ -221,16 +221,16 @@ public class OrderServiceTest {
 
         // WHEN, THEN
         Assertions.assertThrows(NotFoundException.class,
-                () -> orderService.updateOrderAddress(testUser.getId(), testUser.getRole(), testFailOrderId, request),
+                () -> orderService.updateAddress(testUser.getId(), testFailOrderId, request),
                 NOT_FOUND_ORDER);
         Assertions.assertThrows(ForbiddenException.class,
-                () -> orderService.updateOrderAddress(anotherUser.getId(), anotherUser.getRole(),
+                () -> orderService.updateAddress(anotherUser.getId(),
                         orderResponse.getOrderId(), request), FORBIDDEN);
     }
 
     @Test
     @DisplayName("주문 정보 연락처 변경 테스트")
-    void updateOrderPhoneNumberTest() {
+    void updatePhoneNumberTest() {
         // GIVEN
         // 기본 주문 정보 세팅
         User testUser = userRepository.findByNickname(TEST_NICKNAME).get();
@@ -245,9 +245,9 @@ public class OrderServiceTest {
                 .build();
 
         // WHEN
-        OrderResponse result = orderService.updateOrderPhoneNumber(testUser.getId(), testUser.getRole(),
+        OrderResponse result = orderService.updatePhoneNumber(testUser.getId(),
                 orderResponse.getOrderId(), request);
-        OrderResponse resultAdmin = orderService.updateOrderPhoneNumber(admin.getId(), admin.getRole(),
+        OrderResponse resultAdmin = orderService.updatePhoneNumber(admin.getId(),
                 orderResponse.getOrderId(),
                 requestAdmin);
 
@@ -260,7 +260,7 @@ public class OrderServiceTest {
 
     @Test
     @DisplayName("주문 정보 연락처 변경 실패 테스트")
-    void updateOrderPhoneNumberFailTest() {
+    void updatePhoneNumberFailTest() {
         // GIVEN
         // 기본 주문 정보 세팅
         User testUser = userRepository.findByNickname(TEST_NICKNAME).get();
@@ -276,10 +276,10 @@ public class OrderServiceTest {
 
         // WHEN, THEN
         Assertions.assertThrows(NotFoundException.class,
-                () -> orderService.updateOrderPhoneNumber(testUser.getId(), testUser.getRole(), testFailOrderId,
+                () -> orderService.updatePhoneNumber(testUser.getId(), testFailOrderId,
                         request), NOT_FOUND_ORDER);
         Assertions.assertThrows(ForbiddenException.class,
-                () -> orderService.updateOrderPhoneNumber(anotherUser.getId(), anotherUser.getRole(),
+                () -> orderService.updatePhoneNumber(anotherUser.getId(),
                         orderResponse.getOrderId(), request), FORBIDDEN);
     }
 }
