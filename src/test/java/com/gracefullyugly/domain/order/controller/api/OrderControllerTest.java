@@ -165,7 +165,7 @@ public class OrderControllerTest {
         CreateOrderRequest testNoItemRequest = CreateOrderRequest.builder()
                 .address(TEST_ADDRESS)
                 .phoneNumber(TEST_PHONE_NUMBER)
-                .itemIdList(List.of(OrderItemDto.builder().itemId(111L).quantity(1L).build(),
+                .orderItems(List.of(OrderItemDto.builder().itemId(111L).quantity(1L).build(),
                         OrderItemDto.builder().itemId(131L).quantity(12L).build())).build();
 
         // 주소가 공란

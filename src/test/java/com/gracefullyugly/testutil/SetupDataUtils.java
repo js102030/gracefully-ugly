@@ -195,7 +195,7 @@ public class SetupDataUtils {
         return CreateOrderRequest.builder()
                 .address(TEST_ADDRESS)
                 .phoneNumber(TEST_PHONE_NUMBER)
-                .itemIdList(testOrderItemDtoList)
+                .orderItems(testOrderItemDtoList)
                 .build();
     }
 

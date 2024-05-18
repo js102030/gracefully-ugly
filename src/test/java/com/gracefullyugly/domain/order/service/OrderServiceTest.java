@@ -119,7 +119,7 @@ public class OrderServiceTest {
         CreateOrderRequest testNoItemRequest = CreateOrderRequest.builder()
                 .address(TEST_ADDRESS)
                 .phoneNumber(TEST_PHONE_NUMBER)
-                .itemIdList(testFailOrderItemDtoList)
+                .orderItems(testFailOrderItemDtoList)
                 .build();
 
         // WHEN, THEN
