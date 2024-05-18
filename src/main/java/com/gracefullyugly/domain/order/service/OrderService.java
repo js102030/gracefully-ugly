@@ -5,6 +5,7 @@ import com.gracefullyugly.common.exception.custom.NotFoundException;
 import com.gracefullyugly.domain.item.entity.Item;
 import com.gracefullyugly.domain.item.repository.ItemRepository;
 import com.gracefullyugly.domain.order.dto.CreateOrderRequest;
+import com.gracefullyugly.domain.order.dto.OrderDtoUtil;
 import com.gracefullyugly.domain.order.dto.OrderInfoResponse;
 import com.gracefullyugly.domain.order.dto.OrderItemDto;
 import com.gracefullyugly.domain.order.dto.OrderResponse;
@@ -12,64 +13,63 @@ import com.gracefullyugly.domain.order.dto.UpdateOrderAddressRequest;
 import com.gracefullyugly.domain.order.dto.UpdateOrderPhoneNumberRequest;
 import com.gracefullyugly.domain.order.entity.Order;
 import com.gracefullyugly.domain.order.repository.OrderRepository;
-import com.gracefullyugly.domain.orderitem.dto.ItemInfoToPaymentDto;
 import com.gracefullyugly.domain.orderitem.dto.OrderItemInfoResponse;
 import com.gracefullyugly.domain.orderitem.entity.OrderItem;
 import com.gracefullyugly.domain.orderitem.repository.OrderItemRepository;
 import com.gracefullyugly.domain.payment.entity.Payment;
 import com.gracefullyugly.domain.payment.repository.PaymentRepository;
 import com.gracefullyugly.domain.user.entity.User;
-import com.gracefullyugly.domain.user.enumtype.Role;
 import com.gracefullyugly.domain.user.repository.UserRepository;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@AllArgsConstructor
 @Transactional
-@Slf4j
+@RequiredArgsConstructor
 public class OrderService {
 
-    private UserRepository userRepository;
-    private ItemRepository itemRepository;
-    private OrderRepository orderRepository;
-    private OrderItemRepository orderItemRepository;
-    private PaymentRepository paymentRepository;
+    private final UserRepository userRepository;
+    private final ItemRepository itemRepository;
+    private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
+    private final PaymentRepository paymentRepository;
 
     public OrderResponse createOrder(Long userId, CreateOrderRequest request) {
-        if (!userRepository.existsById(userId)) {
-            throw new NotFoundException("회원 정보가 존재하지 않습니다.");
+        Order order = new Order(userId, request.getAddress(), request.getPhoneNumber());
+        orderRepository.save(order);
+
+        List<Long> itemIds = request.getOrderItems().stream()
+                .map(OrderItemDto::getItemId)
+                .toList();
+
+        List<Item> validItems = itemRepository.findValidItemsByIds(itemIds);
+        Map<Long, Item> itemMap = validItems.stream()
+                .collect(Collectors.toMap(Item::getId, Function.identity()));
+
+        List<OrderItem> orderItems = new ArrayList<>();
+        for (OrderItemDto orderItemDto : request.getOrderItems()) {
+            if (!itemMap.containsKey(orderItemDto.getItemId())) {
+                throw new NotFoundException("주문할 수 없는 상품이 포함되어 있습니다.");
+            }
+            orderItems.add(new OrderItem(
+                    orderItemDto.getItemId(),
+                    order.getId(),
+                    orderItemDto.getQuantity()
+            ));
         }
 
-        Order order = orderRepository.save(new Order(userId, request.getAddress(), request.getPhoneNumber()));
+        orderItemRepository.saveAll(orderItems);
+        
+        int totalPrice = calculateTotalPrice(orderItems, itemMap);
 
-        ItemInfoToPaymentDto itemInfoToPaymentDto = new ItemInfoToPaymentDto();
-        List<OrderItem> orderItemList = makeOrderItemList(order.getId(), request.getItemIdList(),
-                itemInfoToPaymentDto);
-
-        if (orderItemList.isEmpty()) {
-            throw new NotFoundException("주문 가능한 상품이 없습니다.(유효한 상품인지, 올바른 수량인지 확인해주세요.)");
-        }
-
-        orderItemRepository.saveAll(orderItemList);
-
-        if (orderItemList.size() != 1) {
-            itemInfoToPaymentDto.setItemName(
-                    itemInfoToPaymentDto.getItemName() + " 외 " + (orderItemList.size() - 1) + "종");
-        }
-
-        return OrderResponse.builder()
-                .orderId(order.getId())
-                .userId(order.getUserId())
-                .address(order.getAddress())
-                .phoneNumber(order.getPhoneNumber())
-                .ItemInfoToPayment(itemInfoToPaymentDto)
-                .build();
+        return OrderDtoUtil.ordertoOrderResponse(order, totalPrice);
     }
 
     public OrderInfoResponse getOrderInfo(Long userId, Long orderId) {
@@ -96,8 +96,8 @@ public class OrderService {
                 .build();
     }
 
-    public OrderResponse updateOrderAddress(Long userId, Role role, Long orderId, UpdateOrderAddressRequest request) {
-        Order order = returnOrder(userId, role, orderId);
+    public OrderResponse updateAddress(Long userId, Long orderId, UpdateOrderAddressRequest request) {
+        Order order = findValidOrder(userId, orderId);
         order.updateAddress(request.getAddress());
 
         return OrderResponse.builder()
@@ -106,9 +106,9 @@ public class OrderService {
                 .build();
     }
 
-    public OrderResponse updateOrderPhoneNumber(Long userId, Role role, Long orderId,
-                                                UpdateOrderPhoneNumberRequest request) {
-        Order order = returnOrder(userId, role, orderId);
+    public OrderResponse updatePhoneNumber(Long userId, Long orderId,
+                                           UpdateOrderPhoneNumberRequest request) {
+        Order order = findValidOrder(userId, orderId);
         order.updatePhoneNumber(request.getPhoneNumber());
 
         return OrderResponse.builder()
@@ -117,46 +117,23 @@ public class OrderService {
                 .build();
     }
 
-    /**
-     * 주문하고자 하는 상품들 중 유효하지 않은 상품을 걸러낸 뒤, OrderItem 객체의 List를 만드는 메소드 입니다. orderItemInfoDto는 결제 프로세스에 필요한 정보를 저장하기 위한
-     * 파라메터입니다. (비유효 기준: 상품 존재 여부, 삭제 여부, 마감 기한 여부, 적절한 수량인지)
-     */
-    private List<OrderItem> makeOrderItemList(Long orderId, List<OrderItemDto> items,
-                                              ItemInfoToPaymentDto itemInfoToPaymentDto) {
-        return items.stream()
-                .filter(item -> {
-                    Optional<Item> resultOptional = itemRepository.findById(item.getItemId());
-                    if (resultOptional.isEmpty()) {
-                        return false;
-                    }
-
-                    Item result = resultOptional.get();
-
-                    if (!result.isDeleted() && !result.getClosedDate().isBefore(LocalDateTime.now()) &&
-                            (1 <= item.getQuantity() && item.getQuantity() <= result.getTotalSalesUnit())) {
-                        itemInfoToPaymentDto.setFirstItemName(result.getName())
-                                .addQuantity(item.getQuantity().intValue())
-                                .addTotalAmount(result.getPrice() * item.getQuantity().intValue());
-                        return true;
-                    }
-
-                    return false;
-                })
-                .map(item -> new OrderItem(item.getItemId(), orderId, item.getQuantity().intValue()))
-                .toList();
+    private int calculateTotalPrice(List<OrderItem> orderItems, Map<Long, Item> itemMap) {
+        int totalPrice = 0;
+        for (OrderItem orderItem : orderItems) {
+            Item item = itemMap.get(orderItem.getItemId());
+            totalPrice += item.getPrice() * orderItem.getQuantity();
+        }
+        return totalPrice;
     }
 
-    /**
-     * 유효성 검사 이후 Order 객체를 반환하는 메소드입니다.
-     */
-    private Order returnOrder(Long userId, Role role, Long orderId) {
-        Order order = orderRepository.findById(orderId)
+    private Order findValidOrder(Long userId, Long orderId) {
+        Order findOrder = orderRepository.findById(orderId)
                 .orElseThrow(() -> new NotFoundException("주문 정보가 없습니다."));
 
-        if (!order.getUserId().equals(userId) && !role.equals(Role.ADMIN)) {
+        if (!findOrder.getUserId().equals(userId)) {
             throw new ForbiddenException("접근 권한이 없습니다.");
         }
 
-        return order;
+        return findOrder;
     }
 }
