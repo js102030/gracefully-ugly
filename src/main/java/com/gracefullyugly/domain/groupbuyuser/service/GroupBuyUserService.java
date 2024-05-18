@@ -34,7 +34,8 @@ public class GroupBuyUserService {
             Long groupId = getGroupBuyId(orderItem.getItemId());
 
             groupBuyUserRepository.save(
-                    new GroupBuyUser(groupId, userId, orderItem.getOrdersId(), LocalDateTime.now(), orderItem.getQuantity()));
+                    new GroupBuyUser(groupId, userId, orderItem.getOrderId(), LocalDateTime.now(),
+                            orderItem.getQuantity()));
 
             groupBuyRepository.updateGroupBuyStatusByGroupId(groupId);
 
@@ -50,9 +51,9 @@ public class GroupBuyUserService {
         return groupBuyUserList.stream()
                 .map(groupBuyUser ->
                         GroupBuyUserFindResponse.builder()
-                        .joinDate(groupBuyUser.getJoinDate())
-                        .quantity(groupBuyUser.getQuantity())
-                        .build())
+                                .joinDate(groupBuyUser.getJoinDate())
+                                .quantity(groupBuyUser.getQuantity())
+                                .build())
                 .toList();
     }
 
