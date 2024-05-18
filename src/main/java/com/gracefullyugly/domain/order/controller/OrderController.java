@@ -10,7 +10,6 @@ import com.gracefullyugly.domain.user.enumtype.Role;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name="상품 주문 관리")
+@Tag(name = "상품 주문 관리")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api")
@@ -33,38 +32,46 @@ public class OrderController {
 
     @Operation(summary = "상품 주문서 생성", description = "구매자가 구매할 상품의 주문서를 작성함")
     @PostMapping("/orders")
-    public ResponseEntity<OrderResponse> createOrder(
-            @Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
-            @Valid @RequestBody CreateOrderRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(orderService.createOrder(userId, request));
+    public ResponseEntity<OrderResponse> createOrder(@AuthenticationPrincipal(expression = "userId") Long userId,
+                                                     @Valid @RequestBody CreateOrderRequest request) {
+        OrderResponse response = orderService.createOrder(userId, request);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
 
     @Operation(summary = "상품 주문서 정보 조회", description = "구매자가 주문한 상품의 주문서 정보를 조회함")
-    @GetMapping("/orders/{ordersId}")
-    public ResponseEntity<OrderInfoResponse> getOrderInfo(
-            @Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
-            @PathVariable("ordersId") Long orderId) {
-        return ResponseEntity.ok(orderService.getOrderInfo(userId, orderId));
+    @GetMapping("/orders/{orderId}")
+    public ResponseEntity<OrderInfoResponse> getOrderInfo(@AuthenticationPrincipal(expression = "userId") Long userId,
+                                                          @PathVariable("orderId") Long orderId) {
+        OrderInfoResponse response = orderService.getOrderInfo(userId, orderId);
+
+        return ResponseEntity
+                .ok(response);
     }
 
     @Operation(summary = "상품 주문 주소 수정", description = "구매자가 주문할 때 주문서에 입력한 주소를 수정함")
     @PutMapping("/orders/address/{orderId}")
-    public ResponseEntity<OrderResponse> updateOrderAddress(
-            @Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
-            @Valid @NotNull @AuthenticationPrincipal(expression = "role") Role role,
-            @PathVariable("orderId") Long orderId,
-            @Valid @RequestBody UpdateOrderAddressRequest request) {
-        return ResponseEntity.ok(orderService.updateOrderAddress(userId, role, orderId, request));
+    public ResponseEntity<OrderResponse> updateOrderAddress(@AuthenticationPrincipal(expression = "userId") Long userId,
+                                                            @AuthenticationPrincipal(expression = "role") Role role,
+                                                            @PathVariable("orderId") Long orderId,
+                                                            @Valid @RequestBody UpdateOrderAddressRequest request) {
+        OrderResponse response = orderService.updateOrderAddress(userId, role, orderId, request);
+
+        return ResponseEntity
+                .ok(response);
     }
 
     @Operation(summary = "상품 주문 연락처 수정", description = "구매자가 주문할 때 주문서에 입력한 연락처를 수정함")
     @PutMapping("/orders/phone_number/{orderId}")
-    public ResponseEntity<OrderResponse> updateOrderPhoneNumber(
-            @Valid @NotNull @AuthenticationPrincipal(expression = "userId") Long userId,
-            @Valid @NotNull @AuthenticationPrincipal(expression = "role") Role role,
-            @PathVariable("orderId") Long orderId,
-            @Valid @RequestBody UpdateOrderPhoneNumberRequest request) {
-        return ResponseEntity.ok(orderService.updateOrderPhoneNumber(userId, role, orderId, request));
+    public ResponseEntity<OrderResponse> updatePhoneNumber(@AuthenticationPrincipal(expression = "userId") Long userId,
+                                                           @AuthenticationPrincipal(expression = "role") Role role,
+                                                           @Valid @RequestBody UpdateOrderPhoneNumberRequest request,
+                                                           @PathVariable("orderId") Long orderId) {
+        OrderResponse response = orderService.updateOrderPhoneNumber(userId, role, orderId, request);
+
+        return ResponseEntity
+                .ok(response);
     }
 }
