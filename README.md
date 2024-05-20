@@ -54,6 +54,11 @@
 | :--------: | :--------: | :------: |
 | <img alt="github logo" src="https://techstack-generator.vercel.app/github-icon.svg" width="65" height="65"> | <img alt="Discord logo" src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/62595384e89d1d54d704ece7_3437c10597c1526c3dbd98c737c2bcae.svg" height="65" width="65"> | <img alt="Notion logo" src="https://www.notion.so/cdn-cgi/image/format=auto,width=640,quality=100/front-static/shared/icons/notion-app-icon-3d.png" height="65" width="65"> |
 
+## erd 
+링크 : https://www.erdcloud.com/d/Ry8D7FKy5oLp4nBSd
+<img src="readme_img/ERD.png" alt="ERD">
+
+
 ## 기능 명세
 ### 요구사항 기능 정리
 ![image](https://github.com/gracefully-ugly/gracefully-ugly/assets/138424719/bc98996b-9695-497f-b75b-ecc97352103d)
@@ -204,9 +209,7 @@
 
 ## 시스템 구조도
 ![system_architecture.jpg](readme_img%2Fsystem_architecture.jpg)
-## erd 
-링크 : https://www.erdcloud.com/d/Ry8D7FKy5oLp4nBSd
-<img src="readme_img/ERD.png" alt="ERD">
+
 
 ## api 명세
 링크 : http://15.164.14.204:8080/swagger-ui/index.html
