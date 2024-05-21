@@ -1,21 +1,29 @@
 package com.gracefullyugly.domain.groupbuy.scheduling;
 
 import com.gracefullyugly.domain.groupbuy.repository.GroupBuyRepository;
-import lombok.AllArgsConstructor;
+import com.gracefullyugly.domain.payment.repository.PaymentRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CheckGroupBuyEndDateTask {
 
     private final GroupBuyRepository groupBuyRepository;
+    private final PaymentRepository paymentRepository;
 
-    @Scheduled(cron = "0 0 0 * * *") // 매일 오전 12시에 실행
+    @Scheduled(cron = "1 * * * * *") // 매분 1초에 실행
     @Transactional
     public void updateExpiredGroupBuyToCanceled() {
         groupBuyRepository.updateExpiredGroupBuyToCanceled();
-        // TODO: 취소된 공동 구매 건에 대해 사용자에게 알림을 보내는 로직이 필요할 듯
     }
+
+    @Scheduled(cron = "20 * * * * *") // 매분 20초에 실행
+    @Transactional
+    public void refundsForCancelledGroupBuys() {
+        paymentRepository.updatePaymentsToRefundedForCancelledGroupBuys();
+    }
+
 }
