@@ -3,7 +3,10 @@ package com.gracefullyugly.domain.groupbuy.service;
 import com.gracefullyugly.common.exception.custom.NotFoundException;
 import com.gracefullyugly.domain.groupbuy.dto.GroupBuyInfoResponse;
 import com.gracefullyugly.domain.groupbuy.dto.GroupBuyListResponse;
+import com.gracefullyugly.domain.groupbuy.entity.GroupBuy;
+import com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus;
 import com.gracefullyugly.domain.groupbuy.repository.GroupBuyRepository;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,5 +25,9 @@ public class GroupBuySearchService {
 
     public GroupBuyListResponse getGroupBuyListByItemId(Long itemId) {
         return new GroupBuyListResponse(groupBuyRepository.findTop5ByItemIdOrderByIdDesc(itemId));
+    }
+
+    public Optional<GroupBuy> findInProgressGroupBuyByItemId(Long itemId) {
+        return groupBuyRepository.findByItemIdAndGroupBuyStatus(itemId, GroupBuyStatus.IN_PROGRESS);
     }
 }
