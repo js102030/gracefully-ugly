@@ -69,7 +69,7 @@ public class PaymentService {
                 itemOrderDetail -> itemOrderDetail.getItem().decreaseStock(itemOrderDetail.getQuantity()));
 
         List<OrderItem> orderItemList = orderItemRepository.findAllByOrderId(orderId);
-        groupBuyUserService.joinGroupBuy(userId, orderItemList);
+        groupBuyUserService.joinGroupBuy(orderItemList);
 
         return response;
     }
