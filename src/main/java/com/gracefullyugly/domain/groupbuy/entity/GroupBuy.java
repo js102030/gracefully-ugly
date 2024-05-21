@@ -9,7 +9,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,16 +27,12 @@ public class GroupBuy extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private GroupBuyStatus groupBuyStatus;
 
-    private LocalDateTime endDate;
-
-    public GroupBuy(Long itemId, GroupBuyStatus groupBuyStatus, LocalDateTime endDate) {
+    public GroupBuy(Long itemId, GroupBuyStatus groupBuyStatus) {
         this.itemId = itemId;
         this.groupBuyStatus = groupBuyStatus;
-        this.endDate = endDate;
     }
 
-    public GroupBuy updateGroupBuyStatus(GroupBuyStatus groupBuyStatus) {
+    public void updateGroupBuyStatus(GroupBuyStatus groupBuyStatus) {
         this.groupBuyStatus = groupBuyStatus;
-        return this;
     }
 }

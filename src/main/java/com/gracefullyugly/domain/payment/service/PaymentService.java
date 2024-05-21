@@ -38,7 +38,7 @@ public class PaymentService {
     private final static String KAKAO_PAY_READY_URL = "https://open-api.kakaopay.com/online/v1/payment/ready";
     private final static String KAKAO_PAY_APPROVE_URL = "https://open-api.kakaopay.com/online/v1/payment/approve";
     private final static String KAKAO_PAY_CANCEL_URL = "https://open-api.kakaopay.com/online/v1/payment/cancel";
-    private final static String SECRET_KEY = "DEV0E39D58BA039991E20FB24D32905C6B1B0648";
+    private final static String SECRET_KEY = "DEVDC99CF1C921E1C2BCCB44D5BE4594F842834A";
     private PaymentRepository paymentRepository;
     private OrderItemRepository orderItemRepository;
     private GroupBuyRepository groupBuyRepository;
@@ -167,14 +167,14 @@ public class PaymentService {
         params.put("partner_order_id", paymentRequest.getOrderId().toString());
         params.put("partner_user_id", paymentRequest.getUserId().toString());
         params.put("item_name", "임시 상품명");
-//        params.put("quantity", String.valueOf(paymentRequest.getItemInfoToPayment().getQuantity()));
+        params.put("quantity", "1");
         params.put("total_amount", String.valueOf(paymentRequest.getTotalPrice()));
-//        params.put("tax_free_amount", String.valueOf(paymentRequest.getItemInfoToPayment().getTaxFreeAmount()));
+        params.put("tax_free_amount", "1");
         params.put("approval_url",
-                "http://15.164.14.204:8080/payment/kakaopay/success/" + paymentRequest.getUserId() + "/"
+                "http://localhost:8080/payment/kakaopay/success/" + paymentRequest.getUserId() + "/"
                         + paymentRequest.getOrderId());
-        params.put("cancel_url", "http://15.164.14.204:8080/payment/cancel?orderId=" + paymentRequest.getOrderId());
-        params.put("fail_url", "http://15.164.14.204:8080/payment/fail?orderId=" + paymentRequest.getOrderId());
+        params.put("cancel_url", "http://localhost:8080/payment/cancel?orderId=" + paymentRequest.getOrderId());
+        params.put("fail_url", "http://localhost:8080/payment/fail?orderId=" + paymentRequest.getOrderId());
 
         return params;
     }

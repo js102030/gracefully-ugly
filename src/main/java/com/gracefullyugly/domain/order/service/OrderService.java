@@ -45,7 +45,7 @@ public class OrderService {
         Order order = new Order(userId, request.getAddress(), request.getPhoneNumber());
         orderRepository.save(order);
 
-        List<Long> itemIds = request.getOrderItems().stream()
+        List<Long> itemIds = request.getItemIdList().stream()
                 .map(OrderItemDto::getItemId)
                 .toList();
 
@@ -54,7 +54,7 @@ public class OrderService {
                 .collect(Collectors.toMap(Item::getId, Function.identity()));
 
         List<OrderItem> orderItems = new ArrayList<>();
-        for (OrderItemDto orderItemDto : request.getOrderItems()) {
+        for (OrderItemDto orderItemDto : request.getItemIdList()) {
             if (!itemMap.containsKey(orderItemDto.getItemId())) {
                 throw new NotFoundException("주문할 수 없는 상품이 포함되어 있습니다.");
             }
@@ -66,7 +66,7 @@ public class OrderService {
         }
 
         orderItemRepository.saveAll(orderItems);
-        
+
         int totalPrice = calculateTotalPrice(orderItems, itemMap);
 
         return OrderDtoUtil.ordertoOrderResponse(order, totalPrice);

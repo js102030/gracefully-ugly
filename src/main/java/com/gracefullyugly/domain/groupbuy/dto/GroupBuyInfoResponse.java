@@ -1,7 +1,6 @@
 package com.gracefullyugly.domain.groupbuy.dto;
 
 import com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus;
-import java.time.LocalDateTime;
 
 public interface GroupBuyInfoResponse {
 
@@ -12,8 +11,6 @@ public interface GroupBuyInfoResponse {
     String getItemName();
 
     GroupBuyStatus getGroupBuyStatus();
-
-    LocalDateTime getEndDate();
 
     Long getParticipantCount();
 }

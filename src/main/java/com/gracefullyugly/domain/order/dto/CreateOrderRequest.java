@@ -18,7 +18,7 @@ public class CreateOrderRequest {
 
     @Valid
     @NotEmpty
-    private List<OrderItemDto> orderItems;
+    private List<OrderItemDto> itemIdList;
 
     @NotBlank
     private String address;
