@@ -23,6 +23,11 @@ public class ItemSearchService {
                 .orElseThrow(() -> new IllegalArgumentException(itemId + "에 해당하는 상품이 없습니다."));
     }
 
+    public Item findValidItemById(Long itemId) {
+        return itemRepository.findValidItemById(itemId)
+                .orElseThrow(() -> new IllegalArgumentException(itemId + "에 해당하는 상품이 없습니다."));
+    }
+
     public ItemResponse getItemResponse(Long itemId) {
         Item findItem = findById(itemId);
         return ItemDtoUtil.itemToItemResponse(findItem);
