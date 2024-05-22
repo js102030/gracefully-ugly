@@ -60,6 +60,16 @@ public interface GroupBuyRepository extends JpaRepository<GroupBuy, Long> {
     Integer updateGroupBuyStatusByGroupId(Long groupId);
 
     @Modifying
+    @Query(value = "UPDATE group_buy gb " +
+            "JOIN item i ON gb.item_id = i.item_id " +
+            "SET gb.group_buy_status = 'CANCELLED' " +
+            "WHERE gb.group_buy_status = 'IN_PROGRESS' " +
+            "AND i.closed_date <= CURRENT_TIMESTAMP "
+            , nativeQuery = true)
+    void updateExpiredGroupBuyToCanceled();
+
+
+    @Modifying
     @Query("UPDATE GroupBuy AS GB " +
             "SET GB.groupBuyStatus = com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus.CANCELLED " +
             "WHERE GB.itemId = :itemId AND GB.groupBuyStatus = com.gracefullyugly.domain.groupbuy.enumtype.GroupBuyStatus.IN_PROGRESS")

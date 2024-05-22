@@ -1,6 +1,7 @@
 package com.gracefullyugly.domain.payment.repository;
 
 import com.gracefullyugly.domain.payment.dto.PaymentSearchDTO;
+import com.gracefullyugly.domain.payment.dto.RefundInfo;
 import com.gracefullyugly.domain.payment.entity.Payment;
 import java.util.List;
 import java.util.Optional;
@@ -36,5 +37,13 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
                     + "WHERE O.user_id = :userId AND P.is_paid = true AND P.is_refunded = false ",
             nativeQuery = true)
     Integer getBuyCountByUserId(Long userId);
+
+    @Query("SELECT new com.gracefullyugly.domain.payment.dto.RefundInfo(o.userId, gbu.orderId) " +
+            "FROM GroupBuyUser gbu " +
+            "JOIN Order o ON o.id = gbu.orderId " +
+            "JOIN Payment p ON p.orderId = gbu.orderId " +
+            "JOIN GroupBuy gb ON gbu.groupBuyId = gb.id " +
+            "WHERE gb.groupBuyStatus = 'CANCELLED' AND p.isRefunded = false")
+    List<RefundInfo> findRefundablePayments();
 
 }
