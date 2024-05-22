@@ -56,7 +56,7 @@
 
 ## erd 
 링크 : https://www.erdcloud.com/d/mES7Ns2mBDw5ocA8t
-<img src="readme_img/ERD.png" alt="ERD">
+<img src="readme_img/ERD2.png" alt="ERD">
 
 
 ## 기능 명세
